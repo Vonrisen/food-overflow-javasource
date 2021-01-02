@@ -30,7 +30,7 @@ public class Main {
 				 }
 				//Inizio applicativo
 				try {
-					LoginFrame window = new LoginFrame(connection);
+					AdminFrame window = new AdminFrame();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
