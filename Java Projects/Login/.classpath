@@ -6,9 +6,9 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Utente/eclipse-workspace/Login/.jars/postgresql-42.2.18.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Utente/eclipse-workspace/Login/.jars/rs2xml.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Utente/eclipse-workspace/Login/.jars/jgoodies-forms-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Utente/eclipse-workspace/Login/.jars/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="D:/00eclipseworkspace/Login/.jars/postgresql-42.2.18.jar"/>
+	<classpathentry kind="lib" path="D:/00eclipseworkspace/Login/.jars/rs2xml.jar"/>
+	<classpathentry kind="lib" path="D:/00eclipseworkspace/Login/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="D:/00eclipseworkspace/Login/jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

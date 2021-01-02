@@ -1,12 +1,15 @@
 package gui;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ import controllers.LoginController;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.awt.event.ActionListener;
@@ -65,6 +69,8 @@ public class LoginFrame extends JFrame {
 	JScrollPane scrollPane;
 	private final String username = "admin";
 	private final String password = "admin";
+	private int mouseX=0;
+	private int mouseY=0;
 
 	/**
 	 * Create the application.
@@ -96,39 +102,61 @@ public class LoginFrame extends JFrame {
 		adminLogoImage = new ImageIcon("src\\images\\LoginImages\\adminLogo.png");
 		shopLogoImage = new ImageIcon("src\\images\\LoginImages\\shopLogo.png");
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		ImageIcon close_button = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
+		ImageIcon iconifier_button = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
+		ImageIcon logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
 
 		// FRAME INITIALIZER
 		frame = new JFrame();
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 600, 800);
 		frame.setSize(600, 800);
-		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2); // Setta
-																													// il
-																													// frame
-																													// a
-																													// centro
-																												// monitor
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		
+		int central_width = dim.width/2-frame.getSize().width/2;
+		int central_height = dim.height/2-frame.getSize().height/2;
+		frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		frame.setUndecorated(true);
+		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().setBackground(new Color(0xf3ecd7));
 
 		// PANELS INITIALIZER
 		topPanel = new JPanel();
-		topPanel.setBounds(0, 0, 584, 400);
+		topPanel.setBounds(0, 0, 600, 400);
 		topPanel.setBackground(null);
 		topPanel.setLayout(new BorderLayout());
-		frame.getContentPane().add(topPanel);
+		frame.getContentPane().add(topPanel, BorderLayout.NORTH);
 
 		loginPanel = new JPanel();
-		loginPanel.setBounds(0, 401, 584, 512);
+		loginPanel.setBounds(0, 401, 600, 512);
 		loginPanel.setBackground(null);
 		frame.getContentPane().add(loginPanel);
 		loginPanel.setLayout(null);
 		loginPanel.setBounds(0, 401, 584, 512);
 		loginPanel.setBackground(null);
-		frame.getContentPane().add(loginPanel);
+		frame.getContentPane().add(loginPanel, BorderLayout.CENTER);
 		loginPanel.setLayout(null);
-
+		
+		JPanel framePanel = new JPanel();
+		framePanel.setLayout(new BoxLayout(framePanel, BoxLayout.LINE_AXIS));
+		framePanel.setPreferredSize(new Dimension(200,35));
+		framePanel.setBackground(new Color(0x771007));
+		framePanel.setVisible(true);
+		topPanel.add(framePanel, BorderLayout.NORTH);
+		
+		JLabel iconifierFrameButton = new JLabel();
+		iconifierFrameButton.setIcon(iconifier_button);
+		
+		JLabel closeFrameButton = new JLabel();
+		closeFrameButton.setIcon(close_button);
+		
+		JLabel logoFrameButton = new JLabel("<html> <font face='Calibri' size='4' color=rgb(243,236,215)>FOOD OVERFLOW</font> </html>");
+		logoFrameButton.setForeground(new Color(0xf3ecd7));;
+		logoFrameButton.setIcon(logoIcon);
+		framePanel.add(logoFrameButton);
+		framePanel.add(Box.createHorizontalGlue());
+		framePanel.add(iconifierFrameButton);
+		framePanel.add(closeFrameButton);
+		
 		// LABELS INITIALIZER
 		logoLabel = new JLabel();
 		logoLabel.setIcon(logoImage);
@@ -166,7 +194,7 @@ public class LoginFrame extends JFrame {
 		adminButton = new JButton();
 		adminButton.setIcon(adminButtonInactive);
 		adminButton.setBorder(null);
-		adminButton.setBounds(322, 50, 150, 150);
+		adminButton.setBounds(322, 80, 150, 150);
 		adminButton.setFocusable(false);
 		adminButton.setContentAreaFilled(false);
 		loginPanel.add(adminButton);
@@ -174,7 +202,7 @@ public class LoginFrame extends JFrame {
 		shopButton = new JButton();
 		shopButton.setIcon(shopButtonInactive);
 		shopButton.setBorder(null);
-		shopButton.setBounds(112, 50, 150, 150);
+		shopButton.setBounds(112, 80, 150, 150);
 		shopButton.setFocusable(false);
 		shopButton.setContentAreaFilled(false);
 		loginPanel.add(shopButton);
@@ -190,7 +218,7 @@ public class LoginFrame extends JFrame {
 
 		homeButton = new JButton();
 		homeButton.setIcon(homeButtonInactive);
-		homeButton.setBounds(267, 270, 50, 50);
+		homeButton.setBounds(267, 280, 50, 50);
 		homeButton.setBorder(null);
 		homeButton.setFocusable(false);
 		homeButton.setContentAreaFilled(false);
@@ -209,9 +237,45 @@ public class LoginFrame extends JFrame {
 		scrollPane.setViewportView(table);
 
 		// ACTIONS
+		framePanel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				
+				frame.setLocation (frame.getX()+e.getX()-mouseX,frame.getY()+e.getY()-mouseY);
+				
+			}
+		});
+		framePanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				mouseX = e.getX();
+				mouseY = e.getY();
+				
+				}
+		});
+		
+		closeFrameButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				System.exit(0); // Da rivedere la chiusura del frame
+				
+			}
+		});
+		
+		iconifierFrameButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				frame.setState(Frame.ICONIFIED);
+				
+			}
+		});
+		
 		adminButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent click_su_adminButton) {
+			public void mousePressed(MouseEvent click_su_adminButton) {
 
 				homeButton.setVisible(true);
 				shopButton.setVisible(false);
@@ -241,7 +305,7 @@ public class LoginFrame extends JFrame {
 
 		shopButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent click_su_shopButton) {
+			public void mousePressed(MouseEvent click_su_shopButton) {
 
 				homeButton.setVisible(true);
 				adminButton.setVisible(false);
@@ -272,7 +336,7 @@ public class LoginFrame extends JFrame {
 
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent click_su_shopButton) {
+			public void mousePressed(MouseEvent click_su_shopButton) {
 
 				homeButton.setVisible(false);
 				usernameTF.setVisible(false);

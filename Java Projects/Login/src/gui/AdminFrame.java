@@ -15,6 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,7 +49,11 @@ public class AdminFrame {
 		ImageIcon minimize_button = new ImageIcon("src\\images\\FrameIcons\\minimizeFrameButton.png");
 		ImageIcon close_button = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
 		ImageIcon iconifier_button = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
-		ImageIcon customer_button = new StretchIcon("src\\images\\AdminFrame\\testbutton.png");
+		ImageIcon customer_buttonS = new ImageIcon("src\\images\\AdminFrame\\customerButtonSmall.png");
+		ImageIcon customer_buttonB = new ImageIcon("src\\images\\AdminFrame\\customerButtonBig.png");
+		ImageIcon shop_buttonS = new ImageIcon("src\\images\\AdminFrame\\shopButtonSmall.png");
+		ImageIcon shop_buttonB = new ImageIcon("src\\images\\AdminFrame\\shopButtonBig.png");
+		ImageIcon logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
 		
 		frame = new JFrame();
 		frame.setSize(1600,900);
@@ -72,7 +78,7 @@ public class AdminFrame {
 		topPanel.setVisible(true);
 		
 		JPanel framePanel = new JPanel();
-		framePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		framePanel.setLayout(new BoxLayout(framePanel, BoxLayout.LINE_AXIS));
 		framePanel.setPreferredSize(new Dimension(100,35));
 		framePanel.setBackground(new Color(0x771007));
 		framePanel.setVisible(true);
@@ -86,21 +92,40 @@ public class AdminFrame {
 		
 		JLabel iconifierFrameButton = new JLabel();
 		iconifierFrameButton.setIcon(iconifier_button);
-		framePanel.add(iconifierFrameButton);
 		
 		JLabel resizeFrameButton = new JLabel();
 		resizeFrameButton.setIcon(maximize_button);
-		framePanel.add(resizeFrameButton);
 		
 		JLabel closeFrameButton = new JLabel();
 		closeFrameButton.setIcon(close_button);
+		
+		JLabel logoFrameButton = new JLabel("<html><font face='Calibri' size='4' color=rgb(244,153,105)>ADMIN PANEL</font></html>");
+		logoFrameButton.setForeground(new Color(0xf3ecd7));;
+		logoFrameButton.setIcon(logoIcon);
+		framePanel.add(logoFrameButton);
+		framePanel.add(Box.createHorizontalGlue());
+		framePanel.add(iconifierFrameButton);
+		framePanel.add(resizeFrameButton);
 		framePanel.add(closeFrameButton);
 		
 		JButton customerButton = new JButton();
-		customerButton.setIcon(customer_button);
-		JButton shopButton = new JButton("Negozio");
+		customerButton.setIcon(customer_buttonS);
+		customerButton.setBorder(null);
+		customerButton.setPreferredSize(new Dimension(600,300));
+		customerButton.setFocusable(false);
+		customerButton.setContentAreaFilled(false);
+		
+		JButton shopButton = new JButton();
+		shopButton.setPreferredSize(new Dimension(600,300));
+		shopButton.setIcon(shop_buttonS);
+		shopButton.setBorder(null);
+		shopButton.setFocusable(false);
+		shopButton.setContentAreaFilled(false);
+		
 		JButton riderButton = new JButton("Button 3");
+		riderButton.setPreferredSize(new Dimension(600,300));
 		JButton mealButton = new JButton("Button 4");
+		mealButton.setPreferredSize(new Dimension(600,300));
 		
 		framePanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -138,12 +163,16 @@ public class AdminFrame {
 					resizeFrameButton.setIcon(minimize_button);
 					frame.setLocation(central_width, central_height);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					customerButton.setIcon(customer_buttonB);
+					shopButton.setIcon(shop_buttonB);
 					
 				} else if(frame.getSize().equals(dim)) {
 					
 					resizeFrameButton.setIcon(maximize_button);
 					frame.setSize(1600,900);
 					frame.setLocation(central_width, central_height);
+					customerButton.setIcon(customer_buttonS);
+					shopButton.setIcon(shop_buttonS);
 					
 				}
 				
@@ -161,7 +190,7 @@ public class AdminFrame {
 		
 		shopButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				
 				frame.getContentPane().remove(home_panel);
 				frame.getContentPane().add(shop_panel, BorderLayout.CENTER);
