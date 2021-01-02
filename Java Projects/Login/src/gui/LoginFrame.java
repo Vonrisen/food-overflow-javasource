@@ -89,7 +89,7 @@ public class LoginFrame extends JFrame {
 		homeButtonInactive = new ImageIcon("src\\images\\LoginImages\\homeButtonInactive.png");
 		shopButtonActive = new ImageIcon("src\\images\\LoginImages\\shopButtonActive.png");
 		shopButtonInactive = new ImageIcon("src\\images\\LoginImages\\shopButtonInactive.png");
-		loginButtonActive = new ImageIcon("src\\images\\LoginImages\\Icons\\loginButtonActive.png");
+		loginButtonActive = new ImageIcon("src\\images\\LoginImages\\loginButtonActive.png");
 		loginButtonInactive = new ImageIcon("src\\images\\LoginImages\\loginButtonInactive.png");
 		usernameIcon = new ImageIcon("src\\images\\LoginImages/usernameIcon.png");
 		passwordIcon = new ImageIcon("src\\images\\LoginImages\\passwordIcon.png");
