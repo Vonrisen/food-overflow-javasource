@@ -1,11 +1,8 @@
 package gui;
-
 import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -15,7 +12,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,22 +20,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
-public class AdminFrame {
 
+
+
+public class AdminFrame {
+	
 	public JFrame frame;
 	private int mouseX=0;
 	private int mouseY=0;
-	private JTextField textField;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_1;
+	private JTable table;
+	private JScrollPane scrollPane1;
+	private JTextField nameTF;
+	private JTextField addressTF;
+	private JTextField working_timeTF;
+	private JTextField closing_daysTF;
 	
 	/**
 	 * Create the application.
@@ -51,7 +48,7 @@ public class AdminFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		GridBagLayout gbl = new GridBagLayout();
@@ -89,29 +86,31 @@ public class AdminFrame {
 		JPanel home_panel = new JPanel();
 		home_panel.setLayout(gbl);
 		home_panel.setBackground(new Color(0xf3ecd7));
-//		frame.getContentPane().add(home_panel, BorderLayout.CENTER);
+		frame.getContentPane().add(home_panel, BorderLayout.CENTER);
 		
 		
 		JPanel shop_panel = new JPanel();
 		shop_panel.setLayout(null);
 		shop_panel.setBackground(new Color(0xf3ecd7));
-		frame.getContentPane().add(shop_panel, BorderLayout.CENTER);
+//		frame.getContentPane().add(shop_panel, BorderLayout.CENTER);
 		
 		
 		//*********CONTENUTO SHOP PANEL**********************
-		JScrollPane scrollPane = new JScrollPane();
-		shop_panel.add(scrollPane);
-		scrollPane.setBounds(92, 137, 850, 600);
-		JTable table = new JTable();
-		scrollPane.setViewportView(table);
-		table.setFocusable(false);
-		table.setEnabled(true);
+		scrollPane1 = new JScrollPane();
+		shop_panel.add(scrollPane1);
+		scrollPane1.setBounds(92, 137, 850, 600);
+	    table = new JTable();
+		scrollPane1.setViewportView(table);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setBackground(Color.black);
 		table.getTableHeader().setForeground(Color.yellow);
 		table.setBackground(Color.blue);
 		table.setFont(new Font("", 1, 10));
 		table.setForeground(Color.white);
+		table.setFillsViewportHeight(true);
+		table.setFocusable(false);
+		table.setEnabled(false);
+		table.setColumnSelectionAllowed(false);
 		
 		JButton insert_sql_button = new JButton();
 		insert_sql_button.setIcon(insert_button_inactive);
@@ -141,6 +140,42 @@ public class AdminFrame {
 		shops_tableT.setIcon(shops_table_title);
 		shops_tableT.setBounds(92, 26, 225,100);
 		shop_panel.add(shops_tableT);
+
+		nameTF = new JTextField();
+		nameTF.setBounds(1028, 198, 238, 20);
+		shop_panel.add(nameTF);
+		nameTF.setColumns(10);
+
+		addressTF = new JTextField();
+		addressTF.setBounds(1028, 254, 238, 20);
+		shop_panel.add(addressTF);
+		addressTF.setColumns(10);
+		
+		working_timeTF = new JTextField();
+		working_timeTF.setBounds(1028, 325, 238, 20);
+		shop_panel.add(working_timeTF);
+		working_timeTF.setColumns(10);
+		
+		closing_daysTF = new JTextField();
+		closing_daysTF.setBounds(1028, 393, 238, 20);
+		shop_panel.add(closing_daysTF);
+		closing_daysTF.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Name");
+		lblNewLabel.setBounds(1028, 173, 46, 14);
+		shop_panel.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Address");
+		lblNewLabel_1.setBounds(1028, 229, 159, 14);
+		shop_panel.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Working Hours");
+		lblNewLabel_2.setBounds(1028, 298, 126, 14);
+		shop_panel.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Closing Days");
+		lblNewLabel_3.setBounds(1028, 368, 142, 14);
+		shop_panel.add(lblNewLabel_3);
 //		
 //		JLabel shops_tableT = new JLabel();
 //		shops_tableT.setIcon(shops_table_title);
@@ -206,6 +241,25 @@ public class AdminFrame {
 		mealButton.setBorder(null);
 		mealButton.setFocusable(false);
 		mealButton.setContentAreaFilled(false);
+		
+		insert_sql_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+		});
+		
+		update_sql_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+		});
+		
+		delete_sql_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+		});
 		
 		topPanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -319,22 +373,25 @@ public class AdminFrame {
 		home_panel.add(mealButton);
 		
 	}
+
+	public JTable getTable() {
+		return table;
+	}
 	
-	private void Shop(JPanel shop_panel) {
-		
-		JScrollPane scrollPane = new JScrollPane();
-		shop_panel.add(scrollPane, BorderLayout.CENTER);
-		scrollPane.setBounds(100, 100, 850, 600);
-		JTable table = new JTable();
-		scrollPane.setViewportView(table);
-		table.setFocusable(false);
-		table.setEnabled(true);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.getTableHeader().setBackground(Color.black);
-		table.getTableHeader().setForeground(Color.yellow);
-		table.setBackground(Color.blue);
-		table.setFont(new Font("", 1, 10));
-		table.setForeground(Color.white);
-		
+	public JTextField getNameTF() {
+		return nameTF;
+	}
+
+	public JTextField getAddressTF() {
+		return addressTF;
+	}
+
+	public JTextField getWorking_timeTF() {
+		return working_timeTF;
+	}
+
+	public JTextField getClosing_daysTF() {
+		return closing_daysTF;
 	}
 }
+

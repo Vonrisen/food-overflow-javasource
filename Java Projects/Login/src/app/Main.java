@@ -14,6 +14,7 @@ public class Main {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				DBconnection dbconn = null;
@@ -30,7 +31,8 @@ public class Main {
 				 }
 				//Inizio applicativo
 				try {
-					AdminFrame window = new AdminFrame();
+					LoginFrame window = new LoginFrame();
+					window.initialize(connection);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,5 +40,5 @@ public class Main {
 			}
 		});
 	}
-
+	
 }

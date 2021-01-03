@@ -26,12 +26,12 @@ public class ShopDAOPostgresImplementation implements ShopDAO{
 			System.out.println("Errore durante la preparazione degli statement "+e.getMessage());
 		}
 	}
-	public void insertShop(Shop shop) throws SQLException {
+	public void insertShop(String name, String address, String working_time, String closing_days) throws SQLException {
 		
-		insert_shop_CS.setString(1, shop.getShop_name());
-		insert_shop_CS.setString(2, shop.getAddress());
-		insert_shop_CS.setString(3, shop.getWorking_hours());
-		insert_shop_CS.setString(4, shop.getClosing_days());
+		insert_shop_CS.setString(1, name);
+		insert_shop_CS.setString(2, address);
+		insert_shop_CS.setString(3, working_time);
+		insert_shop_CS.setString(4, closing_days);
 		insert_shop_CS.executeUpdate();
 		return;
 		
@@ -43,7 +43,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO{
 		delete_shop_CS.executeUpdate();
 		return;
 	}
-	
 	public void updateShop(Shop shop) throws SQLException {
 		
 		update_shop_CS.setString(1, shop.getShop_id());
@@ -60,5 +59,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO{
 		ResultSet rs = print_all_shops_PS.executeQuery();
 		return rs;
 	}
+	
 	
 }

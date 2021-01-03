@@ -1,5 +1,7 @@
 package gui;
+import gui_support.RoundJTextField;
 
+import gui_support.RoundJPasswordField;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,9 +20,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import controllers.LoginController;
-
+import controllers.AdminController;
+import gui_support.RoundJPasswordField;
+import gui_support.RoundJTextField;
+import controllers.AdminController;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,7 +36,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 
 public class LoginFrame extends JFrame {
-
 	/**
 	 * 
 	 */
@@ -43,8 +45,8 @@ public class LoginFrame extends JFrame {
 	JPanel topPanel;
 	JLabel logoLabel;
 	JPanel loginPanel;
-	JTextField usernameTF;
-	JPasswordField passwordTF;
+	public JTextField usernameTF;
+	public JPasswordField passwordTF;
 	JLabel usernameImage;
 	JLabel passwordImage;
 	JButton loginButton;
@@ -67,6 +69,7 @@ public class LoginFrame extends JFrame {
 	Dimension dim;
 	JTable table;
 	JScrollPane scrollPane;
+	public AdminFrame admin_frame;
 	private final String username = "admin";
 	private final String password = "admin";
 	private int mouseX=0;
@@ -75,15 +78,15 @@ public class LoginFrame extends JFrame {
 	/**
 	 * Create the application.
 	 */
-	public LoginFrame(Connection connection) {
-		this.connection=connection;
-		initialize();
-	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public LoginFrame()
+	{
+		
+	}
+	public void initialize(Connection connection) {
 
 		// IMAGES INITIALIZER
 
@@ -392,16 +395,15 @@ public class LoginFrame extends JFrame {
 				else
 				{
 					System.out.println("Login avvenuto con successo");
-					LoginController login_controller = new LoginController(connection);
-					try {
 						frame.setVisible(false);
-						login_controller.closeLoginOpenAdmin();
-					} catch (Exception e) {
-						System.out.println("Errore durante la trasposizione del result set sulla tabella");
-					}
+						AdminFrame admin_frame = new AdminFrame();
+						AdminController admin_controller = new AdminController(connection, admin_frame);
+						admin_controller.setAdminFrameVisible();
+						admin_controller.displayShops();
 				}
 			}
 		});
+		
 		usernameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
