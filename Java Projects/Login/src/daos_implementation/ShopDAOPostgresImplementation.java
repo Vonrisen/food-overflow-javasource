@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
+import db_connection.DBconnection_CodiceCatastale;
 import entities.Shop;
 
 public class ShopDAOPostgresImplementation implements  ShopDAO{
@@ -21,28 +22,28 @@ public class ShopDAOPostgresImplementation implements  ShopDAO{
 	{
 		try {
 			instance = DBconnection.getInstance();
+			connection = instance.getConnection();
 		} catch (SQLException e1) {
 			System.out.println("Errore di connessione col database "+e1.getMessage());
 		}
-		connection = instance.getConnection();
 		try {
-			insert_shop_CS = connection.prepareCall("CALL insertShop(?,?,?,?)");
+			insert_shop_CS = connection.prepareCall("CALL insertShop(?,?,?,?,?)");
 			delete_shop_CS = connection.prepareCall("CALL deleteShop(?)");
-			update_shop_CS = connection.prepareCall("CALL updateShop(?,?,?,?,?)");
+			update_shop_CS = connection.prepareCall("CALL updateShop(?,?,?,?,?,?)");
 			print_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY shop_id");
 		} catch (SQLException e) {
 			System.out.println("Errore durante la preparazione degli statement "+e.getMessage());
 		}
 	}
-	public void insertShop(String name, String address, String working_time, String closing_days) throws SQLException {
+	public void insertShop(String name, String address, String working_time, String closing_days, String password) throws SQLException {
 		
 		insert_shop_CS.setString(1, name);
 		insert_shop_CS.setString(2, address);
 		insert_shop_CS.setString(3, working_time);
 		insert_shop_CS.setString(4, closing_days);
+		insert_shop_CS.setString(5, password);
 		insert_shop_CS.executeUpdate();
 		return;
-		
 	}
 	
 	public void deleteShop(String shop_id) throws SQLException {
@@ -51,19 +52,19 @@ public class ShopDAOPostgresImplementation implements  ShopDAO{
 		delete_shop_CS.executeUpdate();
 		return;
 	}
-	public void updateShop(String shop_id, String name, String address, String working_time, String closing_days) throws SQLException {
+	public void updateShop(String shop_id, String name, String address, String working_time, String closing_days, String password) throws SQLException {
 		
 		update_shop_CS.setString(1, shop_id);
 		update_shop_CS.setString(2, name);
 		update_shop_CS.setString(3, address);
 		update_shop_CS.setString(4, working_time);
 		update_shop_CS.setString(5, closing_days);
+		update_shop_CS.setString(6, password);
 		update_shop_CS.executeUpdate();
 		return;
 	}
 
 	public ResultSet getAllShops() throws SQLException {
-		
 		ResultSet rs = print_all_shops_PS.executeQuery();
 		return rs;
 	}

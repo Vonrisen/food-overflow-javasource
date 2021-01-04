@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import controllers.AdminController;
-import db_connection.DBconnection;
+import db_connection.DBconnection_CodiceCatastale;
 import gui.AdminFrame;
 import gui.LoginFrame;
 
@@ -19,12 +19,12 @@ public class Main {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				DBconnection dbconn = null;
+				DBconnection_CodiceCatastale dbconn = null;
 			    Connection connection = null;
 			    //Connessione al database
 				try
 				{
-					  dbconn = DBconnection.getInstance();
+					  dbconn = DBconnection_CodiceCatastale.getInstance();
 			          connection = dbconn.getConnection();
 				}
 				 catch (SQLException e)
@@ -34,7 +34,6 @@ public class Main {
 				//Inizio applicativo
 				try {
 					new LoginFrame();
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

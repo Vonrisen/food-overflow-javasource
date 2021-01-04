@@ -21,8 +21,6 @@ public class Rider {
 	private String deliveries_number;
 	private ArrayList <Shop> shop_list;
 	private ArrayList <CustomerOrder> order_list;
-	
-	
 	//COSTRUTTORE
 	public Rider(String rider_id, String cf, String rider_name, String surname, String address, Date birth_date,
 			String birth_place, String gender, String cellular, String vehicle,

@@ -3,16 +3,12 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,14 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import controllers.AdminController;
-import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.ShopDAO;
 import gui_support.RoundJTextField;
-import net.proteanit.sql.DbUtils;
 
 public class ShopFrame extends JFrame{
 
@@ -44,6 +34,7 @@ public class ShopFrame extends JFrame{
 	private JTextField addressTF;
 	private JTextField working_hoursTF;
 	private JTextField closing_daysTF;
+	private JTextField passwordTF;
 	/**
 	 * Create the application.
 	 */
@@ -127,30 +118,34 @@ public class ShopFrame extends JFrame{
         		String address; 
         		String working_hours;
         		String closing_days;
-	            if (row >= 0 && col >= 0) {
-	            	name = table.getModel().getValueAt(table.getSelectedRow(), 1).toString();
-	            	address = table.getModel().getValueAt(table.getSelectedRow(), 2).toString();
-	            	try
-	            	{
-	        		working_hours = table.getModel().getValueAt(table.getSelectedRow(), 3).toString();
-	            	}catch(Exception e)
-	            	{
-	            		working_hours = "";
-	            	}
-	            	try
-	            	{
-	        		closing_days = table.getModel().getValueAt(table.getSelectedRow(), 4).toString();
-	            	}catch(Exception e)
-	            	{
-	            		closing_days = "";
-	            	}
-	        		nameTF.setText(name);
-	        		addressTF.setText(address);
-	        		working_hoursTF.setText(working_hours);
-	        		closing_daysTF.setText(closing_days);
-	            }
-	        }
-	    });
+        		String password;
+        	    if (row >= 0 && col >= 0) {
+        	    	name = table.getModel().getValueAt(table.getSelectedRow(), 1).toString();
+        	    	address = table.getModel().getValueAt(table.getSelectedRow(), 2).toString();
+        	    	password = table.getModel().getValueAt(table.getSelectedRow(), 5).toString();
+        	    	try
+        	    	{
+        			working_hours = table.getModel().getValueAt(table.getSelectedRow(), 3).toString();
+        	    	}catch(Exception e)
+        	    	{
+        	    		working_hours = "";
+        	    	}
+        	    	try
+        	    	{
+        			closing_days = table.getModel().getValueAt(table.getSelectedRow(), 4).toString();
+        	    	}catch(Exception e)
+        	    	{
+        	    		closing_days = "";
+        	    	}
+        			nameTF.setText(name);
+        			addressTF.setText(address);
+        			working_hoursTF.setText(working_hours);
+        			closing_daysTF.setText(closing_days);
+        			passwordTF.setText(password);
+        	    }
+        	}
+        	});
+	    
 		scrollPane1.setViewportView(table);
 		table.setFocusable(false);
 		table.setEnabled(true);
@@ -163,7 +158,7 @@ public class ShopFrame extends JFrame{
 		
 		JButton insert_sql_button = new JButton();
 		insert_sql_button.setIcon(insert_button_inactive);
-		insert_sql_button.setBounds(984, 669, 150,30);
+		insert_sql_button.setBounds(1000, 669, 150,30);
 		insert_sql_button.setBorder(null);
 		insert_sql_button.setFocusable(false);
 		insert_sql_button.setContentAreaFilled(false);
@@ -191,36 +186,45 @@ public class ShopFrame extends JFrame{
 		shop_panel.add(shops_tableT);
 
 		JLabel nameLB = new JLabel("Name");
-		nameLB.setBounds(1028, 173, 46, 14);
+		nameLB.setBounds(1000, 173, 46, 14);
 		shop_panel.add(nameLB);
 		
 		JLabel addressLB = new JLabel("Address");
-		addressLB.setBounds(1028, 229, 159, 14);
+		addressLB.setBounds(1000, 229, 159, 14);
 		shop_panel.add(addressLB);
 		
 		JLabel working_hoursLB = new JLabel("Working Hours");
-		working_hoursLB.setBounds(1028, 298, 126, 14);
+		working_hoursLB.setBounds(1000, 298, 126, 14);
 		shop_panel.add(working_hoursLB);
 		
 		JLabel closing_daysLB = new JLabel("Closing Days");
-		closing_daysLB.setBounds(1028, 368, 142, 14);
+		closing_daysLB.setBounds(1000, 368, 142, 14);
 		shop_panel.add(closing_daysLB);
 		
+		JLabel passwordLB = new JLabel("Password");
+		passwordLB.setBounds(1000, 429, 142, 14);
+		shop_panel.add(passwordLB);
+		
 		nameTF = new RoundJTextField(new Color(0x771007));
-		nameTF.setBounds(1028, 198, 240, 25);
+		nameTF.setBounds(1000, 198, 240, 25);
 		shop_panel.add(nameTF);
 		
 		addressTF = new RoundJTextField(new Color(0x771007));
-		addressTF.setBounds(1028, 254, 240, 25);
+		addressTF.setBounds(1000, 254, 240, 25);
 		shop_panel.add(addressTF);
 		
 		working_hoursTF = new RoundJTextField(new Color(0x771007));
-		working_hoursTF.setBounds(1028, 325, 240, 25);
+		working_hoursTF.setBounds(1000, 325, 240, 25);
 		shop_panel.add(working_hoursTF);
 		
 		closing_daysTF = new RoundJTextField(new Color(0x771007));
-		closing_daysTF.setBounds(1028, 393, 240, 25);
+		closing_daysTF.setBounds(1000, 393, 240, 25);
 		shop_panel.add(closing_daysTF);
+		
+		passwordTF = new RoundJTextField(new Color(0x771007));
+		passwordTF.setBounds(1000, 454, 240, 25);
+		shop_panel.add(passwordTF);
+	
 		
 		JButton go_back = new JButton();
 		go_back.setBounds(90, 770, 50, 50);
@@ -350,8 +354,8 @@ public class ShopFrame extends JFrame{
 					ShopFrame.this.setLocation(central_width, central_height);
 					ShopFrame.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 					
-					scrollPane1.setBounds(dim.width/2-600, 180, 1200, 700);
-					shops_tableT.setBounds(dim.width/2-600, 55, 225,100);
+					scrollPane1.setBounds(dim.width/2-600, 230, 1200, 700);
+					shops_tableT.setBounds(dim.width/2-600, 80, 225,100);
 					go_back.setBounds(25, dim.height-100, 50, 50);
 					
 					nameLB.setBounds(dim.width/2-300, 50, 46, 14);
@@ -362,10 +366,12 @@ public class ShopFrame extends JFrame{
 					working_hoursTF.setBounds(dim.width/2-300, 120, 240, 25);
 					closing_daysLB.setBounds(dim.width/2, 100, 100, 14);
 					closing_daysTF.setBounds(dim.width/2, 120, 240, 25);
+					passwordLB.setBounds(dim.width/2-300, 150, 100, 14);
+					passwordTF.setBounds(dim.width/2-300, 170, 240, 25);
 					
-					insert_sql_button.setBounds(dim.width/2+280, 67, 150,30);
-					update_sql_button.setBounds(dim.width/2+280, 117, 150,30);
-					delete_sql_button.setBounds(dim.width/2+450, 90, 150,30);
+					insert_sql_button.setBounds(dim.width/2+450, 67, 150,30);
+					update_sql_button.setBounds(dim.width/2+450, 117, 150,30);
+					delete_sql_button.setBounds(dim.width/2+450, 167, 150,30);
 					
 				} else if(ShopFrame.this.getSize().equals(dim)) {
 					
@@ -377,19 +383,23 @@ public class ShopFrame extends JFrame{
 					shops_tableT.setBounds(90, 20, 225,100);
 					go_back.setBounds(90, 770, 50, 50);
 					
-					nameLB.setBounds(1028, 173, 46, 14);
-					nameTF.setBounds(1028, 198, 240, 25);
-					addressLB.setBounds(1028, 229, 159, 14);
-					addressTF.setBounds(1028, 254, 240, 25);
-					working_hoursLB.setBounds(1028, 298, 126, 14);
-					working_hoursTF.setBounds(1028, 325, 240, 25);
-					closing_daysLB.setBounds(1028, 368, 142, 14);
-					closing_daysTF.setBounds(1028, 393, 240, 25);
+					nameLB.setBounds(1000, 173, 46, 14);
+					nameTF.setBounds(1000, 198, 240, 25);
+					addressLB.setBounds(1000, 229, 159, 14);
+					addressTF.setBounds(1000, 254, 240, 25);
+					working_hoursLB.setBounds(1000, 298, 126, 14);
+					working_hoursTF.setBounds(1000, 325, 240, 25);
+					closing_daysLB.setBounds(1000, 368, 142, 14);
+					closing_daysTF.setBounds(1000, 393, 240, 25);
+					passwordLB.setBounds(1000, 429, 142, 14);
+					passwordTF.setBounds(1000, 454, 240, 25);
 					
 					insert_sql_button.setBounds(984, 669, 150,30);
 					update_sql_button.setBounds(1200, 669, 150,30);
-					delete_sql_button.setBounds(1400, 669, 150,30);	
+					delete_sql_button.setBounds(1400, 669, 150,30);
+					
 				}
+				
 			}
 		});
 		iconifierFrameButton.addMouseListener(new MouseAdapter() {
@@ -401,6 +411,7 @@ public class ShopFrame extends JFrame{
 			}
 		});
 	}
+	
 	public JTable getTable() {
 		return table;
 	}
@@ -420,5 +431,11 @@ public class ShopFrame extends JFrame{
 	public JTextField getClosing_daysTF() {
 		return closing_daysTF;
 	}
+	public JTextField getPasswordTF() {
+		return passwordTF;
+	}
 
 }
+
+
+

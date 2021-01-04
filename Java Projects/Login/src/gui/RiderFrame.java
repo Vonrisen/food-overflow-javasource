@@ -7,6 +7,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -16,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,15 +38,16 @@ public class RiderFrame extends JFrame {
 	private int mouseY=0;
 	private JTable table;
 	private JScrollPane scrollPane1;
-	public JTextField nameTF;
+	private JTextField nameTF;
 	private JTextField surnameTF;
 	private JTextField birth_dateTF;
 	private JTextField birth_placeTF;
 	private JTextField addressTF;
 	private ButtonGroup gender;
 	private JTextField cellphoneTF;
-	private JTextField vehicleTF;
+	private JComboBox<String> vehicleCB;
 	private JTextField working_timeTF;
+	private JTextField shop_idTF;
 
 
 	/**
@@ -185,11 +189,11 @@ public class RiderFrame extends JFrame {
 		rider_panel.add(cellphoneLB);
 		
 		JLabel vehicleLB = new JLabel("Vehicle");
-		vehicleLB.setBounds(1000, 465, 100, 14);
+		vehicleLB.setBounds(1000, 371, 100, 14);
 		rider_panel.add(vehicleLB);
 		
 		JLabel working_timeLB = new JLabel("Working Time");
-		working_timeLB.setBounds(1200, 465, 100, 14);
+		working_timeLB.setBounds(1200, 371, 100, 14);
 		rider_panel.add(working_timeLB);
 		
 		nameTF = new RoundJTextField(new Color(0x771007));
@@ -215,12 +219,15 @@ public class RiderFrame extends JFrame {
 		gender = new ButtonGroup();
 		JRadioButton genderM = new JRadioButton();
 		genderM.setText("Maschio");
+		genderM.setActionCommand("M");
+		genderM.setSelected(true);
 		genderM.setBounds(1005, 335, 75, 25);
 		genderM.setBorder(new LineBorder(null,5));
 		genderM.setContentAreaFilled(false);
 		genderM.setFocusable(false);
 		JRadioButton genderF = new JRadioButton();
 		genderF.setText("Femmina");
+		genderF.setActionCommand("F");
 		genderF.setBounds(1080, 335, 80, 25);
 		genderF.setBorder(new LineBorder(null,5));
 		genderF.setContentAreaFilled(false);
@@ -238,13 +245,17 @@ public class RiderFrame extends JFrame {
 		cellphoneTF.setBounds(1200, 335, 150, 25);
 		rider_panel.add(cellphoneTF);
 		
-		vehicleTF = new RoundJTextField(new Color(0x771007));
-		vehicleTF.setBounds(1000, 490, 150, 25);
-		rider_panel.add(vehicleTF);
-		
+		String[] vehicleStrings = {"Bicicletta", "Motoveicolo", "Autoveicolo"};
+		vehicleCB = new JComboBox(vehicleStrings);
+		vehicleCB.setBounds(1000, 396, 150, 25);
+		rider_panel.add(vehicleCB);
 		working_timeTF = new RoundJTextField(new Color(0x771007));
-		working_timeTF.setBounds(1200, 490, 150, 25);
+		working_timeTF.setBounds(1200, 396, 150, 25);
 		rider_panel.add(working_timeTF);
+		
+		shop_idTF = new RoundJTextField(new Color(0x771007));
+		shop_idTF.setBounds(1200, 456, 150, 25);
+		rider_panel.add(shop_idTF);
 		
 		JButton go_back = new JButton();
 		go_back.setBounds(90, 770, 50, 50);
@@ -253,6 +264,10 @@ public class RiderFrame extends JFrame {
 		go_back.setFocusable(false);
 		go_back.setContentAreaFilled(false);
 		rider_panel.add(go_back);
+		
+		JLabel shop_idLB = new JLabel("Shop ID");
+		shop_idLB.setBounds(1200, 431, 46, 14);
+		rider_panel.add(shop_idLB);
 		
 		
 		go_back.addMouseListener(new MouseAdapter() {
@@ -278,9 +293,7 @@ public class RiderFrame extends JFrame {
 		insert_sql_button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-				
-				
+				admin_controller.insert_refreshRiderTable(RiderFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -394,9 +407,11 @@ public class RiderFrame extends JFrame {
 					cellphoneLB.setBounds(dim.width/2-300, 150, 100, 14);
 					cellphoneTF.setBounds(dim.width/2-300, 170, 150, 25);
 					vehicleLB.setBounds(dim.width/2-100, 150, 100, 14);
-					vehicleTF.setBounds(dim.width/2-100, 170, 150, 25);
+					vehicleCB.setBounds(dim.width/2-100, 170, 150, 25);
 					working_timeLB.setBounds(dim.width/2+100, 150, 100, 14);
 					working_timeTF.setBounds(dim.width/2+100, 170, 150, 25);
+					shop_idLB.setBounds(dim.width/2+280, 50, 46, 14);
+					shop_idTF.setBounds(dim.width/2+280, 70, 150, 25);
 					
 					insert_sql_button.setBounds(dim.width/2+450, 67, 150,30);
 					update_sql_button.setBounds(dim.width/2+450, 117, 150,30);
@@ -419,8 +434,10 @@ public class RiderFrame extends JFrame {
 					addressLB.setBounds(1000, 249, 100, 14);
 					genderLB.setBounds(1000, 310, 100, 14);
 					cellphoneLB.setBounds(1200, 310, 100, 14);
-					vehicleLB.setBounds(1000, 465, 100, 14);
-					working_timeLB.setBounds(1200, 465, 100, 14);
+					vehicleLB.setBounds(1000, 371, 100, 14);
+					working_timeLB.setBounds(1200, 371, 100, 14);
+					vehicleCB.setBounds(1000, 396, 150, 25);
+					working_timeTF.setBounds(1200, 396, 150, 25);
 					nameTF.setBounds(1000, 152, 150, 25);
 					surnameTF.setBounds(1200, 152, 150, 25);
 					birth_dateTF.setBounds(1000, 213, 150, 25);
@@ -430,8 +447,8 @@ public class RiderFrame extends JFrame {
 					genderF.setBounds(1080, 335, 80, 25);
 					genderBox.setBounds(1000, 335, 165, 25);
 					cellphoneTF.setBounds(1200, 335, 150, 25);
-					vehicleTF.setBounds(1000, 490, 150, 25);
-					working_timeTF.setBounds(1200, 490, 150, 25);
+					shop_idLB.setBounds(1200, 431, 46, 14);
+					shop_idTF.setBounds(1200, 456, 150, 25);
 					
 					insert_sql_button.setBounds(1000, 600, 150,30);
 					update_sql_button.setBounds(1200, 600, 150,30);
@@ -450,5 +467,70 @@ public class RiderFrame extends JFrame {
 				
 			}
 		});
+		
+		vehicleCB.addActionListener(new ActionListener( ) {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				String value = vehicleCB.getSelectedItem().toString();
+				if(value.equals("Bicicletta"))
+				{
+					vehicleCB.setActionCommand("Bicicletta");
+				}
+				else if(value.equals("Motoveicolo"))
+					vehicleCB.setActionCommand("Motoveicolo");
+				else
+					vehicleCB.setActionCommand("Autoveicolo");
+				
+//				System.out.println(vehicleCB.getActionCommand());
+			}
+		});
 	}
+	
+
+	
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public JTextField getNameTF() {
+		return nameTF;
+	}
+
+	public JTextField getSurnameTF() {
+		return surnameTF;
+	}
+
+	public JTextField getBirth_dateTF() {
+		return birth_dateTF;
+	}
+
+	public JTextField getBirth_placeTF() {
+		return birth_placeTF;
+	}
+
+	public JTextField getAddressTF() {
+		return addressTF;
+	}
+
+	public ButtonGroup getGender() {
+		return gender;
+	}
+
+	public JTextField getCellphoneTF() {
+		return cellphoneTF;
+	}
+
+	public JComboBox<String> getVehicleCB() {
+		return vehicleCB;
+	}
+
+	public JTextField getWorking_timeTF() {
+		return working_timeTF;
+	}
+
+	public JTextField getShop_idTF() {
+		return shop_idTF;
+	}
+	
 }

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import daos_interfaces.MealDAO;
-import db_connection.DBconnection;
+import db_connection.DBconnection_CodiceCatastale;
 import entities.Meal;
 import entities.Meal;
 
