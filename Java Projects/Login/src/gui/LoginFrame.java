@@ -36,17 +36,18 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 
 public class LoginFrame extends JFrame {
-	/**
+
+	
+	private static final long serialVersionUID = 1L;
+	/**a
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	Connection connection;
-	public JFrame frame;
+
 	JPanel topPanel;
 	JLabel logoLabel;
 	JPanel loginPanel;
-	public JTextField usernameTF;
-	public JPasswordField passwordTF;
+	public RoundJTextField usernameTF;
+	public RoundJPasswordField passwordTF;
 	JLabel usernameImage;
 	JLabel passwordImage;
 	JButton loginButton;
@@ -69,27 +70,27 @@ public class LoginFrame extends JFrame {
 	Dimension dim;
 	JTable table;
 	JScrollPane scrollPane;
-	public AdminFrame admin_frame;
+	AdminController admin_controller = new AdminController();
 	private final String username = "admin";
 	private final String password = "admin";
 	private int mouseX=0;
 	private int mouseY=0;
-
 	/**
 	 * Create the application.
 	 */
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
 	 */
 	public LoginFrame()
 	{
-		
+		initialize();
+		this.setVisible(true);
 	}
-	public void initialize(Connection connection) {
+	public void initialize() {
 
 		// IMAGES INITIALIZER
-
 
 		logoImage = new ImageIcon("src\\images\\LoginImages\\Logo.png");
 		adminButtonActive = new ImageIcon("src\\images\\LoginImages\\adminButtonActive.png");
@@ -111,32 +112,30 @@ public class LoginFrame extends JFrame {
 		ImageIcon logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
 
 		// FRAME INITIALIZER
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setSize(600, 800);
-		
-		int central_width = dim.width/2-frame.getSize().width/2;
-		int central_height = dim.height/2-frame.getSize().height/2;
-		frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
-		frame.setUndecorated(true);
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().setBackground(new Color(0xf3ecd7));
+		this.setResizable(false);
+		this.setSize(600, 800);
+		int central_width = dim.width/2-this.getSize().width/2;
+		int central_height = dim.height/2-this.getSize().height/2;
+		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		this.setUndecorated(true);
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().setBackground(new Color(0xf3ecd7));
 
 		// PANELS INITIALIZER
 		topPanel = new JPanel();
 		topPanel.setBounds(0, 0, 600, 400);
 		topPanel.setBackground(null);
 		topPanel.setLayout(new BorderLayout());
-		frame.getContentPane().add(topPanel, BorderLayout.NORTH);
+		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 
 		loginPanel = new JPanel();
 		loginPanel.setBounds(0, 401, 600, 512);
 		loginPanel.setBackground(null);
-		frame.getContentPane().add(loginPanel);
+		this.getContentPane().add(loginPanel);
 		loginPanel.setLayout(null);
 		loginPanel.setBounds(0, 401, 584, 512);
 		loginPanel.setBackground(null);
-		frame.getContentPane().add(loginPanel, BorderLayout.CENTER);
+		this.getContentPane().add(loginPanel, BorderLayout.CENTER);
 		loginPanel.setLayout(null);
 		
 		JPanel framePanel = new JPanel();
@@ -244,7 +243,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				
-				frame.setLocation (frame.getX()+e.getX()-mouseX,frame.getY()+e.getY()-mouseY);
+				LoginFrame.this.setLocation (LoginFrame.this.getX()+e.getX()-mouseX,LoginFrame.this.getY()+e.getY()-mouseY);
 				
 			}
 		});
@@ -271,7 +270,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				frame.setState(Frame.ICONIFIED);
+				LoginFrame.this.setState(Frame.ICONIFIED);
 				
 			}
 		});
@@ -340,15 +339,15 @@ public class LoginFrame extends JFrame {
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent click_su_shopButton) {
-
+				
 				homeButton.setVisible(false);
 				usernameTF.setVisible(false);
 				passwordTF.setVisible(false);
 				loginButton.setVisible(false);
 				usernameImage.setVisible(false);
 				passwordImage.setVisible(false);
-				adminButton.setVisible(true);
 				shopButton.setVisible(true);
+				adminButton.setVisible(true);
 				usernameTF.setText("Inserisci ID");
 				passwordTF.setText("Inserisci password");
 				passwordTF.setEchoChar((char) 0);
@@ -359,7 +358,6 @@ public class LoginFrame extends JFrame {
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent cursore_su_homeButton) {
-
 				homeButton.setIcon(homeButtonActive);
 
 			}
@@ -395,11 +393,8 @@ public class LoginFrame extends JFrame {
 				else
 				{
 					System.out.println("Login avvenuto con successo");
-						frame.setVisible(false);
-						AdminFrame admin_frame = new AdminFrame();
-						AdminController admin_controller = new AdminController(connection, admin_frame);
-						admin_controller.setAdminFrameVisible();
-						admin_controller.displayShops();
+					LoginFrame.this.setVisible(false);
+					admin_controller.openAdminFrame();	
 				}
 			}
 		});
@@ -444,4 +439,29 @@ public class LoginFrame extends JFrame {
 			}
 		});
 	}
+	public RoundJTextField getUsernameTF() {
+		return usernameTF;
+	}
+	public RoundJPasswordField getPasswordTF() {
+		return passwordTF;
+	}
+	public JLabel getUsernameImage() {
+		return usernameImage;
+	}
+	public JLabel getPasswordImage() {
+		return passwordImage;
+	}
+	public JButton getLoginButton() {
+		return loginButton;
+	}
+	public JButton getAdminButton() {
+		return adminButton;
+	}
+	public JButton getShopButton() {
+		return shopButton;
+	}
+	public JButton getHomeButton() {
+		return homeButton;
+	}
+	
 }

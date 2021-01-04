@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import controllers.AdminController;
 import db_connection.DBconnection;
 import gui.AdminFrame;
 import gui.LoginFrame;
@@ -31,14 +33,12 @@ public class Main {
 				 }
 				//Inizio applicativo
 				try {
-					LoginFrame window = new LoginFrame();
-					window.initialize(connection);
-					window.frame.setVisible(true);
+					new LoginFrame();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
 }
