@@ -1,15 +1,18 @@
 package daos_interfaces;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import entities.Rider;
 import entities.Shop;
 
 public interface ShopDAO {
-
-	public ResultSet getAllShops() throws SQLException;
-	public void insertShop(String name, String address, String working_time, String closing_days, String password) throws SQLException;
-	public void deleteShop(String shop_id) throws SQLException;
-	public void updateShop(String shop_id,String name, String address, String working_time, String closing_days, String password) throws SQLException;
 	
+	public ArrayList<Shop> getAllShops() throws SQLException;
+	public void insertShop(Shop shop) throws SQLException;
+	public void delete(Shop shop) throws SQLException;
+	public void updateShop(Shop shop) throws SQLException;
+	public Shop getShopById(String shop_id) throws SQLException;
+	public ArrayList<Shop> getShopsOfARider(Rider rider) throws SQLException;
 }

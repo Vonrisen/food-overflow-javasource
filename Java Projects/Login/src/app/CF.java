@@ -1,28 +1,19 @@
 package app;
 import java.util.Date;
-
-
 import java.util.TimeZone;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
 import java.util.Calendar;
 
 public class CF {
 
  
 	private String codice_fiscale = "";
-
-	
 	public CF() {
 	}
-
-
 	public String getCF(String nome, String cognome, Date data_nascita, String comune_nascita, String sesso,
 			Connection connection) {
 		int n_consonanti=0;

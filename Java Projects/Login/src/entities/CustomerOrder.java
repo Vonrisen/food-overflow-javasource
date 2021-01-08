@@ -13,6 +13,7 @@ public class CustomerOrder {
 	private String order_id;
 	private String order_date; //= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	private Time delivery_time;
+	private String address;
 	private String status;
 	private String payment;
 	private String note;
@@ -20,22 +21,20 @@ public class CustomerOrder {
 	private Shop shop;
 	private Customer customer;
 	private ArrayList <OrderComposition> orderComp_list;
-	
-	
 	//COSTRUTTORE
-	public CustomerOrder(String order_id, String order_date, Time delivery_time, String status, String payment,
-			String note, Rider rider, Shop shop, Customer customer, ArrayList<OrderComposition> orderComp_list) {
+	public CustomerOrder(String order_id, String order_date, Time delivery_time, String status, String payment, String address,
+			String note, Rider rider, Shop shop, Customer customer) {
 		super();
 		this.order_id = order_id;
 		this.order_date = order_date;
 		this.delivery_time = delivery_time;
 		this.status = status;
 		this.payment = payment;
+		this.address = address;
 		this.note = note;
 		this.rider = rider;
 		this.shop = shop;
 		this.customer = customer;
-		this.orderComp_list = orderComp_list;
 	}
 
 

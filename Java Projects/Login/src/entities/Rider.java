@@ -7,12 +7,12 @@ import java.util.ArrayList;
 public class Rider {
 	
 	//ATTRIBUTI
-	private String rider_id;
+	
 	private String cf;
-	private String rider_name;
+	private String name;
 	private String surname;
 	private String address;
-	private Date birth_date;
+	private String birth_date;
 	private String birth_place;
 	private String gender;
 	private String cellphone;
@@ -21,15 +21,16 @@ public class Rider {
 	private String deliveries_number;
 	private ArrayList <Shop> shop_list;
 	private ArrayList <CustomerOrder> order_list;
+	
 	//COSTRUTTORE
-	public Rider(String rider_id, String cf, String rider_name, String surname, String address, Date birth_date,
+	
+	public Rider(String cf, String rider_name, String surname, String address, String birth_date,
 			String birth_place, String gender, String cellular, String vehicle,
 			String working_time, String deliveries_number, ArrayList<Shop> shop_list,
 			ArrayList<CustomerOrder> order_list) {
 		super();
-		this.rider_id = rider_id;
 		this.cf = cf;
-		this.rider_name = rider_name;
+		this.name = rider_name;
 		this.surname = surname;
 		this.address = address;
 		this.birth_date = birth_date;
@@ -41,19 +42,10 @@ public class Rider {
 		this.deliveries_number = deliveries_number;
 		this.shop_list = shop_list;
 		this.order_list = order_list;
+		
 	}
-
-
+	
 	//GETTER AND SETTER
-	public String getRider_id() {
-		return rider_id;
-	}
-
-
-	public void setRider_id(String rider_id) {
-		this.rider_id = rider_id;
-	}
-
 
 	public String getCf() {
 		return cf;
@@ -66,12 +58,12 @@ public class Rider {
 
 
 	public String getRider_name() {
-		return rider_name;
+		return name;
 	}
 
 
 	public void setRider_name(String rider_name) {
-		this.rider_name = rider_name;
+		this.name = rider_name;
 	}
 
 
@@ -95,12 +87,12 @@ public class Rider {
 	}
 
 
-	public Date getBirth_date() {
+	public String getBirth_date() {
 		return birth_date;
 	}
 
 
-	public void setBirth_date(Date birth_date) {
+	public void setBirth_date(String birth_date) {
 		this.birth_date = birth_date;
 	}
 

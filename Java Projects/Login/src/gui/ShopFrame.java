@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 import controllers.AdminController;
 import gui_support.RoundJTextField;
 
@@ -108,7 +110,6 @@ public class ShopFrame extends JFrame{
 		shop_panel.add(scrollPane1);
 		scrollPane1.setBounds(90, 132, 850, 600);
 	    table = new JTable();
-	    
 	    table.addMouseListener(new java.awt.event.MouseAdapter() {
 	        @Override
 	        public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -411,7 +412,6 @@ public class ShopFrame extends JFrame{
 			}
 		});
 	}
-	
 	public JTable getTable() {
 		return table;
 	}
@@ -434,7 +434,6 @@ public class ShopFrame extends JFrame{
 	public JTextField getPasswordTF() {
 		return passwordTF;
 	}
-
 }
 
 
