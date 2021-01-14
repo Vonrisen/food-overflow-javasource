@@ -6,33 +6,22 @@ import java.util.ArrayList;
 public class Cart {
 	
 	//ATTRIBUTI
-	private String cart_id;
+	
 	private char complete = 'n';
 	private Customer customer;
-	private ArrayList <CartComposition> cartComp_list;
+	private ArrayList <CartComposition> cart_composition;
 	
 	
 	//COSTRUTTORE
-	public Cart(String cart_id, char complete, Customer customer, ArrayList<CartComposition> cartComp_list) {
+	public Cart(char complete, Customer customer, ArrayList<CartComposition> cart_composition) {
 		super();
-		this.cart_id = cart_id;
 		this.complete = complete;
 		this.customer = customer;
-		this.cartComp_list = cartComp_list;
+		this.cart_composition = cart_composition;
 	}
 
 
 	//GETTER AND SETTER
-	public String getCart_id() {
-		return cart_id;
-	}
-
-
-	public void setCart_id(String cart_id) {
-		this.cart_id = cart_id;
-	}
-
-
 	public char getComplete() {
 		return complete;
 	}
@@ -53,13 +42,13 @@ public class Cart {
 	}
 
 
-	public ArrayList<CartComposition> getCartComp_list() {
-		return cartComp_list;
+	public ArrayList<CartComposition> getCart_composition() {
+		return cart_composition;
 	}
 
 
-	public void setCartComp_list(ArrayList<CartComposition> cartComp_list) {
-		this.cartComp_list = cartComp_list;
+	public void setCart_composition(ArrayList<CartComposition> cart_composition) {
+		this.cart_composition = cart_composition;
 	}
 	
 	

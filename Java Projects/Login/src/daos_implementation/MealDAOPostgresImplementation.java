@@ -1,58 +1,66 @@
 package daos_implementation;
 
-import java.sql.CallableStatement;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import daos_interfaces.MealDAO;
-import db_connection.DBconnection_CodiceCatastale;
-import entities.Meal;
+import db_connection.DBconnection;
 import entities.Meal;
 
 public class MealDAOPostgresImplementation implements MealDAO {
-	
+
 	private Connection connection;
-	private PreparedStatement print_all_meals_PS;
-	private CallableStatement insert_meal_CS, delete_meal_CS;
-	public MealDAOPostgresImplementation(Connection connection)
-	{
-		this.connection = connection;
+	PreparedStatement get_meal_by_id_PS, get_allergens_of_a_meal_PS;
+	public MealDAOPostgresImplementation() {
+		
 		try {
-			print_all_meals_PS = connection.prepareStatement("SELECT * FROM Meal");
-			insert_meal_CS = connection.prepareCall("CALL insertMeal(?,?,?,?)");
-			delete_meal_CS = connection.prepareCall("CALL deleteMeal(?)");
-		} catch (SQLException e) {
-			System.out.println("Errore durante la preparazione degli statement "+e.getMessage());
+			DBconnection instance = DBconnection.getInstance();
+			connection = instance.getConnection();
+		}catch(SQLException s)
+		{
+			JOptionPane.showMessageDialog(null, "Errore di connessione");
 		}
-	}
-	public ResultSet getAllMeals() throws SQLException {
+		try {
+			
+			get_meal_by_id_PS = connection.prepareStatement("SELECT SUBSTR(meal_id,1,2) AS prefix, name, price, description "
+														   + "FROM Meal WHERE meal_id=?");
+			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen::VARCHAR FROM MealComposition WHERE meal_id=?");
+			
+		}catch(SQLException s)
+		{
+			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
+		}
 		
-		ResultSet rs = print_all_meals_PS.executeQuery();
-		return rs;
-	}
-	
-	public void insertMeal(String name, String prefix, Float price, String description) throws SQLException {
-		
-		insert_meal_CS.setString(1, name);
-		insert_meal_CS.setString(2, prefix);
-		insert_meal_CS.setFloat(3, price);
-		insert_meal_CS.setString(4, description);
-		insert_meal_CS.executeUpdate();
-		return;
-	}
-	
-	public void deleteMeal(String meal_id) throws SQLException {
 
-		delete_meal_CS.setString(1, meal_id);
-		delete_meal_CS.executeUpdate();
-		return;
+}
+	@Override
+	public Meal getMealById(String meal_id) throws SQLException {
 		
+		get_meal_by_id_PS.setString(1, meal_id);
+		ResultSet rs = get_meal_by_id_PS.executeQuery();
+		get_allergens_of_a_meal_PS.setString(1, meal_id);
+		ResultSet rs1 = get_allergens_of_a_meal_PS.executeQuery();
+		List<String>allergen_list = new ArrayList<String>();
+		Meal meal = null;
+		while(rs1.next())
+		{
+			allergen_list.add(rs1.getString("allergen"));
+		}
+		while(rs.next())
+		{
+			
+			meal = new Meal(rs.getString("prefix"),rs.getString("name"),rs.getFloat("price"),rs.getString("description"),allergen_list);
+		}
+		rs.close();
+		connection.close();
+		return meal;
 	}
-	
-	
 
+	
 }

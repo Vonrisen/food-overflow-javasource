@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Shop {
 	
@@ -11,12 +11,12 @@ public class Shop {
 	private String working_hours;
 	private String closing_days;
 	private String password;
-	private ArrayList<CustomerOrder> customer_order_list;
-	private ArrayList<Rider> rider_list;
+	private List<CustomerOrder> customer_order_list;
+	private List<Rider> employed_riders_list;
 	
 	
 	public Shop(String shop_id, String shop_name, String address, String working_hours, String closing_days,
-			String password, ArrayList<CustomerOrder> customer_order_list, ArrayList<Rider> rider_list) {
+			String password, List<CustomerOrder> customer_order_list, List<Rider> rider_list) {
 		super();
 		this.shop_id = shop_id;
 		this.name = shop_name;
@@ -25,7 +25,7 @@ public class Shop {
 		this.closing_days = closing_days;
 		this.password = password;
 		this.customer_order_list = customer_order_list;
-		this.rider_list = rider_list;
+		this.employed_riders_list = rider_list;
 	}
 	
 	public String getShop_id() {
@@ -64,17 +64,17 @@ public class Shop {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public ArrayList<CustomerOrder> getCustomer_order_list() {
+	public List<CustomerOrder> getCustomer_order_list() {
 		return customer_order_list;
 	}
-	public void setCustomer_order_list(ArrayList<CustomerOrder> customer_order_list) {
+	public void setCustomer_order_list(List<CustomerOrder> customer_order_list) {
 		this.customer_order_list = customer_order_list;
 	}
-	public ArrayList<Rider> getRider_list() {
-		return rider_list;
+	public List<Rider> getRider_list() {
+		return employed_riders_list;
 	}
-	public void setRider_list(ArrayList<Rider> rider_list) {
-		this.rider_list = rider_list;
+	public void setRider_list(List<Rider> rider_list) {
+		this.employed_riders_list = rider_list;
 	}
 	
 	

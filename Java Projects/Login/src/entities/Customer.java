@@ -1,28 +1,27 @@
 package entities;
 
 
-import java.sql.Date;
 
 public class Customer {
 	
 	//ATTRIBUTI
-	private String customer_id;
-	private String customer_name;
+	private String cf;
+	private String name;
 	private String surname;
 	private String address;
-	private Date birth_date;
+	private String birth_date;
 	private String birth_place;
 	private String gender;
 	private String cellphone;
 	private String email;
 	private String password;
-	private String cf;
 	
 	//COSTRUTTORE
-	public Customer( String customer_name, String surname, String address, Date birth_date,
-			String birth_place, String gender, String cellular, String email, String password, String cf) {
+	public Customer(String cf,String customer_name, String surname, String address, String birth_date,
+			String birth_place, String gender, String cellular, String email, String password) {
 		super();
-		this.customer_name = customer_name;
+		this.cf = cf;
+		this.name = customer_name;
 		this.surname = surname;
 		this.address = address;
 		this.birth_date = birth_date;
@@ -31,26 +30,15 @@ public class Customer {
 		this.cellphone = cellular;
 		this.email = email;
 		this.password = password;
-		this.cf = cf;
 	}
 
-	
-	
 	//GETTER AND SETTER
-	public String getCustomer_id() {
-		return customer_id;
-	}
-
-	public void setCustomer_id(String customer_id) {
-		this.customer_id = customer_id;
-	}
-
 	public String getCustomer_name() {
-		return customer_name;
+		return name;
 	}
 
 	public void setCustomer_name(String customer_name) {
-		this.customer_name = customer_name;
+		this.name = customer_name;
 	}
 
 	public String getSurname() {
@@ -69,11 +57,11 @@ public class Customer {
 		this.address = address;
 	}
 
-	public Date getBirth_date() {
+	public String getBirth_date() {
 		return birth_date;
 	}
 
-	public void setBirth_date(Date birth_date) {
+	public void setBirth_date(String birth_date) {
 		this.birth_date = birth_date;
 	}
 

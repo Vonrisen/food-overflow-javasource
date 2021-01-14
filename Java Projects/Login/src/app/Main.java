@@ -1,41 +1,39 @@
 package app;
-
 import java.awt.EventQueue;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import controllers.AdminController;
+import daos_implementation.CustomerOrderDAOPostgresImplementation;
+import daos_implementation.OrderCompositionDAOPostgresImplementation;
+import daos_implementation.RiderDAOPostgresImplementation;
+import daos_implementation.ShopDAOPostgresImplementation;
+import daos_interfaces.CustomerOrderDAO;
+import daos_interfaces.OrderCompositionDAO;
+import daos_interfaces.RiderDAO;
+import daos_interfaces.ShopDAO;
 import db_connection.DBconnection_CodiceCatastale;
-import gui.AdminFrame;
-import gui.LoginFrame;
+import entities.CustomerOrder;
+import entities.OrderComposition;
+import entities.Rider;
+import entities.Shop;
+
 
 public class Main {
 	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				DBconnection_CodiceCatastale dbconn = null;
-			    Connection connection = null;
-			    //Connessione al database
-				try
-				{
-					  dbconn = DBconnection_CodiceCatastale.getInstance();
-			          connection = dbconn.getConnection();
-				}
-				 catch (SQLException e)
-				 {
-					  System.out.println("Errore durante la connessione con il database"+e.getMessage());
-				 }
-				//Inizio applicativo
 				try {
-					new LoginFrame();
+					CustomerOrderDAO order = new CustomerOrderDAOPostgresImplementation();
+					CustomerOrder o = order.getCustomerOrderByOrderId("12345678");
+					System.out.println(o.getAddress());
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 			}
 		});

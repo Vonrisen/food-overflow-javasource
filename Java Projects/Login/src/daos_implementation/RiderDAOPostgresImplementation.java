@@ -1,128 +1,142 @@
 package daos_implementation;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import daos_interfaces.CustomerOrderDAO;
 import daos_interfaces.RiderDAO;
+import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
-import db_connection.DBconnection_CodiceCatastale;
 import entities.CustomerOrder;
 import entities.Rider;
 import entities.Shop;
 
-public class RiderDAOPostgresImplementation implements RiderDAO{
+public class RiderDAOPostgresImplementation implements RiderDAO {
 	
 	private Connection connection;
-	private DBconnection instance;
-	private PreparedStatement get_all_riders_PS, insert_rider_PS, delete_rider_PS, insert_rider_into_Shop_PS;
-	public RiderDAOPostgresImplementation ()
-	{
+	PreparedStatement get_riders_of_a_shop_PS, get_rider_by_cf_PS, get_rider_of_the_order_PS;
+	public RiderDAOPostgresImplementation() {
+		
 		try {
-			instance = DBconnection.getInstance();
+			DBconnection instance = DBconnection.getInstance();
 			connection = instance.getConnection();
-		} catch (SQLException e1) {
-			System.out.println("Errore di connessione col database "+e1.getMessage());
+		}catch(SQLException s)
+		{
+			JOptionPane.showMessageDialog(null, "Errore di connessione");
 		}
 		try {
-			get_all_riders_PS = connection.prepareStatement("SELECT cf, rider_name, surname, address, to_char(birth_date, 'DD/MM/YYYY') AS birth_date, birth_place,"
-					+ " gender, cellphone, vehicle, working_time,deliveries_number FROM Rider");
-			insert_rider_PS = connection.prepareStatement("CALL insertRider(?,?,?,?,?,?,?,?,?,?,?)");
-			delete_rider_PS = connection.prepareCall("DELETE deleteRider(?)");
-			insert_rider_into_Shop_PS = connection.prepareStatement("INSERT INTO Contract VALUES (?,?)");
-		} catch (SQLException e) {
-			System.out.println("Errore durante la preparazione degli statement "+e.getMessage());
-		}
-		
-	}
-	
-	
-	@Override
-	public ArrayList<Rider> getAllRiders() throws SQLException {
-		
-		ResultSet rs = get_all_riders_PS.executeQuery();
-		ArrayList<Rider>riders = new ArrayList<Rider>();
-		ArrayList<Shop>shops = new ArrayList<Shop>();
-		ArrayList<CustomerOrder>customer_orders = new ArrayList<CustomerOrder>();
-		while(rs.next())
-		{
-			customer_orders = customer_orders_DAO.getCustomerOrdersInDeliveryByRider(rs.getString("shop_id"));
-			shops = shops_DAO.getShopsOfARider(rs.getString("cf"));
-			Rider rider = new Rider(rs.getString("cf"),rs.getString("rider_name"),rs.getString("surname"),rs.getString("address"), rs.getString("birth_date"), rs.getString("birth_place"),
-									rs.getString("gender"),rs.getString("cellphone"),rs.getString("vehicle"),rs.getString("working_time"),rs.getString("deliveries_number"),shops,customer_orders);
-			riders.add(rider);
 			
-		}
-		return riders;
+			   get_riders_of_a_shop_PS = connection.prepareStatement("SELECT R.cf, R.name, R.surname, R.address, R.birth_date, R.birth_place, R.gender, R.cellphone, R.vehicle, R.working_time, R.deliveries_number "
+					  + "FROM Contract AS C JOIN Rider AS R "
+					  + "ON C.rider_cf=R.cf "
+					  + "WHERE shop_id=?");
+			   get_rider_by_cf_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf=?");
+			   get_rider_of_the_order_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf IN (SELECT rider_cf from CustomerOrder WHERE order_id='12345678')");
 		
+		}catch(SQLException s)
+		{
+			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
+		}
+		
+
+}
+
+	@Override
+	public List<Rider> getAllRiders() throws SQLException {
+	
+		return null;
 	}
 
 	@Override
 	public int insertRider(Rider rider) throws SQLException {
-		
-		String shop_id_list ="";
-		insert_rider_PS.setString(1,rider.getCf());
-		insert_rider_PS.setString(2,rider.getName());
-		insert_rider_PS.setString(3,rider.getSurname());
-		insert_rider_PS.setString(4,rider.getCf());
-		insert_rider_PS.setString(5, rider.getAddress());
-		insert_rider_PS.setString(6,rider.getBirth_date());
-		insert_rider_PS.setString(7,rider.getBirth_place());
-		insert_rider_PS.setString(8,rider.getGender());
-		insert_rider_PS.setString(9,rider.getCellphone());
-		insert_rider_PS.setString(10,rider.getVehicle());
-		insert_rider_PS.setString(11,rider.getWorking_time());
-		insert_rider_PS.setString(12,rider.getDeliveries_number());
-		insertRiderIntoShop(rider);
-		return 1;
-	}
 	
-	public int insertRiderIntoShop(Rider rider) throws SQLException{
-		
-		int insert_succeded=0;
-		for(Shop shop : rider.getShop_list())
+		return 0;
+	}
+
+	@Override
+	public int deleteRider(Rider rider) throws SQLException {
+	
+		return 0;
+	}
+
+	@Override
+	public int updateRider(Rider rider) throws SQLException {
+	
+		return 0;
+	}
+
+	@Override
+	public List<Rider> getRidersOfAShop(String shop_id) throws SQLException {
+
+		List<Rider> riders = new ArrayList<Rider>();
+		ShopDAO shop_DAO = new ShopDAOPostgresImplementation();
+		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
+		get_riders_of_a_shop_PS.setString(1, shop_id);
+		ResultSet rs = get_riders_of_a_shop_PS.executeQuery();
+		while(rs.next())
 		{
-			insert_rider_into_Shop_PS.setString(1, rider.getCf());
-			insert_rider_into_Shop_PS.setString(2, shop.getShop_id());
-			insert_rider_into_Shop_PS.executeUpdate();
-			if(insert_rider_into_Shop_PS.executeUpdate()<=0)
-				insert_succeded=0;
+			List<Shop>shop_list = shop_DAO.getShopsOfARider(rs.getString("cf"));
+			List<CustomerOrder> customer_order_list = customer_order_DAO.getDeliveriesOfARider(rs.getString("cf"));
+			Rider rider = new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("birth_date"),rs.getString("birth_place"),
+									rs.getString("gender"),rs.getString("cellphone"),rs.getString("vehicle"),rs.getString("working_time"),rs.getString("deliveries_number"),
+									shop_list, customer_order_list);
+			riders.add(rider);
 		}
-		if(insert_succeded<=0)
-		 return 0;
-		else
-		 return 1;
+		rs.close();
+		connection.close();
+		return riders;
 	}
 
 	@Override
-	public void deleteRider(Rider rider) throws SQLException {
+	public Rider getRiderByCf(String cf) throws SQLException {
 		
-		delete_rider_PS;
-
-		
+		get_rider_by_cf_PS.setString(1, cf);
+		ShopDAO shop_DAO = new ShopDAOPostgresImplementation();
+		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
+		ResultSet rs = get_rider_by_cf_PS.executeQuery();
+		Rider rider = null;
+		//Provare a togliere il while
+		while(rs.next())
+		{
+			List<Shop>shop_list = shop_DAO.getShopsOfARider(rs.getString("cf"));
+//			List<CustomerOrder> customer_order_list = customer_order_DAO.getDeliveriesOfARider(rs.getString("cf"));
+			rider = new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("birth_date"),rs.getString("birth_place"),
+					rs.getString("gender"),rs.getString("cellphone"),rs.getString("vehicle"),rs.getString("working_time"),rs.getString("deliveries_number"),
+					shop_list, null);
+		}
+		rs.close();
+		connection.close();
+		return rider;
 	}
 
 	@Override
-	public void updateRider(Rider rider) throws SQLException {
+	public Rider getRiderOfTheOrder(String order_id) throws SQLException {
 	
-		
+		get_rider_of_the_order_PS.setString(1, order_id);
+		ShopDAO shop_DAO = new ShopDAOPostgresImplementation();
+		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
+		ResultSet rs =  get_rider_of_the_order_PS.executeQuery();
+		Rider rider = null;
+		while(rs.next())
+		{
+			
+			List<Shop>shop_list = shop_DAO.getShopsOfARider(rs.getString("cf"));
+			List<CustomerOrder> customer_order_list = customer_order_DAO.getDeliveriesOfARider(rs.getString("cf"));
+			rider = new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("birth_date"),rs.getString("birth_place"),
+					rs.getString("gender"),rs.getString("cellphone"),rs.getString("vehicle"),rs.getString("working_time"),rs.getString("deliveries_number"),
+					shop_list, customer_order_list);
+		}
+		rs.close();
+		connection.close();
+		return rider;
 	}
-
-	@Override
-	public Rider getRiderById(String rider_id) throws SQLException {
-	
-		return null;
-	}
-
-	@Override
-	public ArrayList<Rider> getRidersOfAShop(Shop shop) throws SQLException {
-
-		return null;
-	}
 	
 	
+
 }

@@ -7,4 +7,6 @@ import entities.Meal;
 public interface MealDAO {
 	
 
+	public Meal getMealById(String meal_id) throws SQLException;
+	
 }

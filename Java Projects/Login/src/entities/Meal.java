@@ -1,27 +1,28 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Meal {
 
-	private String meal_id;
+	private String prefix;
 	private String name;
 	private float price;
 	private String description;
-	private ArrayList<String>allergen_list;
-	public Meal(String meal_id, String name, float price, String description, ArrayList<String> allergen_list) {
+	private List<String>allergen_list;
+	public Meal(String prefix, String name, float price, String description, List<String> allergen_list) {
 		super();
-		this.meal_id = meal_id;
+		this.prefix = prefix;
 		this.name = name;
 		this.price = price;
 		this.description = description;
 		this.allergen_list = allergen_list;
 	}
-	public String getMeal_id() {
-		return meal_id;
+	public String getPrefix() {
+		return prefix;
 	}
-	public void setMeal_id(String meal_id) {
-		this.meal_id = meal_id;
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
 	}
 	public String getName() {
 		return name;
@@ -41,13 +42,12 @@ public class Meal {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ArrayList<String> getAllergen_list() {
+	public List<String> getAllergen_list() {
 		return allergen_list;
 	}
-	public void setAllergen_list(ArrayList<String> allergen_list) {
+	public void setAllergen_list(List<String> allergen_list) {
 		this.allergen_list = allergen_list;
 	}
-	
-	
+
 	
 }
