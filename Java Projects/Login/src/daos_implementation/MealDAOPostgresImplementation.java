@@ -1,14 +1,13 @@
 package daos_implementation;
 
+import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import daos_interfaces.MealDAO;
 import db_connection.DBconnection;
 import entities.Meal;
@@ -16,7 +15,7 @@ import entities.Meal;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meal_by_id_PS, get_allergens_of_a_meal_PS;
+	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS;
 	public MealDAOPostgresImplementation() {
 		
 		try {
@@ -24,43 +23,42 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			connection = instance.getConnection();
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore di connessione");
+			JOptionPane.showMessageDialog(null, "Errore di connessione con il database","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		try {
 			
-			get_meal_by_id_PS = connection.prepareStatement("SELECT SUBSTR(meal_id,1,2) AS prefix, name, price, description "
-														   + "FROM Meal WHERE meal_id=?");
-			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen::VARCHAR FROM MealComposition WHERE meal_id=?");
+			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
+			
+			get_allergens_of_a_meal_PS = connection.prepareCall("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
 			
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
+			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statement","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		
 
-}
-	@Override
-	public Meal getMealById(String meal_id) throws SQLException {
+
+    }
+	public ArrayList<Meal> getMealsOfAShopByShopId(String shop_id) throws SQLException {
 		
-		get_meal_by_id_PS.setString(1, meal_id);
-		ResultSet rs = get_meal_by_id_PS.executeQuery();
-		get_allergens_of_a_meal_PS.setString(1, meal_id);
-		ResultSet rs1 = get_allergens_of_a_meal_PS.executeQuery();
-		List<String>allergen_list = new ArrayList<String>();
-		Meal meal = null;
+		get_meals_of_a_shop_by_shop_id_PS.setString(1, shop_id);
+		ResultSet rs1 = get_meals_of_a_shop_by_shop_id_PS.executeQuery();
+		ResultSet rs2;
+		ArrayList<Meal> meal_list = new ArrayList<Meal>();
+		ArrayList<String> allergens = null;
 		while(rs1.next())
 		{
-			allergen_list.add(rs1.getString("allergen"));
+			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
+			rs2 = get_allergens_of_a_meal_PS.executeQuery();
+			allergens = new ArrayList<String>();
+			while(rs2.next())
+			{
+				allergens.add(rs2.getString("allergen_name"));
+			}
+			meal_list.add(new Meal(rs1.getString("name"),rs1.getFloat("price"),rs1.getString("ingredients"),rs1.getString("category"),allergens));
 		}
-		while(rs.next())
-		{
-			
-			meal = new Meal(rs.getString("prefix"),rs.getString("name"),rs.getFloat("price"),rs.getString("description"),allergen_list);
-		}
-		rs.close();
-		connection.close();
-		return meal;
+		return meal_list;
 	}
-
 	
+
 }

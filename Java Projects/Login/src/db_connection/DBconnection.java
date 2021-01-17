@@ -2,6 +2,8 @@ package db_connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
 public class DBconnection {
 	
 	private static DBconnection instance = null;
@@ -10,7 +12,7 @@ public class DBconnection {
 	private final String PWD="password123";
 	private final String IP="localhost";
 	private final String PORT="5432";
-	private final String DBNAME="FOODOVERFLOW_DB";
+	private final String DBNAME="FOODOVERFLOW-DB";
 	private Connection connection = null; 
 	
 	private DBconnection() {
@@ -22,12 +24,12 @@ public class DBconnection {
 	 }
 	 catch (SQLException e)
 	 {
-		 System.out.println("Connessione con il database fallita "+e);
+			JOptionPane.showMessageDialog(null, "Errore di connessione con il database","Errore",JOptionPane.ERROR_MESSAGE);
 	 }
      catch (ClassNotFoundException e)
 	 
      {
-         System.out.println("Non e' stato possibile trovare il driver desiderato");
+    		JOptionPane.showMessageDialog(null, "Driver non trovato","Errore",JOptionPane.ERROR_MESSAGE);
      }
 	 
 	}

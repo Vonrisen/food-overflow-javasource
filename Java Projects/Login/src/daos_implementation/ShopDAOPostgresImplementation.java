@@ -1,6 +1,7 @@
 package daos_implementation;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,18 +10,20 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import daos_interfaces.CustomerOrderDAO;
+import daos_interfaces.MealDAO;
 import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
-import entities.CustomerOrder;
+import entities.Address;
+import entities.Meal;
 import entities.Rider;
 import entities.Shop;
+import utilities.StringUtility;
 
-public class ShopDAOPostgresImplementation implements ShopDAO{
+public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	private Connection connection;
-	PreparedStatement get_all_shops_PS, get_orders_of_a_shop_PS, get_shop_by_id_PS, get_shops_of_a_rider_PS, get_shop_of_the_order_PS;
+	PreparedStatement look_for_shop_by_id_and_password_PS, get_all_shops_PS;
 	public ShopDAOPostgresImplementation() {
 		
 		try {
@@ -28,134 +31,53 @@ public class ShopDAOPostgresImplementation implements ShopDAO{
 			connection = instance.getConnection();
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore di connessione");
+			JOptionPane.showMessageDialog(null, "Errore di connessione con il database","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		try {
 			
-			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY shop_id ");
-		    get_orders_of_a_shop_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE shop_id=? ");
-		    get_shop_by_id_PS = connection.prepareStatement("SELECT * FROM Shop WHERE shop_id=? ");
-		    get_shops_of_a_rider_PS = connection.prepareStatement("SELECT * FROM Shop WHERE shop_id IN " + 
-		    													"(SELECT shop_id FROM CONTRACT WHERE rider_cf=?) ");
-		    get_shop_of_the_order_PS = connection.prepareStatement("SELECT * FROM Shop WHERE shop_id IN (SELECT shop_id FROM CustomerOrder WHERE order_id=?) ");
-			
+			look_for_shop_by_id_and_password_PS = connection.prepareStatement("SELECT * FROM SHOP WHERE id=? AND password=?");
+			get_all_shops_PS = connection.prepareStatement("SELECT * FROM SHOP");
+		
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore di connessione");
+			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statement","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		
-	}
 
-	@Override
-	public List<Shop> getAllShops() throws SQLException {
-		List<Shop>shop_list = new ArrayList<Shop>();
-		List<Rider>riders_of_a_shop = new ArrayList<Rider>();
-		List<CustomerOrder>orders_of_a_shop = new ArrayList<CustomerOrder>();
-		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
-		RiderDAO rider_DAO = new RiderDAOPostgresImplementation();
+
+    }
+	
+	
+	public ArrayList<Shop> getAllShops() throws SQLException {
+		
 		ResultSet rs = get_all_shops_PS.executeQuery();
+		StringUtility string_util_1 = new StringUtility();
+		StringUtility string_util_2 = new StringUtility();
+		ArrayList<Shop> shop_list = new ArrayList<Shop>();
+		ArrayList<String>address_fields = new ArrayList<String>();
+		ArrayList<String>closing_days = new ArrayList<String>();
+		RiderDAO rider_dao = new RiderDAOPostgresImplementation();
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
 		while(rs.next())
 		{
-			
-			orders_of_a_shop = customer_order_DAO.getCustomerOrdersOfAShop(rs.getString("shop_id"));
-			riders_of_a_shop = rider_DAO.getRidersOfAShop(rs.getString("shop_id"));
-			Shop shop = new Shop(rs.getString("shop_id"),rs.getString("name"),rs.getString("address"),rs.getString("working_hours"),
-								 rs.getString("closing_days"),rs.getString("password"),orders_of_a_shop, riders_of_a_shop);
-			shop_list.add(shop);
-			
+			address_fields = string_util_1.tokenizedStringToArrayList(rs.getString("address"),"(, )");
+			if(rs.getString("closing_days")!=null)
+			closing_days = string_util_2.tokenizedStringToArrayList(rs.getString("closing_days"), "(, )");
+			ArrayList<Rider> employed_rider_list = rider_dao.getRidersOfAShopByShopId(rs.getString("id"));
+			ArrayList<Meal> meal_list = meal_dao.getMealsOfAShopByShopId(rs.getString("id"));
+			shop_list.add(new Shop(rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
+				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+					      closing_days, employed_rider_list, meal_list));
 		}
-		connection.close();
 		return shop_list;
 	}
-
-	@Override
-	public int insertShop(Shop shop) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(Shop shop) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateShop(Shop shop) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Shop getShopById(String shop_id) throws SQLException {
+	
+	public boolean lookForShopByIdAndPassword(String id, String password) throws SQLException {
 		
-		List<Rider>riders_of_a_shop = new ArrayList<Rider>();
-		List<CustomerOrder>orders_of_a_shop = new ArrayList<CustomerOrder>();
-		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
-		RiderDAO rider_DAO = new RiderDAOPostgresImplementation();
-		get_shop_by_id_PS.setString(1,shop_id);
-		ResultSet rs = get_shop_by_id_PS.executeQuery();
-		Shop shop = null;
-		while(rs.next()) {
-			
-			orders_of_a_shop = customer_order_DAO.getCustomerOrdersOfAShop(rs.getString("shop_id"));
-			riders_of_a_shop = rider_DAO.getRidersOfAShop(rs.getString("shop_id"));
-			shop = new Shop(rs.getString("shop_id"),rs.getString("name"),rs.getString("address"),rs.getString("working_hours"),
-					 		rs.getString("closing_days"),rs.getString("password"),orders_of_a_shop, riders_of_a_shop);
-			
-		}
-		rs.close();
-		connection.close();
-		return shop;
-	}
-
-	@Override
-	public List<Shop> getShopsOfARider(String cf) throws SQLException {
+		look_for_shop_by_id_and_password_PS.setString(1, id);
+		look_for_shop_by_id_and_password_PS.setString(2, password);
+		ResultSet rs = look_for_shop_by_id_and_password_PS.executeQuery();
+		return rs.next();
 		
-		List<Rider>riders_of_a_shop = new ArrayList<Rider>();
-		List<CustomerOrder>orders_of_a_shop = new ArrayList<CustomerOrder>();
-		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
-		RiderDAO rider_DAO = new RiderDAOPostgresImplementation();
-		get_shops_of_a_rider_PS.setString(1, cf);
-		ResultSet rs = get_shops_of_a_rider_PS.executeQuery();
-		List<Shop> shops = new ArrayList<Shop>();
-		
-		while(rs.next()) {
-			
-			orders_of_a_shop = customer_order_DAO.getCustomerOrdersOfAShop(rs.getString("shop_id"));
-			riders_of_a_shop = rider_DAO.getRidersOfAShop(rs.getString("shop_id"));
-			Shop shop = new Shop(rs.getString("shop_id"),rs.getString("name"),rs.getString("address"),rs.getString("working_hours"),
-			 		rs.getString("closing_days"),rs.getString("password"),orders_of_a_shop, riders_of_a_shop);
-			
-			shops.add(shop);
-			
-		}
-		rs.close();
-		connection.close();
-		return shops;
 	}
-
-	@Override
-	public Shop getShopOfTheOrder(String order_id) throws SQLException {
-		
-		List<Rider>riders_of_a_shop = new ArrayList<Rider>();
-		List<CustomerOrder>orders_of_a_shop = new ArrayList<CustomerOrder>();
-		CustomerOrderDAO customer_order_DAO = new CustomerOrderDAOPostgresImplementation();
-		RiderDAO rider_DAO = new RiderDAOPostgresImplementation();
-		get_shop_of_the_order_PS.setString(1,order_id);
-		ResultSet rs =  get_shop_of_the_order_PS.executeQuery();
-		Shop shop = null;
-		 
-		while(rs.next())
-		{
-			orders_of_a_shop = customer_order_DAO.getCustomerOrdersOfAShop(rs.getString("shop_id"));
-			riders_of_a_shop = rider_DAO.getRidersOfAShop(rs.getString("shop_id"));
-			shop = new Shop(rs.getString("shop_id"),rs.getString("name"),rs.getString("address"),rs.getString("working_hours"),
-				 				  rs.getString("closing_days"),rs.getString("password"),orders_of_a_shop, riders_of_a_shop);
-		}
-		rs.close();
-		connection.close();
-		return shop;
-	}
-
 }

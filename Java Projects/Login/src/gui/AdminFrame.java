@@ -1,12 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,143 +12,214 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.LineBorder;
-
-import controllers.AdminController;
-import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.ShopDAO;
-import net.proteanit.sql.DbUtils;
-
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 
-public class AdminFrame extends JFrame{
+public class AdminFrame {
 
-	
 	private int mouseX=0;
 	private int mouseY=0;
+	private JFrame frame;
+	
+	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	GridBagLayout gbl;
+	
+	ImageIcon maximize_buttonIMG;
+	ImageIcon minimize_buttonIMG;
+	ImageIcon close_buttonIMG;
+	ImageIcon iconifier_buttonIMG;
+	ImageIcon customer_button_smallIMG;
+	ImageIcon customer_button_bigIMG;
+	ImageIcon shop_button_smallIMG;
+	ImageIcon shop_button_bigIMG;
+	ImageIcon logoIMG;
+	ImageIcon rider_button_smallIMG;
+	ImageIcon rider_button_bigIMG;
+	ImageIcon orders_button_smallIMG;
+	ImageIcon orders_button_bigIMG;
+	ImageIcon meal_button_smallIMG;
+	ImageIcon meal_button_bigIMG;
+	
+	JPanel home_panelJP;
+	JPanel top_panelJP;
+	
 
-	AdminController admin_controller = new AdminController();
-	/**
-	 * Create the application.
-	 */
-	public AdminFrame() {
-		initialize();
-		this.setVisible(true);
+	JLabel logoLB;
+	
+	JLabel iconifierFrameButton;
+	JLabel resizeFrameButton;
+	JLabel closeFrameButton;
+	JButton customerJB;
+	JButton shopJB;
+	JButton riderJB;
+	JButton mealJB;
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AdminFrame window = new AdminFrame();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	public AdminFrame() {
+		initialize();
+	}
+
+	
 	public void initialize() {
 		
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		GridBagLayout gbl = new GridBagLayout();
-		ImageIcon maximize_button = new ImageIcon("src\\images\\FrameIcons\\maximizeFrameButton.png");
-		ImageIcon minimize_button = new ImageIcon("src\\images\\FrameIcons\\minimizeFrameButton.png");
-		ImageIcon close_button = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
-		ImageIcon iconifier_button = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
-		ImageIcon customer_buttonS = new ImageIcon("src\\images\\AdminFrame\\customerButtonSmall.png");
-		ImageIcon customer_buttonB = new ImageIcon("src\\images\\AdminFrame\\customerButtonBig.png");
-		ImageIcon shop_buttonS = new ImageIcon("src\\images\\AdminFrame\\shopButtonSmall.png");
-		ImageIcon shop_buttonB = new ImageIcon("src\\images\\AdminFrame\\shopButtonBig.png");
-		ImageIcon logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
-		ImageIcon rider_buttonS = new ImageIcon("src\\images\\AdminFrame\\riderButtonSmall.png");
-		ImageIcon rider_buttonB = new ImageIcon("src\\images\\AdminFrame\\riderButtonBig.png");
-//		ImageIcon orders_buttonS = new ImageIcon("src\\images\\AdminFrame\\ordersButtonSmall.png");
-//		ImageIcon orders_buttonB = new ImageIcon("src\\images\\AdminFrame\\ordersButtonBig.png");
-		ImageIcon meal_buttonS = new ImageIcon("src\\images\\AdminFrame\\mealButtonSmall.png");
-		ImageIcon meal_buttonB = new ImageIcon("src\\images\\AdminFrame\\mealButtonBig.png");
+		frame = new JFrame();
 		
+		// Definizione variabili
 		
-		this.setSize(1600,900);
-		int central_width = dim.width/2-this.getSize().width/2;
-		int central_height = dim.height/2-this.getSize().height/2;
-		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
-		this.setUndecorated(true);
-		this.getContentPane().setLayout(new BorderLayout());
+		gbl = new GridBagLayout();
+		maximize_buttonIMG = new ImageIcon("src\\images\\FrameIcons\\maximizeFrameButton.png");
+		minimize_buttonIMG = new ImageIcon("src\\images\\FrameIcons\\minimizeFrameButton.png");
+		close_buttonIMG = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
+		iconifier_buttonIMG = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
+		customer_button_smallIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonSmall.png");
+		customer_button_bigIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonBig.png");
+		shop_button_smallIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonSmall.png");
+		shop_button_bigIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonBig.png");
+		logoIMG = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
+		rider_button_smallIMG = new ImageIcon("src\\images\\AdminFrame\\riderButtonSmall.png");
+		rider_button_bigIMG = new ImageIcon("src\\images\\AdminFrame\\riderButtonBig.png");
+		orders_button_smallIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonSmall.png");
+		orders_button_bigIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonBig.png");
+		meal_button_smallIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonSmall.png");
+		meal_button_bigIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonBig.png");
 		
-		JPanel home_panel = new JPanel();
-		home_panel.setLayout(gbl);
-		home_panel.setBackground(new Color(0xf3ecd7));
-		this.getContentPane().add(home_panel, BorderLayout.CENTER);
+		home_panelJP = new JPanel();
+		top_panelJP = new JPanel();
+		iconifierFrameButton = new JLabel();
+		resizeFrameButton = new JLabel();
+		closeFrameButton = new JLabel();
+		logoLB = new JLabel("<html><font face='Calibri' size='4' color=rgb(243,236,215)>FOOD OVERFLOW:</font> <font face='Calibri' size='4' color=rgb(244,153,105)>ADMIN PANEL</font></html>");
+		customerJB = new JButton();
+		shopJB = new JButton();
+		riderJB = new JButton();
+		mealJB = new JButton();
 		
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
-		topPanel.setPreferredSize(new Dimension(100,35));
-		topPanel.setBackground(new Color(0x771007));
-		topPanel.setVisible(true);
-		this.getContentPane().add(topPanel, BorderLayout.NORTH);	
+		//Settiamo il frame
+	
+		frame.setSize(1600,900);
+		int central_width = dim.width/2-frame.getSize().width/2;
+		int central_height = dim.height/2-frame.getSize().height/2;
+		frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		frame.setUndecorated(true);
+		frame.getContentPane().setLayout(new BorderLayout());
 		
-		JLabel iconifierFrameButton = new JLabel();
-		iconifierFrameButton.setIcon(iconifier_button);
+		//Impostiamo il layout
 		
-		JLabel resizeFrameButton = new JLabel();
-		resizeFrameButton.setIcon(maximize_button);
+		home_panelJP.setLayout(gbl);
+		home_panelJP.setBackground(new Color(0xf3ecd7));
+		frame.getContentPane().add(home_panelJP, BorderLayout.CENTER);
 		
-		JLabel closeFrameButton = new JLabel();
-		closeFrameButton.setIcon(close_button);
+		top_panelJP.setLayout(new BoxLayout(top_panelJP, BoxLayout.LINE_AXIS));
+		top_panelJP.setPreferredSize(new Dimension(100,35));
+		top_panelJP.setBackground(new Color(0x771007));
+		top_panelJP.setVisible(true);
+		frame.getContentPane().add(top_panelJP, BorderLayout.NORTH);	
 		
-		JLabel logoFrameButton = new JLabel("<html><font face='Calibri' size='4' color=rgb(243,236,215)>FOOD OVERFLOW:</font> <font face='Calibri' size='4' color=rgb(244,153,105)>ADMIN PANEL</font></html>");
-		logoFrameButton.setForeground(new Color(0xf3ecd7));;
-		logoFrameButton.setIcon(logoIcon);
-		topPanel.add(logoFrameButton);
-		topPanel.add(Box.createHorizontalGlue());
-		topPanel.add(iconifierFrameButton);
-		topPanel.add(resizeFrameButton);
-		topPanel.add(closeFrameButton);
+		//Impostazione dei JButton del Frame
 		
-		JButton customerButton = new JButton();
-		customerButton.setIcon(customer_buttonS);
-		customerButton.setBorder(null);
-		customerButton.setPreferredSize(new Dimension(600,300));
-		customerButton.setFocusable(false);
-		customerButton.setContentAreaFilled(false);
+		iconifierFrameButton.setIcon(iconifier_buttonIMG);
+		resizeFrameButton.setIcon(maximize_buttonIMG);
+		closeFrameButton.setIcon(close_buttonIMG);
+
+		logoLB.setForeground(new Color(0xf3ecd7));;
+		logoLB.setIcon(logoIMG);
 		
-		JButton shopButton = new JButton();
-		shopButton.setPreferredSize(new Dimension(600,300));
-		shopButton.setIcon(shop_buttonS);
-		shopButton.setBorder(null);
-		shopButton.setFocusable(false);
-		shopButton.setContentAreaFilled(false);
+		top_panelJP.add(logoLB);
+		top_panelJP.add(Box.createHorizontalGlue());
+		top_panelJP.add(iconifierFrameButton);
+		top_panelJP.add(resizeFrameButton);
+		top_panelJP.add(closeFrameButton);
 		
-		JButton riderButton = new JButton();
-		riderButton.setPreferredSize(new Dimension(600,300));
-		riderButton.setIcon(rider_buttonS);
-		riderButton.setBorder(null);
-		riderButton.setFocusable(false);
-		riderButton.setContentAreaFilled(false);
-		JButton mealButton = new JButton();
-		mealButton.setPreferredSize(new Dimension(600,300));
-		mealButton.setIcon(meal_buttonS);
-		mealButton.setBorder(null);
-		mealButton.setFocusable(false);
-		mealButton.setContentAreaFilled(false);
+		//Impostazione dei JButton
+
+		customerJB.setIcon(customer_button_smallIMG);
+		customerJB.setBorder(null);
+		customerJB.setPreferredSize(new Dimension(600,300));
+		customerJB.setFocusable(false);
+		customerJB.setContentAreaFilled(false);
 		
-		topPanel.addMouseMotionListener(new MouseMotionAdapter() {
+
+		shopJB.setPreferredSize(new Dimension(600,300));
+		shopJB.setIcon(shop_button_smallIMG);
+		shopJB.setBorder(null);
+		shopJB.setFocusable(false);
+		shopJB.setContentAreaFilled(false);
+		
+
+		riderJB.setPreferredSize(new Dimension(600,300));
+		riderJB.setIcon(rider_button_smallIMG);
+		riderJB.setBorder(null);
+		riderJB.setFocusable(false);
+		riderJB.setContentAreaFilled(false);
+
+		mealJB.setPreferredSize(new Dimension(600,300));
+		mealJB.setIcon(meal_button_smallIMG);
+		mealJB.setBorder(null);
+		mealJB.setFocusable(false);
+		mealJB.setContentAreaFilled(false);
+		
+		//Impostazione GridBagLayout per i JButton
+		
+		GridBagConstraints gcon = new GridBagConstraints();
+		gcon.insets = new Insets(50,100,50,100);
+		gcon.weightx = 1;
+		gcon.weighty = 1;
+		gcon.fill = GridBagConstraints.BOTH;
+		
+		gcon.gridx = 0;
+		gcon.gridy = 0;
+		gcon.gridwidth = 1;
+		gcon.gridheight = 1;
+		
+		gbl.setConstraints(customerJB, gcon);
+		home_panelJP.add(customerJB);
+		
+		gcon.gridx = 2;
+		
+		gbl.setConstraints(shopJB, gcon);
+		home_panelJP.add(shopJB);
+		
+		gcon.gridx = 0;
+		gcon.gridy = 2;
+
+		gbl.setConstraints(riderJB, gcon);
+		home_panelJP.add(riderJB);
+		
+		gcon.gridx = 2;
+		gcon.gridy = 2;
+		
+		gbl.setConstraints(mealJB, gcon);
+		home_panelJP.add(mealJB);
+		
+		//Listeners
+		
+		top_panelJP.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				
-				AdminFrame.this.setLocation (AdminFrame.this.getX()+e.getX()-mouseX,AdminFrame.this.getY()+e.getY()-mouseY);
+				frame.setLocation (frame.getX()+e.getX()-mouseX,frame.getY()+e.getY()-mouseY);
 				
 			}
 		});
-		topPanel.addMouseListener(new MouseAdapter() {
+		
+		top_panelJP.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
@@ -160,6 +228,7 @@ public class AdminFrame extends JFrame{
 				
 				}
 		});
+		
 		
 		closeFrameButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -174,25 +243,25 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				if(AdminFrame.this.getSize().equals(new Dimension(1600,900))) {
+				if(frame.getSize().equals(new Dimension(1600,900))) {
 					
-					resizeFrameButton.setIcon(minimize_button);
-					AdminFrame.this.setLocation(central_width, central_height);
-					AdminFrame.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					customerButton.setIcon(customer_buttonB);
-					shopButton.setIcon(shop_buttonB);
-					mealButton.setIcon(meal_buttonB);
-					riderButton.setIcon(rider_buttonB);
+					resizeFrameButton.setIcon(minimize_buttonIMG);
+					frame.setLocation(central_width, central_height);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					customerJB.setIcon(customer_button_bigIMG);
+					shopJB.setIcon(shop_button_bigIMG);
+					mealJB.setIcon(meal_button_bigIMG);
+					riderJB.setIcon(rider_button_bigIMG);
 					
-				} else if(AdminFrame.this.getSize().equals(dim)) {
+				} else if(frame.getSize().equals(dim)) {
 					
-					resizeFrameButton.setIcon(maximize_button);
-					AdminFrame.this.setSize(1600,900);
-					AdminFrame.this.setLocation(central_width, central_height);
-					customerButton.setIcon(customer_buttonS);
-					shopButton.setIcon(shop_buttonS);
-					mealButton.setIcon(meal_buttonS);
-					riderButton.setIcon(rider_buttonS);
+					resizeFrameButton.setIcon(maximize_buttonIMG);
+					frame.setSize(1600,900);
+					frame.setLocation(central_width, central_height);
+					customerJB.setIcon(customer_button_smallIMG);
+					shopJB.setIcon(shop_button_smallIMG);
+					mealJB.setIcon(meal_button_smallIMG);
+					riderJB.setIcon(rider_button_smallIMG);
 					
 				}
 				
@@ -203,61 +272,40 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				AdminFrame.this.setState(Frame.ICONIFIED);
+				frame.setState(Frame.ICONIFIED);
 				
 			}
 		});
 		
-		shopButton.addMouseListener(new MouseAdapter() {
+		
+		shopJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AdminFrame.this.setVisible(false);
-				admin_controller.openShopFrame();
+				//Spostamento AdminShopFrame
 			}
 		});
 		
-		riderButton.addMouseListener(new MouseAdapter() {
+		riderJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AdminFrame.this.setVisible(false);
-				admin_controller.openRiderFrame();
+				//Spostamento AdminRiderFrame
 			}
 		});
-		GridBagConstraints gcon = new GridBagConstraints();
-		gcon.insets = new Insets(50,100,50,100);
-
-		gcon.weightx = 1;
-		gcon.weighty = 1;
 		
-		gcon.fill = GridBagConstraints.BOTH;
+		customerJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Spostamento AdminUserFrame
+			}
+		});
 		
-		//1
-		gcon.gridx = 0;
-		gcon.gridy = 0;
-		gcon.gridwidth = 1;
-		gcon.gridheight = 1;
-		
-		gbl.setConstraints(customerButton, gcon);
-		home_panel.add(customerButton);
-		
-		gcon.gridx = 2;
-		
-		gbl.setConstraints(shopButton, gcon);
-		home_panel.add(shopButton);
-		
-		gcon.gridx = 0;
-		gcon.gridy = 2;
-
-		gbl.setConstraints(riderButton, gcon);
-		home_panel.add(riderButton);
-		
-		gcon.gridx = 2;
-		gcon.gridy = 2;
-		
-		gbl.setConstraints(mealButton, gcon);
-		home_panel.add(mealButton);
+		mealJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Spostamento AdminMealFrame
+			}
+		});
 		
 	}
 
 }
-

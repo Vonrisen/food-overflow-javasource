@@ -1,36 +1,63 @@
 package controllers;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import daos_implementation.MealDAOPostgresImplementation;
+
+import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.MealDAO;
 import daos_interfaces.ShopDAO;
-import entities.Shop;
-import gui.AdminFrame;
-import net.proteanit.sql.DbUtils;
-
-
+import gui.LoginFrame;
 public class LoginController{
 	
-	private Connection connection;
-	private AdminFrame ad;
-	public LoginController(Connection connection) {
-		super();
-		this.connection = connection;
-	}
-	public void displayShops(Connection connection) throws SQLException
+
+	public void openLoginFrame()
 	{
-//		ResultSet all_shops_result_set = shop.getAllShops();
-//		admin_frame.getTable().setModel(DbUtils.resultSetToTableModel(all_shops_result_set));
-		return;
-	}
-	public void closeLoginOpenAdmin()
-	{
-		ad = new AdminFrame();
-		ad.frame.setVisible(true);
+		LoginFrame login_frame = new LoginFrame();
+		login_frame.setVisible(true);
 	}
 	
+	public void accessAuthentication(LoginFrame login_frame)
+	{
+		//SE ACCEDE L' ADMIN
+		boolean access_succeded = false;
+		if(login_frame.getLogoLabel().getIcon()==login_frame.getAdminLogoImage())
+		{
+			
+		if (!login_frame.getUsernameTF().getText().equals("admin") || !login_frame.getPasswordTF().getText().equals("admin"))
+		{
+			
+			JOptionPane.showMessageDialog(null, "Credenziali errate! Riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+			login_frame.getUsernameTF().setText("");
+			login_frame.getPasswordTF().setText("");
+		}
+		else
+		{
+			access_succeded=true;
+			login_frame.setVisible(false);
+		}
+		}
+		//SE ACCEDE LO SHOP
+		else
+		{
+			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+			try {
+				access_succeded = shop_dao.lookForShopByIdAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
+				if(access_succeded)
+				{
+					login_frame.setVisible(false);
+				}
+				else
+				{
+					access_succeded=false;
+					JOptionPane.showMessageDialog(null, "Credenziali errate! Riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+					login_frame.getUsernameTF().setText("");
+					login_frame.getPasswordTF().setText("");
+				}
+			} catch (SQLException e) {
+				
+				JOptionPane.showMessageDialog(null, "Errore durante il controllo dei dati");
+			}
+			
+	}
+		return;
 	
 }
+	}

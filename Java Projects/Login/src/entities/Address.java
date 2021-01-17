@@ -59,5 +59,12 @@ public class Address {
 	public void setProvince_abbrevation(String province_abbrevation) {
 		this.province_abbrevation = province_abbrevation;
 	}
+
+	@Override
+	public String toString() {
+		return "Address [name=" + name + ", civic_number=" + civic_number + ", cap=" + cap + ", city=" + city
+				+ ", province_abbrevation=" + province_abbrevation + "]";
+	}
+	
 	
 }

@@ -1,41 +1,38 @@
 package app;
-import java.awt.EventQueue;
 
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
-import daos_implementation.CustomerOrderDAOPostgresImplementation;
-import daos_implementation.OrderCompositionDAOPostgresImplementation;
-import daos_implementation.RiderDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.CustomerOrderDAO;
-import daos_interfaces.OrderCompositionDAO;
-import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
-import db_connection.DBconnection_CodiceCatastale;
-import entities.CustomerOrder;
-import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
-
+import utilities.DateUtility;
 
 public class Main {
 	
 	public static void main(String[] args) {
 		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CustomerOrderDAO order = new CustomerOrderDAOPostgresImplementation();
-					CustomerOrder o = order.getCustomerOrderByOrderId("12345678");
-					System.out.println(o.getAddress());
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
-		});
+		
+		ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+		ArrayList<Shop>shop_list=new ArrayList<Shop>();
+		try {
+			shop_list = shop_dao.getAllShops();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+//		for(Shop s : shop_list)
+//			{System.out.println("SHOP: "+s.getName()+"\n\n");
+//			for(Meal st : s.getMeal_list())
+//				System.out.println(st.getAllergen_list());
+//			}
+//		String name = shop_list.get(0).getMeal_list().get(0).getName();
+//		System.out.println(name);
+		ArrayList<Rider>riders = shop_list.get(0).getEmployed_riders_list();
+		DateUtility du = new DateUtility();
+		for(Rider r : riders)
+			System.out.println(r.getCf());
+		
 	}
+	
 }

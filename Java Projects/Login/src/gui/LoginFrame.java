@@ -1,29 +1,25 @@
 package gui;
 import gui_support.RoundJTextField;
 
+
 import gui_support.RoundJPasswordField;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
-
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import controllers.AdminController;
-import gui_support.RoundJPasswordField;
-import gui_support.RoundJTextField;
-import controllers.AdminController;
+import controllers.LoginController;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -70,23 +66,15 @@ public class LoginFrame extends JFrame {
 	Dimension dim;
 	JTable table;
 	JScrollPane scrollPane;
-	AdminController admin_controller = new AdminController();
-	private final String username = "admin";
-	private final String password = "admin";
+	ImageIcon close_button;
+	ImageIcon iconifier_button;
+	ImageIcon logoIcon;
 	private int mouseX=0;
 	private int mouseY=0;
-	/**
-	 * Create the application.
-	 */
-
-	/**
-	 * Initialize the contents of the frame.
-	 * 
-	 */
+	
 	public LoginFrame()
 	{
 		initialize();
-		this.setVisible(true);
 	}
 	public void initialize() {
 
@@ -107,9 +95,9 @@ public class LoginFrame extends JFrame {
 		shopLogoImage = new ImageIcon("src\\images\\LoginImages\\shopLogo.png");
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		ImageIcon close_button = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
-		ImageIcon iconifier_button = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
-		ImageIcon logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
+		close_button = new ImageIcon("src\\images\\FrameIcons\\closeFrameButton.png");
+		iconifier_button = new ImageIcon("src\\images\\FrameIcons\\iconifierFrameButton.png");
+		logoIcon = new ImageIcon("src\\images\\FrameIcons\\logoIcon.png");
 
 		// FRAME INITIALIZER
 		this.setResizable(false);
@@ -164,7 +152,6 @@ public class LoginFrame extends JFrame {
 		logoLabel.setIcon(logoImage);
 		logoLabel.setHorizontalAlignment(JLabel.CENTER);
 		topPanel.add(logoLabel);
-
 		usernameImage = new JLabel();
 		usernameImage.setIcon(usernameIcon);
 		usernameImage.setBounds(141, 46, 25, 25);
@@ -261,7 +248,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				System.exit(0); // Da rivedere la chiusura del frame
+				System.exit(0);
 				
 			}
 		});
@@ -288,6 +275,7 @@ public class LoginFrame extends JFrame {
 				loginButton.setVisible(true);
 				adminButton.setVisible(false);
 				logoLabel.setIcon(adminLogoImage);
+				
 			}
 
 			@Override
@@ -317,7 +305,6 @@ public class LoginFrame extends JFrame {
 				usernameImage.setVisible(true);
 				passwordImage.setVisible(true);
 				loginButton.setVisible(true);
-				
 				logoLabel.setIcon(shopLogoImage);
 			}
 
@@ -358,6 +345,7 @@ public class LoginFrame extends JFrame {
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent cursore_su_homeButton) {
+				
 				homeButton.setIcon(homeButtonActive);
 
 			}
@@ -388,14 +376,10 @@ public class LoginFrame extends JFrame {
 
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent validazione_credenziali_admin) {
-				if (!usernameTF.getText().equals(username) || !passwordTF.getText().equals(password))
-					System.out.println("Username o password sbagliati, riprovare");
-				else
-				{
-					System.out.println("Login avvenuto con successo");
-					LoginFrame.this.setVisible(false);
-					admin_controller.openAdminFrame();	
-				}
+				
+				LoginController login_controller = new LoginController();
+				login_controller.accessAuthentication(LoginFrame.this);
+				
 			}
 		});
 		
@@ -439,29 +423,196 @@ public class LoginFrame extends JFrame {
 			}
 		});
 	}
+	public JPanel getTopPanel() {
+		return topPanel;
+	}
+	public void setTopPanel(JPanel topPanel) {
+		this.topPanel = topPanel;
+	}
+	public JLabel getLogoLabel() {
+		return logoLabel;
+	}
+	public void setLogoLabel(JLabel logoLabel) {
+		this.logoLabel = logoLabel;
+	}
+	public JPanel getLoginPanel() {
+		return loginPanel;
+	}
+	public void setLoginPanel(JPanel loginPanel) {
+		this.loginPanel = loginPanel;
+	}
 	public RoundJTextField getUsernameTF() {
 		return usernameTF;
+	}
+	public void setUsernameTF(RoundJTextField usernameTF) {
+		this.usernameTF = usernameTF;
 	}
 	public RoundJPasswordField getPasswordTF() {
 		return passwordTF;
 	}
+	public void setPasswordTF(RoundJPasswordField passwordTF) {
+		this.passwordTF = passwordTF;
+	}
 	public JLabel getUsernameImage() {
 		return usernameImage;
+	}
+	public void setUsernameImage(JLabel usernameImage) {
+		this.usernameImage = usernameImage;
 	}
 	public JLabel getPasswordImage() {
 		return passwordImage;
 	}
+	public void setPasswordImage(JLabel passwordImage) {
+		this.passwordImage = passwordImage;
+	}
 	public JButton getLoginButton() {
 		return loginButton;
+	}
+	public void setLoginButton(JButton loginButton) {
+		this.loginButton = loginButton;
 	}
 	public JButton getAdminButton() {
 		return adminButton;
 	}
+	public void setAdminButton(JButton adminButton) {
+		this.adminButton = adminButton;
+	}
 	public JButton getShopButton() {
 		return shopButton;
+	}
+	public void setShopButton(JButton shopButton) {
+		this.shopButton = shopButton;
 	}
 	public JButton getHomeButton() {
 		return homeButton;
 	}
-	
+	public void setHomeButton(JButton homeButton) {
+		this.homeButton = homeButton;
+	}
+	public ImageIcon getLogoImage() {
+		return logoImage;
+	}
+	public void setLogoImage(ImageIcon logoImage) {
+		this.logoImage = logoImage;
+	}
+	public ImageIcon getHomeButtonActive() {
+		return homeButtonActive;
+	}
+	public void setHomeButtonActive(ImageIcon homeButtonActive) {
+		this.homeButtonActive = homeButtonActive;
+	}
+	public ImageIcon getAdminButtonActive() {
+		return adminButtonActive;
+	}
+	public void setAdminButtonActive(ImageIcon adminButtonActive) {
+		this.adminButtonActive = adminButtonActive;
+	}
+	public ImageIcon getShopButtonActive() {
+		return shopButtonActive;
+	}
+	public void setShopButtonActive(ImageIcon shopButtonActive) {
+		this.shopButtonActive = shopButtonActive;
+	}
+	public ImageIcon getUsernameIcon() {
+		return usernameIcon;
+	}
+	public void setUsernameIcon(ImageIcon usernameIcon) {
+		this.usernameIcon = usernameIcon;
+	}
+	public ImageIcon getPasswordIcon() {
+		return passwordIcon;
+	}
+	public void setPasswordIcon(ImageIcon passwordIcon) {
+		this.passwordIcon = passwordIcon;
+	}
+	public ImageIcon getAdminButtonInactive() {
+		return adminButtonInactive;
+	}
+	public void setAdminButtonInactive(ImageIcon adminButtonInactive) {
+		this.adminButtonInactive = adminButtonInactive;
+	}
+	public ImageIcon getShopButtonInactive() {
+		return shopButtonInactive;
+	}
+	public void setShopButtonInactive(ImageIcon shopButtonInactive) {
+		this.shopButtonInactive = shopButtonInactive;
+	}
+	public ImageIcon getHomeButtonInactive() {
+		return homeButtonInactive;
+	}
+	public void setHomeButtonInactive(ImageIcon homeButtonInactive) {
+		this.homeButtonInactive = homeButtonInactive;
+	}
+	public ImageIcon getLoginButtonActive() {
+		return loginButtonActive;
+	}
+	public void setLoginButtonActive(ImageIcon loginButtonActive) {
+		this.loginButtonActive = loginButtonActive;
+	}
+	public ImageIcon getLoginButtonInactive() {
+		return loginButtonInactive;
+	}
+	public void setLoginButtonInactive(ImageIcon loginButtonInactive) {
+		this.loginButtonInactive = loginButtonInactive;
+	}
+	public ImageIcon getAdminLogoImage() {
+		return adminLogoImage;
+	}
+	public void setAdminLogoImage(ImageIcon adminLogoImage) {
+		this.adminLogoImage = adminLogoImage;
+	}
+	public ImageIcon getShopLogoImage() {
+		return shopLogoImage;
+	}
+	public void setShopLogoImage(ImageIcon shopLogoImage) {
+		this.shopLogoImage = shopLogoImage;
+	}
+	public Dimension getDim() {
+		return dim;
+	}
+	public void setDim(Dimension dim) {
+		this.dim = dim;
+	}
+	public JTable getTable() {
+		return table;
+	}
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+	public ImageIcon getClose_button() {
+		return close_button;
+	}
+	public void setClose_button(ImageIcon close_button) {
+		this.close_button = close_button;
+	}
+	public ImageIcon getIconifier_button() {
+		return iconifier_button;
+	}
+	public void setIconifier_button(ImageIcon iconifier_button) {
+		this.iconifier_button = iconifier_button;
+	}
+	public ImageIcon getLogoIcon() {
+		return logoIcon;
+	}
+	public void setLogoIcon(ImageIcon logoIcon) {
+		this.logoIcon = logoIcon;
+	}
+	public int getMouseX() {
+		return mouseX;
+	}
+	public void setMouseX(int mouseX) {
+		this.mouseX = mouseX;
+	}
+	public int getMouseY() {
+		return mouseY;
+	}
+	public void setMouseY(int mouseY) {
+		this.mouseY = mouseY;
+	}
 }

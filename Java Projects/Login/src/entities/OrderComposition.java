@@ -3,17 +3,20 @@ package entities;
 public class OrderComposition {
 
 	//ATTRIBUTI
+	
 	private Meal meal;
 	private Short quantity;
 	
 	//COSTRUTTORE
+	
 	public OrderComposition(Meal meal, Short quantity) {
 
 		this.meal = meal;
 		this.quantity = quantity;
 	}
 
-	//GETTE AND SETTER
+	//GETTER AND SETTER
+	
 	public Meal getMeal() {
 		return meal;
 	}

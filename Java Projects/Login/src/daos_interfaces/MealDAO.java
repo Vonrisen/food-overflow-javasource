@@ -1,12 +1,10 @@
 package daos_interfaces;
-
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import entities.Meal;
 
 public interface MealDAO {
 	
+	public ArrayList<Meal>getMealsOfAShopByShopId(String shop_id) throws SQLException;
 
-	public Meal getMealById(String meal_id) throws SQLException;
-	
 }

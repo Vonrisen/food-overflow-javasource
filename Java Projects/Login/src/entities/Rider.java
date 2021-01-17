@@ -6,20 +6,19 @@ public class Rider extends Person{
 
 	//ATTRIBUTI
 	private String vehicle;
-	private String working_time;
+	private String working_hours;
 	private Short deliveries_number;
-	
 	//COSTRUTTORE
 	public Rider(String cf, String name, String surname, Date birth_date, String birth_place, String gender,
-				String cellphone, Address address, String vehicle, String working_time, Short deliveries_number) {
+				String cellphone, Address address, String vehicle, String working_hours, Short deliveries_number) {
 		
 		super(cf, name, surname, birth_date, birth_place, gender, cellphone, address);
 		this.vehicle = vehicle;
-		this.working_time = working_time;
+		this.working_hours = working_hours;
 		this.deliveries_number = deliveries_number;
 	}
 
-	//GETTER AN D SETTER
+	//GETTER AND SETTER
 	public String getVehicle() {
 		return vehicle;
 	}
@@ -30,13 +29,13 @@ public class Rider extends Person{
 	}
 
 
-	public String getWorking_time() {
-		return working_time;
+	public String getWorking_hours() {
+		return working_hours;
 	}
 
 
-	public void setWorking_time(String working_time) {
-		this.working_time = working_time;
+	public void setWorking_hours(String working_hours) {
+		this.working_hours = working_hours;
 	}
 
 
@@ -49,5 +48,10 @@ public class Rider extends Person{
 		this.deliveries_number = deliveries_number;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString()+"\n"+"[vehicle=" + vehicle + ", working_time=" + working_hours + ", deliveries_number="
+				+ deliveries_number + ", toString()="  + "]";
+	}
 	
 }

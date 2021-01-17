@@ -1,8 +1,9 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import enumerations.DaysOfTheWeek;
 
 public class Shop {
 
@@ -11,70 +12,108 @@ public class Shop {
 	private String name;
 	private String password;
 	private String working_hours;
-	private DaysOfTheWeek[] closing_days;
-	private List<Rider> employed_riders_list;
-	
+	private Address address;
+	private ArrayList<String>closing_days;
+	private ArrayList<Rider> employed_riders_list;
+	private ArrayList<Meal> meal_list;
 	
 	//COSTRUTTORE
-	public Shop(String id, String name, String password, String working_hours, DaysOfTheWeek[] closing_days,
-			List<Rider> employed_riders_list) {
+	public Shop()
+	{
 		
-		this.id = id;
+	}
+	public Shop(String name, String password, String working_hours, Address address,
+			ArrayList<String>closing_days, ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
+		
+		super();
 		this.name = name;
 		this.password = password;
 		this.working_hours = working_hours;
+		this.address = address;
 		this.closing_days = closing_days;
 		this.employed_riders_list = employed_riders_list;
+		this.meal_list = meal_list;
 	}
 
-	//GETER AND SETTER
+
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
 	}
 
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 
 	public String getPassword() {
 		return password;
 	}
 
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 
 	public String getWorking_hours() {
 		return working_hours;
 	}
 
+
 	public void setWorking_hours(String working_hours) {
 		this.working_hours = working_hours;
 	}
 
-	public DaysOfTheWeek[] getClosing_days() {
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
+	public ArrayList<String>getClosing_days() {
 		return closing_days;
 	}
 
-	public void setClosing_days(DaysOfTheWeek[] closing_days) {
+
+	public void setClosing_days(ArrayList<String>closing_days) {
 		this.closing_days = closing_days;
 	}
 
-	public List<Rider> getEmployed_riders_list() {
+
+	public ArrayList<Rider> getEmployed_riders_list() {
 		return employed_riders_list;
 	}
 
-	public void setEmployed_riders_list(List<Rider> employed_riders_list) {
+
+	public void setEmployed_riders_list(ArrayList<Rider> employed_riders_list) {
 		this.employed_riders_list = employed_riders_list;
 	}
+
+
+	
+	public ArrayList<Meal> getMeal_list() {
+		return meal_list;
+	}
+	public void setMeal_list(ArrayList<Meal> meal_list) {
+		this.meal_list = meal_list;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+
+	
 	
 	
 }
