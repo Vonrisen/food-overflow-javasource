@@ -3,6 +3,7 @@ package daos_implementation;
 import java.sql.Connection;
 
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ import db_connection.DBconnection;
 import entities.Address;
 import entities.Rider;
 import entities.Shop;
-import utilities.StringUtility;
+import utilities.InputUtility;
 
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
@@ -38,7 +39,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			get_all_riders_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number FROM Rider");
 			get_riders_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
 					+ "FROM Rider WHERE shop_id=?");
-		
+			
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statement","Errore",JOptionPane.ERROR_MESSAGE);
@@ -52,7 +53,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		ResultSet rs = get_all_riders_PS.executeQuery();
 		ArrayList<Rider> rider_list = new ArrayList<Rider>();
 		ArrayList<String>address_fields = new ArrayList<String>();
-		StringUtility string_util = new StringUtility();
+		InputUtility string_util = new InputUtility();
 		while(rs.next())
 		{
 			address_fields = string_util.tokenizedStringToArrayList(rs.getString("address"),"(, )");
@@ -71,7 +72,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		ResultSet rs = get_riders_of_a_shop_by_shop_id_PS.executeQuery();
 		ArrayList<Rider>rider_list = new ArrayList<Rider>();
 		ArrayList<String>address_fields = new ArrayList<String>();
-		StringUtility string_util = new StringUtility();
+		InputUtility string_util = new InputUtility();
 		while(rs.next())
 		{
 			address_fields = string_util.tokenizedStringToArrayList(rs.getString("address"),"(, )");

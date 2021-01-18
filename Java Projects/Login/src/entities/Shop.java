@@ -22,10 +22,11 @@ public class Shop {
 	{
 		
 	}
-	public Shop(String name, String password, String working_hours, Address address,
+	public Shop(String id, String name, String password, String working_hours, Address address,
 			ArrayList<String>closing_days, ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
 		
 		super();
+		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.working_hours = working_hours;
@@ -111,9 +112,5 @@ public class Shop {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-
-	
-	
 	
 }

@@ -17,8 +17,9 @@ public class LoginController{
 	public void accessAuthentication(LoginFrame login_frame)
 	{
 		//SE ACCEDE L' ADMIN
+		AdminController admin_controller = new AdminController();
 		boolean access_succeded = false;
-		if(login_frame.getLogoLabel().getIcon()==login_frame.getAdminLogoImage())
+		if(login_frame.getLogoLabel().getIcon() == login_frame.getAdminLogoImage())
 		{
 			
 		if (!login_frame.getUsernameTF().getText().equals("admin") || !login_frame.getPasswordTF().getText().equals("admin"))
@@ -30,8 +31,10 @@ public class LoginController{
 		}
 		else
 		{
+			//Chiudo il login frame e passo all' admin frame
 			access_succeded=true;
 			login_frame.setVisible(false);
+			admin_controller.openAdminFrame();
 		}
 		}
 		//SE ACCEDE LO SHOP

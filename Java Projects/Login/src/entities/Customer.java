@@ -34,5 +34,4 @@ public class Customer extends Person {
 		this.password = password;
 	}
 
-	
 }

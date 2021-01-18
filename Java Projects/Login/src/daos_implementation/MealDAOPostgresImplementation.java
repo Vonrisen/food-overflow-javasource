@@ -1,7 +1,4 @@
 package daos_implementation;
-
-import java.sql.CallableStatement;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,14 +33,12 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statement","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		
-
-
     }
 	public ArrayList<Meal> getMealsOfAShopByShopId(String shop_id) throws SQLException {
 		
 		get_meals_of_a_shop_by_shop_id_PS.setString(1, shop_id);
 		ResultSet rs1 = get_meals_of_a_shop_by_shop_id_PS.executeQuery();
-		ResultSet rs2;
+		ResultSet rs2 = null;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
 		ArrayList<String> allergens = null;
 		while(rs1.next())

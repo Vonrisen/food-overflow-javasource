@@ -26,12 +26,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import controllers.AdminController;
 import gui_support.RoundJTextField;
 
-public class AdminShopFrame {
+public class AdminShopFrame extends JFrame{
 
-	private JFrame frame;
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private ImageIcon delete_inactiveIMG;
@@ -43,6 +44,7 @@ public class AdminShopFrame {
 	private ImageIcon go_back_inactiveIMG;
 	private ImageIcon go_back_activeIMG;
 	private ImageIcon shops_table_title;
+	
 	private Dimension long_dim_of_textfield;
 	private Dimension short_dim_of_textfield;
 	
@@ -57,6 +59,7 @@ public class AdminShopFrame {
 	private JPanel center_panel;
 	private JPanel sql_panel;
 	private JTable table;
+
 	private JPanel attributes_panel;
 	private JPanel buttons_panel;
 	private JScrollPane scroll_pane;
@@ -73,21 +76,9 @@ public class AdminShopFrame {
 	private JTextField working_hoursTF;
 	private JTextField passwordTF;
 	private JTextField closing_daysTF;
-	
+
 	private Color background_color = new Color(0xf3ecd7);
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminShopFrame window = new AdminShopFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	//Create the application
 	public AdminShopFrame() {
@@ -98,13 +89,10 @@ public class AdminShopFrame {
 		
 	}
 	
-	//Initialize variables
 
 	//Initialize variables
-	private void initialize() {
-		
-		frame = new JFrame("AdminPanel: Shop");
-		
+	    private void initialize() {
+	    
 		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
 		delete_activeIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonActive.png");
 		insert_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonInactive.png");
@@ -152,31 +140,32 @@ public class AdminShopFrame {
 	//Frame Setup
 	private void frameSetup() {
 		
-		frame.setSize(1280,720);
-		frame.setMinimumSize(new Dimension(640,500));
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setSize(1280,720);
+		this.setMinimumSize(new Dimension(640,500));
 		
-		int central_width = screen_dim.width/2-frame.getSize().width/2;
-		int central_height = screen_dim.height/2-frame.getSize().height/2;
-		frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().setBackground(background_color);
+		int central_width = screen_dim.width/2-this.getSize().width/2;
+		int central_height = screen_dim.height/2-this.getSize().height/2;
+		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().setBackground(background_color);
 		
 		
 		createStandardPanel(west_panel, null, west_east_size);
-		frame.getContentPane().add(west_panel, BorderLayout.WEST);
+		this.getContentPane().add(west_panel, BorderLayout.WEST);
 		
 		createStandardPanel(east_panel, null, west_east_size);
-		frame.getContentPane().add(east_panel, BorderLayout.EAST);
+		this.getContentPane().add(east_panel, BorderLayout.EAST);
 		
 		createStandardPanel(north_panel, null, north_south_size);
-		frame.getContentPane().add(north_panel, BorderLayout.NORTH);
+		this.getContentPane().add(north_panel, BorderLayout.NORTH);
 		
 		createStandardPanel(south_panel, null, north_south_size);
-		frame.getContentPane().add(south_panel, BorderLayout.SOUTH);
+		this.getContentPane().add(south_panel, BorderLayout.SOUTH);
 		
 		center_panel.setLayout(new BorderLayout());
 		center_panel.setBackground(null);
-		frame.getContentPane().add(center_panel, BorderLayout.CENTER);
+		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
 		//Subpanels di center_panel
 		
@@ -216,7 +205,7 @@ public class AdminShopFrame {
 		createTextField(passwordTF, "Password", short_dim_of_textfield);
 		attributes_panel.add(passwordTF);
 		
-		createTextField(closing_daysTF, "Password", long_dim_of_textfield);
+		createTextField(closing_daysTF, "Closing Days", long_dim_of_textfield);
 		attributes_panel.add(closing_daysTF);
 		
 		//Setup Buttons
@@ -237,8 +226,6 @@ public class AdminShopFrame {
 		buttons_panel.add(go_backJB);
 			
 	}
-	
-	//All events of the frame
 	
 	//All events about frame
 	private void events() {
@@ -311,6 +298,9 @@ public class AdminShopFrame {
 			public void mousePressed(MouseEvent e) {
 				
 				//Apre AdminFrame
+				AdminShopFrame.this.dispose();
+				AdminController admin_controller = new AdminController ();
+				admin_controller.openAdminFrame();
 			
 			}
 			@Override
@@ -455,5 +445,14 @@ public class AdminShopFrame {
 		panel.setPreferredSize(dimension);
 
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
 
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+	
 }

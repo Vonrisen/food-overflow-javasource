@@ -62,8 +62,8 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return "Address [name=" + name + ", civic_number=" + civic_number + ", cap=" + cap + ", city=" + city
-				+ ", province_abbrevation=" + province_abbrevation + "]";
+		return name + " " + civic_number + ", " + cap + ", " + city
+				+ " (" + province_abbrevation + ")";
 	}
 	
 	

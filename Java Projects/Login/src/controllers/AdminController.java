@@ -1,83 +1,92 @@
 package controllers;
 
-
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
-import app.CF;
-import daos_implementation.RiderDAOPostgresImplementation;
+import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.RiderDAO;
+import daos_interfaces.CustomerDAO;
 import daos_interfaces.ShopDAO;
-import db_connection.DBconnection;
-import db_connection.DBconnection_CodiceCatastale;
+import entities.Customer;
 import entities.Shop;
+import gui.AdminCustomerFrame;
+import gui.AdminCustomerPanelFrame;
 import gui.AdminFrame;
-import gui.LoginFrame;
-import gui.RiderFrame;
-import gui.ShopFrame;
-import net.proteanit.sql.DbUtils;
+import gui.AdminMealFrame;
+import gui.AdminRiderFrame;
+import gui.AdminShopFrame;
+import utilities.TableModelUtility;
 
-
-public class AdminController{
+public class AdminController {
 	
-	ShopDAO shop = new ShopDAOPostgresImplementation();
-	RiderDAO rider = new RiderDAOPostgresImplementation();
-	public AdminController()
-	
-	{
-	}
-	
-	//FRAME OPENERS
 	public void openAdminFrame()
 	{
-		new AdminFrame();
-		return;
+		AdminFrame admin_frame = new AdminFrame();
+		admin_frame.setVisible(true);
 	}
-	public void openRiderFrame()
+	
+	public void openAdminShopFrame()
 	{
-		RiderFrame rider_frame = new RiderFrame();
+		AdminShopFrame admin_shop_frame = new AdminShopFrame();
+		initializeAdminShopFrameTable(admin_shop_frame);
+		admin_shop_frame.setVisible(true);
+	}
+	
+	public void openAdminRiderFrame()
+	{
+		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
+		admin_rider_frame.setVisible(true);
+	}
+	
+	public void openAdminMealFrame()
+	{
+		AdminMealFrame admin_meal_frame = new AdminMealFrame();
+		admin_meal_frame.setVisible(true);
+	}
+	
+	public void openAdminCustomerPanelFrame()
+	{
+		AdminCustomerPanelFrame admin_customer_panel_frame = new AdminCustomerPanelFrame();
+		admin_customer_panel_frame.setVisible(true);
+	}
+	
+	public void openAdminCustomerFrame()
+	{
+		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame();
+		initializeAdminCustomerFrameTable(admin_customer_frame);
+		admin_customer_frame.setVisible(true);
+	}
+	
+	public void initializeAdminShopFrameTable(AdminShopFrame admin_shop_frame)
+	{
+		
+		ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+		ArrayList<Shop>shop_list = new ArrayList<Shop>();
 		try {
-			rider_frame.getTable().setModel(DbUtils.resultSetToTableModel(rider.getAllRiders()));
+			shop_list = shop_dao.getAllShops();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,"Errore durante l' interrogazione"+e.getMessage());
+			e.printStackTrace();
 		}
+		TableModelUtility table = new TableModelUtility();
+		table.initializeShopTable(admin_shop_frame, shop_list);
 		return;
 	}
-	public void openShopFrame() {
-		ShopFrame shop_frame = new ShopFrame();
-		ArrayList<Shop> shop_list = null;
+	
+	public void initializeAdminCustomerFrameTable(AdminCustomerFrame admin_customer_frame)
+	{
+		
+		CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
+		ArrayList<Customer>customer_list = new ArrayList<Customer>();
 		try {
-			shop_list = shop.getAllShops();
+			customer_list = customer_dao.getAllCustomers();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,"Errore durante l' interrogazione"+e.getMessage());
+			e.printStackTrace();
 		}
-	    String[]columns = {"shop_id","name","address","working hours","closing days","password"};
-	    Object[] row = new Object[6];
-	    DefaultTableModel model = new DefaultTableModel(columns,0);
-	    shop_frame.getTable().setModel(model);
-	    for(int i=0;i<shop_list.size();i++)
-	    {
-	    	row[0] = shop_list.get(i).getShop_id();
-	    	row[1] = shop_list.get(i).getShop_name();
-	    	row[2] = shop_list.get(i).getAddress();
-	    	row[3] = shop_list.get(i).getWorking_hours();
-	    	row[4] = shop_list.get(i).getClosing_days();
-	    	row[5] = shop_list.get(i).getPassword();
-	    	model.addRow(row);
-	    }
+		TableModelUtility table = new TableModelUtility();
+		table.initializeCustomerTable(admin_customer_frame, customer_list);
 		return;
 	}
-
+	
 	
 }

@@ -10,12 +10,12 @@ import daos_interfaces.CustomerDAO;
 import db_connection.DBconnection;
 import entities.Address;
 import entities.Customer;
-import utilities.StringUtility;
+import utilities.InputUtility;
 
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 	private Connection connection;
-	private PreparedStatement get_all_customers_PS;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS;
 	public CustomerDAOPostgresImplementation() {
 		
 		try {
@@ -27,6 +27,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		try {
 			get_all_customers_PS = connection.prepareStatement("SELECT * FROM Customer");
+			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?,?,?,?,?,?,?)");
 			
 		}catch(SQLException s)
 		{
@@ -35,12 +36,13 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		
 
 }
-	public ArrayList<Customer> getAllCustomers() throws SQLException {
+	
+	public ArrayList<Customer> getAllCustomers () throws SQLException {
 		
 		ResultSet rs = get_all_customers_PS.executeQuery();
 		ArrayList<Customer> customer_list = new ArrayList<Customer>();
 		ArrayList<String>address_fields = new ArrayList<String>();
-		StringUtility string_util = new StringUtility();
+		InputUtility string_util = new InputUtility();
 		while(rs.next())
 		{
 			address_fields = string_util.tokenizedStringToArrayList(rs.getString("address"),"(, )");
@@ -50,6 +52,22 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 					          rs.getString("password")));
 		}
 		return customer_list;
+	}
+	
+	public int insertCustomer(Customer customer) throws SQLException
+	{
+		InputUtility input_util = new InputUtility();
+		insert_customer_PS.setString(1, customer.getCf());
+		insert_customer_PS.setString(2, customer.getName());
+		insert_customer_PS.setString(3, customer.getSurname());
+		insert_customer_PS.setString(4, input_util.addressToTokenizedString(customer.getAddress(), ", "));
+		insert_customer_PS.setDate(5, new java.sql.Date(customer.getBirth_date().getTime()));
+		insert_customer_PS.setString(6, customer.getBirth_place());
+		insert_customer_PS.setString(7, customer.getGender().toUpperCase());
+		insert_customer_PS.setString(8, customer.getCellphone());
+		insert_customer_PS.setString(9, customer.getEmail());
+		insert_customer_PS.setString(10, customer.getPassword());
+		return insert_customer_PS.executeUpdate();
 	}
 
 	

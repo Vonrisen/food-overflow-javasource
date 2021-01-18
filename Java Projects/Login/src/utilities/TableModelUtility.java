@@ -1,0 +1,61 @@
+package utilities;
+
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
+import entities.Customer;
+import entities.Shop;
+import gui.AdminCustomerFrame;
+import gui.AdminShopFrame;
+
+public class TableModelUtility {
+	
+	public void initializeShopTable(AdminShopFrame admin_shop_frame,  ArrayList<Shop> shop_list)
+	{
+		String[]columns = {"ID", "Password", "Name", "Address", "Working Hours", "Closing Days"};
+		Object[] row = new Object[6];
+		DefaultTableModel model = new DefaultTableModel(columns, 0);
+		admin_shop_frame.getTable().setModel(model);
+		String formatted_closing_days;
+		for(Shop shop : shop_list) {
+			   
+			formatted_closing_days="";
+			row[0] = shop.getId();
+			row[1] = shop.getPassword();
+			row[2] = shop.getName();
+			row[3] = shop.getAddress();
+			row[4] = shop.getWorking_hours();
+			for(String s : shop.getClosing_days())
+			  formatted_closing_days+=s+", ";
+			if(formatted_closing_days.length()!=0)
+			row[5] = formatted_closing_days.substring(0, formatted_closing_days.length()-2);
+			model.addRow(row);
+		}
+		return;
+	}
+	
+	public void initializeCustomerTable(AdminCustomerFrame admin_customer_frame,  ArrayList<Customer> customer_list)
+	{
+		String[]columns = {"CF", "Name", "Surname","Birth Date","Birth Place", "Address", "Gender", "Cellphone","Email","Password"};
+		Object[] row = new Object[10];
+		DefaultTableModel model = new DefaultTableModel(columns, 0);
+		admin_customer_frame.getTable().setModel(model);
+		InputUtility date_util = new InputUtility();
+		for(Customer customer : customer_list) {
+			   
+			row[0] = customer.getCf();
+			row[1] = customer.getName();
+			row[2] = customer.getSurname();
+			row[3] = date_util.formatDate(customer.getBirth_date());
+			row[4] = customer.getBirth_place();
+			row[5] = customer.getAddress().toString();
+			row[6] = customer.getGender();
+			row[7] = customer.getCellphone();
+			row[8] = customer.getEmail();
+			row[9] = customer.getPassword();
+			model.addRow(row);
+		}
+		return;
+	}
+
+}

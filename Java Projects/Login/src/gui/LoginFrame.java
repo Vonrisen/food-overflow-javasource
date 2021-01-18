@@ -35,7 +35,7 @@ public class LoginFrame extends JFrame {
 
 	
 	private static final long serialVersionUID = 1L;
-	/**a
+	/**
 	 * 
 	 */
 
@@ -79,6 +79,7 @@ public class LoginFrame extends JFrame {
 	public void initialize() {
 
 		// IMAGES INITIALIZER
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		logoImage = new ImageIcon("src\\images\\LoginImages\\Logo.png");
 		adminButtonActive = new ImageIcon("src\\images\\LoginImages\\adminButtonActive.png");

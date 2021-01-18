@@ -2,7 +2,7 @@ package entities;
 
 import java.util.Date;
 
-import utilities.DateUtility;
+import utilities.InputUtility;
 
 public abstract class Person {
 
@@ -99,7 +99,7 @@ public abstract class Person {
 
 	@Override
 	public String toString() {
-		DateUtility birth_date_to_string = new DateUtility();
+		InputUtility birth_date_to_string = new InputUtility();
 		return "[cf=" + cf + ", name=" + name + ", surname=" + surname + ", birth_date=" + birth_date_to_string.formatDate(birth_date)
 				+ ", birth_place=" + birth_place + ", gender=" + gender + ", cellphone=" + cellphone + ", address="
 				+ address + "]";
