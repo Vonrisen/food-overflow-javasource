@@ -26,7 +26,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			
 			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
 			
-			get_allergens_of_a_meal_PS = connection.prepareCall("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
+			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
 			
 		}catch(SQLException s)
 		{

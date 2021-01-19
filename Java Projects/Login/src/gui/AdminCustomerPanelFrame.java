@@ -92,17 +92,15 @@ public class AdminCustomerPanelFrame extends JFrame {
 		// Setup Buttons
 		
 		setupButton(customerJB, customer_buttonIMG, button_size);
-		customerJB.setContentAreaFilled(false);
 		
 		setupButton(ordersJB, orders_buttonIMG, button_size);
-		ordersJB.setContentAreaFilled(false);
 		
 		setupButton(go_backJB, go_back_inactiveIMG, new Dimension(150,30));
 		south_panel.add(go_backJB);
 		
 		//Setup GridBagLayout
 		
-		gcon.insets = new Insets(50,100,50,100);
+		gcon.insets = new Insets(215,115,215,115);
 		gcon.weightx = 1;
 		gcon.weighty = 1;
 		gcon.fill = GridBagConstraints.BOTH;

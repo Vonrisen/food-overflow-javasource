@@ -24,7 +24,7 @@ import utilities.InputUtility;
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	private Connection connection;
-	PreparedStatement look_for_shop_by_id_and_password_PS, get_all_shops_PS;
+	PreparedStatement look_for_shop_by_id_and_password_PS, get_all_shops_PS, insert_shop_PS;
 	public ShopDAOPostgresImplementation() {
 		
 		try {
@@ -38,6 +38,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			
 			look_for_shop_by_id_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE id=? AND password=?");
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop");
+			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?)");
 		
 		}catch(SQLException s)
 		{
@@ -58,13 +59,14 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		while(rs.next())
 		{
 			address_fields = string_util.tokenizedStringToArrayList(rs.getString("address"),"(, )");
+			ArrayList<Rider> employed_rider_list = new ArrayList<Rider>();
 			if(rs.getString("closing_days")!=null)
-			closing_days = string_util.tokenizedStringToArrayList(rs.getString("closing_days"), "(, )");
-			ArrayList<Rider> employed_rider_list = rider_dao.getRidersOfAShopByShopId(rs.getString("id"));
+			employed_rider_list = rider_dao.getRidersOfAShopByShopId(rs.getString("id"));
+			
 			ArrayList<Meal> meal_list = meal_dao.getMealsOfAShopByShopId(rs.getString("id"));
 			shop_list.add(new Shop(rs.getString("id"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
-					      closing_days, employed_rider_list, meal_list));
+				          rs.getString("closing_days"), employed_rider_list, meal_list));
 		}
 		return shop_list;
 		
@@ -78,6 +80,19 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		ResultSet rs = look_for_shop_by_id_and_password_PS.executeQuery();
 		row_founded = rs.next();
 		return row_founded;
+		
+	}
+
+	@Override
+	public int insertShop(Shop shop) throws SQLException {
+		
+		InputUtility input_util = new InputUtility();
+		insert_shop_PS.setString(1, shop.getName());
+		insert_shop_PS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
+		insert_shop_PS.setString(3, shop.getWorking_hours());
+		insert_shop_PS.setString(4, shop.getClosing_days());
+		insert_shop_PS.setString(5, shop.getPassword());
+		return insert_shop_PS.executeUpdate();
 		
 	}
 }

@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -72,7 +73,11 @@ public class AdminShopFrame extends JFrame{
 	private JLabel shops_table_titleLB;
 	
 	private JTextField nameTF;
-	private JTextField addressTF;
+	private JTextField address_nameTF;
+	private JTextField address_civic_numberTF;
+	private JTextField address_capTF;
+	private JTextField address_cityTF;
+	private JTextField address_provinceTF;
 	private JTextField working_hoursTF;
 	private JTextField passwordTF;
 	private JTextField closing_daysTF;
@@ -123,7 +128,11 @@ public class AdminShopFrame extends JFrame{
 		
 		shops_table_titleLB = new JLabel();
 		nameTF = new RoundJTextField(new Color(0x771007));
-		addressTF = new RoundJTextField(new Color(0x771007));
+		address_nameTF = new RoundJTextField(new Color(0x771007));
+		address_civic_numberTF = new RoundJTextField(new Color(0x771007));
+		address_capTF = new RoundJTextField(new Color(0x771007));
+		address_cityTF = new RoundJTextField(new Color(0x771007));
+		address_provinceTF = new RoundJTextField(new Color(0x771007));
 		working_hoursTF = new RoundJTextField(new Color(0x771007));
 		passwordTF = new RoundJTextField(new Color(0x771007));
 		closing_daysTF = new RoundJTextField(new Color(0x771007));
@@ -140,9 +149,10 @@ public class AdminShopFrame extends JFrame{
 	//Frame Setup
 	private void frameSetup() {
 		
+		this.setTitle("Admin Panel: Shops");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
-		this.setMinimumSize(new Dimension(640,500));
+		this.setMinimumSize(new Dimension(800,680));
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -184,7 +194,7 @@ public class AdminShopFrame extends JFrame{
 		
 		//Subpanels di sql_panel
 		
-		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,50));
+		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,30));
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
 		sql_panel.add(attributes_panel, BorderLayout.CENTER);
 		
@@ -196,8 +206,20 @@ public class AdminShopFrame extends JFrame{
 		createTextField(nameTF, "Name", long_dim_of_textfield);
 		attributes_panel.add(nameTF);
 		
-		createTextField(addressTF, "Address", long_dim_of_textfield);
-		attributes_panel.add(addressTF);
+		createTextField(address_nameTF, "Address name", long_dim_of_textfield);
+		attributes_panel.add(address_nameTF);
+		
+		createTextField(address_civic_numberTF, "Civic number", short_dim_of_textfield);
+		attributes_panel.add(address_civic_numberTF);
+		
+		createTextField(address_capTF, "CAP", short_dim_of_textfield);
+		attributes_panel.add(address_capTF);
+		
+		createTextField(address_cityTF, "City", short_dim_of_textfield);
+		attributes_panel.add(address_cityTF);
+		
+		createTextField(address_provinceTF, "Province", short_dim_of_textfield);
+		attributes_panel.add(address_provinceTF);
 		
 		createTextField(working_hoursTF, "Working Hours", short_dim_of_textfield);
 		attributes_panel.add(working_hoursTF);
@@ -235,7 +257,9 @@ public class AdminShopFrame extends JFrame{
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//INSERT
+				
+			AdminController admin_controller = new AdminController();
+			admin_controller.addShop(AdminShopFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -323,7 +347,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(nameTF, nameTF.getText());
+				textFieldFocusGained(nameTF, "Name");
 
 			}
 
@@ -335,18 +359,82 @@ public class AdminShopFrame extends JFrame{
 			}
 		});
 		
-		addressTF.addFocusListener(new FocusAdapter() {
+		address_nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(addressTF, addressTF.getText());
+				textFieldFocusGained(address_nameTF, "Address name");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(addressTF, "Address");
+				textFieldFocusLost(address_nameTF, "Address name");
+
+			}
+		});
+		
+		address_civic_numberTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				textFieldFocusGained(address_civic_numberTF, "Civic number");
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				textFieldFocusLost(address_civic_numberTF, "Civic number");
+
+			}
+		});
+		
+		address_capTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				textFieldFocusGained(address_capTF, "CAP");
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				textFieldFocusLost(address_capTF, "CAP");
+
+			}
+		});
+		
+		address_cityTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				textFieldFocusGained(address_cityTF, "City");
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				textFieldFocusLost(address_cityTF, "City");
+
+			}
+		});
+		
+		address_provinceTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				textFieldFocusGained(address_provinceTF, "Province");
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				textFieldFocusLost(address_provinceTF, "Province");
 
 			}
 		});
@@ -355,7 +443,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(working_hoursTF, working_hoursTF.getText());
+				textFieldFocusGained(working_hoursTF, "Working Hours");
 
 			}
 
@@ -371,7 +459,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(passwordTF, passwordTF.getText());
+				textFieldFocusGained(passwordTF, "Password");
 
 			}
 
@@ -387,7 +475,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(closing_daysTF, closing_daysTF.getText());
+				textFieldFocusGained(closing_daysTF, "Closing Days");
 
 			}
 
@@ -405,6 +493,7 @@ public class AdminShopFrame extends JFrame{
 	private void textFieldFocusGained(JTextField text_field, String string) {
 		
 		if (text_field.getText().equals(string)) {
+			
 			text_field.setText("");
 			text_field.setHorizontalAlignment(JTextField.LEFT);
 			
@@ -454,5 +543,98 @@ public class AdminShopFrame extends JFrame{
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+
+
+	public JTextField getNameTF() {
+		return nameTF;
+	}
+
+
+	public void setNameTF(JTextField nameTF) {
+		this.nameTF = nameTF;
+	}
+
+
+	public JTextField getAddress_nameTF() {
+		return address_nameTF;
+	}
+
+
+	public void setAddress_nameTF(JTextField address_nameTF) {
+		this.address_nameTF = address_nameTF;
+	}
+
+
+	public JTextField getAddress_civic_numberTF() {
+		return address_civic_numberTF;
+	}
+
+
+	public void setAddress_civic_numberTF(JTextField address_civic_numberTF) {
+		this.address_civic_numberTF = address_civic_numberTF;
+	}
+
+
+	public JTextField getAddress_capTF() {
+		return address_capTF;
+	}
+
+
+	public void setAddress_capTF(JTextField address_capTF) {
+		this.address_capTF = address_capTF;
+	}
+
+
+	public JTextField getAddress_cityTF() {
+		return address_cityTF;
+	}
+
+
+	public void setAddress_cityTF(JTextField address_cityTF) {
+		this.address_cityTF = address_cityTF;
+	}
+
+
+	public JTextField getAddress_provinceTF() {
+		return address_provinceTF;
+	}
+
+
+	public void setAddress_provinceTF(JTextField address_provinceTF) {
+		this.address_provinceTF = address_provinceTF;
+	}
+
+
+	public JTextField getWorking_hoursTF() {
+		return working_hoursTF;
+	}
+
+
+	public void setWorking_hoursTF(JTextField working_hoursTF) {
+		this.working_hoursTF = working_hoursTF;
+	}
+
+
+	public JTextField getPasswordTF() {
+		return passwordTF;
+	}
+
+
+	public void setPasswordTF(JTextField passwordTF) {
+		this.passwordTF = passwordTF;
+	}
+
+
+	public JTextField getClosing_daysTF() {
+		return closing_daysTF;
+	}
+
+
+	public void setClosing_daysTF(JTextField closing_daysTF) {
+		this.closing_daysTF = closing_daysTF;
+	}
+	
+	
+	
 	
 }

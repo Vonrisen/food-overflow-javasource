@@ -25,10 +25,7 @@ public class TableModelUtility {
 			row[2] = shop.getName();
 			row[3] = shop.getAddress();
 			row[4] = shop.getWorking_hours();
-			for(String s : shop.getClosing_days())
-			  formatted_closing_days+=s+", ";
-			if(formatted_closing_days.length()!=0)
-			row[5] = formatted_closing_days.substring(0, formatted_closing_days.length()-2);
+			row[5] = shop.getClosing_days();
 			model.addRow(row);
 		}
 		return;

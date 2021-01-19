@@ -13,17 +13,13 @@ public class Shop {
 	private String password;
 	private String working_hours;
 	private Address address;
-	private ArrayList<String>closing_days;
+	private String closing_days;
 	private ArrayList<Rider> employed_riders_list;
 	private ArrayList<Meal> meal_list;
 	
-	//COSTRUTTORE
-	public Shop()
-	{
-		
-	}
+	//COSTRUTTORE PER IL GET
 	public Shop(String id, String name, String password, String working_hours, Address address,
-			ArrayList<String>closing_days, ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
+			String closing_days, ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
 		
 		super();
 		this.id = id;
@@ -36,11 +32,25 @@ public class Shop {
 		this.meal_list = meal_list;
 	}
 
+	//COSTRUTTORE PER IL SET
 
+
+	public Shop(String name, String password, String working_hours, Address address, String closing_days,
+			ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
+		super();
+		this.name = name;
+		this.password = password;
+		this.working_hours = working_hours;
+		this.address = address;
+		this.closing_days = closing_days;
+		this.employed_riders_list = employed_riders_list;
+		this.meal_list = meal_list;
+	}
+
+	
 	public String getId() {
 		return id;
 	}
-
 
 	public String getName() {
 		return name;
@@ -82,12 +92,12 @@ public class Shop {
 	}
 
 
-	public ArrayList<String>getClosing_days() {
+	public String getClosing_days() {
 		return closing_days;
 	}
 
 
-	public void setClosing_days(ArrayList<String>closing_days) {
+	public void setClosing_days(String closing_days) {
 		this.closing_days = closing_days;
 	}
 

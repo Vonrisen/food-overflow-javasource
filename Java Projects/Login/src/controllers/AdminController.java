@@ -3,11 +3,14 @@ package controllers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.ShopDAO;
+import entities.Address;
 import entities.Customer;
 import entities.Shop;
 import gui.AdminCustomerFrame;
@@ -16,6 +19,7 @@ import gui.AdminFrame;
 import gui.AdminMealFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
+import utilities.InputUtility;
 import utilities.TableModelUtility;
 
 public class AdminController {
@@ -86,6 +90,22 @@ public class AdminController {
 		TableModelUtility table = new TableModelUtility();
 		table.initializeCustomerTable(admin_customer_frame, customer_list);
 		return;
+	}
+	
+	public void addShop(AdminShopFrame admin_shop_frame) 
+	{
+
+		InputUtility input_util = new InputUtility();
+		ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+		Shop shop = new Shop(admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
+							 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
+						     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
+		try {
+			shop_dao.insertShop(shop);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

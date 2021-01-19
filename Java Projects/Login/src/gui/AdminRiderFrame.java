@@ -81,6 +81,7 @@ public class AdminRiderFrame extends JFrame {
 
 	private void frameSetup() {
 		
+		this.setTitle("Admin Panel: Riders");
 		this.setSize(1280,720);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(640,500));

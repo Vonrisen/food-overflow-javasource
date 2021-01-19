@@ -12,4 +12,5 @@ public interface ShopDAO {
 	
 	public ArrayList<Shop> getAllShops() throws SQLException;
 	public boolean lookForShopByIdAndPassword(String id, String password) throws SQLException;
+	public int insertShop(Shop shop) throws SQLException;
 }

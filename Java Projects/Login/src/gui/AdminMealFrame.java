@@ -144,7 +144,7 @@ public class AdminMealFrame extends JFrame{
 	
 	private void frameSetup() {
 		
-		this.setTitle("Admin Panel: Meal");
+		this.setTitle("Admin Panel: Meals");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));

@@ -111,9 +111,9 @@ public class AdminCustomerFrame extends JFrame {
 	//Setup layout of the frame
 	private void frameSetup() {
 		
-		this.setTitle("Admin Panel: Customer");
+		this.setTitle("Admin Panel: Customers");
 		this.setSize(1280,720);
-		this.setMinimumSize(new Dimension(640,500));
+		this.setMinimumSize(new Dimension(800,500));
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;

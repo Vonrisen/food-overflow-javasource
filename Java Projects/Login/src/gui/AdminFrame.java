@@ -72,34 +72,17 @@ public class AdminFrame extends JFrame{
 		this.getContentPane().setLayout(gbl);
 		this.getContentPane().setBackground(background_color);
 		
-		customerJB.setIcon(customer_buttonIMG);
-		customerJB.setBorder(null);
-		customerJB.setSize(760,400);
-		customerJB.setPreferredSize(new Dimension(760,400));
-		customerJB.setFocusable(false);
-		customerJB.setContentAreaFilled(false);
+		setupButton(customerJB, customer_buttonIMG);
 
-		shopJB.setPreferredSize(new Dimension(760,400));
-		shopJB.setIcon(shop_buttonIMG);
-		shopJB.setBorder(null);
-		shopJB.setFocusable(false);
-		shopJB.setContentAreaFilled(false);
+		setupButton(shopJB, shop_buttonIMG);
 		
-		riderJB.setPreferredSize(new Dimension(760,400));
-		riderJB.setIcon(rider_buttonIMG);
-		riderJB.setBorder(null);
-		riderJB.setFocusable(false);
-		riderJB.setContentAreaFilled(false);
+		setupButton(riderJB, rider_buttonIMG);
 
-		mealJB.setPreferredSize(new Dimension(760,400));
-		mealJB.setIcon(meal_buttonIMG);
-		mealJB.setBorder(null);
-		mealJB.setFocusable(false);
-		mealJB.setContentAreaFilled(false);
+		setupButton(mealJB, meal_buttonIMG);
 		
 		//Impostazione GridBagLayout per i JButton
 		
-		gcon.insets = new Insets(0,50,0,50);
+		gcon.insets = new Insets(70,115,70,115);
 		gcon.weightx = 1;
 		gcon.weighty = 1;
 		gcon.fill = GridBagConstraints.BOTH;
@@ -174,4 +157,14 @@ public class AdminFrame extends JFrame{
 		});
 		
 	}
+	
+	private void setupButton(JButton button, ImageIcon image) {
+		
+		button.setIcon(image);
+		button.setBorder(null);
+		button.setFocusable(false);
+		button.setContentAreaFilled(false);
+		
+	}
+	
 }
