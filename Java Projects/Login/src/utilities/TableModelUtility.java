@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import entities.Customer;
+import entities.Meal;
 import entities.Shop;
 import gui.AdminCustomerFrame;
+import gui.AdminMealFrame;
 import gui.AdminShopFrame;
 
 public class TableModelUtility {
@@ -53,6 +55,21 @@ public class TableModelUtility {
 			model.addRow(row);
 		}
 		return;
+	}
+	
+	public void initializeMealTable(AdminMealFrame admin_meal_frame, ArrayList<Meal> meal_list) {
+		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		Object[] row = new Object[5];
+		DefaultTableModel model = new DefaultTableModel(columns, 0);
+		admin_meal_frame.getTable().setModel(model);
+		for(Meal meal : meal_list) {
+			row[0] = meal.getName();
+			row[1] = meal.getCategory();
+			row[2] = meal.getPrice();
+			row[3] = meal.getIngredients();
+			row[4] = meal.getAllergen_list();
+			model.addRow(row);
+		}
 	}
 
 }

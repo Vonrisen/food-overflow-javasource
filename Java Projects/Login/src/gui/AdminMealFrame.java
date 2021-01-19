@@ -433,5 +433,53 @@ public class AdminMealFrame extends JFrame{
 		}
 		
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public JTextField getNameTF() {
+		return nameTF;
+	}
+
+	public void setNameTF(JTextField nameTF) {
+		this.nameTF = nameTF;
+	}
+
+	public JTextField getPriceTF() {
+		return priceTF;
+	}
+
+	public void setPriceTF(JTextField priceTF) {
+		this.priceTF = priceTF;
+	}
+
+	public JTextField getIngredientsTF() {
+		return ingredientsTF;
+	}
+
+	public void setIngredientsTF(JTextField ingredientsTF) {
+		this.ingredientsTF = ingredientsTF;
+	}
+
+	public JComboBox<Object> getDishJCB() {
+		return dishJCB;
+	}
+
+	public void setDishJCB(JComboBox<Object> dishJCB) {
+		this.dishJCB = dishJCB;
+	}
+
+	public JCheckBox[] getAllergens() {
+		return allergens;
+	}
+
+	public void setAllergens(JCheckBox[] allergens) {
+		this.allergens = allergens;
+	}
 	
 }

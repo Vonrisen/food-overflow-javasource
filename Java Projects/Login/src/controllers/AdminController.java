@@ -7,11 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import daos_implementation.CustomerDAOPostgresImplementation;
+import daos_implementation.MealDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
+import daos_interfaces.MealDAO;
 import daos_interfaces.ShopDAO;
 import entities.Address;
 import entities.Customer;
+import entities.Meal;
 import entities.Shop;
 import gui.AdminCustomerFrame;
 import gui.AdminCustomerPanelFrame;
@@ -46,6 +49,7 @@ public class AdminController {
 	public void openAdminMealFrame()
 	{
 		AdminMealFrame admin_meal_frame = new AdminMealFrame();
+		initializeAdminMealFrameTable(admin_meal_frame);
 		admin_meal_frame.setVisible(true);
 	}
 	
@@ -106,6 +110,26 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void initializeAdminMealFrameTable(AdminMealFrame admin_meal_frame) {
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		ArrayList<Meal> meal_list = new ArrayList<Meal>();
+		try {
+			meal_list = meal_dao.getAllMeals();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		TableModelUtility table = new TableModelUtility();
+		table.initializeMealTable(admin_meal_frame, meal_list);
+	}
+	
+	public void addMeal(AdminMealFrame admin_meal_frame) {
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		ArrayList<String> allergens = new ArrayList<String>();
+		for()
+		Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), admin_meal_frame.getPriceTF().getText(), 
+				admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem(), ArrayList<String>allergen_list)
 	}
 	
 	
