@@ -3,6 +3,7 @@ package controllers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -127,9 +128,21 @@ public class AdminController {
 	public void addMeal(AdminMealFrame admin_meal_frame) {
 		MealDAO meal_dao = new MealDAOPostgresImplementation();
 		ArrayList<String> allergens = new ArrayList<String>();
-		for()
-		Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), admin_meal_frame.getPriceTF().getText(), 
-				admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem(), ArrayList<String>allergen_list)
+		for(JCheckBox cb : admin_meal_frame.getAllergens()) {
+			if(cb.isSelected())
+				allergens.add(cb.getText());
+		}
+		Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
+				admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
+		
+		try {
+			int m = meal_dao.insertMeal(meal);
+			if(m<1)
+				JOptionPane.showMessageDialog(null, "Errore durante l'inserimento. Riprovare.","Errore",JOptionPane.ERROR_MESSAGE);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	

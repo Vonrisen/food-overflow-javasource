@@ -39,14 +39,12 @@ public class InputUtility {
 	}
 	
 	
-	public String closingDaysToTokenizedString(ArrayList<String>closing_days, String delimiters)
-	{
-		String tokenized_closing_days = "";
-		for(int i=0; i<closing_days.size(); i++)
-		{
-			tokenized_closing_days+=closing_days.get(i)+", ";
-		}
-		return tokenized_closing_days.substring(0, tokenized_closing_days.length()-2);
+	public String arrayListToTokenizedString(ArrayList<String>strings, String delimiters){
+	String tokenized_string = "";
+	for(int i=0; i<strings.size(); i++){
+	tokenized_string+=strings.get(i)+", ";
+	}
+	return tokenized_string.substring(0, tokenized_string.length()-2);
 	}
 	
 	

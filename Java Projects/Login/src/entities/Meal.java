@@ -18,6 +18,7 @@ public class Meal {
 		this.name = name;
 		this.price = price;
 		this.ingredients = ingredients;
+		this.category = category;
 		this.allergen_list = allergen_list;
 	}
 
@@ -60,6 +61,12 @@ public class Meal {
 
 	public void setAllergen_list(ArrayList<String>allergen_list) {
 		this.allergen_list = allergen_list;
+	}
+
+	@Override
+	public String toString() {
+		return "Meal [name=" + name + ", price=" + price + ", ingredients=" + ingredients + ", category=" + category
+				+ ", allergen_list=" + allergen_list + "]";
 	}
 
 }

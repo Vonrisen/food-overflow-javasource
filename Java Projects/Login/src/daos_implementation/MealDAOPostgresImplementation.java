@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import daos_interfaces.MealDAO;
 import db_connection.DBconnection;
 import entities.Meal;
+import utilities.InputUtility;
 
 public class MealDAOPostgresImplementation implements MealDAO {
 
@@ -28,11 +29,11 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			
 			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
 			
-			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL");
+			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category");
 			
-			get_allergens_of_a_meal_PS = connection.prepareCall("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
+			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
 			
-			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?");
+			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
 			
 			add_allergens_CS = connection.prepareCall("CALL addallergens(?,?)");
 			
@@ -87,20 +88,19 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		insert_meal_PS.setFloat(3, meal.getPrice());
 		insert_meal_PS.setString(4, meal.getIngredients());
 		int r = insert_meal_PS.executeUpdate();
-		
 		if(meal.getAllergen_list().size()>0) {
-			if(addAllergens(meal)==0)
-				JOptionPane.showMessageDialog(null, "Errore durante l'inserimento degli allergeni. Riprovare.","Errore",JOptionPane.ERROR_MESSAGE);
+			addAllergens(meal);
 		}
 		
 		return r;
 	}
 	
-	public int addAllergens(Meal meal) throws SQLException {
-		
+	public void addAllergens(Meal meal) throws SQLException {
+		InputUtility input_utility = new InputUtility();
 		add_allergens_CS.setString(1, meal.getName());
-		add_allergens_CS.setString(2, meal.getAllergen_list().toString());
-		return add_allergens_CS.executeUpdate();
+		add_allergens_CS.setString(2, input_utility.arrayListToTokenizedString(meal.getAllergen_list(), ", "));
+		add_allergens_CS.executeUpdate();
+
 	}
 
 }

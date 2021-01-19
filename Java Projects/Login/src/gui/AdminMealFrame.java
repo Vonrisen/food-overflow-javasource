@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -9,7 +10,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -256,6 +259,9 @@ public class AdminMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//INSERT
+				AdminController admin_controller = new AdminController();
+				admin_controller.addMeal(AdminMealFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -481,5 +487,6 @@ public class AdminMealFrame extends JFrame{
 	public void setAllergens(JCheckBox[] allergens) {
 		this.allergens = allergens;
 	}
+
 	
 }

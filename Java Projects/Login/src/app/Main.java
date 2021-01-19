@@ -11,6 +11,7 @@ public class Main {
 		LoginController login_controller = new LoginController();
 		login_controller.openLoginFrame();
 		
+		
 	}
 	
 }
