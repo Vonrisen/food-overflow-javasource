@@ -73,34 +73,31 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
 			rs2 = get_allergens_of_a_meal_PS.executeQuery();
 			allergens = new ArrayList<String>();
-			while(rs2.next()){
+			while(rs2.next())
 				allergens.add(rs2.getString("allergen_name"));
-			}
 			meal_list.add(new Meal(rs1.getString("name"),rs1.getFloat("price"),rs1.getString("ingredients"),rs1.getString("category"),allergens));
 		}
 		return meal_list;
 	}
 	
-	public int insertMeal(Meal meal) throws SQLException {
+	public void insertMeal(Meal meal) throws SQLException {
 		
 		insert_meal_PS.setString(1, meal.getCategory());
 		insert_meal_PS.setString(2, meal.getName());
 		insert_meal_PS.setFloat(3, meal.getPrice());
 		insert_meal_PS.setString(4, meal.getIngredients());
-		int r = insert_meal_PS.executeUpdate();
-		if(meal.getAllergen_list().size()>0) {
-			addAllergens(meal);
-		}
-		
-		return r;
+		insert_meal_PS.executeUpdate();
+		if(meal.getAllergen_list().size()>0)
+			associateAllergensToMeal(meal);
+		return ;
 	}
 	
-	public void addAllergens(Meal meal) throws SQLException {
+	public void associateAllergensToMeal(Meal meal) throws SQLException {
 		InputUtility input_utility = new InputUtility();
 		add_allergens_CS.setString(1, meal.getName());
 		add_allergens_CS.setString(2, input_utility.arrayListToTokenizedString(meal.getAllergen_list(), ", "));
 		add_allergens_CS.executeUpdate();
-
+		return;
 	}
 
 }

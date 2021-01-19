@@ -11,5 +11,5 @@ import entities.Customer;
 public interface CustomerDAO {
 	
 	public ArrayList<Customer>getAllCustomers() throws SQLException;
-	public int insertCustomer(Customer customer) throws SQLException;
+	public void insertCustomer(Customer customer) throws SQLException;
 }

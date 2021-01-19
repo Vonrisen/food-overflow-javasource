@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
 import gui_support.RoundJTextField;
@@ -81,6 +82,8 @@ public class AdminMealFrame extends JFrame{
 	private JTextField nameTF;
 	private JTextField priceTF;
 	private JTextField ingredientsTF;
+	
+	DefaultTableModel model;
 	
 	private Color background_color = new Color(0xf3ecd7);
 
@@ -151,6 +154,10 @@ public class AdminMealFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
+
+		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		model = new DefaultTableModel(columns, 0);
+		table.setModel(model);
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -487,6 +494,15 @@ public class AdminMealFrame extends JFrame{
 	public void setAllergens(JCheckBox[] allergens) {
 		this.allergens = allergens;
 	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
+	}
+	
 
 	
 }

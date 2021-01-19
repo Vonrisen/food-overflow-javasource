@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
 import gui_support.RoundJTextField;
@@ -60,6 +62,8 @@ public class AdminCustomerFrame extends JFrame {
 	
 	private JTextField emailTF;
 	private JTextField passwordTF;
+	
+	DefaultTableModel model;
 	
 	private Color background_color = new Color(0xf3ecd7);
 
@@ -114,6 +118,9 @@ public class AdminCustomerFrame extends JFrame {
 		this.setTitle("Admin Panel: Customers");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
+		String[] columns = {"Name", "Surname", "Birth date", "Birth place", "gender", "cellphone", "address", "email", "password"};
+	    model = new DefaultTableModel(columns, 0);
+		table.setModel(model);
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -344,6 +351,15 @@ public class AdminCustomerFrame extends JFrame {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
+	}
+	
 	
 
 }

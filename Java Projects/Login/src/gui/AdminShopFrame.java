@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -31,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
 import gui_support.RoundJTextField;
+
 
 public class AdminShopFrame extends JFrame{
 
@@ -81,7 +83,9 @@ public class AdminShopFrame extends JFrame{
 	private JTextField working_hoursTF;
 	private JTextField passwordTF;
 	private JTextField closing_daysTF;
-
+	
+	private DefaultTableModel model; 
+ 
 	private Color background_color = new Color(0xf3ecd7);
 	
 
@@ -148,11 +152,16 @@ public class AdminShopFrame extends JFrame{
 	
 	//Frame Setup
 	private void frameSetup() {
+
+		String[]columns = {"ID", "Password", "Name", "Address", "Working Hours", "Closing Days"};
+		model = new DefaultTableModel(columns, 0);
+		table.setModel(model);
 		
 		this.setTitle("Admin Panel: Shops");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -296,12 +305,23 @@ public class AdminShopFrame extends JFrame{
 			}
 		});
 		
+		
+		
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				AdminController admin_controller = new AdminController();
+				if(table.getSelectedRow() != -1) {
+		               // se lo shop e' stato eliminato dal database, allora cancella la riga dalla jtable
+					if( admin_controller.shopRemoved(AdminShopFrame.this))
+					{
+		               model.removeRow(table.getSelectedRow());
+		               JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
+					}
+					else
+						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified shop");
 				
-				//DELETE
-				
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -316,6 +336,7 @@ public class AdminShopFrame extends JFrame{
 				
 			}
 		});
+		
 		
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -632,6 +653,16 @@ public class AdminShopFrame extends JFrame{
 
 	public void setClosing_daysTF(JTextField closing_daysTF) {
 		this.closing_daysTF = closing_daysTF;
+	}
+
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 	
 	

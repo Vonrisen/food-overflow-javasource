@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import entities.Address;
 
@@ -41,9 +39,10 @@ public class InputUtility {
 	
 	public String arrayListToTokenizedString(ArrayList<String>strings, String delimiters){
 	String tokenized_string = "";
-	for(int i=0; i<strings.size(); i++){
-	tokenized_string+=strings.get(i)+", ";
-	}
+	for(String s : strings)
+		tokenized_string+=s+", ";
+	if(tokenized_string.equals(""))
+		return null;
 	return tokenized_string.substring(0, tokenized_string.length()-2);
 	}
 	

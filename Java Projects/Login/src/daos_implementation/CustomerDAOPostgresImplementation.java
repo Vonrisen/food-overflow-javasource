@@ -54,7 +54,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		return customer_list;
 	}
 	
-	public int insertCustomer(Customer customer) throws SQLException
+	public void insertCustomer(Customer customer) throws SQLException
 	{
 		InputUtility input_util = new InputUtility();
 		insert_customer_PS.setString(1, customer.getCf());
@@ -67,7 +67,8 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.setString(8, customer.getCellphone());
 		insert_customer_PS.setString(9, customer.getEmail());
 		insert_customer_PS.setString(10, customer.getPassword());
-		return insert_customer_PS.executeUpdate();
+		insert_customer_PS.executeUpdate();
+		return ;
 	}
 
 	
