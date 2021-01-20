@@ -5,9 +5,11 @@ import javax.swing.table.DefaultTableModel;
 
 import entities.Customer;
 import entities.Meal;
+import entities.Rider;
 import entities.Shop;
 import gui.AdminCustomerFrame;
 import gui.AdminMealFrame;
+import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
 
 public class TableModelUtility {
@@ -25,7 +27,25 @@ public class TableModelUtility {
 			row[5] = shop.getClosing_days();
 			admin_shop_frame.getModel().addRow(row);
 		}
-		return;
+	}
+	
+	public void initializeRiderTable(AdminRiderFrame admin_rider_frame,  ArrayList<Rider> rider_list)
+	{
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[10];
+		for(Rider rider : rider_list) {
+			row[0] = rider.getCf();
+			row[1] = rider.getName();
+			row[2] = rider.getSurname();
+			row[3] = date_util.formatDate(rider.getBirth_date());
+			row[4] = rider.getBirth_place();
+			row[5] = rider.getAddress().toString();
+			row[6] = rider.getGender();
+			row[7] = rider.getCellphone();
+			row[8] = rider.getVehicle();
+			row[9] = rider.getWorking_hours();
+			admin_rider_frame.getModel().addRow(row);
+		}
 	}
 	
 	public void initializeCustomerTable(AdminCustomerFrame admin_customer_frame,  ArrayList<Customer> customer_list)
@@ -46,7 +66,6 @@ public class TableModelUtility {
 			row[9] = customer.getPassword();
 			admin_customer_frame.getModel().addRow(row);
 		}
-		return;
 	}
 	
 	public void initializeMealTable(AdminMealFrame admin_meal_frame, ArrayList<Meal> meal_list) {

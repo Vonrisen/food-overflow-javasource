@@ -20,6 +20,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -74,7 +75,7 @@ public class AdminMealFrame extends JFrame{
 	private JLabel label;
 	private JLabel allergensLB;
 	
-	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte", 
+	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
 										"Frutta a guscio", "Sedano", "Senape", "Sesamo", " An. solforosa e solfiti", "Lupini", "Molluschi"};
 	
 	private JCheckBox[] allergens = new JCheckBox[14];
@@ -265,10 +266,8 @@ public class AdminMealFrame extends JFrame{
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//INSERT
 				AdminController admin_controller = new AdminController();
 				admin_controller.addMeal(AdminMealFrame.this);
-				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -288,8 +287,17 @@ public class AdminMealFrame extends JFrame{
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-				//DELETE
+				AdminController admin_controller = new AdminController();
+				if(table.getSelectedRow() != -1) {
+		               // se il meal e' stato eliminato dal database, allora cancella la riga dalla jtable
+					if(admin_controller.mealRemoved(AdminMealFrame.this))
+					{
+		               model.removeRow(table.getSelectedRow());
+		               JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
+					}
+					else
+						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified meal");
+				}
 				
 			}
 			@Override

@@ -9,13 +9,16 @@ import javax.swing.JOptionPane;
 
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.MealDAOPostgresImplementation;
+import daos_implementation.RiderDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
+import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import entities.Address;
 import entities.Customer;
 import entities.Meal;
+import entities.Rider;
 import entities.Shop;
 import gui.AdminCustomerFrame;
 import gui.AdminCustomerPanelFrame;
@@ -44,6 +47,7 @@ public class AdminController {
 	public void openAdminRiderFrame()
 	{
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
+		initializeAdminRiderFrameTable(admin_rider_frame);
 		admin_rider_frame.setVisible(true);
 	}
 	
@@ -79,7 +83,20 @@ public class AdminController {
 		}
 		TableModelUtility table = new TableModelUtility();
 		table.initializeShopTable(admin_shop_frame, shop_list);
-		return;
+	}
+	
+	public void initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame)
+	{
+		
+		RiderDAO rider_dao = new RiderDAOPostgresImplementation();
+		ArrayList<Rider>rider_list = new ArrayList<Rider>();
+		try {
+			rider_list = rider_dao.getAllRiders();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		TableModelUtility table = new TableModelUtility();
+		table.initializeRiderTable(admin_rider_frame, rider_list);
 	}
 	
 	public void initializeAdminCustomerFrameTable(AdminCustomerFrame admin_customer_frame)
@@ -94,7 +111,24 @@ public class AdminController {
 		}
 		TableModelUtility table = new TableModelUtility();
 		table.initializeCustomerTable(admin_customer_frame, customer_list);
-		return;
+	}
+	ArrayList<Meal> meal_list = new ArrayList<Meal>();
+	public void initializeAdminMealFrameTable(AdminMealFrame admin_meal_frame) {
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		
+		try {
+			meal_list = meal_dao.getAllMeals();
+			if(meal_list.size()==0)
+				JOptionPane.showMessageDialog(null, "Non ci sono shop da visualizzare","Errore",JOptionPane.ERROR_MESSAGE);
+			else
+			{
+				TableModelUtility table = new TableModelUtility();
+				table.initializeMealTable(admin_meal_frame, meal_list);
+			}
+		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 
@@ -112,24 +146,6 @@ public class AdminController {
 		
 	}
 	
-	public void initializeAdminMealFrameTable(AdminMealFrame admin_meal_frame) {
-		MealDAO meal_dao = new MealDAOPostgresImplementation();
-		ArrayList<Meal> meal_list = new ArrayList<Meal>();
-		try {
-			meal_list = meal_dao.getAllMeals();
-			if(meal_list.size()==0)
-				JOptionPane.showMessageDialog(null, "Non ci sono shop da visualizzare","Errore",JOptionPane.ERROR_MESSAGE);
-			else
-			{
-				TableModelUtility table = new TableModelUtility();
-				table.initializeMealTable(admin_meal_frame, meal_list);
-			}
-		}catch(SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-		}
-		
-	}
-	
 	public void addMeal(AdminMealFrame admin_meal_frame) {
 		MealDAO meal_dao = new MealDAOPostgresImplementation();
 		ArrayList<String> allergens = new ArrayList<String>();
@@ -142,6 +158,7 @@ public class AdminController {
 		
 		try {
 			meal_dao.insertMeal(meal);
+			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -162,5 +179,43 @@ public class AdminController {
 		return true;
 	}
 	
+	public boolean mealRemoved(AdminMealFrame admin_meal_frame) {
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		String mealName = admin_meal_frame.getTable().getModel().getValueAt(admin_meal_frame.getTable().getSelectedRow(), 0).toString();
+		try {
+			meal_dao.deleteMeal(mealName);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean mealUpdated(AdminMealFrame admin_meal_frame) {
+		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		String mealName = admin_meal_frame.getTable().getModel().getValueAt(admin_meal_frame.getTable().getSelectedRow(), 0).toString();
+		Meal meal=null;
+		for(Meal m: meal_list) {
+			if(m.getName()==mealName)
+				meal=m;
+		}
+		ArrayList<String> allergens = new ArrayList<String>();
+		for(JCheckBox cb : admin_meal_frame.getAllergens()) {
+			if(cb.isSelected())
+				allergens.add(cb.getText());
+		}
+		meal.setName(admin_meal_frame.getNameTF().getText());
+		meal.setCategory(admin_meal_frame.getDishJCB().getSelectedItem().toString());
+		meal.setPrice(Float.parseFloat(admin_meal_frame.getPriceTF().getText()));
+		meal.setIngredients(admin_meal_frame.getIngredientsTF().getText());
+		meal.setAllergen_list(allergens);
+		try {
+			meal_dao.updateMeal(meal, mealName);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
 	
 }

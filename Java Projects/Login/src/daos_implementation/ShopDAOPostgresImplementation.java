@@ -94,7 +94,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.setString(4, shop.getClosing_days());
 		insert_shop_PS.setString(5, shop.getPassword());
 		insert_shop_PS.executeUpdate();
-		return;
 		
 	}
 
@@ -102,6 +101,5 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	public void deleteShop(String shop_id) throws SQLException {
 		delete_shop_PS.setString(1, shop_id);
 		delete_shop_PS.executeQuery();
-		return;
 	}
 }

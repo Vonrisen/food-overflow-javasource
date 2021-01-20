@@ -118,7 +118,7 @@ public class AdminCustomerFrame extends JFrame {
 		this.setTitle("Admin Panel: Customers");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
-		String[] columns = {"Name", "Surname", "Birth date", "Birth place", "gender", "cellphone", "address", "email", "password"};
+		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Email", "Password"};
 	    model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
 		

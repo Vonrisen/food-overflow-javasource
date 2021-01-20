@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
 
@@ -44,6 +45,7 @@ public class AdminRiderFrame extends JFrame {
 	
 	private Color background_color = new Color(0xf3ecd7);
 	
+	DefaultTableModel model;
 	
 	public AdminRiderFrame() {
 		
@@ -80,6 +82,10 @@ public class AdminRiderFrame extends JFrame {
 	}
 
 	private void frameSetup() {
+		
+		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours"};
+	    model = new DefaultTableModel(columns, 0);
+		table.setModel(model);
 		
 		this.setTitle("Admin Panel: Riders");
 		this.setSize(1280,720);
@@ -161,6 +167,22 @@ public class AdminRiderFrame extends JFrame {
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 		
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 
 }
