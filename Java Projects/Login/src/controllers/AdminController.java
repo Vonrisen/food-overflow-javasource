@@ -140,6 +140,7 @@ public class AdminController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		shop_list.add(shop);
 		return;
 	}
 	
@@ -149,14 +150,22 @@ public class AdminController {
 			if(cb.isSelected())
 				allergens.add(cb.getText());
 		}
-		Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
-				admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
+		Meal meal=null;
+		try {
+			meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
+					admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
+		}catch(NumberFormatException f) {
+			JOptionPane.showMessageDialog(null, "Prezzo non valido","Errore",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		meal_list.add(meal);
 		
 		try {
 			meal_dao.insertMeal(meal);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		admin_meal_frame.getModel().fireTableRowsDeleted(0, meal_list.size());
 		
 	}
 	
@@ -180,6 +189,7 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+		shop_list.remove(i);
 		return true;
 	}
 	
@@ -195,13 +205,13 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, "Nessun Meal trovato","Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
 		try {
 			meal_dao.deleteMeal(meal_list.get(i));
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+		meal_list.remove(i);
 		return true;
 	}
 	
@@ -223,7 +233,7 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
+		customer_list.remove(i);
 		return true;
 	}
 
