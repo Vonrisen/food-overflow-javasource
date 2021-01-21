@@ -202,7 +202,7 @@ public class AdminCustomerFrame extends JFrame {
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//UPDATE
+				admin_controller.customerUpdated(AdminCustomerFrame.this);
 
 			}
 			@Override
@@ -223,7 +223,7 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//DELETE
+				admin_controller.customerRemoved(AdminCustomerFrame.this);
 				
 			}
 			@Override
@@ -360,6 +360,22 @@ public class AdminCustomerFrame extends JFrame {
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
+	}
+
+	public JTextField getEmailTF() {
+		return emailTF;
+	}
+
+	public void setEmailTF(JTextField emailTF) {
+		this.emailTF = emailTF;
+	}
+
+	public JTextField getPasswordTF() {
+		return passwordTF;
+	}
+
+	public void setPasswordTF(JTextField passwordTF) {
+		this.passwordTF = passwordTF;
 	}
 	
 	

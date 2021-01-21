@@ -288,15 +288,22 @@ public class AdminMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				if(table.getSelectedRow() != -1) {
-		               // se il meal e' stato eliminato dal database, allora cancella la riga dalla jtable
-					if(admin_controller.mealRemoved(AdminMealFrame.this))
-					{
-		               model.removeRow(table.getSelectedRow());
-		               JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
-					}
-					else
-						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified meal");
+//				if(table.getSelectedRow() != -1) {
+//		               // se il meal e' stato eliminato dal database, allora cancella la riga dalla jtable
+//					if(admin_controller.mealRemoved(AdminMealFrame.this))
+//					{
+//		               model.removeRow(table.getSelectedRow());
+//		               JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
+//					}
+//					else
+//						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified meal");
+//				}
+				try {
+					admin_controller.mealRemoved(AdminMealFrame.this);
+					model.removeRow(table.getSelectedRow());
+		            JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
+				}catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified meal");
 				}
 				
 			}

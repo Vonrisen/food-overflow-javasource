@@ -90,7 +90,7 @@ public class AdminRiderFrame extends JFrame {
 		
 		this.setTitle("Admin Panel: Riders");
 		this.setSize(1280,720);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(640,500));
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -143,7 +143,7 @@ public class AdminRiderFrame extends JFrame {
 				
 				//Apre AdminFrame
 				AdminRiderFrame.this.dispose();
-				admin_controller.openAdminShopFrame();
+//				admin_controller.openAdminShopFrame();
 			
 			}
 			@Override

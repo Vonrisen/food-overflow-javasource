@@ -367,7 +367,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-//			admin_controller.openAdminRiderFrame();
+			admin_controller.openAdminRiderFrame(AdminShopFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

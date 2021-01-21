@@ -41,6 +41,7 @@ public class LoginController{
 		else
 		{
 			try {
+				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				access_succeded = shop_dao.lookForShopByIdAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
 				if(access_succeded)
 				{

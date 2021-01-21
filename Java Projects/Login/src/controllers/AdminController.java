@@ -21,6 +21,7 @@ import entities.Shop;
 import gui.AdminCustomerFrame;
 import gui.AdminFrame;
 import gui.AdminMealFrame;
+import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
 import utilities.InputUtility;
 import utilities.TableModelUtility;
@@ -39,10 +40,9 @@ public class AdminController {
 	private List<String> allergens = new ArrayList<String>();
 	private TableModelUtility table = new TableModelUtility();
 	
-	public  AdminController()
-	{
-		
+	public  AdminController(){	
 	}
+	
 	public void openAdminFrame()
 	{
 		AdminFrame admin_frame = new AdminFrame();
@@ -57,12 +57,12 @@ public class AdminController {
 	    return;
 	}
 	
-//	public void openAdminRiderFrame()
-//	{
-//		AdminRiderFrame admin_rider_frame = new AdminRiderFrame(this);
-//		initializeAdminRiderFrameTable(admin_rider_frame);
-//		admin_rider_frame.setVisible(true);
-//	}
+	public void openAdminRiderFrame(AdminShopFrame admin_shop_frame)
+	{
+		AdminRiderFrame admin_rider_frame = new AdminRiderFrame(this);
+		initializeAdminRiderFrameTable(admin_shop_frame, admin_rider_frame);
+		admin_rider_frame.setVisible(true);
+	}
 	
 	public void openAdminMealFrame()
 	{
@@ -100,30 +100,16 @@ public class AdminController {
 		return;
 	}
 	
-//	public void initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame)
-//	{
-//
-//		try {
-//			rider_list = rider_dao.getAllRiders();
-//			rider_list = rider_dao.getAllRiders();
-//		} catch (SQLException e) {
-//			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-//		}
-//		table.initializeRiderTable(admin_rider_frame, rider_list);
-//		return;
-//	}
-	
-	public void addShop(AdminShopFrame admin_shop_frame) 
+	public void initializeAdminRiderFrameTable(AdminShopFrame admin_shop_frame, AdminRiderFrame admin_rider_frame)
 	{
-
-		Shop shop = new Shop(admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
-							 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
-						     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
+		int selected_row = admin_shop_frame.getTable().getSelectedRow();
+		String shop_id = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 		try {
-			shop_dao.insertShop(shop);
+			rider_list = rider_dao.getRidersOfAShopByShopId(shop_id);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		table.initializeRiderTable(admin_rider_frame, rider_list);
 		return;
 	}
 	
@@ -138,6 +124,20 @@ public class AdminController {
 				table.initializeMealTable(admin_meal_frame, meal_list);
 			}
 		}catch(SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		return;
+	}
+	
+	public void addShop(AdminShopFrame admin_shop_frame) 
+	{
+
+		Shop shop = new Shop(admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
+							 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
+						     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
+		try {
+			shop_dao.insertShop(shop);
+		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		return;
@@ -168,7 +168,13 @@ public class AdminController {
 		int i = 0;
 		try {
 			while(!shop_list.get(i).getId().equals(shop_id_to_remove))
-				i++;
+			i++;
+		}catch (IndexOutOfBoundsException in) {
+			JOptionPane.showMessageDialog(null, "Nessuno Shop trovato","Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		try {
 			shop_dao.deleteShop(shop_list.get(i));
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
@@ -177,16 +183,100 @@ public class AdminController {
 		return true;
 	}
 	
-
 	public boolean mealRemoved(AdminMealFrame admin_meal_frame)
 	{
 		int selected_row = admin_meal_frame.getTable().getSelectedRow();
 		String name_of_meal_to_delete = admin_meal_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
 		int i = 0;
-		while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
-			i++;
+		try {
+			while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
+				i++;
+		}catch (IndexOutOfBoundsException in) {
+			JOptionPane.showMessageDialog(null, "Nessun Meal trovato","Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
 		try {
 			meal_dao.deleteMeal(meal_list.get(i));
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean customerRemoved(AdminCustomerFrame admin_customer_frame) {
+		
+		String email = JOptionPane.showInputDialog("Inserisci l'email dell'utente che vuoi eliminare");
+		int i=0;
+		try {
+			while(!customer_list.get(i).getEmail().equals(email))
+				i++;
+		}catch (IndexOutOfBoundsException in) {
+			JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questa email: "+email,"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		try {
+			customer_dao.deleteCustomer(customer_list.get(i));
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		return true;
+	}
+
+	public boolean customerUpdated(AdminCustomerFrame admin_customer_frame) {
+		String cellphone_of_customer_to_update = JOptionPane.showInputDialog("Inserisci il numero di cellullare dell'utente che vuoi modificare");
+		String new_email = admin_customer_frame.getEmailTF().getText();
+		String new_password = admin_customer_frame.getPasswordTF().getText();
+		int i=0;
+		
+		try {
+			while(!customer_list.get(i).getCellphone().equals(cellphone_of_customer_to_update))
+				i++;
+		}catch (IndexOutOfBoundsException in) {
+			JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questo numero di cellulare: "+cellphone_of_customer_to_update,"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		if(new_email.equals("E-Mail"))
+			new_email = customer_list.get(i).getEmail();
+			
+		if(new_password.equals("Password"))
+			new_password = customer_list.get(i).getPassword();
+		
+		customer_list.get(i).setEmail(new_email);
+		customer_list.get(i).setPassword(new_password);
+		
+		try {
+			customer_dao.updateCustomerFromAdmin(customer_list.get(i), cellphone_of_customer_to_update);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean aggiornaMeal(AdminMealFrame admin_meal_frame) {
+		//da provare
+		int selected_row = admin_meal_frame.getTable().getSelectedRow();
+		String price_of_meal_to_update = admin_meal_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+		int i = 0;
+		try {
+			while(!meal_list.get(i).getName().equals(price_of_meal_to_update))
+				i++;
+		}catch (IndexOutOfBoundsException in) {
+			JOptionPane.showMessageDialog(null, "Nessun Meal trovato","Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		meal_list.get(i).setPrice(Float.parseFloat(price_of_meal_to_update));
+		
+		try {
+			meal_dao.updateMeal(meal_list.get(i));
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
