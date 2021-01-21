@@ -10,6 +10,6 @@ public interface MealDAO {
 	public List<Meal>getMealsOfAShopByShopId(String shop_id) throws SQLException;
 	public List<Meal> getAllMeals() throws SQLException;
 	public void insertMeal(Meal meal) throws SQLException;
-	public void deleteMeal(String meal_name) throws SQLException;
+	public void deleteMeal(Meal meal) throws SQLException;
 
 }

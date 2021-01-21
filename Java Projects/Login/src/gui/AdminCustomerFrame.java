@@ -66,11 +66,13 @@ public class AdminCustomerFrame extends JFrame {
 	DefaultTableModel model;
 	
 	private Color background_color = new Color(0xf3ecd7);
-
-	public AdminCustomerFrame() {
+	AdminController admin_controller;
+	public AdminCustomerFrame(AdminController admin_controller) {
+		
 		initialize();
 		frameSetup();
 		events();
+		this.admin_controller=admin_controller;
 	}
 
 	//Initialize variables

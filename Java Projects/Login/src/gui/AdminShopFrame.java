@@ -88,17 +88,17 @@ public class AdminShopFrame extends JFrame{
 	private JTextField closing_daysTF;
 	
 	private DefaultTableModel model; 
- 
+	private AdminController admin_controller;
 	private Color background_color = new Color(0xf3ecd7);
 	
 
 	//Create the application
-	public AdminShopFrame() {
+	public AdminShopFrame(AdminController admin_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.admin_controller = admin_controller;
 	}
 	
 
@@ -273,7 +273,6 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-			AdminController admin_controller = new AdminController();
 			admin_controller.addShop(AdminShopFrame.this);
 			}
 			@Override
@@ -295,7 +294,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//UPDATE
-
+		
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -312,37 +311,34 @@ public class AdminShopFrame extends JFrame{
 		});
 		
 		
-		
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AdminController admin_controller = new AdminController();
-				if(table.getSelectedRow() != -1) {
-		               // se lo shop e' stato eliminato dal database, allora cancella la riga dalla jtable
-					if( admin_controller.shopRemoved(AdminShopFrame.this))
-					{
-		               model.removeRow(table.getSelectedRow());
-		               JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
-					}
-					else
-						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified shop");
-				
-				}
+			if(table.getSelectedRow() != -1) {
+			// se lo shop e' stato eliminato dal database, allora cancella la riga dalla jtable
+			if(admin_controller.shopRemoved(AdminShopFrame.this))
+			        {
+			model.removeRow(table.getSelectedRow());
+			JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
+			}
+			else
+			JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified shop");
+
+			}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
-				delete_sqlJB.setIcon(delete_activeIMG);
-				
+
+			delete_sqlJB.setIcon(delete_activeIMG);
+
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
-				delete_sqlJB.setIcon(delete_inactiveIMG);
-				
+
+			delete_sqlJB.setIcon(delete_inactiveIMG);
+
 			}
-		});
-		
+			});
 		
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -350,7 +346,6 @@ public class AdminShopFrame extends JFrame{
 				
 				//Apre AdminFrame
 				AdminShopFrame.this.dispose();
-				AdminController admin_controller = new AdminController ();
 				admin_controller.openAdminFrame();
 			
 			}
@@ -372,8 +367,7 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-			AdminController admin_controller = new AdminController();
-			admin_controller.openAdminRiderFrame();
+//			admin_controller.openAdminRiderFrame();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

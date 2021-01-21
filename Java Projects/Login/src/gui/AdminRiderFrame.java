@@ -46,13 +46,14 @@ public class AdminRiderFrame extends JFrame {
 	private Color background_color = new Color(0xf3ecd7);
 	
 	DefaultTableModel model;
+	AdminController admin_controller;
 	
-	public AdminRiderFrame() {
+	public AdminRiderFrame(AdminController admin_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.admin_controller=admin_controller;
 	}
 
 	   private void initialize() {
@@ -142,7 +143,6 @@ public class AdminRiderFrame extends JFrame {
 				
 				//Apre AdminFrame
 				AdminRiderFrame.this.dispose();
-				AdminController admin_controller = new AdminController ();
 				admin_controller.openAdminShopFrame();
 			
 			}

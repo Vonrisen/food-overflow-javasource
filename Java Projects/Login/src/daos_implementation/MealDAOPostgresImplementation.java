@@ -102,9 +102,9 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return;
 	}
 	
-	public void deleteMeal(String meal_name) throws SQLException
+	public void deleteMeal(Meal meal) throws SQLException
 	{
-		delete_meal_PS.setString(1, meal_name);
+		delete_meal_PS.setString(1, meal.getName());
 		delete_meal_PS.executeUpdate();
 		return;
 	}

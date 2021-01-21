@@ -76,7 +76,7 @@ public class AdminMealFrame extends JFrame{
 	private JLabel allergensLB;
 	
 	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
-										"Frutta a guscio", "Sedano", "Senape", "Sesamo", " An. solforosa e solfiti", "Lupini", "Molluschi"};
+										"Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
 	
 	private JCheckBox[] allergens = new JCheckBox[14];
 	
@@ -85,18 +85,18 @@ public class AdminMealFrame extends JFrame{
 	private JTextField ingredientsTF;
 	
 	DefaultTableModel model;
-	
+	AdminController admin_controller;
 	private Color background_color = new Color(0xf3ecd7);
 
 	/**
 	 * Create the application.
 	 */
-	public AdminMealFrame() {
+	public AdminMealFrame(AdminController admin_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.admin_controller=admin_controller;
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class AdminMealFrame extends JFrame{
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AdminController admin_controller = new AdminController();
+
 				admin_controller.addMeal(AdminMealFrame.this);
 			}
 			@Override
@@ -287,7 +287,7 @@ public class AdminMealFrame extends JFrame{
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				AdminController admin_controller = new AdminController();
+
 				if(table.getSelectedRow() != -1) {
 		               // se il meal e' stato eliminato dal database, allora cancella la riga dalla jtable
 					if(admin_controller.mealRemoved(AdminMealFrame.this))
@@ -320,7 +320,6 @@ public class AdminMealFrame extends JFrame{
 				
 				//Admin Frame
 				AdminMealFrame.this.dispose();
-				AdminController admin_controller = new AdminController();
 				admin_controller.openAdminFrame();
 			
 			}

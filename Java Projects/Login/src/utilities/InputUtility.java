@@ -37,6 +37,13 @@ public class InputUtility {
 		return tokenized_address;
 	}
 	
+	public Address tokenizedAddressToString(String address, String regex_delimiters)
+	{
+		String[] tokens = address.split(regex_delimiters);
+		Address addr = new Address(tokens[0],tokens[1],tokens[2],tokens[3],tokens[4]);
+		return addr;
+	}
+	
 	
 	public String arrayListToTokenizedString(List<String>strings, String delimiters){
 	String tokenized_string = "";

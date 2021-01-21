@@ -37,7 +37,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		try {
 			
 			look_for_shop_by_id_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE id=? AND password=?");
-			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop");
+			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
 			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?)");
 			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE id=?");
 			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=? WHERE id=?");
@@ -63,7 +63,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			List<Rider> employed_rider_list = new ArrayList<Rider>();
 			if(rs.getString("closing_days")!=null)
 			employed_rider_list = rider_dao.getRidersOfAShopByShopId(rs.getString("id"));
-			
 			List<Meal> meal_list = meal_dao.getMealsOfAShopByShopId(rs.getString("id"));
 			shop_list.add(new Shop(rs.getString("id"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
@@ -98,13 +97,19 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	}
 
 	@Override
-	public void deleteShop(String shop_id) throws SQLException {
-		delete_shop_PS.setString(1, shop_id);
+	public void deleteShop(Shop shop) throws SQLException {
+		
+		delete_shop_PS.setString(1, shop.getId());
 		delete_shop_PS.executeUpdate();
 		return;
 	}
 	
 	public void updateShop(Shop shop) throws SQLException {
+		
+		update_shop_PS.setString(1, shop.getId());
+		update_shop_PS.executeQuery();
 		return;
+		
 	}
+	
 }

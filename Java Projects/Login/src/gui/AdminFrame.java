@@ -47,7 +47,8 @@ public class AdminFrame extends JFrame{
 	JButton disconnectJB;
 
 	private Color background_color = new Color(0xf3ecd7);
-	
+	AdminController admin_controller;
+	LoginController login_controller = new LoginController();
 
 	public AdminFrame() {
 		initialize();
@@ -57,6 +58,7 @@ public class AdminFrame extends JFrame{
 	
 	private void initialize() {
 		
+		admin_controller = new AdminController();
 		customer_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonInactive.png");
 		shop_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonInactive.png");
 		orders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonInactive.png");
@@ -156,7 +158,6 @@ public class AdminFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				//Spostamento AdminShopFrame
 				AdminFrame.this.dispose();
-				AdminController admin_controller= new AdminController();
 				admin_controller.openAdminShopFrame();
 			}
 			@Override
@@ -200,7 +201,6 @@ public class AdminFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				//Spostamento AdminUserFrame
 				AdminFrame.this.dispose();
-				AdminController admin_controller= new AdminController();
 				admin_controller.openAdminCustomerFrame();
 			}
 			@Override
@@ -222,7 +222,6 @@ public class AdminFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				//Spostamento AdminMealFrame
 				AdminFrame.this.dispose();
-				AdminController admin_controller= new AdminController();
 				admin_controller.openAdminMealFrame();
 			}
 			@Override
@@ -244,7 +243,6 @@ public class AdminFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				//Spostamento LoginFrame
 				AdminFrame.this.dispose();
-				LoginController login_controller = new LoginController();
 				login_controller.openLoginFrame();
 			}
 			@Override
