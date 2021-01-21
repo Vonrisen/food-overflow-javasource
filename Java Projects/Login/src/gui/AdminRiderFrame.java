@@ -143,7 +143,7 @@ public class AdminRiderFrame extends JFrame {
 				//Apre AdminFrame
 				AdminRiderFrame.this.dispose();
 				AdminController admin_controller = new AdminController ();
-				admin_controller.openAdminFrame();
+				admin_controller.openAdminShopFrame();
 			
 			}
 			@Override

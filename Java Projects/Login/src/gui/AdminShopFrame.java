@@ -46,6 +46,8 @@ public class AdminShopFrame extends JFrame{
 	private ImageIcon update_activeIMG;
 	private ImageIcon go_back_inactiveIMG;
 	private ImageIcon go_back_activeIMG;
+	private ImageIcon search_riders_inactiveIMG;
+	private ImageIcon search_riders_activeIMG;
 	private ImageIcon shops_table_title;
 	
 	private Dimension long_dim_of_textfield;
@@ -71,6 +73,7 @@ public class AdminShopFrame extends JFrame{
 	private JButton update_sqlJB;
 	private JButton delete_sqlJB;
 	private JButton go_backJB;
+	private JButton	riders_searchJB;
 	
 	private JLabel shops_table_titleLB;
 	
@@ -110,6 +113,8 @@ public class AdminShopFrame extends JFrame{
 		update_activeIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonActive.png");
 		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
 		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
+		search_riders_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonInactive.png");
+		search_riders_activeIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonActive.png");
 		shops_table_title = new ImageIcon("src\\images\\tableTitles\\shops.png");
 		
 		long_dim_of_textfield = new Dimension(335,25);
@@ -145,6 +150,7 @@ public class AdminShopFrame extends JFrame{
 		insert_sqlJB = new JButton();
 		update_sqlJB = new JButton();
 		delete_sqlJB = new JButton();
+		riders_searchJB = new JButton();
 	
 	}
 	
@@ -239,17 +245,17 @@ public class AdminShopFrame extends JFrame{
 		createTextField(closing_daysTF, "Closing Days", long_dim_of_textfield);
 		attributes_panel.add(closing_daysTF);
 		
+		setupButton(riders_searchJB, search_riders_inactiveIMG, new Dimension(335,30));
+		attributes_panel.add(riders_searchJB);
+		
 		//Setup Buttons
 		
-		insert_sqlJB.setIcon(insert_inactiveIMG);
 		setupButton(insert_sqlJB, insert_inactiveIMG, button_size);
 		buttons_panel.add(insert_sqlJB);
 		
-		update_sqlJB.setIcon(update_inactiveIMG);
 		setupButton(update_sqlJB, update_inactiveIMG, button_size);
 		buttons_panel.add(update_sqlJB);
 		
-		delete_sqlJB.setIcon(delete_inactiveIMG);
 		setupButton(delete_sqlJB, delete_inactiveIMG, button_size);
 		buttons_panel.add(delete_sqlJB);
 		
@@ -360,6 +366,28 @@ public class AdminShopFrame extends JFrame{
 				go_backJB.setIcon(go_back_inactiveIMG);
 				
 			}
+		});
+		
+		riders_searchJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			AdminController admin_controller = new AdminController();
+			admin_controller.openAdminRiderFrame();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				riders_searchJB.setIcon(search_riders_activeIMG);
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				riders_searchJB.setIcon(search_riders_inactiveIMG);
+				
+			}
+			
 		});
 		
 		//FocusListeners

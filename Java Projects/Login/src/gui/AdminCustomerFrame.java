@@ -245,7 +245,7 @@ public class AdminCustomerFrame extends JFrame {
 				//Apre AdminCustomerFrame
 				AdminCustomerFrame.this.dispose();
 				AdminController admin_controller = new AdminController();
-				admin_controller.openAdminCustomerPanelFrame();
+				admin_controller.openAdminFrame();
 			
 			}
 			@Override

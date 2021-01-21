@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import daos_interfaces.CustomerDAO;
 import db_connection.DBconnection;
@@ -26,8 +28,8 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			JOptionPane.showMessageDialog(null, "Errore di connessione");
 		}
 		try {
-			get_all_customers_PS = connection.prepareStatement("SELECT * FROM Customer");
-			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (?,?,?,?,?,?,?,?,?,?)");
+			get_all_customers_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer");
+			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
 			
 		}catch(SQLException s)
 		{
@@ -37,15 +39,15 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 }
 	
-	public ArrayList<Customer> getAllCustomers () throws SQLException {
+	public List<Customer> getAllCustomers () throws SQLException {
 		
 		ResultSet rs = get_all_customers_PS.executeQuery();
-		ArrayList<Customer> customer_list = new ArrayList<Customer>();
-		ArrayList<String>address_fields = new ArrayList<String>();
+		List<Customer> customer_list = new ArrayList<Customer>();
+		List<String>address_fields = new ArrayList<String>();
 		InputUtility string_util = new InputUtility();
 		while(rs.next())
 		{
-			address_fields = string_util.tokenizedStringToArrayList(rs.getString("address"),"(, )");
+			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
 			customer_list.add(new Customer(rs.getString("cf"),rs.getString("name"),rs.getString("surname"),new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),
 					          rs.getString("gender"),rs.getString("cellphone"),  new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
 							  rs.getString("email"),

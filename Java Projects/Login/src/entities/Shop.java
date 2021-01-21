@@ -14,12 +14,12 @@ public class Shop {
 	private String working_hours;
 	private Address address;
 	private String closing_days;
-	private ArrayList<Rider> employed_riders_list;
-	private ArrayList<Meal> meal_list;
+	private List<Rider> employed_riders_list;
+	private List<Meal> meal_list;
 	
 	//COSTRUTTORE PER IL GET
 	public Shop(String id, String name, String password, String working_hours, Address address,
-			String closing_days, ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
+			String closing_days, List<Rider> employed_riders_list, List<Meal> meal_list) {
 		
 		super();
 		this.id = id;
@@ -36,7 +36,7 @@ public class Shop {
 
 
 	public Shop(String name, String password, String working_hours, Address address, String closing_days,
-			ArrayList<Rider> employed_riders_list, ArrayList<Meal> meal_list) {
+			List<Rider> employed_riders_list, List<Meal> meal_list) {
 		super();
 		this.name = name;
 		this.password = password;
@@ -102,21 +102,21 @@ public class Shop {
 	}
 
 
-	public ArrayList<Rider> getEmployed_riders_list() {
+	public List<Rider> getEmployed_riders_list() {
 		return employed_riders_list;
 	}
 
 
-	public void setEmployed_riders_list(ArrayList<Rider> employed_riders_list) {
+	public void setEmployed_riders_list(List<Rider> employed_riders_list) {
 		this.employed_riders_list = employed_riders_list;
 	}
 
 
 	
-	public ArrayList<Meal> getMeal_list() {
+	public List<Meal> getMeal_list() {
 		return meal_list;
 	}
-	public void setMeal_list(ArrayList<Meal> meal_list) {
+	public void setMeal_list(List<Meal> meal_list) {
 		this.meal_list = meal_list;
 	}
 	public void setId(String id) {

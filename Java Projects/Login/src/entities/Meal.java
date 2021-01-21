@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Meal {
 
@@ -10,10 +11,10 @@ public class Meal {
 	private float price;
 	private String ingredients;
 	private String category;
-	private ArrayList<String>allergen_list;
+	private List<String>allergen_list;
 	
 	//COTRUTTORE
-	public Meal(String name, float price, String ingredients, String category, ArrayList<String>allergen_list) {
+	public Meal(String name, float price, String ingredients, String category, List<String>allergen_list) {
 		
 		this.name = name;
 		this.price = price;
@@ -55,11 +56,11 @@ public class Meal {
 		this.category = category;
 	}
 
-	public ArrayList<String> getAllergen_list() {
+	public List<String> getAllergen_list() {
 		return allergen_list;
 	}
 
-	public void setAllergen_list(ArrayList<String>allergen_list) {
+	public void setAllergen_list(List<String>allergen_list) {
 		this.allergen_list = allergen_list;
 	}
 

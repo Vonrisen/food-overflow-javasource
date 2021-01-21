@@ -9,17 +9,17 @@ public class DBconnection {
 	private static DBconnection instance = null;
 	
 	private final String USERNAME="postgres";
-	private final String PWD="admin";
+	private final String PWD="password123";
 	private final String IP="localhost";
 	private final String PORT="5432";
-	private final String DBNAME="FOODOVERFLOW_DB";
-	private Connection connection = null; 
+	private final String DBNAME="FOOD-OVERFLOW_DB";
+	private Connection connection;
 	
 	private DBconnection() {
 	 try
 	 {
 		 Class.forName("org.postgresql.Driver");
-		 connection = DriverManager.getConnection("jdbc:postgresql://"+IP+":"+PORT+"/"+DBNAME,USERNAME,PWD);
+		 this.connection = DriverManager.getConnection("jdbc:postgresql://"+IP+":"+PORT+"/"+DBNAME,USERNAME,PWD);
 		 System.out.println("Connessione con il database avvenuta");
 	 }
 	 catch (SQLException e)

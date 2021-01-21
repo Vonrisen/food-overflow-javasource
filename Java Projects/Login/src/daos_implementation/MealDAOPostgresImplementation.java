@@ -15,7 +15,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
 	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS;
-	CallableStatement add_allergens_CS, update_meal_PS;
+	CallableStatement add_allergens_CS;
 	public MealDAOPostgresImplementation() {
 		
 		try {
@@ -28,12 +28,16 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		try {
 			
 			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
-			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY name");
+			
+			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category");
+			
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
+			
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
-			add_allergens_CS = connection.prepareCall("CALL addallergens(?,?)");
-			delete_meal_PS = connection.prepareStatement("DELETE FROM MEAL WHERE name=?");
-			update_meal_PS = connection.prepareCall("CALL updateMeal(?,?,?,?,?)");
+			
+			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
+			
+			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
 			
 		}catch(SQLException s)
 		{
@@ -87,6 +91,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		insert_meal_PS.executeUpdate();
 		if(meal.getAllergen_list().size()>0)
 			associateAllergensToMeal(meal);
+		return ;
 	}
 	
 	public void associateAllergensToMeal(Meal meal) throws SQLException {
@@ -94,23 +99,14 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		add_allergens_CS.setString(1, meal.getName());
 		add_allergens_CS.setString(2, input_utility.arrayListToTokenizedString(meal.getAllergen_list(), ", "));
 		add_allergens_CS.executeUpdate();
+		return;
 	}
 	
-	public void deleteMeal(String mealName) throws SQLException {
-		delete_meal_PS.setString(1, mealName);
-		delete_meal_PS.executeQuery();
+	public void deleteMeal(String meal_name) throws SQLException
+	{
+		delete_meal_PS.setString(1, meal_name);
+		delete_meal_PS.executeUpdate();
+		return;
 	}
-	
-	public void updateMeal(Meal meal, String oldName) throws SQLException {
-		update_meal_PS.setString(1, oldName);
-		update_meal_PS.setString(2, meal.getCategory());
-		update_meal_PS.setString(3, meal.getName());
-		update_meal_PS.setFloat(4, meal.getPrice());
-		update_meal_PS.setString(5, meal.getIngredients());
-		//lista allergeni da aggiungere
-		update_meal_PS.executeUpdate();
-	}
-	
-	
 
 }

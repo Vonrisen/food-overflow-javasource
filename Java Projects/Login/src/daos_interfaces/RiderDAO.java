@@ -9,7 +9,7 @@ import entities.Shop;
 
 public interface RiderDAO {
 
-	public ArrayList<Rider> getAllRiders() throws SQLException;
-	public ArrayList<Rider> getRidersOfAShopByShopId(String shop_id) throws SQLException;
+	public List<Rider> getAllRiders() throws SQLException;
+	public List<Rider> getRidersOfAShopByShopId(String shop_id) throws SQLException;
 
 }

@@ -10,6 +10,6 @@ import entities.Customer;
 
 public interface CustomerDAO {
 	
-	public ArrayList<Customer>getAllCustomers() throws SQLException;
+	public List<Customer>getAllCustomers() throws SQLException;
 	public void insertCustomer(Customer customer) throws SQLException;
 }

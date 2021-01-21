@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import entities.Address;
 
@@ -18,10 +19,10 @@ public class InputUtility {
 	    return formatted_date;
 	}
 	
-	public ArrayList<String> tokenizedStringToArrayList(String tokenized_list, String regex_delimiters)
+	public List<String> tokenizedStringToList(String tokenized_list, String regex_delimiters)
 	{
 		String[] tokens = tokenized_list.split(regex_delimiters);
-		ArrayList<String> splitted_values_list = new ArrayList<String>();
+		List<String> splitted_values_list = new ArrayList<String>();
 		for(int i=0; i<tokens.length; i++)
 		{
 			splitted_values_list.add(tokens[i]);
@@ -37,7 +38,7 @@ public class InputUtility {
 	}
 	
 	
-	public String arrayListToTokenizedString(ArrayList<String>strings, String delimiters){
+	public String arrayListToTokenizedString(List<String>strings, String delimiters){
 	String tokenized_string = "";
 	for(String s : strings)
 		tokenized_string+=s+", ";

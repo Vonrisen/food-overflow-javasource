@@ -11,7 +11,7 @@ public class DBconnection_CodiceCatastale {
 	private final String IP="localhost";
 	private final String PORT="5432";
 	private final String DBNAME="Istat1";
-	private Connection connection = null; 
+	private Connection connection;
 	
 	private DBconnection_CodiceCatastale() {
 		

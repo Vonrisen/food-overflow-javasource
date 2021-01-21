@@ -1,8 +1,7 @@
 package app;
-import java.util.ArrayList;
 
 import controllers.LoginController;
-import utilities.InputUtility;
+
 
 public class Main {
 	
@@ -10,7 +9,6 @@ public class Main {
 		
 		LoginController login_controller = new LoginController();
 		login_controller.openLoginFrame();
-		
 		
 	}
 	
