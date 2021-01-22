@@ -21,6 +21,7 @@ import gui.ShopAllMealsFrame;
 import gui.ShopFrame;
 import gui.ShopMealFrame;
 import gui.ShopRiderFrame;
+import utilities.InputUtility;
 import utilities.TableModelUtility;
 
 public class ShopController {
@@ -80,7 +81,7 @@ public class ShopController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeMealTable(shop_meal_frame,shop_meal_frame.getModel(), meal_list);
+		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
 		return;
 	}
 	
@@ -91,7 +92,7 @@ public class ShopController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeRiderTable(shop_rider_frame, shop_rider_frame.getModel(), rider_list);
+		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
 	}
 	
 	public void initializeShopAllMealsFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
@@ -101,19 +102,16 @@ public class ShopController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeMealTable(shop_all_meals_frame,shop_all_meals_frame.getModel(), meal_list);
+		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
 	}
 	
-	public void addMeal(ShopMealFrame shop_meal_frame) throws SQLException {
+	public void addMeal(ShopMealFrame shop_meal_frame) {
 		
 		List<Meal> meal_list = new ArrayList<Meal>();
+		int i=0;
+			
 		try {
 			meal_list = meal_dao.getAllMealsExceptShopMeals(id);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-		}
-		int i=0;
-		try {
 			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
 				i++;
 			meal_dao.insertSupply(id,meal_list.get(i));
@@ -121,36 +119,41 @@ public class ShopController {
 					meal_list.get(i).getCategory(), meal_list.get(i).getPrice(),
 					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list()});
 			meal_list.add(meal_list.get(i));
+			
+		}
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}catch (IndexOutOfBoundsException in) {
 			JOptionPane.showMessageDialog(null, "Strunz! Hai sbagliato a scrivere","Errore",JOptionPane.ERROR_MESSAGE);
-			return;
 		}
+			return;
 	}
 	
-	public void addRider(ShopRiderFrame shop_rider_frame) throws SQLException, ParseException {
+	public void addRider(ShopRiderFrame shop_rider_frame) {
 		
+		InputUtility input_util = new InputUtility();
 		try {
-			Rider rider = new Rider("xxxxxx00x00x000x",shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
-					new SimpleDateFormat("dd/MM/YY").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
-					shop_rider_frame.getGenderCB().getSelectedItem().toString(), shop_rider_frame.getCellphoneTF().getText(),
+			Rider rider = new Rider("x2xx1x00x00x00lx",shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
+					new SimpleDateFormat("dd/MM/YYYY").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
+					shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1), shop_rider_frame.getCellphoneTF().getText(),
 					new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
 					shop_rider_frame.getAddress_capTF().getText(), shop_rider_frame.getAddress_cityTF().getText(), 
 					shop_rider_frame.getAddress_provinceTF().getText()), shop_rider_frame.getVehicleCB().getSelectedItem().toString(), 
-					shop_rider_frame.getWorking_hoursTF().getText(),(short) 0);
-			
+					shop_rider_frame.getWorking_hoursTF().getText(),(short)0);
 			rider_dao.insertRider(rider,id);
 			shop_rider_frame.getModel().insertRow(rider_list.size(), new Object[] {rider.getCf(), rider.getName(), rider.getSurname(), 
-					rider.getAddress().toString(), rider.getBirth_date(), rider.getBirth_place(), rider.getGender(), rider.getCellphone(), 
+					input_util.formatDate(rider.getBirth_date()), rider.getBirth_place(), rider.getAddress().toString(), rider.getGender(), rider.getCellphone(), 
 					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
-			
 			rider_list.add(rider);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		} catch (ParseException e1) {
+			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		return;
 	}
 	
-	public void removeMeal(ShopMealFrame shop_meal_frame) throws SQLException{
+	public void removeMeal(ShopMealFrame shop_meal_frame){
 		
 		if(shop_meal_frame.getShop_meals_table().getSelectedRow() != -1) {
 
@@ -167,7 +170,6 @@ public class ShopController {
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
 			}
-		
 	}
 		else
 			JOptionPane.showMessageDialog(null, "Select the shop you want to delete","Errore",JOptionPane.ERROR_MESSAGE);

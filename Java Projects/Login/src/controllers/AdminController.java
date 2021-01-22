@@ -93,7 +93,7 @@ public class AdminController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeShopTable(admin_shop_frame, admin_shop_frame.getModel(), shop_list);
+		table.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 		return;
 	}
 
@@ -104,7 +104,7 @@ public class AdminController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeCustomerTable(admin_customer_frame, admin_customer_frame.getModel(), customer_list);
+		table.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		return;
 	}
 	
@@ -121,7 +121,7 @@ public class AdminController {
 		}
 		if(!rider_list.isEmpty())
 		{
-			table.initializeRiderTable(admin_rider_frame, admin_rider_frame.getModel(), rider_list);
+			table.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
 		}
 		 else
 		 {
@@ -158,11 +158,11 @@ public class AdminController {
 		
 		try {
 			meal_list = meal_dao.getAllMeals();
-			if(meal_list.size()==0)
+			if(meal_list.isEmpty())
 				JOptionPane.showMessageDialog(null, "Non ci sono shop da visualizzare","Errore",JOptionPane.ERROR_MESSAGE);
 			else
 			{
-				table.initializeMealTable(admin_meal_frame, admin_meal_frame.getModel(), meal_list);
+				table.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 			}
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
@@ -280,7 +280,7 @@ public class AdminController {
 		return;
 	}
 	
-	public boolean customerUpdated(AdminCustomerFrame admin_customer_frame) {
+	public void updateCustomer(AdminCustomerFrame admin_customer_frame) {
 		String cellphone_of_customer_to_update = JOptionPane.showInputDialog("Inserisci il numero di cellullare dell'utente che vuoi modificare");
 		String new_email = admin_customer_frame.getEmailTF().getText();
 		String new_password = admin_customer_frame.getPasswordTF().getText();
@@ -298,13 +298,13 @@ public class AdminController {
 			customer_dao.updateCustomerFromAdmin(customer_list.get(i));
 		}catch (IndexOutOfBoundsException in) {
 			JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questo numero di cellulare","Errore",JOptionPane.ERROR_MESSAGE);
-			return false;
+			return;
 		}
 		catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-			return false;
+			return;
 		}
-		return true;
+		return;
 	}
 	
 	public void shopUpdated(AdminShopFrame admin_shop_frame) {

@@ -208,7 +208,7 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				//UPDATE
-				admin_controller.customerUpdated(AdminCustomerFrame.this);
+				admin_controller.updateCustomer(AdminCustomerFrame.this);
 
 			}
 			@Override

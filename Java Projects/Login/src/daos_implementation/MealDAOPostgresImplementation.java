@@ -16,8 +16,9 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS;
-	CallableStatement add_allergens_CS, insert_supply_CS, delete_from_supply_CS;
+	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
+					  insert_supply_PS, delete_from_supply_PS;
+	CallableStatement add_allergens_CS;
 	public MealDAOPostgresImplementation() {
 		
 		try {
@@ -36,8 +37,9 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
-			insert_supply_CS = connection.prepareCall("Call insertSupply(?,?)");
-			delete_from_supply_CS = connection.prepareCall("CALL deleteFromSupply(?,?)");
+			insert_supply_PS = connection.prepareStatement("INSERT INTO Supply SELECT ?, meal_id FROM MEAL WHERE name=?");
+			delete_from_supply_PS = connection.prepareStatement("DELETE FROM Supply WHERE shop_id=? AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
+	
 			
 		}catch(SQLException s)
 		{
@@ -128,16 +130,16 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	
 	public void insertSupply(String shop_id, Meal meal) throws SQLException {
 		
-		insert_supply_CS.setString(1, shop_id);
-		insert_supply_CS.setString(2, meal.getName());
-		insert_supply_CS.executeUpdate();
+		insert_supply_PS.setString(1, shop_id);
+		insert_supply_PS.setString(2, meal.getName());
+		insert_supply_PS.executeUpdate();
 	}
 	
 	public void deleteFromSupply(String shop_id, Meal meal)throws SQLException {
 		
-		delete_from_supply_CS.setString(1, shop_id);
-		delete_from_supply_CS.setString(2, meal.getName());
-		delete_from_supply_CS.executeUpdate();
+		delete_from_supply_PS.setString(1, shop_id);
+		delete_from_supply_PS.setString(2, meal.getName());
+		delete_from_supply_PS.executeUpdate();
 	}
 
 }

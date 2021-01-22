@@ -86,7 +86,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		insert_rider_PS.setString(2, rider.getName());
 		insert_rider_PS.setString(3, rider.getSurname());
 		insert_rider_PS.setString(4, input_util.addressToTokenizedString(rider.getAddress(), ", "));
-		insert_rider_PS.setDate(5, rider.getBirth_date());
+		insert_rider_PS.setDate(5,  new java.sql.Date(rider.getBirth_date().getTime()));
 		insert_rider_PS.setString(6, rider.getBirth_place());
 		insert_rider_PS.setString(7, rider.getGender());
 		insert_rider_PS.setString(8, rider.getCellphone());
@@ -94,7 +94,8 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		insert_rider_PS.setString(10, rider.getWorking_hours());
 		insert_rider_PS.setShort(11, rider.getDeliveries_number());
 		insert_rider_PS.setString(12, shop_id);
-		insert_rider_PS.executeQuery();
+		insert_rider_PS.executeUpdate();
+		return;
 	}
 	
 }

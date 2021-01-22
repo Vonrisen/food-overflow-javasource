@@ -12,7 +12,7 @@ import entities.Shop;
 
 public class TableModelUtility {
 	
-	public void initializeShopTable(JFrame frame, DefaultTableModel model,  List<Shop> shop_list)
+	public void initializeShopTable(DefaultTableModel model,  List<Shop> shop_list)
 	{
 		
 		Object[] row = new Object[6];
@@ -28,7 +28,7 @@ public class TableModelUtility {
 		return;
 	}
 	
-	public void initializeCustomerTable(JFrame frame, DefaultTableModel model,  List<Customer> customer_list)
+	public void initializeCustomerTable( DefaultTableModel model,  List<Customer> customer_list)
 	{
 		Object[] row = new Object[10];
 		InputUtility date_util = new InputUtility();
@@ -49,7 +49,7 @@ public class TableModelUtility {
 		return;
 	}
 	
-	public void initializeMealTable(JFrame frame, DefaultTableModel model, List<Meal> meal_list) {
+	public void initializeMealTable(DefaultTableModel model, List<Meal> meal_list) {
 		Object[] row = new Object[5];
 		InputUtility input_util = new InputUtility();
 		for(Meal meal : meal_list) {
@@ -62,10 +62,10 @@ public class TableModelUtility {
 		}
 	}
 	
-	public void initializeRiderTable(JFrame frame, DefaultTableModel model,  List<Rider> rider_list)
+	public void initializeRiderTable(DefaultTableModel model,  List<Rider> rider_list)
 	{
 		InputUtility date_util = new InputUtility();
-		Object[] row = new Object[10];
+		Object[] row = new Object[11];
 		for(Rider rider : rider_list) {
 			row[0] = rider.getCf();
 			row[1] = rider.getName();
@@ -77,6 +77,7 @@ public class TableModelUtility {
 			row[7] = rider.getCellphone();
 			row[8] = rider.getVehicle();
 			row[9] = rider.getWorking_hours();
+			row[10] = rider.getDeliveries_number();
 			model.addRow(row);
 		}
 	}

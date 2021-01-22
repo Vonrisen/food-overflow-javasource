@@ -274,11 +274,8 @@ public class ShopRiderFrame extends JFrame{
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				try {
-					shop_controller.addRider(ShopRiderFrame.this);
-				} catch (SQLException | ParseException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-				}
+
+						shop_controller.addRider(ShopRiderFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

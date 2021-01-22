@@ -212,11 +212,7 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				try {
 					shop_controller.addMeal(ShopMealFrame.this);
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -236,11 +232,7 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				try {
 					shop_controller.removeMeal(ShopMealFrame.this);
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-				}
 				
 			}
 			@Override
