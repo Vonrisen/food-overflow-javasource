@@ -4,16 +4,34 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.ShopDAO;
+import gui.AdminFrame;
 import gui.LoginFrame;
 public class LoginController{
 	
 
+	private ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+	LoginFrame login_frame;
+	public LoginController()
+	{
+		
+	}
+	//Metodo per aprire login frame dopo essersi disconnessi dall' admin frame
+	public void openLoginFrame(AdminFrame admin_frame)
+	{
+		admin_frame.dispose();
+		login_frame = new LoginFrame();
+		login_frame.setVisible(true);
+		return;
+	}
+	//Metodo per aprire login frame per la prima volta
 	public void openLoginFrame()
 	{
-		LoginFrame login_frame = new LoginFrame();
+		login_frame = new LoginFrame();
 		login_frame.setVisible(true);
+		return;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void accessAuthentication(LoginFrame login_frame)
 	{
 		//SE ACCEDE L' ADMIN
@@ -33,19 +51,19 @@ public class LoginController{
 		{
 			//Chiudo il login frame e passo all' admin frame
 			access_succeded=true;
-			login_frame.setVisible(false);
-			admin_controller.openAdminFrame();
+			admin_controller.openAdminFrame(login_frame);
 		}
 		}
 		//SE ACCEDE LO SHOP
 		else
 		{
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				access_succeded = shop_dao.lookForShopByIdAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
 				if(access_succeded)
 				{
 					login_frame.setVisible(false);
+					ShopController shop_controller = new ShopController();
+					shop_controller.openShopFrame();
 				}
 				else
 				{

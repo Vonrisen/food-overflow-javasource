@@ -17,7 +17,7 @@ import utilities.InputUtility;
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 	private Connection connection;
-	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS;
 	public CustomerDAOPostgresImplementation() {
 		
 		try {
@@ -31,7 +31,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			get_all_customers_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer");
 			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
 			delete_customer_PS = connection.prepareStatement("DELETE FROM Customer WHERE email=?");
-			update_customer_PS = connection.prepareStatement("UPDATE Customer SET email=?, password=? WHERE cellphone=?");
+			
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
@@ -71,18 +71,14 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.setString(9, customer.getEmail());
 		insert_customer_PS.setString(10, customer.getPassword());
 		insert_customer_PS.executeUpdate();
+		return ;
 	}
 	
 	public void deleteCustomer(Customer customer) throws SQLException {
 		delete_customer_PS.setString(1, customer.getEmail());
 		delete_customer_PS.executeUpdate();
+		return;
 	}
-	
-	public void updateCustomerFromAdmin(Customer customer, String cellphone) throws SQLException{
-		update_customer_PS.setString(1, customer.getEmail());
-		update_customer_PS.setString(2, customer.getPassword());
-		update_customer_PS.setString(3, cellphone);
-		update_customer_PS.executeUpdate();
-	}
+
 	
 }

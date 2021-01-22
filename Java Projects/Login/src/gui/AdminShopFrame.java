@@ -314,17 +314,16 @@ public class AdminShopFrame extends JFrame{
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if(table.getSelectedRow() != -1) {
+			if(table.getSelectedRow() != -1) {
 			// se lo shop e' stato eliminato dal database, allora cancella la riga dalla jtable
-					if(admin_controller.shopRemoved(AdminShopFrame.this))
-					{
-						model.removeRow(table.getSelectedRow());
-						JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
-			        }
-					else
-						JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified shop");
-
-				}
+			if(admin_controller.shopRemoved(AdminShopFrame.this))
+			        {
+			model.removeRow(table.getSelectedRow());
+			JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
+			}
+			else
+			JOptionPane.showMessageDialog(null, "An error has occurred while trying to delete the specified shop");
+			}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -343,10 +342,8 @@ public class AdminShopFrame extends JFrame{
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				//Apre AdminFrame
-				AdminShopFrame.this.dispose();
-				admin_controller.openAdminFrame();
+				admin_controller.openAdminFrame(AdminShopFrame.this);
 			
 			}
 			@Override
@@ -366,10 +363,7 @@ public class AdminShopFrame extends JFrame{
 		riders_searchJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if(table.getSelectedRow() != -1) 
-					admin_controller.openAdminRiderFrame(AdminShopFrame.this);
-				else
-					JOptionPane.showMessageDialog(null, "Selezionare uno shop");
+			admin_controller.openAdminRiderFrame(AdminShopFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

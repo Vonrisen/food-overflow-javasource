@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -121,9 +122,15 @@ public class AdminCustomerFrame extends JFrame {
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
 		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Email", "Password"};
-	    model = new DefaultTableModel(columns, 0);
-		table.setModel(model);
-		
+	    table.setFocusable(false);
+	    table.setRowSelectionAllowed(true);
+		table.setModel(model = new DefaultTableModel(columns, 0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		});
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -202,7 +209,7 @@ public class AdminCustomerFrame extends JFrame {
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				admin_controller.customerUpdated(AdminCustomerFrame.this);
+				//UPDATE
 
 			}
 			@Override
@@ -223,9 +230,11 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				admin_controller.customerRemoved(AdminCustomerFrame.this);
-				
+				//DELETE
+			
+					admin_controller.removeCustomer(AdminCustomerFrame.this);
 			}
+				
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				
@@ -245,9 +254,8 @@ public class AdminCustomerFrame extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				
 				//Apre AdminCustomerFrame
-				AdminCustomerFrame.this.dispose();
 				AdminController admin_controller = new AdminController();
-				admin_controller.openAdminFrame();
+				admin_controller.openAdminFrame(AdminCustomerFrame.this);
 			
 			}
 			@Override
@@ -360,22 +368,6 @@ public class AdminCustomerFrame extends JFrame {
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
-	}
-
-	public JTextField getEmailTF() {
-		return emailTF;
-	}
-
-	public void setEmailTF(JTextField emailTF) {
-		this.emailTF = emailTF;
-	}
-
-	public JTextField getPasswordTF() {
-		return passwordTF;
-	}
-
-	public void setPasswordTF(JTextField passwordTF) {
-		this.passwordTF = passwordTF;
 	}
 	
 	

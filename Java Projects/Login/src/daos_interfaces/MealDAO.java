@@ -11,6 +11,5 @@ public interface MealDAO {
 	public List<Meal> getAllMeals() throws SQLException;
 	public void insertMeal(Meal meal) throws SQLException;
 	public void deleteMeal(Meal meal) throws SQLException;
-	public void updateMeal(Meal meal) throws SQLException;
 
 }

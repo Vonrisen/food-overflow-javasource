@@ -14,7 +14,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, update_meal_PS;
+	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS;
 	CallableStatement add_allergens_CS;
 	public MealDAOPostgresImplementation() {
 		
@@ -27,13 +27,17 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		try {
 			
-			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM Meal WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
-			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
-			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM Mealcomposition WHERE meal_id=?");
-			insert_meal_PS = connection.prepareStatement("INSERT INTO Meal VALUES (DEFAULT,?,?,?,?)");
+			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?)");
+			
+			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category");
+			
+			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
+			
+			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
+			
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
+			
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
-			update_meal_PS = connection.prepareStatement("UPDATE Meal SET price=? WHERE name=?");
 			
 		}catch(SQLException s)
 		{
@@ -103,12 +107,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		delete_meal_PS.setString(1, meal.getName());
 		delete_meal_PS.executeUpdate();
 		return;
-	}
-	
-	public void updateMeal(Meal meal) throws SQLException{
-		update_meal_PS.setFloat(1, meal.getPrice());
-		update_meal_PS.setString(2, meal.getName());
-		update_meal_PS.executeUpdate();
 	}
 
 }
