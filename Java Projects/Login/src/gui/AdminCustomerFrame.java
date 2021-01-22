@@ -232,7 +232,7 @@ public class AdminCustomerFrame extends JFrame {
 				
 				//DELETE
 			
-					admin_controller.removeCustomer(AdminCustomerFrame.this);
+//					admin_controller.removeCustomer(AdminCustomerFrame.this);
 			}
 				
 			@Override

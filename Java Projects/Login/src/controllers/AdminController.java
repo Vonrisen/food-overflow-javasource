@@ -38,7 +38,6 @@ public class AdminController {
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	private List<Customer>customer_list = new ArrayList<Customer>();
 	public List<Shop>shop_list= new ArrayList<Shop>();
-	private List<String> allergens = new ArrayList<String>();
 	private TableModelUtility table = new TableModelUtility();
 	
 	public  AdminController()
@@ -65,8 +64,9 @@ public class AdminController {
 	{
 		
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame(this);
-		initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame);
+		if(initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame))
 		admin_rider_frame.setVisible(true);
+		return;
 	}
 	
 	public void openAdminMealFrame(AdminFrame admin_frame)
@@ -75,6 +75,7 @@ public class AdminController {
 		AdminMealFrame admin_meal_frame = new AdminMealFrame(this);
 		initializeAdminMealFrameTable(admin_meal_frame);
 		admin_meal_frame.setVisible(true);
+		return;
 	}
 	
 	public void openAdminCustomerFrame(AdminFrame admin_frame)
@@ -83,6 +84,7 @@ public class AdminController {
 		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame(this);
 		initializeAdminCustomerFrameTable(admin_customer_frame);
 		admin_customer_frame.setVisible(true);
+		return;
 	}
 	
 	public void initializeAdminShopFrameTable(AdminShopFrame admin_shop_frame)
@@ -107,8 +109,9 @@ public class AdminController {
 		return;
 	}
 	
-	public void initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
+	public boolean initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
 	{
+		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 		int selected_row = admin_shop_frame.getTable().getSelectedRow();
 	    String shop_id = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 			try {
@@ -117,7 +120,13 @@ public class AdminController {
 				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			}
 		table.initializeRiderTable(admin_rider_frame, rider_list);
-		return;
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Select a shop first","Errore",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 
@@ -157,61 +166,85 @@ public class AdminController {
 	
 	public void addMeal(AdminMealFrame admin_meal_frame) {
 		
+		InputUtility input_util = new InputUtility();
+		List<String> allergens = new ArrayList<String>();
 		for(JCheckBox cb : admin_meal_frame.getAllergens()) {
 			if(cb.isSelected())
 				allergens.add(cb.getText());
 		}
-		Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
-				admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 		
 		try {
+			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
+			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 			meal_dao.insertMeal(meal);
+			meal_list.add(meal);
+			admin_meal_frame.getModel().insertRow(meal_list.size()-1, new Object[]{meal.getName(),
+	        meal.getCategory(), meal.getPrice(),
+		    meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		 catch (NumberFormatException e)
+		{
+			 JOptionPane.showMessageDialog(null, "Insert a valid price","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		
 		
 	}
 	
-	public boolean shopRemoved(AdminShopFrame admin_shop_frame)
+	public void removeShop(AdminShopFrame admin_shop_frame)
 	{
+		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 
-		int selected_row = admin_shop_frame.getTable().getSelectedRow();
-		String shop_id_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
-		int i = 0;
-	
+			int selected_row = admin_shop_frame.getTable().getSelectedRow();
+			String shop_id_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
+			int i = 0;
 			while(!shop_list.get(i).getId().equals(shop_id_to_remove))
 				i++;
-		try {
-			shop_dao.deleteShop(shop_list.get(i));
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
+			try {
+				shop_dao.deleteShop(shop_list.get(i));
+				shop_list.remove(i);
+				admin_shop_frame.getModel().removeRow(admin_shop_frame.getTable().getSelectedRow());
+				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+		
+	}
+		else
+			JOptionPane.showMessageDialog(null, "Select the shop you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
+		return;
 	}
 	
 
-	public boolean mealRemoved(AdminMealFrame admin_meal_frame)
+	public void removeMeal(AdminMealFrame admin_meal_frame)
 	{
-		int selected_row = admin_meal_frame.getTable().getSelectedRow();
-		String name_of_meal_to_delete = admin_meal_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
-		int i = 0;
-		while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
-			i++;
-		try {
-			meal_dao.deleteMeal(meal_list.get(i));
-			admin_meal_frame.getModel().insertRow(meal_list.size()-1, new Object[]{admin_meal_frame.getNameTF().getText(),
-		    admin_meal_frame.getDishJCB().getSelectedItem().toString(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()),
-		    admin_meal_frame.getIngredientsTF().getText(),allergens});
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-			return false;
+		
+		if(admin_meal_frame.getTable().getSelectedRow()!=-1)
+		{
+			int selected_row = admin_meal_frame.getTable().getSelectedRow();
+			String name_of_meal_to_delete = admin_meal_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+			int i = 0;
+			while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
+				i++;
+			try {
+				meal_dao.deleteMeal(meal_list.get(i));
+				meal_list.remove(i);
+				admin_meal_frame.getModel().removeRow(selected_row);
+				JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Errors while deleting selected meal","Errore",JOptionPane.ERROR_MESSAGE);
+			}
 		}
-
-		return true;
+		else
+			JOptionPane.showMessageDialog(null, "Select the meal you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
+		return;
 	}
 	
-	public void removeCustomer(AdminCustomerFrame admin_customer_frame) {
+	
+	public void removeCustomer(AdminCustomerFrame admin_customer_frame) 
+	
+	 {
 		
 		String email = JOptionPane.showInputDialog("Inserisci l'email dell'utente da eliminare");
 		int i=0;
@@ -227,13 +260,13 @@ public class AdminController {
 			admin_customer_frame.getTable().getSelectionModel().clearSelection();
 			customer_dao.deleteCustomer(customer_list.get(i));
 			admin_customer_frame.getModel().removeRow(i);
-			JOptionPane.showMessageDialog(null, "Customer deleted succesfully","Errore",JOptionPane.ERROR_MESSAGE);
+			customer_list.remove(i);
+			JOptionPane.showMessageDialog(null, "Customer deleted successfully","Errore",JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		}
 		return;
 	}
-
 	
 }
