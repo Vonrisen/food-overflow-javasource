@@ -16,7 +16,6 @@ import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
 import entities.Address;
-import entities.Customer;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
@@ -107,10 +106,15 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	
 	public void updateShop(Shop shop) throws SQLException {
 		
-		update_shop_PS.setString(1, shop.getId());
-		update_shop_PS.executeQuery();
+		InputUtility input_util = new InputUtility();
+		update_shop_PS.setString(1, shop.getName());
+		update_shop_PS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
+		update_shop_PS.setString(3, shop.getWorking_hours());
+		update_shop_PS.setString(4, shop.getClosing_days());
+		update_shop_PS.setString(5, shop.getPassword());
+		update_shop_PS.setString(6, shop.getId());
+		update_shop_PS.executeUpdate();
 		return;
-		
 	}
 
 	

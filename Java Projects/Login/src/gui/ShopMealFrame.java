@@ -3,15 +3,14 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,10 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.AdminController;
 import controllers.ShopController;
 import gui_support.RoundJTextField;
 
@@ -187,7 +184,7 @@ public class ShopMealFrame extends JFrame{
 		
 		//Setup TextFields
 		
-		createTextField(mealTF, "Inserisci meal(ID) nello shop", long_dim_of_textfield);
+		createTextField(mealTF, "Inserisci meal(Name) nello shop", long_dim_of_textfield);
 		attributes_panel.add(mealTF);
 		
 		setupButton(view_all_mealsJB, view_all_meals_inactiveIMG, new Dimension(335,30));
@@ -215,8 +212,11 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				
-				
+				try {
+					shop_controller.addMeal(ShopMealFrame.this);
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -236,7 +236,11 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//DELETE
+				try {
+					shop_controller.removeMeal(ShopMealFrame.this);
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+				}
 				
 			}
 			@Override
@@ -362,6 +366,22 @@ public class ShopMealFrame extends JFrame{
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
+	}
+
+	public JTextField getMealTF() {
+		return mealTF;
+	}
+
+	public void setMealTF(JTextField mealTF) {
+		this.mealTF = mealTF;
+	}
+
+	public JTable getShop_meals_table() {
+		return shop_meals_table;
+	}
+
+	public void setShop_meals_table(JTable shop_meals_table) {
+		this.shop_meals_table = shop_meals_table;
 	}
 
 }

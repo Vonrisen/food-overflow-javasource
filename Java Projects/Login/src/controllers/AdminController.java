@@ -34,7 +34,6 @@ public class AdminController {
 	private MealDAO meal_dao = new MealDAOPostgresImplementation();
 	private ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 	private RiderDAO rider_dao = new RiderDAOPostgresImplementation();
-	private List<Rider>rider_list = new ArrayList<Rider>();
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	private List<Customer>customer_list = new ArrayList<Customer>();
 	public List<Shop>shop_list= new ArrayList<Shop>();
@@ -113,15 +112,16 @@ public class AdminController {
 	{
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 		int selected_row = admin_shop_frame.getTable().getSelectedRow();
-		 if(!shop_list.get(selected_row).getEmployed_riders_list().isEmpty())
-		 {
-	      String shop_id = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
-			try {
-				rider_list = rider_dao.getRidersOfAShopByShopId(shop_id);
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-			}
-		table.initializeRiderTable(admin_rider_frame, admin_rider_frame.getModel(), rider_list);
+		List<Rider>rider_list = new ArrayList<Rider>();
+		String shop_id = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
+		try {
+			rider_list = rider_dao.getRidersOfAShopByShopId(shop_id);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		if(!rider_list.isEmpty())
+		{
+			table.initializeRiderTable(admin_rider_frame, admin_rider_frame.getModel(), rider_list);
 		}
 		 else
 		 {
@@ -145,8 +145,9 @@ public class AdminController {
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
 				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
 			shop_dao.insertShop(shop);
-			admin_shop_frame.getModel().insertRow(shop_list.size()-1, new Object[] {"da definire", shop.getPassword(),
+			admin_shop_frame.getModel().insertRow(shop_list.size(), new Object[] {"da definire", shop.getPassword(),
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});
+			shop_list.add(shop);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -182,10 +183,9 @@ public class AdminController {
 			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
 			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 			meal_dao.insertMeal(meal);
+			admin_meal_frame.getModel().insertRow(meal_list.size(), new Object[]{meal.getName(), meal.getCategory(), meal.getPrice(),
+														meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 			meal_list.add(meal);
-			admin_meal_frame.getModel().insertRow(meal_list.size()-1, new Object[]{meal.getName(),
-	        meal.getCategory(), meal.getPrice(),
-		    meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -204,6 +204,10 @@ public class AdminController {
 			int selected_row = admin_shop_frame.getTable().getSelectedRow();
 			String shop_id_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
+			if(shop_id_to_remove.equals("da definire")) {
+				JOptionPane.showMessageDialog(null, "Ricaricare la pagina e riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			try {
 				while(!shop_list.get(i).getId().equals(shop_id_to_remove))
 					i++;
@@ -233,6 +237,8 @@ public class AdminController {
 			try {
 				while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
 					i++;
+				System.out.println(meal_list.get(i));
+				System.out.println(meal_list.get(selected_row));
 				meal_dao.deleteMeal(meal_list.get(i));
 				meal_list.remove(i);
 				admin_meal_frame.getModel().removeRow(selected_row);
@@ -297,7 +303,35 @@ public class AdminController {
 		catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
-	}
+		}
 		return true;
-}
+	}
+	
+	public void shopUpdated(AdminShopFrame admin_shop_frame) {
+
+		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
+			int selected_row = admin_shop_frame.getTable().getSelectedRow();
+			String id_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+			int i = 0;
+			while(!shop_list.get(i).getId().equals(id_of_shop_to_update))
+				i++;
+
+			shop_list.get(i).setName(admin_shop_frame.getNameTF().getText());
+			shop_list.get(i).setAddress(new Address(admin_shop_frame.getAddress_nameTF().getText(),
+					admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(),
+					admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()));
+			shop_list.get(i).setClosing_days(admin_shop_frame.getClosing_daysTF().getText());
+			shop_list.get(i).setWorking_hours(admin_shop_frame.getWorking_hoursTF().getText());
+			shop_list.get(i).setPassword(admin_shop_frame.getPasswordTF().getText());
+
+			try {
+				shop_dao.updateShop(shop_list.get(i));
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
+	}
+
 }

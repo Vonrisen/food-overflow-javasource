@@ -11,14 +11,13 @@ import javax.swing.JOptionPane;
 import daos_interfaces.MealDAO;
 import db_connection.DBconnection;
 import entities.Meal;
-import gui.ShopMealFrame;
 import utilities.InputUtility;
 
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
 	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS;
-	CallableStatement add_allergens_CS;
+	CallableStatement add_allergens_CS, insert_supply_CS, delete_from_supply_CS;
 	public MealDAOPostgresImplementation() {
 		
 		try {
@@ -33,15 +32,12 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?) ORDER BY category, name");
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=?) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
-			
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
-			
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
-			
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
-			
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
-			
+			insert_supply_CS = connection.prepareCall("Call insertSupply(?,?)");
+			delete_from_supply_CS = connection.prepareCall("CALL deleteFromSupply(?,?)");
 			
 		}catch(SQLException s)
 		{
@@ -128,6 +124,20 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		delete_meal_PS.setString(1, meal.getName());
 		delete_meal_PS.executeUpdate();
 		return;
+	}
+	
+	public void insertSupply(String shop_id, Meal meal) throws SQLException {
+		
+		insert_supply_CS.setString(1, shop_id);
+		insert_supply_CS.setString(2, meal.getName());
+		insert_supply_CS.executeUpdate();
+	}
+	
+	public void deleteFromSupply(String shop_id, Meal meal)throws SQLException {
+		
+		delete_from_supply_CS.setString(1, shop_id);
+		delete_from_supply_CS.setString(2, meal.getName());
+		delete_from_supply_CS.executeUpdate();
 	}
 
 }

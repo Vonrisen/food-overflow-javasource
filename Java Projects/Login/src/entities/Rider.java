@@ -7,7 +7,7 @@ public class Rider extends Person{
 	//ATTRIBUTI
 	private String vehicle;
 	private String working_hours;
-	private Short deliveries_number;
+	private Short deliveries_number = 0;
 	//COSTRUTTORE
 	public Rider(String cf, String name, String surname, Date birth_date, String birth_place, String gender,
 				String cellphone, Address address, String vehicle, String working_hours, Short deliveries_number) {

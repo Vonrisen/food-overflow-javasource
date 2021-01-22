@@ -1,6 +1,5 @@
 package utilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -10,11 +9,6 @@ import entities.Customer;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
-import gui.AdminCustomerFrame;
-import gui.AdminMealFrame;
-import gui.AdminRiderFrame;
-import gui.AdminShopFrame;
-import gui.ShopMealFrame;
 
 public class TableModelUtility {
 	

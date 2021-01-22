@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.ShopDAO;
-import gui.AdminFrame;
 import gui.LoginFrame;
 public class LoginController{
 	

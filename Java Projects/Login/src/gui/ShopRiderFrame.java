@@ -3,15 +3,15 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,16 +19,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.AdminController;
 import controllers.ShopController;
-import gui_support.RoundJRadioButton;
 import gui_support.RoundJTextField;
 
 public class ShopRiderFrame extends JFrame{
@@ -157,7 +153,7 @@ public class ShopRiderFrame extends JFrame{
 	
 	private void setupFrame() {
 		
-		String[]columns = {};
+		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours"};
 		model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
 		
@@ -278,7 +274,11 @@ public class ShopRiderFrame extends JFrame{
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+				try {
+					shop_controller.addRider(ShopRiderFrame.this);
+				} catch (SQLException | ParseException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -579,6 +579,126 @@ public class ShopRiderFrame extends JFrame{
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public JTextField getNameTF() {
+		return nameTF;
+	}
+
+	public void setNameTF(JTextField nameTF) {
+		this.nameTF = nameTF;
+	}
+
+	public JTextField getSurnameTF() {
+		return surnameTF;
+	}
+
+	public void setSurnameTF(JTextField surnameTF) {
+		this.surnameTF = surnameTF;
+	}
+
+	public JTextField getBirth_dateTF() {
+		return birth_dateTF;
+	}
+
+	public void setBirth_dateTF(JTextField birth_dateTF) {
+		this.birth_dateTF = birth_dateTF;
+	}
+
+	public JTextField getBirth_placeTF() {
+		return birth_placeTF;
+	}
+
+	public void setBirth_placeTF(JTextField birth_placeTF) {
+		this.birth_placeTF = birth_placeTF;
+	}
+
+	public JTextField getAddress_nameTF() {
+		return address_nameTF;
+	}
+
+	public void setAddress_nameTF(JTextField address_nameTF) {
+		this.address_nameTF = address_nameTF;
+	}
+
+	public JTextField getAddress_civic_numberTF() {
+		return address_civic_numberTF;
+	}
+
+	public void setAddress_civic_numberTF(JTextField address_civic_numberTF) {
+		this.address_civic_numberTF = address_civic_numberTF;
+	}
+
+	public JTextField getAddress_capTF() {
+		return address_capTF;
+	}
+
+	public void setAddress_capTF(JTextField address_capTF) {
+		this.address_capTF = address_capTF;
+	}
+
+	public JTextField getAddress_cityTF() {
+		return address_cityTF;
+	}
+
+	public void setAddress_cityTF(JTextField address_cityTF) {
+		this.address_cityTF = address_cityTF;
+	}
+
+	public JTextField getAddress_provinceTF() {
+		return address_provinceTF;
+	}
+
+	public void setAddress_provinceTF(JTextField address_provinceTF) {
+		this.address_provinceTF = address_provinceTF;
+	}
+
+	public JTextField getCellphoneTF() {
+		return cellphoneTF;
+	}
+
+	public void setCellphoneTF(JTextField cellphoneTF) {
+		this.cellphoneTF = cellphoneTF;
+	}
+
+	public JComboBox<String> getVehicleCB() {
+		return vehicleCB;
+	}
+
+	public void setVehicleCB(JComboBox<String> vehicleCB) {
+		this.vehicleCB = vehicleCB;
+	}
+
+	public JComboBox<String> getGenderCB() {
+		return genderCB;
+	}
+
+	public void setGenderCB(JComboBox<String> genderCB) {
+		this.genderCB = genderCB;
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
+	}
+
+	public JTextField getWorking_hoursTF() {
+		return working_hoursTF;
+	}
+
+	public void setWorking_hoursTF(JTextField working_hoursTF) {
+		this.working_hoursTF = working_hoursTF;
 	}
 	
 }
