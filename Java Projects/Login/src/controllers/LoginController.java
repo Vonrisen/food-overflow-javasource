@@ -1,6 +1,7 @@
 package controllers;
 import java.sql.SQLException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.ShopDAO;
@@ -11,14 +12,15 @@ public class LoginController{
 
 	private ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 	LoginFrame login_frame;
+	String id;
 	public LoginController()
 	{
 		
 	}
 	//Metodo per aprire login frame dopo essersi disconnessi dall' admin frame
-	public void openLoginFrame(AdminFrame admin_frame)
+	public void openLoginFrame(JFrame frame)
 	{
-		admin_frame.dispose();
+		frame.dispose();
 		login_frame = new LoginFrame();
 		login_frame.setVisible(true);
 		return;
@@ -62,8 +64,9 @@ public class LoginController{
 				if(access_succeded)
 				{
 					login_frame.setVisible(false);
-					ShopController shop_controller = new ShopController();
-					shop_controller.openShopFrame();
+					id= login_frame.getUsernameTF().getText();
+					ShopController shop_controller = new ShopController(id);
+					shop_controller.openShopFrame(login_frame);
 				}
 				else
 				{
@@ -79,5 +82,6 @@ public class LoginController{
 			
 	}
 		return;
+	
 }
 	}

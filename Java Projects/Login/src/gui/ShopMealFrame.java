@@ -73,6 +73,7 @@ public class ShopMealFrame extends JFrame{
 	
 	private Color background_color = new Color(0xf3ecd7);
 	private ShopController shop_controller;
+	private DefaultTableModel model;
 
 	/**
 	 * Create the application.
@@ -119,7 +120,9 @@ public class ShopMealFrame extends JFrame{
 		insert_sqlJB = new JButton();
 		delete_sqlJB = new JButton();
 		
-		shop_meals_table = new JTable();
+		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		model = new DefaultTableModel(columns, 0);
+		shop_meals_table = new JTable(model);
 		shop_meals_scroll_pane = new JScrollPane(shop_meals_table);
 		
 		all_meals_table = new JTable();
@@ -212,7 +215,7 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//DELETE
+				
 				
 			}
 			@Override
@@ -254,7 +257,7 @@ public class ShopMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				
+				shop_controller.openShopFrame(ShopMealFrame.this);
 			
 			}
 			@Override
@@ -290,12 +293,7 @@ public class ShopMealFrame extends JFrame{
 		view_all_mealsJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-//				JOptionPane.showConfirmDialog(null, all_meals_scroll_pane, "All Meals", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
-				String[][] data = { { "bla", "bla" } };
-				String[] cols = { "col1", "col2" };
-//				new VHSInformationPanel(data, cols);
-				
+				shop_controller.openShopAllMealsFrame(ShopMealFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -356,6 +354,14 @@ public class ShopMealFrame extends JFrame{
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 
 }

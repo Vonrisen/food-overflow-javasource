@@ -3,6 +3,7 @@ package utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 import entities.Customer;
@@ -13,10 +14,11 @@ import gui.AdminCustomerFrame;
 import gui.AdminMealFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
+import gui.ShopMealFrame;
 
 public class TableModelUtility {
 	
-	public void initializeShopTable(AdminShopFrame admin_shop_frame,  List<Shop> shop_list)
+	public void initializeShopTable(JFrame frame, DefaultTableModel model,  List<Shop> shop_list)
 	{
 		
 		Object[] row = new Object[6];
@@ -27,12 +29,12 @@ public class TableModelUtility {
 			row[3] = shop.getAddress();
 			row[4] = shop.getWorking_hours();
 			row[5] = shop.getClosing_days();
-			admin_shop_frame.getModel().addRow(row);
+			model.addRow(row);
 		}
 		return;
 	}
 	
-	public void initializeCustomerTable(AdminCustomerFrame admin_customer_frame,  List<Customer> customer_list)
+	public void initializeCustomerTable(JFrame frame, DefaultTableModel model,  List<Customer> customer_list)
 	{
 		Object[] row = new Object[10];
 		InputUtility date_util = new InputUtility();
@@ -48,12 +50,12 @@ public class TableModelUtility {
 			row[7] = customer.getCellphone();
 			row[8] = customer.getEmail();
 			row[9] = customer.getPassword();
-			admin_customer_frame.getModel().addRow(row);
+			model.addRow(row);
 		}
 		return;
 	}
 	
-	public void initializeMealTable(AdminMealFrame admin_meal_frame, List<Meal> meal_list) {
+	public void initializeMealTable(JFrame frame, DefaultTableModel model, List<Meal> meal_list) {
 		Object[] row = new Object[5];
 		InputUtility input_util = new InputUtility();
 		for(Meal meal : meal_list) {
@@ -62,11 +64,11 @@ public class TableModelUtility {
 			row[2] = meal.getPrice();
 			row[3] = meal.getIngredients();
 			row[4] = input_util.arrayListToTokenizedString(meal.getAllergen_list(), ", ");
-			admin_meal_frame.getModel().addRow(row);
+			model.addRow(row);
 		}
 	}
 	
-	public void initializeRiderTable(AdminRiderFrame admin_rider_frame,  List<Rider> rider_list)
+	public void initializeRiderTable(JFrame frame, DefaultTableModel model,  List<Rider> rider_list)
 	{
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[10];
@@ -81,7 +83,7 @@ public class TableModelUtility {
 			row[7] = rider.getCellphone();
 			row[8] = rider.getVehicle();
 			row[9] = rider.getWorking_hours();
-			admin_rider_frame.getModel().addRow(row);
+			model.addRow(row);
 		}
 	}
 

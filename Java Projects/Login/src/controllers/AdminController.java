@@ -94,7 +94,7 @@ public class AdminController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeShopTable(admin_shop_frame, shop_list);
+		table.initializeShopTable(admin_shop_frame, admin_shop_frame.getModel(), shop_list);
 		return;
 	}
 
@@ -105,7 +105,7 @@ public class AdminController {
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeCustomerTable(admin_customer_frame, customer_list);
+		table.initializeCustomerTable(admin_customer_frame, admin_customer_frame.getModel(), customer_list);
 		return;
 	}
 	
@@ -119,7 +119,7 @@ public class AdminController {
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			}
-		table.initializeRiderTable(admin_rider_frame, rider_list);
+		table.initializeRiderTable(admin_rider_frame, admin_rider_frame.getModel(), rider_list);
 		}
 		else
 		{
@@ -156,7 +156,7 @@ public class AdminController {
 				JOptionPane.showMessageDialog(null, "Non ci sono shop da visualizzare","Errore",JOptionPane.ERROR_MESSAGE);
 			else
 			{
-				table.initializeMealTable(admin_meal_frame, meal_list);
+				table.initializeMealTable(admin_meal_frame, admin_meal_frame.getModel(), meal_list);
 			}
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
@@ -242,30 +242,30 @@ public class AdminController {
 	}
 	
 	
-	public void removeCustomer(AdminCustomerFrame admin_customer_frame) 
-	
+	public void removeCustomer(AdminCustomerFrame admin_customer_frame)
 	 {
 		
 		String email = JOptionPane.showInputDialog("Inserisci l'email dell'utente da eliminare");
 		int i=0;
 		if(email!=null) {
-		try {
-			while(!customer_list.get(i).getEmail().equals(email))
-				i++;
-		}catch (IndexOutOfBoundsException in) {
-			JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questa email: "+email,"Errore",JOptionPane.ERROR_MESSAGE);
-			return;
+			try {
+				while(!customer_list.get(i).getEmail().equals(email))
+					i++;
+			}catch (IndexOutOfBoundsException in) {
+				JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questa email: "+email,"Errore",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			try {
+				admin_customer_frame.getTable().getSelectionModel().clearSelection();
+				customer_dao.deleteCustomer(customer_list.get(i));
+				admin_customer_frame.getModel().removeRow(i);
+				customer_list.remove(i);
+				JOptionPane.showMessageDialog(null, "Customer deleted successfully","Errore",JOptionPane.ERROR_MESSAGE);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		try {
-			admin_customer_frame.getTable().getSelectionModel().clearSelection();
-			customer_dao.deleteCustomer(customer_list.get(i));
-			admin_customer_frame.getModel().removeRow(i);
-			customer_list.remove(i);
-			JOptionPane.showMessageDialog(null, "Customer deleted successfully","Errore",JOptionPane.ERROR_MESSAGE);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
-		}
-		}
+			
 		return;
 	}
 	

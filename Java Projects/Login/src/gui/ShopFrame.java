@@ -44,6 +44,7 @@ public class ShopFrame extends JFrame{
 	
 	private Color background_color = new Color(0xf3ecd7);
 	private ShopController shop_controller;
+	private LoginController login_controller = new LoginController();
 
 	/**
 	 * Create the application.
@@ -115,7 +116,7 @@ public class ShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				
+				shop_controller.openShopRiderFrame(ShopFrame.this);
 				
 			}
 			@Override
@@ -177,7 +178,9 @@ public class ShopFrame extends JFrame{
 		disconnectJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento LoginFrame
+				
+				login_controller.openLoginFrame(ShopFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
