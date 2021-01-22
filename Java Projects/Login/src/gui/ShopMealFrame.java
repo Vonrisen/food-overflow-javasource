@@ -293,7 +293,7 @@ public class ShopMealFrame extends JFrame{
 		view_all_mealsJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				shop_controller.openShopAllMealsFrame(ShopMealFrame.this);
+				shop_controller.openShopAllMealsFrame();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

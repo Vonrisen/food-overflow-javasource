@@ -53,11 +53,11 @@ public class ShopController {
 		return;
 	}
 	
-	public void openShopAllMealsFrame(ShopMealFrame shop_meal_frame)
+	public void openShopAllMealsFrame()
 	{
 		
 		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
-		initializeShopAllMealFrameTable(shop_all_meals_frame);
+		initializeShopAllMealsFrameTable(shop_all_meals_frame);
 		shop_all_meals_frame.setVisible(true);
 		return;
 	}
@@ -73,23 +73,16 @@ public class ShopController {
 		return;
 	}
 	
-	public void initializeShopAllMealFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
+	public void initializeShopAllMealsFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
-			meal_list = meal_dao.getMealToAdd(id);
+			meal_list = meal_dao.getAllMealsExceptShopMeals(id);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeMealTable(shop_all_meals_frame,shop_all_meals_frame.getModel(), meal_list);
 	}
 	
-	
-	
-	
-	
-	
-	
-
 	public String getId() {
 		return id;
 	}

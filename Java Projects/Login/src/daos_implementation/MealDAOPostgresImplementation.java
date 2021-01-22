@@ -17,7 +17,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_meals_to_add_to_shop_PS;
+	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS;
 	CallableStatement add_allergens_CS;
 	public MealDAOPostgresImplementation() {
 		
@@ -31,7 +31,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		try {
 			
 			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?) ORDER BY category, name");
-			get_meals_to_add_to_shop_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=?) ORDER BY category, name");
+			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=?) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
 			
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
@@ -53,9 +53,9 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		
 		get_meals_of_a_shop_by_shop_id_PS.setString(1, shop_id);
 		ResultSet rs1 = get_meals_of_a_shop_by_shop_id_PS.executeQuery();
-		ResultSet rs2 = null;
+		ResultSet rs2;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
-		ArrayList<String> allergens = null;
+		ArrayList<String> allergens;
 		while(rs1.next())
 		{
 			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
@@ -72,9 +72,9 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	
 	public List<Meal> getAllMeals() throws SQLException {
 		ResultSet rs1 = get_all_meals_PS.executeQuery();
-		ResultSet rs2 = null;
+		ResultSet rs2;
 		List<Meal> meal_list = new ArrayList<Meal>();
-		List<String> allergens = null;
+		List<String> allergens;
 		while(rs1.next()){
 			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
 			rs2 = get_allergens_of_a_meal_PS.executeQuery();
@@ -86,12 +86,12 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return meal_list;
 	}
 	
-	public List<Meal> getMealToAdd(String shop_id) throws SQLException{
-		get_meals_to_add_to_shop_PS.setString(1, shop_id);
-		ResultSet rs1 = get_meals_to_add_to_shop_PS.executeQuery();
-		ResultSet rs2 = null;
+	public List<Meal> getAllMealsExceptShopMeals(String shop_id) throws SQLException{
+		get_all_meals_except_shop_meals_PS.setString(1, shop_id);
+		ResultSet rs1 = get_all_meals_except_shop_meals_PS.executeQuery();
+		ResultSet rs2;
 		List<Meal> meal_list = new ArrayList<Meal>();
-		List<String> allergens = null;
+		List<String> allergens;
 		while(rs1.next()){
 			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
 			rs2 = get_allergens_of_a_meal_PS.executeQuery();

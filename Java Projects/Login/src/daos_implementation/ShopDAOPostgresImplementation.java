@@ -16,6 +16,7 @@ import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
 import entities.Address;
+import entities.Customer;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
@@ -111,5 +112,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return;
 		
 	}
+
 	
 }
