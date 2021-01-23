@@ -1,8 +1,8 @@
 package utilities;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 import entities.Customer;
@@ -55,7 +55,7 @@ public class TableModelUtility {
 		for(Meal meal : meal_list) {
 			row[0] = meal.getName();
 			row[1] = meal.getCategory();
-			row[2] = meal.getPrice();
+			row[2] = new DecimalFormat("00.00").format(meal.getPrice());;
 			row[3] = meal.getIngredients();
 			row[4] = input_util.arrayListToTokenizedString(meal.getAllergen_list(), ", ");
 			model.addRow(row);

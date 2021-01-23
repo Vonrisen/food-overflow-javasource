@@ -85,9 +85,10 @@ public class ShopAllMealsFrame extends JFrame {
 	
 	private void frameSetup() {
 		
-		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		String[] columns = {"Name", "Category", "Price in €", "ingredients", "Allergens"};
 	    model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
 		
 		this.setTitle("Shop Panel: All Meals");
 		this.setSize(1280,720);

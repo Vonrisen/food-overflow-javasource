@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +20,7 @@ import utilities.InputUtility;
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
 	private Connection connection;
-	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_id_PS, insert_rider_PS;
+	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_id_PS, insert_rider_PS, dismiss_rider_PS;
 	public RiderDAOPostgresImplementation() {
 		
 		try {
@@ -37,6 +36,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			get_riders_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
 					+ "FROM Rider WHERE shop_id=?");
 			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+			dismiss_rider_PS = connection.prepareStatement("UPDATE Rider SET shop_id=null WHERE cf=?");
 			
 		}catch(SQLException s)
 		{
@@ -98,4 +98,9 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		return;
 	}
 	
+	public void dismissRider(Rider rider) throws SQLException{
+		
+		dismiss_rider_PS.setString(1, rider.getCf());
+		dismiss_rider_PS.executeUpdate();
+	}
 }

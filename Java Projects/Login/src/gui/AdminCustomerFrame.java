@@ -121,6 +121,7 @@ public class AdminCustomerFrame extends JFrame {
 		this.setMinimumSize(new Dimension(800,500));
 		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Email", "Password"};
 	    table.setFocusable(false);
+	    table.setAutoCreateRowSorter(true);
 	    table.setRowSelectionAllowed(true);
 		table.setModel(model = new DefaultTableModel(columns, 0) {
 

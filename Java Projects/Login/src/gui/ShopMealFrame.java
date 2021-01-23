@@ -117,10 +117,11 @@ public class ShopMealFrame extends JFrame{
 		insert_sqlJB = new JButton();
 		delete_sqlJB = new JButton();
 		
-		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		String[] columns = {"Name", "Category", "Price in €", "ingredients", "Allergens"};
 		model = new DefaultTableModel(columns, 0);
 		shop_meals_table = new JTable(model);
 		shop_meals_scroll_pane = new JScrollPane(shop_meals_table);
+		shop_meals_table.setAutoCreateRowSorter(true);
 		
 		all_meals_table = new JTable();
 		all_meals_scroll_pane = new JScrollPane(all_meals_table);

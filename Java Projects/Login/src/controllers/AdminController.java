@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -183,7 +184,7 @@ public class AdminController {
 			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
 			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 			meal_dao.insertMeal(meal);
-			admin_meal_frame.getModel().insertRow(meal_list.size(), new Object[]{meal.getName(), meal.getCategory(), meal.getPrice(),
+			admin_meal_frame.getModel().insertRow(meal_list.size(), new Object[]{meal.getName(), meal.getCategory(), new DecimalFormat("00.00").format(meal.getPrice()),
 														meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 			meal_list.add(meal);
 		} catch (SQLException e) {

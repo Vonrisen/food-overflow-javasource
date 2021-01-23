@@ -2,6 +2,7 @@ package controllers;
 
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class ShopController {
 				i++;
 			meal_dao.insertSupply(id,meal_list.get(i));
 			shop_meal_frame.getModel().insertRow(meal_list.size(), new Object[]{meal_list.get(i).getName(),
-					meal_list.get(i).getCategory(), meal_list.get(i).getPrice(),
+					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
 					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list()});
 			meal_list.add(meal_list.get(i));
 			
@@ -176,6 +177,38 @@ public class ShopController {
 		return;
 	
 	}
+	
+	public void removeRider(ShopRiderFrame shop_rider_frame) {
+		
+		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
+
+			int selected_row = shop_rider_frame.getTable().getSelectedRow();
+			String rider_cf_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
+			int i = 0;
+			try {
+				while(!rider_list.get(i).getCf().equals(rider_cf_to_dismiss))
+					i++;
+				rider_dao.dismissRider(rider_list.get(i));
+				shop_rider_frame.getModel().removeRow(selected_row);
+				rider_list.remove(i);
+				JOptionPane.showMessageDialog(null, "Selected rider dismissed successfully");
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Errors while dismissing selected rider","Error",JOptionPane.ERROR_MESSAGE);
+			}
+	}
+		else
+			JOptionPane.showMessageDialog(null, "Select the rider you want to dismiss","Error",JOptionPane.ERROR_MESSAGE);
+		return;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public String getId() {
 		return id;

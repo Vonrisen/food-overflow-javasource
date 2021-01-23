@@ -9,15 +9,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.text.ParseException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -162,7 +158,10 @@ public class ShopRiderFrame extends JFrame{
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		
+	    
+	    table.setAutoCreateRowSorter(true);
+
+	    
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -295,7 +294,7 @@ public class ShopRiderFrame extends JFrame{
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//UPDATE
+				
 		
 			}
 			@Override
@@ -317,6 +316,7 @@ public class ShopRiderFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
+				shop_controller.removeRider(ShopRiderFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

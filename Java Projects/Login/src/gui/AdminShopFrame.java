@@ -152,6 +152,7 @@ public class AdminShopFrame extends JFrame{
 		String[]columns = {"ID", "Password", "Name", "Address", "Working Hours", "Closing Days"};
 		model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
 		
 		this.setTitle("Admin Panel: Shops");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

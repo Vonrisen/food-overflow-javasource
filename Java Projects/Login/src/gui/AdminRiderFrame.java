@@ -86,6 +86,7 @@ public class AdminRiderFrame extends JFrame {
 		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours"};
 	    model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
 		
 		this.setTitle("Admin Panel: Riders");
 		this.setSize(1280,720);

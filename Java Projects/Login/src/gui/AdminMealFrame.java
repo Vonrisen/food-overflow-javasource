@@ -151,9 +151,10 @@ public class AdminMealFrame extends JFrame{
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 
-		String[] columns = {"Name", "Category", "Price", "ingredients", "Allergens"};
+		String[] columns = {"Name", "Category", "Price in €", "ingredients", "Allergens"};
 		model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
