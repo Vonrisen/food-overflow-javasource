@@ -11,7 +11,6 @@ public class LoginController{
 
 	private ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 	LoginFrame login_frame;
-	String id;
 	public LoginController()
 	{
 		
@@ -59,12 +58,12 @@ public class LoginController{
 		else
 		{
 			try {
-				access_succeded = shop_dao.lookForShopByIdAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
+				access_succeded = shop_dao.lookForShopByEmailAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
 				if(access_succeded)
 				{
 					login_frame.setVisible(false);
-					id= login_frame.getUsernameTF().getText();
-					ShopController shop_controller = new ShopController(id);
+					String email= login_frame.getUsernameTF().getText();
+					ShopController shop_controller = new ShopController(email);
 					shop_controller.openShopFrame(login_frame);
 				}
 				else

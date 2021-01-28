@@ -6,7 +6,7 @@ import java.util.List;
 public class Shop {
 
 	//ATTRIBUTI
-	private String id;
+	private String email;
 	private String name;
 	private String password;
 	private String working_hours;
@@ -16,11 +16,11 @@ public class Shop {
 	private List<Meal> meal_list;
 	
 	//COSTRUTTORE PER IL GET
-	public Shop(String id, String name, String password, String working_hours, Address address,
+	public Shop(String email, String name, String password, String working_hours, Address address,
 			String closing_days, List<Rider> employed_riders_list, List<Meal> meal_list) {
 		
 		super();
-		this.id = id;
+		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.working_hours = working_hours;
@@ -46,8 +46,8 @@ public class Shop {
 	}
 
 	
-	public String getId() {
-		return id;
+	public String getEmail() {
+		return email;
 	}
 
 	public String getName() {
@@ -117,8 +117,8 @@ public class Shop {
 	public void setMeal_list(List<Meal> meal_list) {
 		this.meal_list = meal_list;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

@@ -114,9 +114,9 @@ public class AdminController {
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 		int selected_row = admin_shop_frame.getTable().getSelectedRow();
 		List<Rider>rider_list = new ArrayList<Rider>();
-		String shop_id = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
+		String shop_email = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 		try {
-			rider_list = rider_dao.getRidersOfAShopByShopId(shop_id);
+			rider_list = rider_dao.getRidersOfAShopByShopEmail(shop_email);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -203,14 +203,14 @@ public class AdminController {
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 
 			int selected_row = admin_shop_frame.getTable().getSelectedRow();
-			String shop_id_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
+			String shop_email_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
-			if(shop_id_to_remove.equals("da definire")) {
+			if(shop_email_to_remove.equals("da definire")) {
 				JOptionPane.showMessageDialog(null, "Ricaricare la pagina e riprovare","Errore",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			try {
-				while(!shop_list.get(i).getId().equals(shop_id_to_remove))
+				while(!shop_list.get(i).getEmail().equals(shop_email_to_remove))
 					i++;
 				shop_dao.deleteShop(shop_list.get(i));
 				shop_list.remove(i);
@@ -312,9 +312,9 @@ public class AdminController {
 
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 			int selected_row = admin_shop_frame.getTable().getSelectedRow();
-			String id_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+			String email_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
 			int i = 0;
-			while(!shop_list.get(i).getId().equals(id_of_shop_to_update))
+			while(!shop_list.get(i).getEmail().equals(email_of_shop_to_update))
 				i++;
 
 			shop_list.get(i).setName(admin_shop_frame.getNameTF().getText());

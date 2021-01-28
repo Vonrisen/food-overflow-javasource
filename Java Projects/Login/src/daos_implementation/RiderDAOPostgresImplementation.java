@@ -20,7 +20,7 @@ import utilities.InputUtility;
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
 	private Connection connection;
-	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_id_PS, insert_rider_PS, dismiss_rider_PS;
+	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_email_PS, insert_rider_PS, dismiss_rider_PS;
 	public RiderDAOPostgresImplementation() {
 		
 		try {
@@ -33,8 +33,8 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		try {
 			
 			get_all_riders_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number FROM Rider");
-			get_riders_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
-					+ "FROM Rider WHERE shop_id=?");
+			get_riders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
+					+ "FROM Rider WHERE shop_id=(SELECT id FROM Shop WHERE email=?)");
 			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 			dismiss_rider_PS = connection.prepareStatement("UPDATE Rider SET shop_id=null WHERE cf=?");
 			
@@ -62,10 +62,10 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		return rider_list;
 	}
 	
-	public List<Rider> getRidersOfAShopByShopId(String shop_id) throws SQLException {
+	public List<Rider> getRidersOfAShopByShopEmail(String shop_email) throws SQLException {
 		
-		get_riders_of_a_shop_by_shop_id_PS.setString(1, shop_id);
-		ResultSet rs = get_riders_of_a_shop_by_shop_id_PS.executeQuery();
+		get_riders_of_a_shop_by_shop_email_PS.setString(1, shop_email);
+		ResultSet rs = get_riders_of_a_shop_by_shop_email_PS.executeQuery();
 		List<Rider>rider_list = new ArrayList<Rider>();
 		List<String>address_fields = new ArrayList<String>();
 		InputUtility string_util = new InputUtility();

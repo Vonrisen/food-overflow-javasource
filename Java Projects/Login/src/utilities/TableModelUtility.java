@@ -17,7 +17,7 @@ public class TableModelUtility {
 		
 		Object[] row = new Object[6];
 		for(Shop shop : shop_list) {
-			row[0] = shop.getId();
+			row[0] = shop.getEmail();
 			row[1] = shop.getPassword();
 			row[2] = shop.getName();
 			row[3] = shop.getAddress();

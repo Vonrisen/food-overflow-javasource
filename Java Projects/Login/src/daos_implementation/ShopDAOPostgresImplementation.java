@@ -24,7 +24,7 @@ import utilities.InputUtility;
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	private Connection connection;
-	PreparedStatement look_for_shop_by_id_and_password_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, update_shop_PS;
+	PreparedStatement look_for_shop_by_email_and_password_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, update_shop_PS;
 	public ShopDAOPostgresImplementation() {
 		
 		try {
@@ -36,11 +36,11 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		try {
 			
-			look_for_shop_by_id_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE id=? AND password=?");
+			look_for_shop_by_email_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
 			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?)");
-			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE id=?");
-			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=? WHERE id=?");
+			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE email=?");
+			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=? WHERE email=?");
 		
 		}catch(SQLException s)
 		{
@@ -62,9 +62,9 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
 			List<Rider> employed_rider_list = new ArrayList<Rider>();
 			if(rs.getString("closing_days")!=null)
-			employed_rider_list = rider_dao.getRidersOfAShopByShopId(rs.getString("id"));
-			List<Meal> meal_list = meal_dao.getMealsOfAShopByShopId(rs.getString("id"));
-			shop_list.add(new Shop(rs.getString("id"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
+			employed_rider_list = rider_dao.getRidersOfAShopByShopEmail(rs.getString("email"));
+			List<Meal> meal_list = meal_dao.getMealsOfAShopByShopEmail(rs.getString("email"));
+			shop_list.add(new Shop(rs.getString("email"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
 				          rs.getString("closing_days"), employed_rider_list, meal_list));
 		}
@@ -72,12 +72,12 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		
 	}
 	
-	public boolean lookForShopByIdAndPassword(String id, String password) throws SQLException {
+	public boolean lookForShopByEmailAndPassword(String email, String password) throws SQLException {
 		
 		Boolean row_founded;
-		look_for_shop_by_id_and_password_PS.setString(1, id);
-		look_for_shop_by_id_and_password_PS.setString(2, password);
-		ResultSet rs = look_for_shop_by_id_and_password_PS.executeQuery();
+		look_for_shop_by_email_and_password_PS.setString(1, email);
+		look_for_shop_by_email_and_password_PS.setString(2, password);
+		ResultSet rs = look_for_shop_by_email_and_password_PS.executeQuery();
 		row_founded = rs.next();
 		return row_founded;
 		
@@ -99,7 +99,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	@Override
 	public void deleteShop(Shop shop) throws SQLException {
 		
-		delete_shop_PS.setString(1, shop.getId());
+		delete_shop_PS.setString(1, shop.getEmail());
 		delete_shop_PS.executeUpdate();
 		return;
 	}
@@ -112,7 +112,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		update_shop_PS.setString(3, shop.getWorking_hours());
 		update_shop_PS.setString(4, shop.getClosing_days());
 		update_shop_PS.setString(5, shop.getPassword());
-		update_shop_PS.setString(6, shop.getId());
+		update_shop_PS.setString(6, shop.getEmail());
 		update_shop_PS.executeUpdate();
 		return;
 	}

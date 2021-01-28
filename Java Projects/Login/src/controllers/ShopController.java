@@ -27,17 +27,16 @@ import utilities.TableModelUtility;
 
 public class ShopController {
 	
-	String id;
+	private String current_shop_email;
 	private TableModelUtility table = new TableModelUtility();
 	private RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 	private List<Rider> rider_list = new ArrayList<Rider>();
 	private MealDAO meal_dao = new MealDAOPostgresImplementation();
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	
-	
-	public ShopController(String id) 
+	public ShopController(String email) 
 	{
-		this.id=id;
+		this.current_shop_email=email;
 	}
 	
 	public void openShopFrame(JFrame frame)
@@ -78,7 +77,7 @@ public class ShopController {
 	public void initializeShopMealFrameTable(ShopMealFrame shop_meal_frame)
 	{
 		try {
-			meal_list = meal_dao.getMealsOfAShopByShopId(id);
+			meal_list = meal_dao.getMealsOfAShopByShopEmail(current_shop_email);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -89,7 +88,7 @@ public class ShopController {
 	public void initializeShopRiderFrameTable(ShopRiderFrame shop_rider_frame) {
 		
 		try {
-			rider_list = rider_dao.getRidersOfAShopByShopId(id);
+			rider_list = rider_dao.getRidersOfAShopByShopEmail(current_shop_email);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -99,7 +98,7 @@ public class ShopController {
 	public void initializeShopAllMealsFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
-			meal_list = meal_dao.getAllMealsExceptShopMeals(id);
+			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -112,10 +111,10 @@ public class ShopController {
 		int i=0;
 			
 		try {
-			meal_list = meal_dao.getAllMealsExceptShopMeals(id);
+			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
 				i++;
-			meal_dao.insertSupply(id,meal_list.get(i));
+			meal_dao.insertSupply(current_shop_email,meal_list.get(i));
 			shop_meal_frame.getModel().insertRow(meal_list.size(), new Object[]{meal_list.get(i).getName(),
 					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
 					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list()});
@@ -141,7 +140,7 @@ public class ShopController {
 					shop_rider_frame.getAddress_capTF().getText(), shop_rider_frame.getAddress_cityTF().getText(), 
 					shop_rider_frame.getAddress_provinceTF().getText()), shop_rider_frame.getVehicleCB().getSelectedItem().toString(), 
 					shop_rider_frame.getWorking_hoursTF().getText(),(short)0);
-			rider_dao.insertRider(rider,id);
+			rider_dao.insertRider(rider,current_shop_email);
 			shop_rider_frame.getModel().insertRow(rider_list.size(), new Object[] {rider.getCf(), rider.getName(), rider.getSurname(), 
 					input_util.formatDate(rider.getBirth_date()), rider.getBirth_place(), rider.getAddress().toString(), rider.getGender(), rider.getCellphone(), 
 					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
@@ -164,7 +163,7 @@ public class ShopController {
 			try {
 				while(!meal_list.get(i).getName().equals(meal_name_to_remove))
 					i++;
-				meal_dao.deleteFromSupply(id, meal_list.get(i));
+				meal_dao.deleteFromSupply(current_shop_email, meal_list.get(i));
 				shop_meal_frame.getModel().removeRow(selected_row);
 				meal_list.remove(i);
 				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
@@ -210,12 +209,12 @@ public class ShopController {
 	
 	
 	
-	public String getId() {
-		return id;
+	public String getcurrent_shop_email() {
+		return current_shop_email;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setcurrent_shop_email(String current_shop_email) {
+		this.current_shop_email = current_shop_email;
 	}
 
 }

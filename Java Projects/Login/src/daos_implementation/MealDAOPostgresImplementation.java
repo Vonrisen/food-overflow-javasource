@@ -16,7 +16,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meals_of_a_shop_by_shop_id_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
+	PreparedStatement get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
 					  insert_supply_PS, delete_from_supply_PS;
 	CallableStatement add_allergens_CS;
 	public MealDAOPostgresImplementation() {
@@ -30,15 +30,15 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		try {
 			
-			get_meals_of_a_shop_by_shop_id_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=?) ORDER BY category, name");
-			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=?) ORDER BY category, name");
+			get_meals_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
+			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
-			insert_supply_PS = connection.prepareStatement("INSERT INTO Supply SELECT ?, meal_id FROM MEAL WHERE name=?");
-			delete_from_supply_PS = connection.prepareStatement("DELETE FROM Supply WHERE shop_id=? AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
+			insert_supply_PS = connection.prepareStatement("INSERT INTO Supply SELECT (SELECT id FROM Shop WHERE email=?), id FROM MEAL WHERE name=?");
+			delete_from_supply_PS = connection.prepareStatement("DELETE FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?) AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
 	
 			
 		}catch(SQLException s)
@@ -47,10 +47,10 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		
     }
-	public List<Meal> getMealsOfAShopByShopId(String shop_id) throws SQLException {
+	public List<Meal> getMealsOfAShopByShopEmail(String shop_email) throws SQLException {
 		
-		get_meals_of_a_shop_by_shop_id_PS.setString(1, shop_id);
-		ResultSet rs1 = get_meals_of_a_shop_by_shop_id_PS.executeQuery();
+		get_meals_of_a_shop_by_shop_email_PS.setString(1, shop_email);
+		ResultSet rs1 = get_meals_of_a_shop_by_shop_email_PS.executeQuery();
 		ResultSet rs2;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
 		ArrayList<String> allergens;
@@ -128,18 +128,19 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return;
 	}
 	
-	public void insertSupply(String shop_id, Meal meal) throws SQLException {
+	public void insertSupply(String shop_email, Meal meal) throws SQLException {
 		
-		insert_supply_PS.setString(1, shop_id);
+		insert_supply_PS.setString(1, shop_email);
 		insert_supply_PS.setString(2, meal.getName());
 		insert_supply_PS.executeUpdate();
 	}
 	
-	public void deleteFromSupply(String shop_id, Meal meal)throws SQLException {
+	public void deleteFromSupply(String shop_email, Meal meal)throws SQLException {
 		
-		delete_from_supply_PS.setString(1, shop_id);
+		delete_from_supply_PS.setString(1, shop_email);
 		delete_from_supply_PS.setString(2, meal.getName());
 		delete_from_supply_PS.executeUpdate();
 	}
+	
 
 }
