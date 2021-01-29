@@ -21,7 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
+import entities.Address;
 import gui_support.RoundJTextField;
+import utilities.InputUtility;
 
 
 public class AdminShopFrame extends JFrame{
@@ -68,6 +70,7 @@ public class AdminShopFrame extends JFrame{
 	private JLabel shops_table_titleLB;
 	
 	private JTextField nameTF;
+	private JTextField emailTF;
 	private JTextField address_nameTF;
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
@@ -127,6 +130,7 @@ public class AdminShopFrame extends JFrame{
 		
 		shops_table_titleLB = new JLabel();
 		nameTF = new RoundJTextField(new Color(0x771007));
+		emailTF = new RoundJTextField(new Color(0x771007));
 		address_nameTF = new RoundJTextField(new Color(0x771007));
 		address_civic_numberTF = new RoundJTextField(new Color(0x771007));
 		address_capTF = new RoundJTextField(new Color(0x771007));
@@ -149,7 +153,7 @@ public class AdminShopFrame extends JFrame{
 	//Frame Setup
 	private void frameSetup() {
 
-		String[]columns = {"ID", "Password", "Name", "Address", "Working Hours", "Closing Days"};
+		String[]columns = {"E-mail", "Password", "Name", "Address", "Working Hours", "Closing Days"};
 		model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
@@ -200,7 +204,7 @@ public class AdminShopFrame extends JFrame{
 		
 		//Subpanels di sql_panel
 		
-		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,30));
+		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,10));
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
 		sql_panel.add(attributes_panel, BorderLayout.CENTER);
 		
@@ -209,8 +213,11 @@ public class AdminShopFrame extends JFrame{
 		
 		//Setup TextFields
 		
-		createTextField(nameTF, "Name", long_dim_of_textfield);
+		createTextField(nameTF, "Name", short_dim_of_textfield);
 		attributes_panel.add(nameTF);
+		
+		createTextField(emailTF, "E-mail", short_dim_of_textfield);
+		attributes_panel.add(emailTF);
 		
 		createTextField(address_nameTF, "Address name", long_dim_of_textfield);
 		attributes_panel.add(address_nameTF);
@@ -242,15 +249,19 @@ public class AdminShopFrame extends JFrame{
 		//Setup Buttons
 		
 		setupButton(insert_sqlJB, insert_inactiveIMG, button_size);
+		insert_sqlJB.setToolTipText("Clicca qui per creare un nuovo shop");
 		buttons_panel.add(insert_sqlJB);
 		
 		setupButton(update_sqlJB, update_inactiveIMG, button_size);
+		update_sqlJB.setToolTipText("Clicca qui per aggiornare uno shop");
 		buttons_panel.add(update_sqlJB);
 		
 		setupButton(delete_sqlJB, delete_inactiveIMG, button_size);
+		delete_sqlJB.setToolTipText("Clicca qui per cancellare uno shop");
 		buttons_panel.add(delete_sqlJB);
 		
 		setupButton(go_backJB, go_back_inactiveIMG, button_size);
+		go_backJB.setToolTipText("Clicca qui per tornare indietro");
 		buttons_panel.add(go_backJB);
 			
 	}
@@ -321,6 +332,36 @@ public class AdminShopFrame extends JFrame{
 			}
 			});
 		
+		 table.addMouseListener(new java.awt.event.MouseAdapter() {
+		        @Override
+		        public void mouseClicked(java.awt.event.MouseEvent evt) {
+		            int row = table.rowAtPoint(evt.getPoint());
+		            int col = table.columnAtPoint(evt.getPoint());		           
+		            InputUtility input_util= new InputUtility();
+		            Address address;
+	        		String closing_days;
+	        	    if (row >= 0 && col >= 0) {
+	        	    	address = input_util.tokenizedAddressToString(table.getModel().getValueAt(table.getSelectedRow(), 3).toString(), "(, )");
+	        	    	try
+	        	    	{
+	        			closing_days = table.getModel().getValueAt(table.getSelectedRow(), 5).toString();
+	        	    	}catch(Exception e)
+	        	    	{
+	        	    		closing_days = "";
+	        	    	}
+	        			nameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+	        			address_nameTF.setText(address.getName());
+	        			address_civic_numberTF.setText(address.getCivic_number());
+	        			address_capTF.setText(address.getCap());
+	        			address_cityTF.setText(address.getCity());
+	        			address_provinceTF.setText(address.getProvince_abbrevation());
+	        			working_hoursTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
+	        			closing_daysTF.setText(closing_days);
+	        			passwordTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
+	        	    }
+	        	}
+	        	});
+		 
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -376,6 +417,22 @@ public class AdminShopFrame extends JFrame{
 			public void focusLost(FocusEvent e) {
 
 				textFieldFocusLost(nameTF, "Name");
+				
+			}
+		});
+		
+		emailTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				textFieldFocusGained(emailTF, "E-mail");
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				textFieldFocusLost(emailTF, "E-mail");
 				
 			}
 		});
@@ -663,6 +720,16 @@ public class AdminShopFrame extends JFrame{
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
+	}
+
+
+	public JTextField getEmailTF() {
+		return emailTF;
+	}
+
+
+	public void setEmailTF(JTextField emailTF) {
+		this.emailTF = emailTF;
 	}
 	
 	

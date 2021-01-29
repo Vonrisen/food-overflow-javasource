@@ -38,9 +38,9 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			
 			look_for_shop_by_email_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
-			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?)");
+			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?,?)");
 			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE email=?");
-			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=? WHERE email=?");
+			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=?, email=? WHERE email=?");
 		
 		}catch(SQLException s)
 		{
@@ -92,6 +92,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.setString(3, shop.getWorking_hours());
 		insert_shop_PS.setString(4, shop.getClosing_days());
 		insert_shop_PS.setString(5, shop.getPassword());
+		insert_shop_PS.setString(6, shop.getEmail());
 		insert_shop_PS.executeUpdate();
 		return;
 	}
@@ -104,7 +105,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return;
 	}
 	
-	public void updateShop(Shop shop) throws SQLException {
+	public void updateShop(Shop shop, String old_email) throws SQLException {
 		
 		InputUtility input_util = new InputUtility();
 		update_shop_PS.setString(1, shop.getName());
@@ -113,6 +114,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		update_shop_PS.setString(4, shop.getClosing_days());
 		update_shop_PS.setString(5, shop.getPassword());
 		update_shop_PS.setString(6, shop.getEmail());
+		update_shop_PS.setString(7, old_email);
 		update_shop_PS.executeUpdate();
 		return;
 	}
