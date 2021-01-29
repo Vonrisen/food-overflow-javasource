@@ -20,7 +20,7 @@ import utilities.InputUtility;
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
 	private Connection connection;
-	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_email_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS;
+	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_email_PS, insert_rider_PS, dismiss_rider_PS;
 	public RiderDAOPostgresImplementation() {
 		
 		try {
@@ -35,9 +35,8 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			get_all_riders_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number FROM Rider");
 			get_riders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
 					+ "FROM Rider WHERE shop_id=(SELECT id FROM Shop WHERE email=?)");
-			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider (SELECT ?,?,?,?,?,?,?,?,?,?,?, id FROM Shop WHERE email=?)");
-			dismiss_rider_PS = connection.prepareStatement("DELETE FROM Rider WHERE cf=?");
-			update_rider_PS = connection.prepareStatement("UPDATE Rider SET name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
+			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+			dismiss_rider_PS = connection.prepareStatement("UPDATE Rider SET shop_id=null WHERE cf=?");
 			
 		}catch(SQLException s)
 		{
@@ -80,7 +79,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		return rider_list;
 	}
 	
-	public void insertRider(Rider rider, String shop_email) throws SQLException {
+	public void insertRider(Rider rider, String shop_id) throws SQLException {
 		
 		InputUtility input_util = new InputUtility();
 		insert_rider_PS.setString(1, rider.getCf());
@@ -94,7 +93,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		insert_rider_PS.setString(9, rider.getVehicle());
 		insert_rider_PS.setString(10, rider.getWorking_hours());
 		insert_rider_PS.setShort(11, rider.getDeliveries_number());
-		insert_rider_PS.setString(12, shop_email);
+		insert_rider_PS.setString(12, shop_id);
 		insert_rider_PS.executeUpdate();
 		return;
 	}
@@ -103,23 +102,5 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		
 		dismiss_rider_PS.setString(1, rider.getCf());
 		dismiss_rider_PS.executeUpdate();
-	}
-
-	@Override
-	public void updateRider(Rider rider) throws SQLException {
-		
-		InputUtility input_util = new InputUtility();
-		update_rider_PS.setString(1, rider.getName());
-		update_rider_PS.setString(2, rider.getSurname());
-		update_rider_PS.setDate(3, new java.sql.Date(rider.getBirth_date().getTime()));
-		update_rider_PS.setString(4, rider.getBirth_place());
-		update_rider_PS.setString(5, input_util.addressToTokenizedString(rider.getAddress(),", "));
-		update_rider_PS.setString(6, rider.getGender());
-		update_rider_PS.setString(7, rider.getCellphone());
-		update_rider_PS.setString(8, rider.getVehicle());
-		update_rider_PS.setString(9, rider.getWorking_hours());
-		update_rider_PS.setString(10, rider.getCf());
-		update_rider_PS.executeUpdate();
-		return;
 	}
 }

@@ -142,11 +142,11 @@ public class AdminController {
 	{
 
 		try {
-			Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(),admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
+			Shop shop = new Shop(admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
 				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
 			shop_dao.insertShop(shop);
-			admin_shop_frame.getModel().insertRow(shop_list.size(), new Object[] {shop.getEmail(), shop.getPassword(),
+			admin_shop_frame.getModel().insertRow(shop_list.size(), new Object[] {"da definire", shop.getPassword(),
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});
 			shop_list.add(shop);
 		} catch (SQLException e) {
@@ -201,9 +201,14 @@ public class AdminController {
 	public void removeShop(AdminShopFrame admin_shop_frame)
 	{
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
+
 			int selected_row = admin_shop_frame.getTable().getSelectedRow();
 			String shop_email_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
+			if(shop_email_to_remove.equals("da definire")) {
+				JOptionPane.showMessageDialog(null, "Ricaricare la pagina e riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			try {
 				while(!shop_list.get(i).getEmail().equals(shop_email_to_remove))
 					i++;
@@ -311,6 +316,7 @@ public class AdminController {
 			int i = 0;
 			while(!shop_list.get(i).getEmail().equals(email_of_shop_to_update))
 				i++;
+
 			shop_list.get(i).setName(admin_shop_frame.getNameTF().getText());
 			shop_list.get(i).setAddress(new Address(admin_shop_frame.getAddress_nameTF().getText(),
 					admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(),
@@ -318,14 +324,11 @@ public class AdminController {
 			shop_list.get(i).setClosing_days(admin_shop_frame.getClosing_daysTF().getText());
 			shop_list.get(i).setWorking_hours(admin_shop_frame.getWorking_hoursTF().getText());
 			shop_list.get(i).setPassword(admin_shop_frame.getPasswordTF().getText());
-			shop_list.get(i).setEmail(admin_shop_frame.getEmailTF().getText());
+
 			try {
-				System.out.println(shop_list.get(i).getEmail());
-				System.out.println(email_of_shop_to_update);
-				shop_dao.updateShop(shop_list.get(i), email_of_shop_to_update);
-				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
+				shop_dao.updateShop(shop_list.get(i));
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Update fields correctly","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
