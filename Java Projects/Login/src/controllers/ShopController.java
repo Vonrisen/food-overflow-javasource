@@ -133,8 +133,8 @@ public class ShopController {
 		
 		InputUtility input_util = new InputUtility();
 		try {
-			Rider rider = new Rider("x2xx1x00x00x00lx",shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
-					new SimpleDateFormat("dd/MM/YYYY").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
+			Rider rider = new Rider("x1xx1x20x00x00lx",shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
+					new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
 					shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1), shop_rider_frame.getCellphoneTF().getText(),
 					new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
 					shop_rider_frame.getAddress_capTF().getText(), shop_rider_frame.getAddress_cityTF().getText(), 
@@ -182,10 +182,10 @@ public class ShopController {
 		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
 
 			int selected_row = shop_rider_frame.getTable().getSelectedRow();
-			String rider_cf_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
+			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				while(!rider_list.get(i).getCf().equals(rider_cf_to_dismiss))
+				while(!rider_list.get(i).getCf().equals(cf_of_the_rider_to_dismiss))
 					i++;
 				rider_dao.dismissRider(rider_list.get(i));
 				shop_rider_frame.getModel().removeRow(selected_row);
@@ -200,14 +200,61 @@ public class ShopController {
 		return;
 	}
 	
+	public void updateRider(ShopRiderFrame shop_rider_frame)
+	{
+		
+		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
+			int selected_row = shop_rider_frame.getTable().getSelectedRow();
+			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+			InputUtility a = new InputUtility();
+			int i = 0;
+			try {
+			while(!rider_list.get(i).getCf().equals(cf_of_rider_to_update))
+				i++;
+			rider_list.get(i).setName(shop_rider_frame.getNameTF().getText());
+			rider_list.get(i).setSurname(shop_rider_frame.getSurnameTF().getText());
+			rider_list.get(i).setAddress(new Address(shop_rider_frame.getAddress_nameTF().getText(),
+					shop_rider_frame.getAddress_civic_numberTF().getText(), shop_rider_frame.getAddress_capTF().getText(),
+					shop_rider_frame.getAddress_cityTF().getText(), shop_rider_frame.getAddress_provinceTF().getText()));
+			rider_list.get(i).setCellphone(shop_rider_frame.getCellphoneTF().getText());
+			rider_list.get(i).setGender(shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1));
+			rider_list.get(i).setVehicle(shop_rider_frame.getVehicleCB().getSelectedItem().toString());
+			rider_list.get(i).setWorking_hours(shop_rider_frame.getWorking_hoursTF().getText());
+			rider_list.get(i).setBirth_date(new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()));
+			rider_list.get(i).setBirth_place(shop_rider_frame.getBirth_placeTF().getText());
+			rider_dao.updateRider(rider_list.get(i));
+			updateRiderTableColumns(shop_rider_frame, selected_row, rider_list.get(i));
+				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Update fields correctly","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+		      catch (ParseException e1) {
+				JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
 	
-	
-	
-	
-	
-	
-	
-	
+	}
+	public void updateRiderTableColumns(ShopRiderFrame shop_rider_frame, int selected_row, Rider rider)
+	{
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[11];
+		row[0] = rider.getCf();
+		row[1] = rider.getName();
+		row[2] = rider.getSurname();
+		row[3] = date_util.formatDate(rider.getBirth_date());
+		row[4] = rider.getBirth_place();
+		row[5] = rider.getAddress().toString();
+		row[6] = rider.getGender();
+		row[7] = rider.getCellphone();
+		row[8] = rider.getVehicle();
+		row[9] = rider.getWorking_hours();
+		row[10] = rider.getDeliveries_number();
+		for (int i=0; i<10; i++)
+		shop_rider_frame.getModel().setValueAt(row[i], selected_row, i);
+		return;
+	}
 	
 	public String getcurrent_shop_email() {
 		return current_shop_email;
@@ -216,5 +263,4 @@ public class ShopController {
 	public void setcurrent_shop_email(String current_shop_email) {
 		this.current_shop_email = current_shop_email;
 	}
-
 }

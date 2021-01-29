@@ -21,7 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.ShopController;
+import entities.Address;
 import gui_support.RoundJTextField;
+import utilities.InputUtility;
 
 public class ShopRiderFrame extends JFrame{
 
@@ -294,7 +296,7 @@ public class ShopRiderFrame extends JFrame{
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+				shop_controller.updateRider(ShopRiderFrame.this);
 		
 			}
 			@Override
@@ -352,6 +354,30 @@ public class ShopRiderFrame extends JFrame{
 				
 			}
 		});
+		
+		 table.addMouseListener(new java.awt.event.MouseAdapter() {
+		        @Override
+		        public void mouseClicked(java.awt.event.MouseEvent evt) {
+		            int row = table.rowAtPoint(evt.getPoint());
+		            int col = table.columnAtPoint(evt.getPoint());
+		            InputUtility input_util= new InputUtility();
+		            Address address;
+	        	    if (row >= 0 && col >= 0) {
+	        	    	address = input_util.tokenizedAddressToString(table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), "(, )");
+	        			nameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
+	        			surnameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+	        			birth_dateTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
+	        			birth_placeTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
+	        			address_nameTF.setText(address.getName());
+	        			address_civic_numberTF.setText(address.getCivic_number());
+	        			address_capTF.setText(address.getCap());
+	        			address_cityTF.setText(address.getCity());
+	        			address_provinceTF.setText(address.getProvince_abbrevation());
+	        			cellphoneTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 7).toString());
+	        			working_hoursTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 9).toString());
+	        	    }
+	        	}
+	        	});
 		
 		//FocusListeners
 		

@@ -12,5 +12,6 @@ public interface ShopDAO {
 	public boolean lookForShopByEmailAndPassword(String email, String password) throws SQLException;
 	public void insertShop(Shop shop) throws SQLException;
 	public void deleteShop(Shop shop) throws SQLException;
-	public void updateShop(Shop shop) throws SQLException;
+	public void updateShop(Shop shop, String old_email) throws SQLException;
+	
 }
