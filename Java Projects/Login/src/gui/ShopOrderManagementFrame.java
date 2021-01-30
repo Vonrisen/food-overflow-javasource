@@ -108,7 +108,7 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-//				shop_controller.openShopRiderFrame(ShopFrame.this);
+				shop_controller.openShopViewOrdersFrame(ShopOrderManagementFrame.this);
 				
 			}
 			@Override
@@ -129,7 +129,6 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				
 				
 			}
 			@Override

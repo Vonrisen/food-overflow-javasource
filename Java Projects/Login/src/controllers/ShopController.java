@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,11 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import daos_implementation.MealDAOPostgresImplementation;
+import daos_implementation.OrderDAOPostgresImplementation;
 import daos_implementation.RiderDAOPostgresImplementation;
 import daos_interfaces.MealDAO;
+import daos_interfaces.OrderDAO;
 import daos_interfaces.RiderDAO;
 import entities.Address;
 import entities.Meal;
+import entities.Order;
 import entities.Rider;
 import exceptions.DaoException;
 import gui.ShopAllMealsFrame;
@@ -23,6 +27,7 @@ import gui.ShopFrame;
 import gui.ShopMealFrame;
 import gui.ShopOrderManagementFrame;
 import gui.ShopRiderFrame;
+import gui.ShopViewOrdersFrame;
 import utilities.CodiceFiscaleUtility;
 import utilities.DButility;
 import utilities.InputUtility;
@@ -80,6 +85,27 @@ public class ShopController {
 		shop_frame.dispose();
 		ShopOrderManagementFrame shop_order_management_frame = new ShopOrderManagementFrame(this);
 		shop_order_management_frame.setVisible(true);
+		return;
+	}
+	
+	public void openShopViewOrdersFrame(JFrame frame)
+	{
+		frame.dispose();
+		ShopViewOrdersFrame shop_view_orders_frame = new ShopViewOrdersFrame(this);
+		initializeShopOrderManagementFrame(shop_view_orders_frame);
+		shop_view_orders_frame.setVisible(true);
+	}
+	
+	public void initializeShopOrderManagementFrame(ShopViewOrdersFrame shop_view_orders_frame)
+	{
+		List<Order> order_list=null;
+		OrderDAO order_dao= new OrderDAOPostgresImplementation();
+		try {
+			order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		table.initializeOrderTable(shop_view_orders_frame.getModel(), order_list);
 		return;
 	}
 	

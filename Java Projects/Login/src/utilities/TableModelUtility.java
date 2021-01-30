@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 import entities.Customer;
 import entities.Meal;
+import entities.Order;
 import entities.Rider;
 import entities.Shop;
 import gui.AdminCustomerFrame;
@@ -97,6 +98,7 @@ public class TableModelUtility {
 		admin_shop_frame.getModel().setValueAt(row[i], selected_row, i);
 		return;
 	}
+	
 	public void updateCustomerTableColumns(AdminCustomerFrame admin_customer_frame, int selected_row)
 	{
 		Object email = admin_customer_frame.getEmailTF().getText();
@@ -104,6 +106,22 @@ public class TableModelUtility {
 		admin_customer_frame.getModel().setValueAt(email, selected_row, 8);
 		admin_customer_frame.getModel().setValueAt(password, selected_row, 9);
 		return;
+	}
+	
+	public void initializeOrderTable(DefaultTableModel model,  List<Order> order_list) {
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[8];
+		for(Order order : order_list) {
+			row[0] = date_util.formatDate(order.getDate());
+			row[1] = order.getDeliveried_time();
+			row[2] = order.getAddress().toString();
+			row[3] = order.getStatus();
+			row[4] = order.getPayment();
+			row[5] = order.getNote();
+			row[6] = order.getCustomer().getCf();
+			row[7] = order.getRider().getCf();
+			model.addRow(row);
+		}
 	}
 
 }

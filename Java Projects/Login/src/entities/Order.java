@@ -6,7 +6,6 @@ import java.util.Date;
 public class Order extends Cart{
 
 	//ATTRIBUTI
-	private String id;
 	private Date date;
 	private String payment;
 	private String status;
@@ -15,14 +14,10 @@ public class Order extends Cart{
 	private String note;
 	private Rider rider;
 	
-	public String getId() {
-		return id;
-	}
 
-	public Order(Shop shop, Customer customer, String id, Date date, String payment, String status, Address address,
+	public Order(Shop shop, Customer customer, Date date, String payment, String status, Address address,
 			Time deliveried_time, String note, Rider rider) {
 		super(shop, customer);
-		this.id = id;
 		this.date = date;
 		this.payment = payment;
 		this.status = status;
@@ -32,9 +27,6 @@ public class Order extends Cart{
 		this.rider = rider;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public Date getDate() {
 		return date;

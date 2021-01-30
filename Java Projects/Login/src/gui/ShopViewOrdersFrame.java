@@ -16,10 +16,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
+import controllers.ShopController;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ShopViewOrdersFrame {
+public class ShopViewOrdersFrame extends JFrame{
 
 	private JFrame frame;
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,24 +50,13 @@ public class ShopViewOrdersFrame {
 	
 	DefaultTableModel model;
 	AdminController admin_controller;
+	ShopController shop_controller;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ShopViewOrdersFrame window = new ShopViewOrdersFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public ShopViewOrdersFrame() {
+	public ShopViewOrdersFrame(ShopController shop_controller) {
 		initialize();
 		frameSetup();
 		events();
+		this.shop_controller = shop_controller;
 	}
 
 	   private void initialize() {
@@ -97,37 +88,37 @@ public class ShopViewOrdersFrame {
 	   
 		private void frameSetup() {
 			
-			//String[] columns = {};
-		  //  model = new DefaultTableModel(columns, 0);
-			//table.setModel(model);
+			String[] columns = {"Date","Delivery time","Address","Status","Payment","Note","Customer","Rider"};
+		    model = new DefaultTableModel(columns, 0);
+			table.setModel(model);
 			table.setAutoCreateRowSorter(true);
 			
-			frame.setTitle("Shop Panel: Completed Orders");
-			frame.setSize(1280,720);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.setMinimumSize(new Dimension(640,500));
+			this.setTitle("Shop Panel: Completed Orders");
+			this.setSize(1280,720);
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			this.setMinimumSize(new Dimension(640,500));
 			
-			int central_width = screen_dim.width/2-frame.getSize().width/2;
-			int central_height = screen_dim.height/2-frame.getSize().height/2;
-			frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
-			frame.getContentPane().setLayout(new BorderLayout());
-			frame.getContentPane().setBackground(background_color);
+			int central_width = screen_dim.width/2-this.getSize().width/2;
+			int central_height = screen_dim.height/2-this.getSize().height/2;
+			this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+			this.getContentPane().setLayout(new BorderLayout());
+			this.getContentPane().setBackground(background_color);
 			
 			createStandardPanel(west_panel, null, west_east_size);
-			frame.getContentPane().add(west_panel, BorderLayout.WEST);
+			this.getContentPane().add(west_panel, BorderLayout.WEST);
 			
 			createStandardPanel(east_panel, null, west_east_size);
-			frame.getContentPane().add(east_panel, BorderLayout.EAST);
+			this.getContentPane().add(east_panel, BorderLayout.EAST);
 			
 			createStandardPanel(north_panel, null, north_south_size);
-			frame.getContentPane().add(north_panel, BorderLayout.NORTH);
+			this.getContentPane().add(north_panel, BorderLayout.NORTH);
 			
 			createStandardPanel(south_panel, null, north_south_size);
-			frame.getContentPane().add(south_panel, BorderLayout.SOUTH);
+			this.getContentPane().add(south_panel, BorderLayout.SOUTH);
 			
 			center_panel.setLayout(new BorderLayout());
 			center_panel.setBackground(null);
-			frame.getContentPane().add(center_panel, BorderLayout.CENTER);
+			this.getContentPane().add(center_panel, BorderLayout.CENTER);
 			
 			//Subpanels di center_panel
 			
