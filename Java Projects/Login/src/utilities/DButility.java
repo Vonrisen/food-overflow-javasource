@@ -76,15 +76,17 @@ public class DButility {
 	
 	public void closeCurrentConnection()
 	{
-		DBconnection instance;
 		try {
-			instance = DBconnection.getInstance();
+			DBconnection instance = DBconnection.getInstance();
 			Connection connection = instance.getConnection();
 			closeConnection(connection);
+			System.out.println("CONNECTION CLOSED");
 		} catch (SQLException e) {
 			/* ignored */
 		}
 	}
+	
+
 	
 
 }

@@ -123,6 +123,7 @@ public class AdminCustomerFrame extends JFrame {
 	    table.setFocusable(false);
 	    table.setAutoCreateRowSorter(true);
 	    table.setRowSelectionAllowed(true);
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(model = new DefaultTableModel(columns, 0) {
 
 		    @Override

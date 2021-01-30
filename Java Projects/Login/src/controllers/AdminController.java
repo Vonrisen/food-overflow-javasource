@@ -97,7 +97,7 @@ public class AdminController {
 			shop_list = shop_dao.getAllShops();
 		} catch (DaoException e) {
 			System.out.println(e.getLocalizedMessage());
-			JOptionPane.showMessageDialog(null, "Generic error, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 		return;
@@ -109,7 +109,7 @@ public class AdminController {
 			CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
 			customer_list = customer_dao.getAllCustomers();
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		return;
@@ -125,7 +125,7 @@ public class AdminController {
 			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			rider_list = rider_dao.getRidersOfAShopByShopEmail(shop_email);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		if(!rider_list.isEmpty())
 		{
@@ -133,13 +133,13 @@ public class AdminController {
 		}
 		 else
 		 {
-			 JOptionPane.showMessageDialog(null, "Selected shop doesn't have riders","Errore",JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Selected shop doesn't have riders","Error",JOptionPane.ERROR_MESSAGE);
 			 return false;
 		 }
 	}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Select a shop first","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Select a shop first","Error",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -158,7 +158,7 @@ public class AdminController {
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});
 			shop_list.add(shop);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, email, working hours and closing days ;)","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return;
 	}
@@ -169,13 +169,13 @@ public class AdminController {
 			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMeals();
 			if(meal_list.isEmpty())
-				JOptionPane.showMessageDialog(null, "Non ci sono shop da visualizzare","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "There are no shops to visualize","Error",JOptionPane.ERROR_MESSAGE);
 			else
 			{
 				table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 			}
 		}catch(DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return;
 	}
@@ -198,11 +198,11 @@ public class AdminController {
 														meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 			meal_list.add(meal);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the price","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		 catch (NumberFormatException e)
 		{
-			 JOptionPane.showMessageDialog(null, "Insert a valid price","Errore",JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Insert a valid price","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
@@ -223,7 +223,7 @@ public class AdminController {
 				admin_shop_frame.getModel().removeRow(admin_shop_frame.getTable().getSelectedRow());
 				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Could not remove selected shop, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		
 	}
@@ -250,7 +250,7 @@ public class AdminController {
 				admin_meal_frame.getModel().removeRow(selected_row);
 				JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errors while deleting selected meal","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Could not delete selected meal, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
@@ -262,7 +262,7 @@ public class AdminController {
 	public void removeCustomer(AdminCustomerFrame admin_customer_frame)
 	 {
 		
-		String email = JOptionPane.showInputDialog("Inserisci l'email dell'utente da eliminare");
+		String email = JOptionPane.showInputDialog("Insert email of the customer you want to delete");
 		int i=0;
 		if(email!=null) {
 			try {
@@ -275,11 +275,11 @@ public class AdminController {
 				customer_list.remove(i);
 				JOptionPane.showMessageDialog(null, "Customer deleted successfully");
 			}catch (IndexOutOfBoundsException in) {
-				JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questa email","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No customer has been found with this email","Errore",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Could not delete selected customer, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
@@ -288,7 +288,7 @@ public class AdminController {
 	}
 	
 	public void updateCustomer(AdminCustomerFrame admin_customer_frame) {
-		String cellphone_of_customer_to_update = JOptionPane.showInputDialog("Inserisci il numero di cellullare dell'utente che vuoi modificare");
+		String cellphone_of_customer_to_update = JOptionPane.showInputDialog("Insert the cellphone of the customer you want to update");
 		String new_email = admin_customer_frame.getEmailTF().getText();
 		String new_password = admin_customer_frame.getPasswordTF().getText();
 		int i=0;
@@ -306,11 +306,11 @@ public class AdminController {
 			table_utility.updateCustomerTableColumns(admin_customer_frame, i);
 			JOptionPane.showMessageDialog(null, "Customer updated");
 		}catch (IndexOutOfBoundsException in) {
-			JOptionPane.showMessageDialog(null, "Nessun Customer trovato con questo numero di cellulare","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No customer with this cellphone has been found","Error",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the email","Error",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		return;
@@ -338,11 +338,11 @@ public class AdminController {
 			 table_utility.updateShopTableColumns(admin_shop_frame, selected_row, shop_list.get(i));
 				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Generic error","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, email, working hours and closing days","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
 	}
 	public void closeWindow(JFrame frame)

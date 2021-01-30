@@ -24,12 +24,12 @@ public class DBconnection {
 	 }
 	 catch (SQLException e)
 	 {
-			JOptionPane.showMessageDialog(null, "Errore di connessione con il database","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Network error, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 	 }
      catch (ClassNotFoundException e)
 	 
      {
-    		JOptionPane.showMessageDialog(null, "Driver non trovato","Errore",JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Critical error, contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
      }
 	 
 	}

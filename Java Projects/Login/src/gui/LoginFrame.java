@@ -10,6 +10,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -61,8 +64,9 @@ public class LoginFrame extends JFrame{
 
 	private JTextField usernameTF;
 	private JPasswordField passwordTF;
-
+	LoginController login_controller = new LoginController();
 	public LoginFrame() {
+		
 		
 		initialize();
 		setupFrame();
@@ -111,6 +115,7 @@ public class LoginFrame extends JFrame{
 		this.setResizable(false);
 		this.setSize(600, 800);
 		this.setTitle("Food Overflow");
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -373,7 +378,7 @@ public class LoginFrame extends JFrame{
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent validazione_credenziali_admin) {
 				
-				LoginController login_controller = new LoginController();
+				
 				login_controller.accessAuthentication(LoginFrame.this);
 				
 			}
@@ -420,6 +425,7 @@ public class LoginFrame extends JFrame{
 		});
 		
 	}
+		
 	
 	private void setupButton(JButton button, ImageIcon image) {
 		

@@ -89,7 +89,7 @@ public class ShopAllMealsFrame extends JFrame {
 	    model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
-		
+		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		this.setTitle("Shop Panel: All Meals");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(640,500));

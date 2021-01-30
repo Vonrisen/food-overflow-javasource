@@ -122,12 +122,12 @@ public class ShopMealFrame extends JFrame{
 		String[] columns = {"Name", "Category", "Price in €", "ingredients", "Allergens"};
 		model = new DefaultTableModel(columns, 0);
 		shop_meals_table = new JTable(model);
+		
 		shop_meals_scroll_pane = new JScrollPane(shop_meals_table);
 		shop_meals_table.setAutoCreateRowSorter(true);
-		
 		all_meals_table = new JTable();
 		all_meals_scroll_pane = new JScrollPane(all_meals_table);
-		
+		all_meals_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		
 	}
 	
@@ -170,7 +170,6 @@ public class ShopMealFrame extends JFrame{
 		all_meals_table.setFillsViewportHeight(true);
 		
 		center_panel.add(shop_meals_scroll_pane, BorderLayout.CENTER);
-		
 		meals_table_titleLB.setIcon(meals_table_title);
 		meals_table_titleLB.setSize(300,100);
 		north_panel.add(meals_table_titleLB);

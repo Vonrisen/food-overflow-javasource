@@ -89,7 +89,7 @@ public class ShopController {
 			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getMealsOfAShopByShopEmail(current_shop_email);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
 		return;
@@ -101,7 +101,7 @@ public class ShopController {
 			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			rider_list = rider_dao.getRidersOfAShopByShopEmail(current_shop_email);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
 	}
@@ -112,7 +112,7 @@ public class ShopController {
 			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
 	}
@@ -135,7 +135,7 @@ public class ShopController {
 			JOptionPane.showMessageDialog(null, "Meal succesfully added");
 		}
 		catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Errore",JOptionPane.ERROR_MESSAGE);
 		}catch (IndexOutOfBoundsException in) {
 			JOptionPane.showMessageDialog(null, "Wrong meal name or meal already inserted","Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -167,7 +167,7 @@ public class ShopController {
 			rider_list.add(rider);
 			JOptionPane.showMessageDialog(null, "This rider can now work for this shop");
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 		} catch (ParseException e1) {
 			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
 		}
@@ -194,7 +194,7 @@ public class ShopController {
 			}
 	}
 		else
-			JOptionPane.showMessageDialog(null, "Select the shop you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Select the shop you want to delete","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
 	
 	}
@@ -215,7 +215,7 @@ public class ShopController {
 				rider_list.remove(i);
 				JOptionPane.showMessageDialog(null, "Selected rider dismissed successfully");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errors while dismissing selected rider","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errors while trying to dismiss selected rider","Error",JOptionPane.ERROR_MESSAGE);
 			}
 	}
 		else
@@ -249,7 +249,7 @@ public class ShopController {
 			updateRiderTableColumns(shop_rider_frame, selected_row, rider_list.get(i));
 				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Update fields correctly","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		      catch (ParseException e1) {
 				JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
@@ -293,7 +293,6 @@ public class ShopController {
 		DButility db_utility = new DButility();
 		frame.dispose();
 		db_utility.closeCurrentConnection();
-		System.out.println("Connesione chiusa correttamente");
 		return;
 	}
 }

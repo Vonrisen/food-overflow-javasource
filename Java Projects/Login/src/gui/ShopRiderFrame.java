@@ -162,7 +162,6 @@ public class ShopRiderFrame extends JFrame{
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-	    
 	    table.setAutoCreateRowSorter(true);
 
 	    

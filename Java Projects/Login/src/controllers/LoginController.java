@@ -13,7 +13,7 @@ import utilities.DButility;
 public class LoginController{
 	
 
-	LoginFrame login_frame;
+
 	public LoginController()
 	{
 		
@@ -24,14 +24,14 @@ public class LoginController{
 		frame.dispose();
 		DButility db_util = new DButility();
 		db_util.closeCurrentConnection();
-		login_frame = new LoginFrame();
+		LoginFrame login_frame = new LoginFrame();
 		login_frame.setVisible(true);
 		return;
 	}
 	//Metodo per aprire login frame per la prima volta
 	public void openLoginFrame()
 	{
-		login_frame = new LoginFrame();
+		LoginFrame login_frame = new LoginFrame();
 		login_frame.setVisible(true);
 		return;
 	}
@@ -74,6 +74,8 @@ public class LoginController{
 				}
 				else
 				{
+					DButility db_utility = new DButility();
+					db_utility.closeCurrentConnection();
 					access_succeded=false;
 					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
 					login_frame.getUsernameTF().setText("");
@@ -81,8 +83,7 @@ public class LoginController{
 				}
 			} catch (DaoException e) {
 				
-				JOptionPane.showMessageDialog(null, "Generic error, please try again or contact the administrator");
-				
+				JOptionPane.showMessageDialog(null, "Critical error, please try again or contact the administrator");
 			}
 			
 	}
