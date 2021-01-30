@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -78,7 +80,6 @@ public class ShopFrame extends JFrame{
 	private void setupFrame() {
 		
 		this.setTitle("Shop Panel");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setResizable(false);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -130,9 +131,7 @@ public class ShopFrame extends JFrame{
 		ordersJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
-				
-				
+				shop_controller.openShopOrderManagementFrame(ShopFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -190,6 +189,15 @@ public class ShopFrame extends JFrame{
 			}
 		});
 		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             shop_controller.closeWindow(ShopFrame.this);
+	         }
+	     });
 	}
 	
 	private void setupButton(JButton button, ImageIcon image) {

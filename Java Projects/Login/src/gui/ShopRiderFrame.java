@@ -9,6 +9,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -156,7 +159,6 @@ public class ShopRiderFrame extends JFrame{
 		table.setModel(model);
 		
 		this.setTitle("Shop Panel: Riders");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -378,6 +380,16 @@ public class ShopRiderFrame extends JFrame{
 	        	    }
 	        	}
 	        	});
+		 
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             shop_controller.closeWindow(ShopRiderFrame.this);
+	         }
+	     });
 		
 		//FocusListeners
 		
@@ -556,6 +568,8 @@ public class ShopRiderFrame extends JFrame{
 
 			}
 		});
+		
+		
 		
 	}
 

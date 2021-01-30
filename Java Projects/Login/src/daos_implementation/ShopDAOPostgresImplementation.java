@@ -1,5 +1,6 @@
 package daos_implementation;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 
 
@@ -19,20 +20,23 @@ import entities.Address;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
+import exceptions.DaoException;
+import utilities.DButility;
 import utilities.InputUtility;
 
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	private Connection connection;
-	PreparedStatement look_for_shop_by_email_and_password_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, update_shop_PS;
+	PreparedStatement look_for_shop_by_email_and_password_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS;
+	CallableStatement update_shop_CS;
+	DButility db_util = new DButility();
 	public ShopDAOPostgresImplementation() {
-		
 		try {
 			DBconnection instance = DBconnection.getInstance();
-			connection = instance.getConnection();
+			this.connection = instance.getConnection();
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore di connessione con il database","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Network error, please try again","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		try {
 			
@@ -40,25 +44,29 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
 			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?,?)");
 			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE email=?");
-			update_shop_PS = connection.prepareStatement("UPDATE Shop SET name=?, address=?, working_hours=?, closing_days=?, password=?, email=? WHERE email=?");
+			update_shop_CS = connection.prepareCall("CALL updateShop(?,?,?,?,?,?,?)");
 		
 		}catch(SQLException s)
 		{
-			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statement","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
+		}
 		}
 		
-    }
 	
-	public List<Shop> getAllShops() throws SQLException {
+	public List<Shop> getAllShops() throws DaoException {
 		
-		ResultSet rs = get_all_shops_PS.executeQuery();
 		InputUtility string_util = new InputUtility();
 		List<Shop> shop_list = new ArrayList<Shop>();
 		List<String>address_fields = new ArrayList<String>();
-		RiderDAO rider_dao = new RiderDAOPostgresImplementation();
-		MealDAO meal_dao = new MealDAOPostgresImplementation();
+		ResultSet rs = null;
+		try
+		{
+		rs = get_all_shops_PS.executeQuery();
+	
 		while(rs.next())
 		{
+			MealDAO meal_dao = new MealDAOPostgresImplementation();
+			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
 			List<Rider> employed_rider_list = new ArrayList<Rider>();
 			if(rs.getString("closing_days")!=null)
@@ -67,26 +75,44 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			shop_list.add(new Shop(rs.getString("email"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
 				          rs.getString("closing_days"), employed_rider_list, meal_list));
+		}}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(rs, get_all_shops_PS);
 		}
 		return shop_list;
-		
 	}
 	
-	public boolean lookForShopByEmailAndPassword(String email, String password) throws SQLException {
+	public boolean lookForShopByEmailAndPassword(String email, String password) throws DaoException {
 		
 		Boolean row_founded;
+		ResultSet rs = null;
+		try
+		{
 		look_for_shop_by_email_and_password_PS.setString(1, email);
 		look_for_shop_by_email_and_password_PS.setString(2, password);
-		ResultSet rs = look_for_shop_by_email_and_password_PS.executeQuery();
+		rs = look_for_shop_by_email_and_password_PS.executeQuery();
 		row_founded = rs.next();
-		return row_founded;
-		
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(rs, look_for_shop_by_email_and_password_PS);
+		}
+		return row_founded;	
 	}
 
 	@Override
-	public void insertShop(Shop shop) throws SQLException {
+	public void insertShop(Shop shop) throws DaoException {
 		
 		InputUtility input_util = new InputUtility();
+		try
+		{
 		insert_shop_PS.setString(1, shop.getName());
 		insert_shop_PS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
 		insert_shop_PS.setString(3, shop.getWorking_hours());
@@ -94,30 +120,58 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.setString(5, shop.getPassword());
 		insert_shop_PS.setString(6, shop.getEmail());
 		insert_shop_PS.executeUpdate();
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(insert_shop_PS);
+		}
 		return;
 	}
 
 	@Override
-	public void deleteShop(Shop shop) throws SQLException {
+	public void deleteShop(Shop shop) throws DaoException {
 		
+		try
+		{
 		delete_shop_PS.setString(1, shop.getEmail());
 		delete_shop_PS.executeUpdate();
+		}
+		catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(delete_shop_PS);
+		}
 		return;
 	}
 	
-	public void updateShop(Shop shop, String old_email) throws SQLException {
+	public void updateShop(Shop shop, String old_email) throws DaoException {
 		
 		InputUtility input_util = new InputUtility();
-		update_shop_PS.setString(1, shop.getName());
-		update_shop_PS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
-		update_shop_PS.setString(3, shop.getWorking_hours());
-		update_shop_PS.setString(4, shop.getClosing_days());
-		update_shop_PS.setString(5, shop.getPassword());
-		update_shop_PS.setString(6, shop.getEmail());
-		update_shop_PS.setString(7, old_email);
-		update_shop_PS.executeUpdate();
-		return;
+		try
+		{
+		update_shop_CS.setString(1, shop.getName());
+		update_shop_CS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
+		update_shop_CS.setString(3, shop.getWorking_hours());
+		update_shop_CS.setString(4, shop.getClosing_days());
+		update_shop_CS.setString(5, shop.getPassword());
+		update_shop_CS.setString(6, shop.getEmail());
+		update_shop_CS.setString(7, old_email);
+	    update_shop_CS.executeUpdate();
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(update_shop_CS);
+		}
+	    return;
 	}
-
 	
 }

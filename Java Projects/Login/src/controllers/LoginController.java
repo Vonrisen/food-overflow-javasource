@@ -1,15 +1,18 @@
 package controllers;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.ShopDAO;
+import db_connection.DBconnection;
+import exceptions.DaoException;
 import gui.LoginFrame;
+import utilities.DButility;
 public class LoginController{
 	
 
-	private ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 	LoginFrame login_frame;
 	public LoginController()
 	{
@@ -19,6 +22,8 @@ public class LoginController{
 	public void openLoginFrame(JFrame frame)
 	{
 		frame.dispose();
+		DButility db_util = new DButility();
+		db_util.closeCurrentConnection();
 		login_frame = new LoginFrame();
 		login_frame.setVisible(true);
 		return;
@@ -43,7 +48,7 @@ public class LoginController{
 		if (!login_frame.getUsernameTF().getText().equals("admin") || !login_frame.getPasswordTF().getText().equals("admin"))
 		{
 			
-			JOptionPane.showMessageDialog(null, "Credenziali errate! Riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
 			login_frame.getUsernameTF().setText("");
 			login_frame.getPasswordTF().setText("");
 		}
@@ -57,6 +62,7 @@ public class LoginController{
 		//SE ACCEDE LO SHOP
 		else
 		{
+			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 			try {
 				access_succeded = shop_dao.lookForShopByEmailAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
 				if(access_succeded)
@@ -69,13 +75,14 @@ public class LoginController{
 				else
 				{
 					access_succeded=false;
-					JOptionPane.showMessageDialog(null, "Credenziali errate! Riprovare","Errore",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
 					login_frame.getUsernameTF().setText("");
 					login_frame.getPasswordTF().setText("");
 				}
-			} catch (SQLException e) {
+			} catch (DaoException e) {
 				
-				JOptionPane.showMessageDialog(null, "Errore durante il controllo dei dati");
+				JOptionPane.showMessageDialog(null, "Generic error, please try again or contact the administrator");
+				
 			}
 			
 	}

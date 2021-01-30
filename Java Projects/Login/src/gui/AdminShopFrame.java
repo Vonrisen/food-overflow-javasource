@@ -10,6 +10,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -159,7 +162,6 @@ public class AdminShopFrame extends JFrame{
 		table.setAutoCreateRowSorter(true);
 		
 		this.setTitle("Admin Panel: Shops");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -295,7 +297,7 @@ public class AdminShopFrame extends JFrame{
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				admin_controller.shopUpdated(AdminShopFrame.this);
+				admin_controller.updateShop(AdminShopFrame.this);
 		
 			}
 			@Override
@@ -349,6 +351,7 @@ public class AdminShopFrame extends JFrame{
 	        	    	{
 	        	    		closing_days = "";
 	        	    	}
+	        	    	emailTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
 	        			nameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
 	        			address_nameTF.setText(address.getName());
 	        			address_civic_numberTF.setText(address.getCivic_number());
@@ -400,8 +403,19 @@ public class AdminShopFrame extends JFrame{
 				riders_searchJB.setIcon(search_riders_inactiveIMG);
 				
 			}
+		
 			
 		});
+		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.closeWindow(AdminShopFrame.this);
+	         }
+	     });
 		
 		//FocusListeners
 		

@@ -2,18 +2,18 @@ package db_connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-public class DBconnection_CodiceCatastale {
+public class DBconnection_ProvincesAndCities {
 	
-	private static DBconnection_CodiceCatastale instance = null;
+	private static DBconnection_ProvincesAndCities instance = null;
 	
 	private final String USERNAME="postgres";
 	private final String PWD="password123";
 	private final String IP="localhost";
 	private final String PORT="5432";
-	private final String DBNAME="Istat1";
+	private final String DBNAME="Istat";
 	private Connection connection;
 	
-	private DBconnection_CodiceCatastale() {
+	private DBconnection_ProvincesAndCities() {
 		
 	 try {
 		 
@@ -42,15 +42,15 @@ public class DBconnection_CodiceCatastale {
 		return connection;
 	}
 	
-	public static DBconnection_CodiceCatastale getInstance() throws SQLException {
+	public static DBconnection_ProvincesAndCities getInstance() throws SQLException {
         if (instance == null)
         {
-            instance = new DBconnection_CodiceCatastale();
+            instance = new DBconnection_ProvincesAndCities();
         }
         else
             if (instance.getConnection().isClosed())
             {
-                instance = new DBconnection_CodiceCatastale();
+                instance = new DBconnection_ProvincesAndCities();
             }
 
         return instance;

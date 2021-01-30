@@ -1,42 +1,52 @@
 package utilities;
 import java.util.Date;
 import java.util.TimeZone;
+
+import db_connection.DBconnection;
+import db_connection.DBconnection_ProvincesAndCities;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import java.util.Calendar;
 
-public class CF {
+
+public class CodiceFiscaleUtility {
 
  
 	private String codice_fiscale = "";
-	public CF() {
+	private Connection connection;
+	public CodiceFiscaleUtility() {
+		try
+		{
+			DBconnection_ProvincesAndCities instance = DBconnection_ProvincesAndCities.getInstance();
+			this.connection = instance.getConnection();
+		}
+		catch (SQLException e)
+		{
+			System.out.println("Connection error");
+		}
 	}
-	public String getCF(String nome, String cognome, Date data_nascita, String comune_nascita, String sesso,
-			Connection connection) {
+	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) {
 		int n_consonanti=0;
 		int n_vocali = 0;
 		int conta = 0;
 		boolean vocale = false;
 		PreparedStatement getCodiceCatastalePS;
-		cognome=cognome.toUpperCase();
-		nome=nome.toUpperCase();
-		comune_nascita=comune_nascita.toUpperCase();
+		surname = surname.toUpperCase();
+		name = name.toUpperCase();
+		birth_place_town = birth_place_town.toUpperCase();
 		// FETCH COGNOME
-		char char1=' ';
-		char char2=' ';
-		boolean ritorna=true;
-		if (cognome.length() < 3) {
-			if (cognome.length() <= 1)
-			{
+		char char1=surname.charAt(0);
+		char char2=surname.charAt(1);
+		boolean comune_trovato=false;
+		if (surname.length() < 3) {
+			if (surname.length() == 1)
 				System.out.println("Errore! Il cognome deve avere almeno 2 caratteri");
-				ritorna=false;
-			}
 			else {
-				cognome.charAt(0);
-				cognome.charAt(1);
 				if ((char1 != 'A' && char1 != 'E' && char1 != 'I'&& char1 != 'O' && char1 != 'U')&& (char2 == 'A' || char2 == 'E' || char2 == 'I'|| char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
 				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I' && char2 != 'O' && char2 != 'U'))
@@ -44,25 +54,22 @@ public class CF {
 				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
 				else if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I'&& char2 != 'O' && char2 != 'U'))
-				{
 					System.out.println("Errore! Il cognome non puo' essere costituito esclusivamente da 2 consonanti");
-					ritorna=false;
-				}
 			}
 		} else {
 			while (n_consonanti + n_vocali != 3) {
-				if ((cognome.charAt(conta) != 'A' && cognome.charAt(conta) != 'E' && cognome.charAt(conta) != 'I'
-						&& cognome.charAt(conta) != 'O' && cognome.charAt(conta) != 'U') && !vocale) {
+				if ((surname.charAt(conta) != 'A' && surname.charAt(conta) != 'E' && surname.charAt(conta) != 'I'
+						&& surname.charAt(conta) != 'O' && surname.charAt(conta) != 'U') && !vocale) {
 					n_consonanti++;
-					codice_fiscale += cognome.charAt(conta);
+					codice_fiscale += surname.charAt(conta);
 				}
-				if ((cognome.charAt(conta) == 'A' || cognome.charAt(conta) == 'E' || cognome.charAt(conta) == 'I'
-						|| cognome.charAt(conta) == 'O' || cognome.charAt(conta) == 'U') && vocale) {
+				if ((surname.charAt(conta) == 'A' || surname.charAt(conta) == 'E' || surname.charAt(conta) == 'I'
+						|| surname.charAt(conta) == 'O' || surname.charAt(conta) == 'U') && vocale) {
 					n_vocali++;
-					codice_fiscale += cognome.charAt(conta);
+					codice_fiscale += surname.charAt(conta);
 				}
 
-				if (conta == cognome.length() - 1 && n_consonanti < 3) {
+				if (conta == surname.length() - 1 && n_consonanti < 3) {
 					conta = 0;
 					vocale = true;
 				}
@@ -75,14 +82,14 @@ public class CF {
 		ArrayList<String> array_vocali = new ArrayList<String>();
 		ArrayList<String> array_consonanti = new ArrayList<String>();
 		// FETCH NOME
-		while (conta < nome.length()) {
-			if ((nome.charAt(conta) != 'A' && nome.charAt(conta) != 'E' && nome.charAt(conta) != 'I'
-					&& nome.charAt(conta) != 'O' && nome.charAt(conta) != 'U')) {
+		while (conta < name.length()) {
+			if ((name.charAt(conta) != 'A' && name.charAt(conta) != 'E' && name.charAt(conta) != 'I'
+					&& name.charAt(conta) != 'O' && name.charAt(conta) != 'U')) {
 				n_consonanti++;
-				array_consonanti.add(String.valueOf(nome.charAt(conta)));
+				array_consonanti.add(String.valueOf(name.charAt(conta)));
 			} else {
 				n_vocali++;
-				array_vocali.add(String.valueOf(nome.charAt(conta)));
+				array_vocali.add(String.valueOf(name.charAt(conta)));
 			}
 			conta++;
 		}
@@ -95,13 +102,14 @@ public class CF {
 		else if (n_consonanti == 1 && n_vocali >= 2)
 			codice_fiscale += array_consonanti.get(0) + array_vocali.get(0) + array_vocali.get(1);
 		else if (n_consonanti == 1 && n_vocali >= 1)
-			codice_fiscale += array_consonanti.get(0) + array_vocali.get(0) + "X";
+			codice_fiscale += array_consonanti.get(0) + array_vocali.get(1) + "X";
 		else if (n_vocali >= 2 && n_consonanti == 0)
 			codice_fiscale += array_vocali.get(0) + array_vocali.get(1) + "X";
+		else
 			System.out.println("Errore generico sul nome!");
 		// FETCH DATA NASCITA
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		cal.setTime(data_nascita);
+		cal.setTime(birth_date);
 		int year = cal.get(Calendar.YEAR);
 		codice_fiscale += String.valueOf(year).substring(2);
 		// FETCH MESE NASCITA
@@ -110,21 +118,24 @@ public class CF {
 		codice_fiscale += conversione[month];
 		// FETCH GIORNO NASCITA E SESSO
 		int day = cal.get(Calendar.DAY_OF_MONTH);
-		if (sesso.equals("M")) {
+		if (sex == 'M') {
 			if (day < 10)
 				codice_fiscale += "0" + String.valueOf(day);
 			else
 				codice_fiscale += String.valueOf(day);
-		} else if (sesso.equals("F")) {
+		} else if (sex == 'F') {
 			codice_fiscale += String.valueOf(day + 40);
 		}
 		// FETCH CODICE CATASTALE
 		try {
-			getCodiceCatastalePS = connection.prepareStatement("SELECT codice_catastale FROM COMUNI WHERE comune=?");
-			getCodiceCatastalePS.setString(1, comune_nascita);
+			getCodiceCatastalePS = connection.prepareStatement("SELECT cadastral_code FROM town WHERE name =?");
+			getCodiceCatastalePS.setString(1, birth_place_town);
 			ResultSet rs = getCodiceCatastalePS.executeQuery();
 			if(rs.next())
-				codice_fiscale += rs.getString("codice_catastale");
+			{
+				codice_fiscale += rs.getString("cadastral_code");
+				comune_trovato=true;
+			}
 			else
 				System.out.println("Non sono riuscito a trovare il tuo luogo di nascita nel Database");
 		} catch (SQLException e) {
@@ -251,8 +262,8 @@ public class CF {
 		char tabella_resti[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
 				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 		codice_fiscale += String.valueOf(tabella_resti[somma % 26]);
-		if(!ritorna)
-			return null;
+		if(!comune_trovato)
+			return "Errore!";
 		return codice_fiscale;
 	}
 }

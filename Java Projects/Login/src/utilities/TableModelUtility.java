@@ -9,6 +9,8 @@ import entities.Customer;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
+import gui.AdminCustomerFrame;
+import gui.AdminShopFrame;
 
 public class TableModelUtility {
 	
@@ -80,6 +82,28 @@ public class TableModelUtility {
 			row[10] = rider.getDeliveries_number();
 			model.addRow(row);
 		}
+	}
+	
+	public void updateShopTableColumns(AdminShopFrame admin_shop_frame, int selected_row, Shop shop)
+	{
+		Object[] row = new Object[6];
+		row[0] = shop.getEmail();
+		row[1] = shop.getPassword();
+		row[2] = shop.getName();
+		row[3] = shop.getAddress();
+		row[4] = shop.getWorking_hours();
+		row[5] = shop.getClosing_days();
+		for (int i=0; i<6; i++)
+		admin_shop_frame.getModel().setValueAt(row[i], selected_row, i);
+		return;
+	}
+	public void updateCustomerTableColumns(AdminCustomerFrame admin_customer_frame, int selected_row)
+	{
+		Object email = admin_customer_frame.getEmailTF().getText();
+		Object password = admin_customer_frame.getPasswordTF().getText();
+		admin_customer_frame.getModel().setValueAt(email, selected_row, 8);
+		admin_customer_frame.getModel().setValueAt(password, selected_row, 9);
+		return;
 	}
 
 }

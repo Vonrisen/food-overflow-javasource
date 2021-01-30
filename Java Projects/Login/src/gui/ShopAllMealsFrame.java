@@ -92,7 +92,6 @@ public class ShopAllMealsFrame extends JFrame {
 		
 		this.setTitle("Shop Panel: All Meals");
 		this.setSize(1280,720);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(640,500));
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;

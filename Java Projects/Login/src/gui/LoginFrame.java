@@ -109,7 +109,6 @@ public class LoginFrame extends JFrame{
 	public void setupFrame() {
 		
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(600, 800);
 		this.setTitle("Food Overflow");
 		int central_width = screen_dim.width/2-this.getSize().width/2;

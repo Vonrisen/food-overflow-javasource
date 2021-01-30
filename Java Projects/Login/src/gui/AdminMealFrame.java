@@ -9,6 +9,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -147,7 +150,6 @@ public class AdminMealFrame extends JFrame{
 	private void frameSetup() {
 		
 		this.setTitle("Admin Panel: Meals");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
 
@@ -373,6 +375,16 @@ public class AdminMealFrame extends JFrame{
 
 			}
 		});
+		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.closeWindow(AdminMealFrame.this);
+	         }
+	     });
 		
 	}
 	

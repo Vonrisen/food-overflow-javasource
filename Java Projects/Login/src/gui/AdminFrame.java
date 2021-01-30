@@ -9,6 +9,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -87,7 +89,6 @@ public class AdminFrame extends JFrame{
 	private void frameSetup() {
 		
 		this.setTitle("Admin Panel");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		this.setResizable(false);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -255,8 +256,18 @@ public class AdminFrame extends JFrame{
 			}
 		});
 		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.closeWindow(AdminFrame.this);
+	         }
+	     });
 	}
 	
+	 
 	private void setupButton(JButton button, ImageIcon image) {
 		
 		button.setIcon(image);

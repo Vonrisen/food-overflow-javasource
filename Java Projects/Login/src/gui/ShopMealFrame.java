@@ -9,6 +9,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -132,7 +134,6 @@ public class ShopMealFrame extends JFrame{
 	private void setupFrame() {
 		
 		this.setTitle("Shop Panel: Meals");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1280,720);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -305,6 +306,16 @@ public class ShopMealFrame extends JFrame{
 				
 			}
 		});
+		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             shop_controller.closeWindow(ShopMealFrame.this);
+	         }
+	     });
 		
 	}
 	

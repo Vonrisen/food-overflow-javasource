@@ -1,17 +1,18 @@
 package daos_interfaces;
-import java.sql.SQLException;
+
 import java.util.List;
 
 import entities.Meal;
+import exceptions.DaoException;
 
 public interface MealDAO {
 	
-	public List<Meal>getMealsOfAShopByShopEmail(String shop_email) throws SQLException;
-	public List<Meal> getAllMeals() throws SQLException;
-	public void insertMeal(Meal meal) throws SQLException;
-	public void deleteMeal(Meal meal) throws SQLException;
-	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws SQLException;
-	public void insertSupply(String shop_email, Meal meal) throws SQLException;
-	public void deleteFromSupply(String shop_email, Meal meal)throws SQLException;
+	public List<Meal>getMealsOfAShopByShopEmail(String shop_email) throws DaoException;
+	public List<Meal> getAllMeals() throws DaoException;
+	public void insertMeal(Meal meal) throws DaoException;
+	public void deleteMeal(Meal meal) throws DaoException;
+	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DaoException;
+	public void insertSupply(String shop_email, Meal meal) throws DaoException;
+	public void deleteFromSupply(String shop_email, Meal meal)throws DaoException;
 
 }

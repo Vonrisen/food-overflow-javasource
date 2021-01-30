@@ -1,7 +1,6 @@
 package controllers;
 
 
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,10 +17,14 @@ import daos_interfaces.RiderDAO;
 import entities.Address;
 import entities.Meal;
 import entities.Rider;
+import exceptions.DaoException;
 import gui.ShopAllMealsFrame;
 import gui.ShopFrame;
 import gui.ShopMealFrame;
+import gui.ShopOrderManagementFrame;
 import gui.ShopRiderFrame;
+import utilities.CodiceFiscaleUtility;
+import utilities.DButility;
 import utilities.InputUtility;
 import utilities.TableModelUtility;
 
@@ -29,9 +32,7 @@ public class ShopController {
 	
 	private String current_shop_email;
 	private TableModelUtility table = new TableModelUtility();
-	private RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 	private List<Rider> rider_list = new ArrayList<Rider>();
-	private MealDAO meal_dao = new MealDAOPostgresImplementation();
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	
 	public ShopController(String email) 
@@ -74,11 +75,20 @@ public class ShopController {
 		return;
 	}
 	
+	public void openShopOrderManagementFrame(ShopFrame shop_frame)
+	{
+		shop_frame.dispose();
+		ShopOrderManagementFrame shop_order_management_frame = new ShopOrderManagementFrame(this);
+		shop_order_management_frame.setVisible(true);
+		return;
+	}
+	
 	public void initializeShopMealFrameTable(ShopMealFrame shop_meal_frame)
 	{
 		try {
+			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getMealsOfAShopByShopEmail(current_shop_email);
-		} catch (SQLException e) {
+		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
@@ -88,8 +98,9 @@ public class ShopController {
 	public void initializeShopRiderFrameTable(ShopRiderFrame shop_rider_frame) {
 		
 		try {
+			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			rider_list = rider_dao.getRidersOfAShopByShopEmail(current_shop_email);
-		} catch (SQLException e) {
+		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
@@ -98,8 +109,9 @@ public class ShopController {
 	public void initializeShopAllMealsFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
+			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
-		} catch (SQLException e) {
+		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
@@ -111,20 +123,21 @@ public class ShopController {
 		int i=0;
 			
 		try {
+			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
 				i++;
 			meal_dao.insertSupply(current_shop_email,meal_list.get(i));
-			shop_meal_frame.getModel().insertRow(meal_list.size()-1, new Object[]{meal_list.get(i).getName(),
+			shop_meal_frame.getModel().insertRow(shop_meal_frame.getModel().getRowCount(), new Object[]{meal_list.get(i).getName(),
 					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
-					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list()});
+					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list().toString().substring(1,meal_list.get(i).getAllergen_list().toString().length()-1)});
 			meal_list.remove(meal_list.get(i));
-			
+			JOptionPane.showMessageDialog(null, "Meal succesfully added");
 		}
-		catch (SQLException e) {
+		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}catch (IndexOutOfBoundsException in) {
-			JOptionPane.showMessageDialog(null, in.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Wrong meal name or meal already inserted","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 			return;
 	}
@@ -132,8 +145,15 @@ public class ShopController {
 	public void addRider(ShopRiderFrame shop_rider_frame) {
 		
 		InputUtility input_util = new InputUtility();
+		CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 		try {
-			Rider rider = new Rider("x1xx1x20x00x00lx",shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
+			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
+			String name = shop_rider_frame.getNameTF().getText();
+			String surname = shop_rider_frame.getSurnameTF().getText();
+			String birth_date = shop_rider_frame.getBirth_dateTF().getText();
+			String birth_place_town = shop_rider_frame.getBirth_placeTF().getText();
+			String gender = shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1);
+			Rider rider = new Rider(codice_fiscale.getCF(name,surname ,	new SimpleDateFormat("dd/MM/yyyy").parse(birth_date) ,birth_place_town ,gender.charAt(0)),shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
 					new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
 					shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1), shop_rider_frame.getCellphoneTF().getText(),
 					new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
@@ -145,7 +165,8 @@ public class ShopController {
 					input_util.formatDate(rider.getBirth_date()), rider.getBirth_place(), rider.getAddress().toString(), rider.getGender(), rider.getCellphone(), 
 					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
 			rider_list.add(rider);
-		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "This rider can now work for this shop");
+		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		} catch (ParseException e1) {
 			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
@@ -161,13 +182,14 @@ public class ShopController {
 			String meal_name_to_remove = shop_meal_frame.getShop_meals_table().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
+				MealDAO meal_dao = new MealDAOPostgresImplementation();
 				while(!meal_list.get(i).getName().equals(meal_name_to_remove))
 					i++;
 				meal_dao.deleteFromSupply(current_shop_email, meal_list.get(i));
 				shop_meal_frame.getModel().removeRow(selected_row);
 				meal_list.remove(i);
 				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
-			} catch (SQLException e) {
+			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 	}
@@ -185,13 +207,14 @@ public class ShopController {
 			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
+				RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 				while(!rider_list.get(i).getCf().equals(cf_of_the_rider_to_dismiss))
 					i++;
 				rider_dao.dismissRider(rider_list.get(i));
 				shop_rider_frame.getModel().removeRow(selected_row);
 				rider_list.remove(i);
 				JOptionPane.showMessageDialog(null, "Selected rider dismissed successfully");
-			} catch (SQLException e) {
+			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errors while dismissing selected rider","Error",JOptionPane.ERROR_MESSAGE);
 			}
 	}
@@ -206,9 +229,9 @@ public class ShopController {
 		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
 			int selected_row = shop_rider_frame.getTable().getSelectedRow();
 			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
-			InputUtility a = new InputUtility();
 			int i = 0;
 			try {
+			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			while(!rider_list.get(i).getCf().equals(cf_of_rider_to_update))
 				i++;
 			rider_list.get(i).setName(shop_rider_frame.getNameTF().getText());
@@ -225,7 +248,7 @@ public class ShopController {
 			rider_dao.updateRider(rider_list.get(i));
 			updateRiderTableColumns(shop_rider_frame, selected_row, rider_list.get(i));
 				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
-			} catch (SQLException e) {
+			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Update fields correctly","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 		      catch (ParseException e1) {
@@ -234,6 +257,7 @@ public class ShopController {
 		}
 		else
 			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
+		return;
 	
 	}
 	public void updateRiderTableColumns(ShopRiderFrame shop_rider_frame, int selected_row, Rider rider)
@@ -262,5 +286,14 @@ public class ShopController {
 
 	public void setcurrent_shop_email(String current_shop_email) {
 		this.current_shop_email = current_shop_email;
+	}
+	
+	public void closeWindow(JFrame frame)
+	{
+		DButility db_utility = new DButility();
+		frame.dispose();
+		db_utility.closeCurrentConnection();
+		System.out.println("Connesione chiusa correttamente");
+		return;
 	}
 }

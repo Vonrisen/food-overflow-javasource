@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -90,7 +92,6 @@ public class AdminRiderFrame extends JFrame {
 		
 		this.setTitle("Admin Panel: Riders");
 		this.setSize(1280,720);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setMinimumSize(new Dimension(640,500));
 		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -158,6 +159,16 @@ public class AdminRiderFrame extends JFrame {
 				
 			}
 		});
+		
+
+		 addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.closeWindow(AdminRiderFrame.this);
+	         }
+	     });
 		
 	}
 	

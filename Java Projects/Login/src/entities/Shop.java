@@ -120,5 +120,12 @@ public class Shop {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public String toString() {
+		return "Shop [email=" + email + ", name=" + name + ", password=" + password + ", working_hours=" + working_hours
+				+ ", address=" + address + ", closing_days=" + closing_days + ", employed_riders_list="
+				+ employed_riders_list + ", meal_list=" + meal_list + "]";
+	}
 	
 }
