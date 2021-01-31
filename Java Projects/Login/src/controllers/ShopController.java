@@ -1,7 +1,4 @@
 package controllers;
-
-
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -181,7 +178,10 @@ public class ShopController {
 			String birth_date = shop_rider_frame.getBirth_dateTF().getText();
 			String birth_place_town = shop_rider_frame.getBirth_placeTF().getText();
 			String gender = shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1);
-			Rider rider = new Rider(codice_fiscale.getCF(name,surname ,	new SimpleDateFormat("dd/MM/yyyy").parse(birth_date) ,birth_place_town ,gender.charAt(0)),shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
+			String CF = codice_fiscale.getCF(name,surname ,	new SimpleDateFormat("dd/MM/yyyy").parse(birth_date) ,birth_place_town ,gender.charAt(0));
+			if(!CF.equals("Errore!"))
+			{
+			Rider rider = new Rider(CF,shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
 					new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
 					shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1), shop_rider_frame.getCellphoneTF().getText(),
 					new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
@@ -194,7 +194,9 @@ public class ShopController {
 					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
 			rider_list.add(rider);
 			JOptionPane.showMessageDialog(null, "This rider can now work for this shop");
-		} catch (DaoException e) {
+			
+		} }
+		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 		} catch (ParseException e1) {
 			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
@@ -253,15 +255,20 @@ public class ShopController {
 	
 	public void updateRider(ShopRiderFrame shop_rider_frame)
 	{
-		
+	
 		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
 			int selected_row = shop_rider_frame.getTable().getSelectedRow();
 			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+			CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 			int i = 0;
 			try {
 			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			while(!rider_list.get(i).getCf().equals(cf_of_rider_to_update))
 				i++;
+			String CF = codice_fiscale.getCF(shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(),new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()),shop_rider_frame.getBirth_placeTF().getText(),shop_rider_frame.getGenderCB().getSelectedItem().toString().charAt(0) );
+			if(!CF.equals("Errore!"))
+			{
+			rider_list.get(i).setCf(CF);
 			rider_list.get(i).setName(shop_rider_frame.getNameTF().getText());
 			rider_list.get(i).setSurname(shop_rider_frame.getSurnameTF().getText());
 			rider_list.get(i).setAddress(new Address(shop_rider_frame.getAddress_nameTF().getText(),
@@ -276,7 +283,7 @@ public class ShopController {
 			rider_dao.updateRider(rider_list.get(i));
 			updateRiderTableColumns(shop_rider_frame, selected_row, rider_list.get(i));
 				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
-			} catch (DaoException e) {
+			} }catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		      catch (ParseException e1) {

@@ -2,6 +2,8 @@ package utilities;
 import java.util.Date;
 import java.util.TimeZone;
 
+import javax.swing.JOptionPane;
+
 import db_connection.DBconnection;
 import db_connection.DBconnection_ProvincesAndCities;
 
@@ -27,7 +29,7 @@ public class CodiceFiscaleUtility {
 		}
 		catch (SQLException e)
 		{
-			System.out.println("Connection error");
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) {
@@ -45,7 +47,7 @@ public class CodiceFiscaleUtility {
 		boolean comune_trovato=false;
 		if (surname.length() < 3) {
 			if (surname.length() == 1)
-				System.out.println("Errore! Il cognome deve avere almeno 2 caratteri");
+				JOptionPane.showMessageDialog(null, "Surname must have more than two characters","Error",JOptionPane.ERROR_MESSAGE);
 			else {
 				if ((char1 != 'A' && char1 != 'E' && char1 != 'I'&& char1 != 'O' && char1 != 'U')&& (char2 == 'A' || char2 == 'E' || char2 == 'I'|| char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
@@ -54,7 +56,7 @@ public class CodiceFiscaleUtility {
 				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
 				else if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I'&& char2 != 'O' && char2 != 'U'))
-					System.out.println("Errore! Il cognome non puo' essere costituito esclusivamente da 2 consonanti");
+					JOptionPane.showMessageDialog(null, "Surname cannot be composed of only two consonants","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
 			while (n_consonanti + n_vocali != 3) {
@@ -106,7 +108,7 @@ public class CodiceFiscaleUtility {
 		else if (n_vocali >= 2 && n_consonanti == 0)
 			codice_fiscale += array_vocali.get(0) + array_vocali.get(1) + "X";
 		else
-			System.out.println("Errore generico sul nome!");
+			JOptionPane.showMessageDialog(null, "This name is not valid, try again","Error",JOptionPane.ERROR_MESSAGE);
 		// FETCH DATA NASCITA
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		cal.setTime(birth_date);
@@ -137,7 +139,7 @@ public class CodiceFiscaleUtility {
 				comune_trovato=true;
 			}
 			else
-				System.out.println("Non sono riuscito a trovare il tuo luogo di nascita nel Database");
+				JOptionPane.showMessageDialog(null, "Couldn't fetch your birth place. Try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
