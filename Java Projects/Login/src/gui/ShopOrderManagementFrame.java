@@ -49,9 +49,6 @@ public class ShopOrderManagementFrame extends JFrame{
 		this.shop_controller = shop_controller;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		
 		
@@ -129,7 +126,7 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				
+				shop_controller.openShopDeliveringOrdersFrame(ShopOrderManagementFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -149,8 +146,7 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-//				shop_controller.openShopMealFrame(ShopFrame.this);
-				
+				shop_controller.openShopPendingOrdersFrame(ShopOrderManagementFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -170,8 +166,7 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-//				login_controller.openLoginFrame(ShopFrame.this);
-				
+				shop_controller.openShopFrame(ShopOrderManagementFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

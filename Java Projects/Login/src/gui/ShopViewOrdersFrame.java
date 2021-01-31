@@ -49,7 +49,7 @@ public class ShopViewOrdersFrame extends JFrame{
 	private Color background_color = new Color(0xf3ecd7);
 	
 	DefaultTableModel model;
-	AdminController admin_controller;
+
 	ShopController shop_controller;
 
 	public ShopViewOrdersFrame(ShopController shop_controller) {
@@ -143,6 +143,11 @@ public class ShopViewOrdersFrame extends JFrame{
 		private void events() {
 			
 			go_backJB.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					
+					shop_controller.openShopOrderManagementFrame(ShopViewOrdersFrame.this);
+				}
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					

@@ -108,7 +108,7 @@ public class TableModelUtility {
 		return;
 	}
 	
-	public void initializeOrderTable(DefaultTableModel model,  List<Order> order_list) {
+	public void initializeCompletedOrderTable(DefaultTableModel model,  List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[8];
 		for(Order order : order_list) {
@@ -120,6 +120,33 @@ public class TableModelUtility {
 			row[5] = order.getNote();
 			row[6] = order.getCustomer().getCf();
 			row[7] = order.getRider().getCf();
+			model.addRow(row);
+		}
+	}
+	 
+	public void initializePendingOrderTable(DefaultTableModel model,  List<Order> order_list){
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[5];
+		for(Order order : order_list) {
+			row[0] = date_util.formatDate(order.getDate());
+			row[1] = order.getAddress().toString();
+			row[2] = order.getPayment();
+			row[3] = order.getNote();
+			row[4] = order.getCustomer().getCf();
+			model.addRow(row);
+		}
+	}
+
+	public void initializeDeliveringOrderTable(DefaultTableModel model,  List<Order> order_list){
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[6];
+		for(Order order : order_list) {
+			row[0] = date_util.formatDate(order.getDate());
+			row[1] = order.getAddress().toString();
+			row[2] = order.getPayment();
+			row[3] = order.getNote();
+			row[4] = order.getCustomer().getCf();
+			row[5] = order.getRider().getCf();
 			model.addRow(row);
 		}
 	}

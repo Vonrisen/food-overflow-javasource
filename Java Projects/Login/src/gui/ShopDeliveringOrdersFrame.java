@@ -23,9 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
+import controllers.ShopController;
 import gui_support.RoundJTextField;
 
-public class ShopDeliveringOrdersFrame {
+public class ShopDeliveringOrdersFrame extends JFrame{
 
 	private JFrame frame;
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -53,7 +54,7 @@ public class ShopDeliveringOrdersFrame {
 	private JPanel buttons_panel;
 	private JScrollPane scroll_pane;
 	
-	String[] status = {"Consegnato", "Errore"};
+	private String[] status = {"Consegnato", "Errore"};
 	
 	private JButton update_sqlJB;
 	private JButton go_backJB;
@@ -64,31 +65,16 @@ public class ShopDeliveringOrdersFrame {
 	private JComboBox<String> statusCB;
 	
 	DefaultTableModel model;
-	
+	ShopController shop_controller;
 	private Color background_color = new Color(0xf3ecd7);
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ShopDeliveringOrdersFrame window = new ShopDeliveringOrdersFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public ShopDeliveringOrdersFrame() {
+	
+	public ShopDeliveringOrdersFrame(ShopController shop_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.shop_controller = shop_controller;
 	}
 
 	//Initialize variables
@@ -131,10 +117,10 @@ public class ShopDeliveringOrdersFrame {
 	//Setup layout of the frame
 	private void frameSetup() {
 		
-		frame.setTitle("Admin Panel: Customers");
-		frame.setSize(1280,720);
-		frame.setMinimumSize(new Dimension(800,500));
-		String[] columns = {};
+		this.setTitle("Admin Panel: Customers");
+		this.setSize(1280,720);
+		this.setMinimumSize(new Dimension(800,500));
+		String[] columns = {"Date","Address","Payment","Note","Customer","Rider"};
 	    table.setFocusable(false);
 	    table.setAutoCreateRowSorter(true);
 	    table.setRowSelectionAllowed(true);
@@ -145,28 +131,28 @@ public class ShopDeliveringOrdersFrame {
 		       return false;
 		    }
 		});
-		int central_width = screen_dim.width/2-frame.getSize().width/2;
-		int central_height = screen_dim.height/2-frame.getSize().height/2;
-		frame.setLocation(central_width, central_height); //Setta il frame a centro monitor
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().setBackground(background_color);
+		int central_width = screen_dim.width/2-this.getSize().width/2;
+		int central_height = screen_dim.height/2-this.getSize().height/2;
+		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().setBackground(background_color);
 		
 		
 		createStandardPanel(west_panel, null, west_east_size);
-		frame.getContentPane().add(west_panel, BorderLayout.WEST);
+		this.getContentPane().add(west_panel, BorderLayout.WEST);
 		
 		createStandardPanel(east_panel, null, west_east_size);
-		frame.getContentPane().add(east_panel, BorderLayout.EAST);
+		this.getContentPane().add(east_panel, BorderLayout.EAST);
 		
 		createStandardPanel(north_panel, null, north_south_size);
-		frame.getContentPane().add(north_panel, BorderLayout.NORTH);
+		this.getContentPane().add(north_panel, BorderLayout.NORTH);
 		
 		createStandardPanel(south_panel, null, north_south_size);
-		frame.getContentPane().add(south_panel, BorderLayout.SOUTH);
+		this.getContentPane().add(south_panel, BorderLayout.SOUTH);
 		
 		center_panel.setLayout(new BorderLayout());
 		center_panel.setBackground(null);
-		frame.getContentPane().add(center_panel, BorderLayout.CENTER);
+		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
 		//Subpanels di center_panel
 		
@@ -241,7 +227,7 @@ public class ShopDeliveringOrdersFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-			
+				shop_controller.openShopOrderManagementFrame(ShopDeliveringOrdersFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -320,6 +306,22 @@ public class ShopDeliveringOrdersFrame {
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 
 }

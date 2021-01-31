@@ -13,8 +13,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import daos_interfaces.MealDAO;
-import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
 import entities.Address;
