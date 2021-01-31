@@ -19,7 +19,7 @@ import utilities.InputUtility;
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
 	private Connection connection;
-	PreparedStatement get_all_riders_PS, get_riders_of_a_shop_by_shop_email_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS;
+	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS;
 	DButility db_util = new DButility();
 	public RiderDAOPostgresImplementation() {
 		
@@ -33,8 +33,6 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		try {
 			
 			get_all_riders_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number FROM Rider");
-			get_riders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
-					+ "FROM Rider WHERE shop_id=(SELECT id FROM Shop WHERE email=?)");
 			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider (SELECT ?,?,?,?,?,?,?,?,?,?,?,id FROM Shop WHERE email=?)");
 			dismiss_rider_PS = connection.prepareStatement("DELETE FROM Rider WHERE cf=?");
 			update_rider_PS = connection.prepareStatement("UPDATE Rider SET name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
@@ -73,33 +71,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}
 		return rider_list;
 	}
-		
-	public List<Rider> getRidersOfAShopByShopEmail(String shop_email) throws DaoException {
-		
-		List<Rider>rider_list = new ArrayList<Rider>();
-		List<String>address_fields = new ArrayList<String>();
-		InputUtility string_util = new InputUtility();
-		ResultSet rs = null;
-		try
-		{
-		get_riders_of_a_shop_by_shop_email_PS.setString(1, shop_email);
-		rs = get_riders_of_a_shop_by_shop_email_PS.executeQuery();
-		while(rs.next())
-		{
-			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
-			rider_list.add(new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"), new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),rs.getString("gender"),
-					       rs.getString("cellphone"),new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
-						   rs.getString("vehicle"),rs.getString("working_hours"),rs.getShort("deliveries_number")));
-		}}catch(SQLException s)
-		{
-			throw new DaoException();
-		}
-		finally
-		{
-			db_util.releaseResources(rs, get_riders_of_a_shop_by_shop_email_PS);
-		}
-		return rider_list;
-	}
+	
 	
 	public void insertRider(Rider rider, String shop_email) throws DaoException {
 		
@@ -173,4 +145,5 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}
 		return;
 	}
+
 }

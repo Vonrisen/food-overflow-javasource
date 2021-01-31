@@ -7,7 +7,6 @@ import exceptions.DaoException;
 
 public interface MealDAO {
 	
-	public List<Meal>getMealsOfAShopByShopEmail(String shop_email) throws DaoException;
 	public List<Meal> getAllMeals() throws DaoException;
 	public void insertMeal(Meal meal) throws DaoException;
 	public void deleteMeal(Meal meal) throws DaoException;

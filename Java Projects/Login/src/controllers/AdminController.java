@@ -121,12 +121,10 @@ public class AdminController {
 		int selected_row = admin_shop_frame.getTable().getSelectedRow();
 		List<Rider>rider_list = new ArrayList<Rider>();
 		String shop_email = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
-		try {
-			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
-			rider_list = rider_dao.getRidersOfAShopByShopEmail(shop_email);
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		}
+		int i = 0;
+		while(!shop_list.get(i).getEmail().equals(shop_email))
+			i++;
+		rider_list = shop_list.get(i).getEmployed_riders_list();
 		if(!rider_list.isEmpty())
 		{
 			table_utility.initializeRiderTable(admin_rider_frame.getModel(), rider_list);

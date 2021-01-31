@@ -18,7 +18,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private Connection connection;
-	PreparedStatement get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
+	PreparedStatement  get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
 					  insert_supply_PS, delete_from_supply_PS;
 	CallableStatement add_allergens_CS;
 	DButility db_util = new DButility();
@@ -33,7 +33,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		try {
 			
-			get_meals_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
+		
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
@@ -49,41 +49,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		
     }
-	public List<Meal> getMealsOfAShopByShopEmail(String shop_email) throws DaoException {
-		ArrayList<String> allergens;
-		ArrayList<Meal> meal_list = new ArrayList<Meal>();
-		ResultSet rs2 = null;
-		ResultSet rs1 = null;
-		try
-		{
-		get_meals_of_a_shop_by_shop_email_PS.setString(1, shop_email);
-		rs1 = get_meals_of_a_shop_by_shop_email_PS.executeQuery();
-		while(rs1.next())
-		{
-			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
-			rs2 = get_allergens_of_a_meal_PS.executeQuery();
-			allergens = new ArrayList<String>();
-			while(rs2.next())
-			{
-				String allergen = rs2.getString("allergen_name");
-				allergens.add(allergen);
-			}
-			String name = rs1.getString("name");
-			Float price = rs1.getFloat("price");
-			String ingredients = rs1.getString("ingredients");
-			String category = rs1.getString("category");
-			meal_list.add(new Meal(name,price,ingredients,category,allergens));
-		}}catch(SQLException s)
-		{
-			throw new DaoException();
-		}
-		finally
-		{
-			db_util.releaseResources(rs2, get_allergens_of_a_meal_PS);
-			db_util.releaseResources(rs1, get_meals_of_a_shop_by_shop_email_PS);
-		}
-		return meal_list;
-	}
 	
 	public List<Meal> getAllMeals() throws DaoException {
 		

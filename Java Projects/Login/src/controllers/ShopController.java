@@ -14,9 +14,11 @@ import javax.swing.JOptionPane;
 import daos_implementation.MealDAOPostgresImplementation;
 import daos_implementation.OrderDAOPostgresImplementation;
 import daos_implementation.RiderDAOPostgresImplementation;
+import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
 import daos_interfaces.RiderDAO;
+import daos_interfaces.ShopDAO;
 import entities.Address;
 import entities.Meal;
 import entities.Order;
@@ -102,7 +104,7 @@ public class ShopController {
 		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		try {
 			order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
-		} catch (SQLException e) {
+		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		table.initializeOrderTable(shop_view_orders_frame.getModel(), order_list);
@@ -112,8 +114,8 @@ public class ShopController {
 	public void initializeShopMealFrameTable(ShopMealFrame shop_meal_frame)
 	{
 		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
-			meal_list = meal_dao.getMealsOfAShopByShopEmail(current_shop_email);
+			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+			meal_list = shop_dao.getMealsOfAShopByShopEmailAndCloseResources(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
@@ -124,8 +126,8 @@ public class ShopController {
 	public void initializeShopRiderFrameTable(ShopRiderFrame shop_rider_frame) {
 		
 		try {
-			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
-			rider_list = rider_dao.getRidersOfAShopByShopEmail(current_shop_email);
+			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+			rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
