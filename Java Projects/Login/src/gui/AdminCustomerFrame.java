@@ -42,6 +42,8 @@ public class AdminCustomerFrame extends JFrame {
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
+	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Email", "Password"};
+	
 	private JPanel west_panel;
 	private JPanel east_panel;
 	private JPanel north_panel;
@@ -62,21 +64,22 @@ public class AdminCustomerFrame extends JFrame {
 	private JTextField emailTF;
 	private JTextField passwordTF;
 	
-	DefaultTableModel model;
+	private DefaultTableModel model;
 	
 	private Color background_color = new Color(0xf3ecd7);
-	AdminController admin_controller;
+	private AdminController admin_controller;
+	
 	public AdminCustomerFrame(AdminController admin_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
 		this.admin_controller=admin_controller;
+		
 	}
 
 	//Initialize variables
 	private void initialize() {
-		
 		
 		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
 		delete_activeIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonActive.png");
@@ -100,7 +103,14 @@ public class AdminCustomerFrame extends JFrame {
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
 		
-		table = new JTable();
+		table = (new JTable() {
+			
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+				super.changeSelection(rowIndex, columnIndex, true, false);
+			}
+			
+		});
 		scroll_pane = new JScrollPane(table);
 		
 		customers_table_titleLB = new JLabel();
@@ -113,24 +123,13 @@ public class AdminCustomerFrame extends JFrame {
 		
 	}
 	
-	//Setup layout of the frame
 	private void frameSetup() {
 		
-		this.setTitle("Admin Panel: Customers");
+		//Layout setup
+		
+		this.setTitle("[Admin Panel] Gestione clienti");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
-		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Email", "Password"};
-	    table.setFocusable(false);
-	    table.setAutoCreateRowSorter(true);
-	    table.setRowSelectionAllowed(true);
-	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(model = new DefaultTableModel(columns, 0) {
-
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		       return false;
-		    }
-		});
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -150,26 +149,39 @@ public class AdminCustomerFrame extends JFrame {
 		createStandardPanel(south_panel, null, north_south_size);
 		this.getContentPane().add(south_panel, BorderLayout.SOUTH);
 		
+		customers_table_titleLB.setIcon(customers_table_title);
+		customers_table_titleLB.setSize(225,100);
+		north_panel.add(customers_table_titleLB);
+		
 		center_panel.setLayout(new BorderLayout());
 		center_panel.setBackground(null);
 		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
-		//Subpanels di center_panel
+		//Impostazione JTable
+		
+	    table.setAutoCreateRowSorter(true);
+	    table.setRowSelectionAllowed(true);
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(model = new DefaultTableModel(columns, 0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		});
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setPreferredScrollableViewportSize(new Dimension(500,50));
+		table.setFillsViewportHeight(true);
+		
+		//Sottopannelli di "center_panel"
 		
 		sql_panel.setLayout(new BorderLayout());
 		createStandardPanel(sql_panel, null, (new Dimension(400,50)));
 		center_panel.add(sql_panel, BorderLayout.EAST);
 		
-		table.setPreferredScrollableViewportSize(new Dimension(500,50));
-		table.setFillsViewportHeight(true);
-		
 		center_panel.add(scroll_pane, BorderLayout.CENTER);
-		
-		customers_table_titleLB.setIcon(customers_table_title);
-		customers_table_titleLB.setSize(225,100);
-		north_panel.add(customers_table_titleLB);
-		
-		//Subpanels di sql_panel
+			
+		//Sottopannelli di "sql_panel"
 		
 		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,50));
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
@@ -178,7 +190,7 @@ public class AdminCustomerFrame extends JFrame {
 		createStandardPanel(buttons_panel, null, (new Dimension(100,100)));
 		sql_panel.add(buttons_panel, BorderLayout.SOUTH);
 		
-		//Setup TextFields
+		//Textfields setup
 		
 		createTextField(emailTF, "E-Mail", long_dim_of_textfield);
 		attributes_panel.add(emailTF);
@@ -186,7 +198,7 @@ public class AdminCustomerFrame extends JFrame {
 		createTextField(passwordTF, "Password", long_dim_of_textfield);
 		attributes_panel.add(passwordTF);
 		
-		//Setup Buttons
+		//Buttons setup
 		
 		update_sqlJB.setIcon(update_inactiveIMG);
 		setupButton(update_sqlJB, update_inactiveIMG, button_size);
@@ -201,14 +213,12 @@ public class AdminCustomerFrame extends JFrame {
 			
 	}
 	
-	//All events about frame
 	private void events() {
-		
-		//MouseListeners
 		
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+
 				admin_controller.updateCustomer(AdminCustomerFrame.this);
 
 			}
@@ -251,6 +261,7 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
+				AdminController admin_controller = new AdminController();
 				admin_controller.openAdminFrame(AdminCustomerFrame.this);
 			
 			}
@@ -268,13 +279,11 @@ public class AdminCustomerFrame extends JFrame {
 			}
 		});
 		
-		//FocusListeners
-		
 		emailTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(emailTF, emailTF.getText());
+				textFieldFocusGained(emailTF, "E-Mail");
 
 			}
 
@@ -290,7 +299,7 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(passwordTF, passwordTF.getText());
+				textFieldFocusGained(passwordTF, "Password");
 
 			}
 
@@ -305,7 +314,6 @@ public class AdminCustomerFrame extends JFrame {
 		
 	}
 	
-	//Methods
 	private void textFieldFocusGained(JTextField text_field, String string) {
 		
 		if (text_field.getText().equals(string)) {

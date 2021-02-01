@@ -44,6 +44,9 @@ public class AdminMealFrame extends JFrame{
 	private Dimension short_dim_of_textfield;
 	
 	private String[] dish_array_strings = {"Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
+	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
+			"Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
+	private String[] columns = {"Nome", "Categoria", "Prezzo in €", "Ingredienti", "Allergeni"};
 	
 	private JComboBox<Object> dishJCB;
 	
@@ -73,8 +76,7 @@ public class AdminMealFrame extends JFrame{
 	private JLabel label;
 	private JLabel allergensLB;
 	
-	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
-										"Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
+
 	
 	private JCheckBox[] allergens = new JCheckBox[14];
 	
@@ -82,10 +84,10 @@ public class AdminMealFrame extends JFrame{
 	private JTextField priceTF;
 	private JTextField ingredientsTF;
 	
-	DefaultTableModel model;
-	AdminController admin_controller;
+	private DefaultTableModel model;
+	private AdminController admin_controller;
 	private Color background_color = new Color(0xf3ecd7);
-
+	
 	public AdminMealFrame(AdminController admin_controller) {
 		
 		initialize();
@@ -122,12 +124,19 @@ public class AdminMealFrame extends JFrame{
 		allergens_panel = new JPanel();
 		allergens_panel2 = new JPanel();
 		
-		table = new JTable();
+		table = (new JTable() {
+			
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+				super.changeSelection(rowIndex, columnIndex, true, false);
+			}
+			
+		});
 		scroll_pane = new JScrollPane(table);
 		
 		meals_table_titleLB = new JLabel();
-		label = new JLabel("Dish");
-		allergensLB = new JLabel("Allergens");
+		label = new JLabel("Tipi di piatto");
+		allergensLB = new JLabel("Allergeni");
 		
 		go_backJB = new JButton();
 		insert_sqlJB = new JButton();
@@ -138,27 +147,23 @@ public class AdminMealFrame extends JFrame{
 		nameTF = new RoundJTextField(new Color(0x771007));
 		priceTF = new RoundJTextField(new Color(0x771007));
 		ingredientsTF = new RoundJTextField(new Color(0x771007));
+		
+		model = new DefaultTableModel(columns, 0);
 
 	}
 	
 	private void frameSetup() {
 		
-		this.setTitle("Admin Panel: Meals");
+		//Layout setup
+		
+		this.setTitle("[Admin Panel] Gestione alimenti");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
-
-		String[] columns = {"Name", "Category", "Price in �", "ingredients", "Allergens"};
-		model = new DefaultTableModel(columns, 0);
-		table.setModel(model);
-		table.setAutoCreateRowSorter(true);
-		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().setBackground(background_color);
-		
 		
 		createStandardPanel(west_panel, null, west_east_size);
 		this.getContentPane().add(west_panel, BorderLayout.WEST);
@@ -176,6 +181,23 @@ public class AdminMealFrame extends JFrame{
 		center_panel.setBackground(null);
 		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
+		//Impostazione JTable
+		
+	    table.setAutoCreateRowSorter(true);
+	    table.setRowSelectionAllowed(true);
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(model = new DefaultTableModel(columns, 0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		    
+		});
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setPreferredScrollableViewportSize(new Dimension(500,50));
+		table.setFillsViewportHeight(true);
+		
 		//Subpanels di center_panel
 		
 		sql_panel.setLayout(new BorderLayout());
@@ -187,7 +209,7 @@ public class AdminMealFrame extends JFrame{
 		
 		center_panel.add(scroll_pane, BorderLayout.CENTER);
 		
-		//Subpanels di sql_panel
+		//Sotto pannelli di "sql_panel"
 		
 		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,10));
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
@@ -197,10 +219,12 @@ public class AdminMealFrame extends JFrame{
 		createStandardPanel(buttons_panel, null, (new Dimension(100,100)));
 		sql_panel.add(buttons_panel, BorderLayout.SOUTH);
 		
+		//Sottopannelli di "attributes_panel"
+		
 		createStandardPanel(dish_panel, null, new Dimension(335,75));
 		attributes_panel.add(dish_panel);
 	
-		//Setup TextFields
+		//Textfields setup
 		
 		meals_table_titleLB.setIcon(meals_table_title);
 		meals_table_titleLB.setSize(225,100);
@@ -212,16 +236,16 @@ public class AdminMealFrame extends JFrame{
 		dishJCB.setPreferredSize(long_dim_of_textfield);
 		dish_panel.add(dishJCB);
 		
-		createTextField(nameTF, "Name", short_dim_of_textfield);
+		createTextField(nameTF, "Nome", short_dim_of_textfield);
 		attributes_panel.add(nameTF);
 		
-		createTextField(priceTF, "Price", short_dim_of_textfield);
+		createTextField(priceTF, "Prezzo in €", short_dim_of_textfield);
 		attributes_panel.add(priceTF);
 		
-		createTextField(ingredientsTF, "Ingredients", long_dim_of_textfield);
+		createTextField(ingredientsTF, "Ingredienti", long_dim_of_textfield);
 		attributes_panel.add(ingredientsTF);
 		
-		//Setup checkbox layout
+		//Checkboxes setup
 		
 		allergensLB.setHorizontalAlignment(JLabel.CENTER);
 		allergensLB.setPreferredSize(long_dim_of_textfield);
@@ -235,9 +259,9 @@ public class AdminMealFrame extends JFrame{
 		createStandardPanel(allergens_panel2, null, new Dimension(150,200));
 		attributes_panel.add(allergens_panel2);
 		
-		allergensLoader(); 	//Setup checkboxes
+		allergensLoader();
 		
-		//Setup Buttons
+		//Buttons setup
 		
 		insert_sqlJB.setIcon(insert_inactiveIMG);
 		setupButton(insert_sqlJB, insert_inactiveIMG, button_size);
@@ -253,8 +277,6 @@ public class AdminMealFrame extends JFrame{
 	}
 	
 	private void events() {
-		
-		//MouseListeners
 		
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -302,7 +324,6 @@ public class AdminMealFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//Admin Frame
 				AdminMealFrame.this.dispose();
 				admin_controller.openAdminFrame(AdminMealFrame.this);
 			
@@ -320,21 +341,19 @@ public class AdminMealFrame extends JFrame{
 				
 			}
 		});
-		
-		//FocusListeners
-		
+
 		nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(nameTF, nameTF.getText());
+				textFieldFocusGained(nameTF, "Nome");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(nameTF, "Name");
+				textFieldFocusLost(nameTF, "Nome");
 				
 			}
 		});
@@ -343,14 +362,14 @@ public class AdminMealFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(priceTF, priceTF.getText());
+				textFieldFocusGained(priceTF, "Prezzo in €");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(priceTF, "Price");
+				textFieldFocusLost(priceTF, "Prezzo in €");
 
 			}
 		});
@@ -359,14 +378,14 @@ public class AdminMealFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(ingredientsTF, ingredientsTF.getText());
+				textFieldFocusGained(ingredientsTF, "Ingredienti");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(ingredientsTF, "Ingredients");
+				textFieldFocusLost(ingredientsTF, "Ingredienti");
 
 			}
 		});

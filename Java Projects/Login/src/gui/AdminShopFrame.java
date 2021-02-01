@@ -52,6 +52,8 @@ public class AdminShopFrame extends JFrame{
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
+	private String[]columns = {"E-mail", "Password", "Nome", "Indirizzo", "Orario", "Giorni di chiusura"};
+	
 	private JPanel west_panel;
 	private JPanel east_panel;
 	private JPanel north_panel;
@@ -128,7 +130,14 @@ public class AdminShopFrame extends JFrame{
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
 		
-		table = new JTable();
+		table = (new JTable() {
+			
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+				super.changeSelection(rowIndex, columnIndex, true, false);
+			}
+			
+		});
 		scroll_pane = new JScrollPane(table);
 		
 		shops_table_titleLB = new JLabel();
@@ -155,17 +164,10 @@ public class AdminShopFrame extends JFrame{
 	
 	//Frame Setup
 	private void frameSetup() {
-
-		String[]columns = {"E-mail", "Password", "Name", "Address", "Working Hours", "Closing Days"};
-		model = new DefaultTableModel(columns, 0);
-		table.setModel(model);
-		table.setAutoCreateRowSorter(true);
 		
-		this.setTitle("Admin Panel: Shops");
+		this.setTitle("[Admin Panel] Gestione ristoranti");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,680));
-	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -189,7 +191,23 @@ public class AdminShopFrame extends JFrame{
 		center_panel.setBackground(null);
 		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
-		//Subpanels di center_panel
+		//Impostazione JTable
+		
+	    table.setAutoCreateRowSorter(true);
+	    table.setRowSelectionAllowed(true);
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(model = new DefaultTableModel(columns, 0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		});
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setPreferredScrollableViewportSize(new Dimension(500,50));
+		table.setFillsViewportHeight(true);
+		
+		//Sottopannelli di "center_panel"
 		
 		sql_panel.setLayout(new BorderLayout());
 		createStandardPanel(sql_panel, null, (new Dimension(400,50)));
@@ -204,7 +222,7 @@ public class AdminShopFrame extends JFrame{
 		shops_table_titleLB.setSize(225,100);
 		north_panel.add(shops_table_titleLB);
 		
-		//Subpanels di sql_panel
+		//Sottopannelli di "sql_panel"
 		
 		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,10));
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
@@ -213,65 +231,58 @@ public class AdminShopFrame extends JFrame{
 		createStandardPanel(buttons_panel, null, (new Dimension(100,100)));
 		sql_panel.add(buttons_panel, BorderLayout.SOUTH);
 		
-		//Setup TextFields
+		//Textfields setup
 		
-		createTextField(nameTF, "Name", short_dim_of_textfield);
+		createTextField(nameTF, "Nome", short_dim_of_textfield);
 		attributes_panel.add(nameTF);
 		
 		createTextField(emailTF, "E-mail", short_dim_of_textfield);
 		attributes_panel.add(emailTF);
 		
-		createTextField(address_nameTF, "Address name", long_dim_of_textfield);
+		createTextField(address_nameTF, "Nome dell'indirizzo", long_dim_of_textfield);
 		attributes_panel.add(address_nameTF);
 		
-		createTextField(address_civic_numberTF, "Civic number", short_dim_of_textfield);
+		createTextField(address_civic_numberTF, "Numero civico", short_dim_of_textfield);
 		attributes_panel.add(address_civic_numberTF);
 		
 		createTextField(address_capTF, "CAP", short_dim_of_textfield);
 		attributes_panel.add(address_capTF);
 		
-		createTextField(address_cityTF, "City", short_dim_of_textfield);
+		createTextField(address_cityTF, "Comune", short_dim_of_textfield);
 		attributes_panel.add(address_cityTF);
 		
-		createTextField(address_provinceTF, "Province", short_dim_of_textfield);
+		createTextField(address_provinceTF, "Provincia", short_dim_of_textfield);
 		attributes_panel.add(address_provinceTF);
 		
-		createTextField(working_hoursTF, "Working Hours", short_dim_of_textfield);
+		createTextField(working_hoursTF, "Orario", short_dim_of_textfield);
 		attributes_panel.add(working_hoursTF);
 		
 		createTextField(passwordTF, "Password", short_dim_of_textfield);
 		attributes_panel.add(passwordTF);
 		
-		createTextField(closing_daysTF, "Closing Days", long_dim_of_textfield);
+		createTextField(closing_daysTF, "Giorni di chiusura", long_dim_of_textfield);
 		attributes_panel.add(closing_daysTF);
 		
 		setupButton(riders_searchJB, search_riders_inactiveIMG, new Dimension(335,30));
 		attributes_panel.add(riders_searchJB);
 		
-		//Setup Buttons
+		//Buttons setup
 		
 		setupButton(insert_sqlJB, insert_inactiveIMG, button_size);
-		insert_sqlJB.setToolTipText("Clicca qui per creare un nuovo shop");
 		buttons_panel.add(insert_sqlJB);
 		
 		setupButton(update_sqlJB, update_inactiveIMG, button_size);
-		update_sqlJB.setToolTipText("Clicca qui per aggiornare uno shop");
 		buttons_panel.add(update_sqlJB);
 		
 		setupButton(delete_sqlJB, delete_inactiveIMG, button_size);
-		delete_sqlJB.setToolTipText("Clicca qui per cancellare uno shop");
 		buttons_panel.add(delete_sqlJB);
 		
 		setupButton(go_backJB, go_back_inactiveIMG, button_size);
-		go_backJB.setToolTipText("Clicca qui per tornare indietro");
 		buttons_panel.add(go_backJB);
 			
 	}
 	
-	//All events about frame
 	private void events() {
-		
-		//MouseListeners
 		
 		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -368,7 +379,7 @@ public class AdminShopFrame extends JFrame{
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Apre AdminFrame
+
 				admin_controller.openAdminFrame(AdminShopFrame.this);
 			
 			}
@@ -417,20 +428,18 @@ public class AdminShopFrame extends JFrame{
 	         }
 	     });
 		
-		//FocusListeners
-		
 		nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(nameTF, "Name");
+				textFieldFocusGained(nameTF, "Nome");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(nameTF, "Name");
+				textFieldFocusLost(nameTF, "Nome");
 				
 			}
 		});
@@ -455,14 +464,14 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_nameTF, "Address name");
+				textFieldFocusGained(address_nameTF, "Nome dell'indirizzo");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_nameTF, "Address name");
+				textFieldFocusLost(address_nameTF, "Nome dell'indirizzo");
 
 			}
 		});
@@ -471,14 +480,14 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_civic_numberTF, "Civic number");
+				textFieldFocusGained(address_civic_numberTF, "Numero civico");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_civic_numberTF, "Civic number");
+				textFieldFocusLost(address_civic_numberTF, "Numero civico");
 
 			}
 		});
@@ -503,14 +512,14 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_cityTF, "City");
+				textFieldFocusGained(address_cityTF, "Comune");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_cityTF, "City");
+				textFieldFocusLost(address_cityTF, "Comune");
 
 			}
 		});
@@ -519,14 +528,14 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_provinceTF, "Province");
+				textFieldFocusGained(address_provinceTF, "Provincia");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_provinceTF, "Province");
+				textFieldFocusLost(address_provinceTF, "Provincia");
 
 			}
 		});
@@ -535,14 +544,14 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(working_hoursTF, "Working Hours");
+				textFieldFocusGained(working_hoursTF, "Orario");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(working_hoursTF, "Working Hours");
+				textFieldFocusLost(working_hoursTF, "Orario");
 
 			}
 		});
@@ -567,21 +576,20 @@ public class AdminShopFrame extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(closing_daysTF, "Closing Days");
+				textFieldFocusGained(closing_daysTF, "Giorni di chiusura");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(closing_daysTF, "Closing Days");
+				textFieldFocusLost(closing_daysTF, "Giorni di chiusura");
 
 			}
 		});
 		
 	}
 	
-	//Methods
 	private void textFieldFocusGained(JTextField text_field, String string) {
 		
 		if (text_field.getText().equals(string)) {

@@ -23,34 +23,34 @@ import controllers.LoginController;
 public class AdminFrame extends JFrame{
 
 	
-	Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	GridBagLayout gbl;
-	GridBagConstraints gcon;
+	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+	private GridBagLayout gbl;
+	private GridBagConstraints gcon;
 	
-	JPanel center_panel;
-	JPanel south_panel;
+	private JPanel center_panel;
+	private JPanel south_panel;
 	
-	ImageIcon customer_button_inactiveIMG;
-	ImageIcon shop_button_inactiveIMG;
-	ImageIcon orders_button_inactiveIMG;
-	ImageIcon meal_button_inactiveIMG;
-	ImageIcon disconnect_button_inactiveIMG;
+	private ImageIcon customer_button_inactiveIMG;
+	private ImageIcon shop_button_inactiveIMG;
+	private ImageIcon orders_button_inactiveIMG;
+	private ImageIcon meal_button_inactiveIMG;
+	private ImageIcon disconnect_button_inactiveIMG;
 	
-	ImageIcon customer_button_activeIMG;
-	ImageIcon shop_button_activeIMG;
-	ImageIcon orders_button_activeIMG;
-	ImageIcon meal_button_activeIMG;
-	ImageIcon disconnect_button_activeIMG;
+	private ImageIcon customer_button_activeIMG;
+	private ImageIcon shop_button_activeIMG;
+	private ImageIcon orders_button_activeIMG;
+	private ImageIcon meal_button_activeIMG;
+	private ImageIcon disconnect_button_activeIMG;
 	
-	JButton customerJB;
-	JButton shopJB;
-	JButton ordersJB;
-	JButton mealJB;
-	JButton disconnectJB;
+	private JButton customerJB;
+	private JButton shopJB;
+	private JButton ordersJB;
+	private JButton mealJB;
+	private JButton disconnectJB;
 
 	private Color background_color = new Color(0xf3ecd7);
-	AdminController admin_controller;
-	LoginController login_controller = new LoginController();
+	private AdminController admin_controller;
+	private LoginController login_controller = new LoginController();
 
 	public AdminFrame() {
 		initialize();
@@ -88,6 +88,8 @@ public class AdminFrame extends JFrame{
 	
 	private void frameSetup() {
 		
+		//Layout setup
+		
 		this.setTitle("Admin Panel");
 		this.setSize(1280,720);
 		this.setResizable(false);
@@ -118,7 +120,7 @@ public class AdminFrame extends JFrame{
 		disconnectJB.setBounds(565,20,150,100);
 		south_panel.add(disconnectJB);
 		
-		//Impostazione GridBagLayout per i JButton
+		//Gridbaglayout setup
 		
 		gcon.insets = new Insets(10,50,10,50);
 		gcon.weightx = 1;
@@ -157,7 +159,9 @@ public class AdminFrame extends JFrame{
 		shopJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
 				admin_controller.openAdminShopFrame(AdminFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -176,10 +180,9 @@ public class AdminFrame extends JFrame{
 		ordersJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento AdminOrdersFrame
-//				AdminFrame.this.dispose();
-//				AdminController admin_controller= new AdminController();
-//				admin_controller.openAdminOrdersFrame();
+
+				
+			
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -198,7 +201,9 @@ public class AdminFrame extends JFrame{
 		customerJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
 				admin_controller.openAdminCustomerFrame(AdminFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -217,7 +222,9 @@ public class AdminFrame extends JFrame{
 		mealJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
 				admin_controller.openAdminMealFrame(AdminFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -236,7 +243,9 @@ public class AdminFrame extends JFrame{
 		disconnectJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
 				login_controller.openLoginFrame(AdminFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -258,7 +267,9 @@ public class AdminFrame extends JFrame{
 	         @Override
 	         public void windowClosing(WindowEvent e)
 	         {
+	        	 
 	             admin_controller.closeWindow(AdminFrame.this);
+	             
 	         }
 	     });
 	}

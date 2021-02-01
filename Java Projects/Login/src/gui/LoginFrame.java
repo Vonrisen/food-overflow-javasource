@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -24,6 +25,8 @@ import javax.swing.JTextField;
 import controllers.LoginController;
 import gui_support.RoundJPasswordField;
 import gui_support.RoundJTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginFrame extends JFrame{
 
@@ -64,13 +67,13 @@ public class LoginFrame extends JFrame{
 
 	private JTextField usernameTF;
 	private JPasswordField passwordTF;
-	LoginController login_controller = new LoginController();
+	private LoginController login_controller = new LoginController();
 	public LoginFrame() {
-		
 		
 		initialize();
 		setupFrame();
 		events();
+		
 	}
 
 	private void initialize() {
@@ -112,6 +115,8 @@ public class LoginFrame extends JFrame{
 	
 	public void setupFrame() {
 		
+		//Layout setup
+		
 		this.setResizable(false);
 		this.setSize(600, 800);
 		this.setTitle("Food Overflow");
@@ -121,26 +126,42 @@ public class LoginFrame extends JFrame{
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().setBackground(new Color(0xf3ecd7));
-		
-		// PANELS INITIALIZER
 
 		topPanel.setBounds(0, 0, 600, 400);
 		topPanel.setBackground(null);
 		topPanel.setLayout(new BorderLayout());
 		this.getContentPane().add(topPanel, BorderLayout.NORTH);
 
-
-		loginPanel.setBounds(0, 401, 600, 512);
-		loginPanel.setBackground(null);
-		this.getContentPane().add(loginPanel);
 		loginPanel.setLayout(null);
 		loginPanel.setBounds(0, 401, 584, 512);
 		loginPanel.setBackground(null);
 		this.getContentPane().add(loginPanel, BorderLayout.CENTER);
 		
-		// First Panel
-		
+		//Textfields setup
 
+		usernameImage.setIcon(usernameIcon);
+		usernameImage.setBounds(141, 46, 25, 25);
+		usernameImage.setVisible(false);
+		loginPanel.add(usernameImage);
+
+		passwordImage.setIcon(passwordIcon);
+		passwordImage.setBounds(141, 91, 25, 25);
+		passwordImage.setVisible(false);
+		loginPanel.add(passwordImage);
+		
+		usernameTF.setText("Inserisci ID o E-mail");
+		usernameTF.setBounds(177, 45, 250, 30);
+		usernameTF.setVisible(false);
+		loginPanel.add(usernameTF);
+
+		passwordTF.setText("Inserisci password");
+		passwordTF.setEchoChar((char) 0);
+		passwordTF.setBounds(177, 90, 250, 30);
+		passwordTF.setVisible(false);
+		loginPanel.add(passwordTF);
+		
+		//Buttons & Label setup
+		
 		logoLabel.setIcon(logoImage);
 		logoLabel.setHorizontalAlignment(JLabel.CENTER);
 		topPanel.add(logoLabel);
@@ -171,33 +192,6 @@ public class LoginFrame extends JFrame{
 		loginButton.setBounds(134, 150, 150, 30);
 		loginButton.setVisible(false);
 		loginPanel.add(loginButton);
-		
-		//Textfields
-		
-		usernameImage.setIcon(usernameIcon);
-		usernameImage.setBounds(141, 46, 25, 25);
-		usernameImage.setVisible(false);
-		loginPanel.add(usernameImage);
-
-		passwordImage.setIcon(passwordIcon);
-		passwordImage.setBounds(141, 91, 25, 25);
-		passwordImage.setVisible(false);
-		loginPanel.add(passwordImage);
-		
-		// USERNAME TEXF FIELD INITIALIZER
-
-		usernameTF.setText("Inserisci ID o E-mail");
-		usernameTF.setBounds(177, 45, 250, 30);
-		usernameTF.setVisible(false);
-		loginPanel.add(usernameTF);
-
-		// PASSWORD TEXT FIELD INITIALIZER
-
-		passwordTF.setText("Inserisci password");
-		passwordTF.setEchoChar((char) 0);
-		passwordTF.setBounds(177, 90, 250, 30);
-		passwordTF.setVisible(false);
-		loginPanel.add(passwordTF);
 		
 	}
 	
@@ -378,8 +372,13 @@ public class LoginFrame extends JFrame{
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent validazione_credenziali_admin) {
 				
+				if((usernameTF.getText().equals("Inserisci ID o E-mail"))||(passwordTF.getText().equals("Inserisci password"))) {
+					
+					JOptionPane.showMessageDialog(null, "Uno o più campi di testo sono vuoti","Errore",JOptionPane.INFORMATION_MESSAGE);
+					
+				} else login_controller.accessAuthentication(LoginFrame.this);
 				
-				login_controller.accessAuthentication(LoginFrame.this);
+
 				
 			}
 		});
@@ -421,6 +420,19 @@ public class LoginFrame extends JFrame{
 					passwordTF.setText("Inserisci password");
 					passwordTF.setEchoChar((char) 0);
 				}
+			}
+		});
+		
+		passwordTF.addKeyListener(new KeyAdapter() {
+			@Override
+			
+			public void keyPressed(KeyEvent e) {
+			    if (e.getKeyCode()==KeyEvent.VK_ENTER){
+			    	
+			    	LoginFrame.this.getRootPane().setDefaultButton(loginButton);
+			        
+			    }
+				
 			}
 		});
 		

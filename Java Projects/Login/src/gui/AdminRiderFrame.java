@@ -32,6 +32,8 @@ public class AdminRiderFrame extends JFrame {
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
+	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Veicolo", "Orario di lavoro"};
+	
 	private JPanel west_panel;
 	private JPanel east_panel;
 	private JPanel north_panel;
@@ -46,13 +48,14 @@ public class AdminRiderFrame extends JFrame {
 	
 	private Color background_color = new Color(0xf3ecd7);
 	
-	DefaultTableModel model;
+	private DefaultTableModel model;
 	
 	public AdminRiderFrame() {
 		
 		initialize();
 		frameSetup();
 		events();
+		
 	}
 
 	   private void initialize() {
@@ -72,7 +75,14 @@ public class AdminRiderFrame extends JFrame {
 		south_panel = new JPanel();
 		center_panel = new JPanel();
 		
-		table = new JTable();
+		table = (new JTable() {
+			
+			@Override
+			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+				super.changeSelection(rowIndex, columnIndex, true, false);
+			}
+			
+		});
 		scroll_pane = new JScrollPane(table);
 		
 		shops_table_titleLB = new JLabel();
@@ -83,12 +93,9 @@ public class AdminRiderFrame extends JFrame {
 
 	private void frameSetup() {
 		
-		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours","Deliveri number"};
-	    model = new DefaultTableModel(columns, 0);
-		table.setModel(model);
-		table.setAutoCreateRowSorter(true);
-		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		this.setTitle("Admin Panel: Riders");
+		//Layout setup
+		
+		this.setTitle("[Admin Panel] Lista riders");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(640,500));
 		
@@ -114,12 +121,27 @@ public class AdminRiderFrame extends JFrame {
 		center_panel.setBackground(null);
 		this.getContentPane().add(center_panel, BorderLayout.CENTER);
 		
-		//Subpanels di center_panel
+		//Impostazione JTable
 		
+	    table.setAutoCreateRowSorter(true);
+	    table.setRowSelectionAllowed(true);
+	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		table.setModel(model = new DefaultTableModel(columns, 0) {
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		});
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setPreferredScrollableViewportSize(new Dimension(500,50));
 		table.setFillsViewportHeight(true);
 		
+		//Sottopannelli di "center_panel"
+		
 		center_panel.add(scroll_pane, BorderLayout.CENTER);
+		
+		//Buttons setup
 		
 		shops_table_titleLB.setIcon(riders_table_title);
 		shops_table_titleLB.setSize(225,100);
@@ -140,7 +162,6 @@ public class AdminRiderFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//Apre AdminFrame
 				AdminRiderFrame.this.dispose();
 			
 			}
