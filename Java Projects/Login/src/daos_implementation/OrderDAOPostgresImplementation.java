@@ -24,7 +24,7 @@ import utilities.InputUtility;
 public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	private Connection connection;
-	private PreparedStatement get_orders_of_a_shop_by_shop_email_PS, get_customer_of_the_order_PS, get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS;
+	private PreparedStatement update_delivering_order_PS, update_pending_order_PS, get_orders_of_a_shop_by_shop_email_PS, get_customer_of_the_order_PS, get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS;
 	DButility db_util = new DButility();
 	public OrderDAOPostgresImplementation() {
 		
@@ -36,6 +36,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			JOptionPane.showMessageDialog(null, "Errore di connessione");
 		}
 		try {
+			update_delivering_order_PS = connection.prepareStatement("UPDATE Customerorder SET delivery_time = current_time, status=? WHERE id=?");
+			update_pending_order_PS = connection.prepareStatement("UPDATE Customerorder SET status = 'In consegna', rider_cf=? WHERE id=?");
 			get_pending_orders_of_a_shop_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE status LIKE 'In attesa' and shop_id IN (SELECT id FROM Shop WHERE email=?)");
 			get_delivering_orders_of_a_shop_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE status LIKE 'In consegna' and shop_id IN (SELECT id FROM Shop WHERE email=?)");
 			get_shop_of_the_order_PS = connection.prepareStatement("SELECT * FROM Shop Where email = ?");
@@ -48,7 +50,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 	}
 	
-public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException{
+	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException{
 		
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
@@ -95,7 +97,7 @@ public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoExce
 					          rs4.getString("closing_days"), null, null);
 			}
 			address_fields = string_util.tokenizedStringToList(rs1.getString("address"),"(, )");
-			order_list.add(new Order(shop, customer, new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
+			order_list.add(new Order(shop, customer, rs1.getString("id"), new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
 							rs1.getString("status"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), 
 							address_fields.get(4)), rs1.getTime("delivery_time"), rs1.getString("note"), rider));
 			
@@ -162,7 +164,7 @@ public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoExce
 						          rs4.getString("closing_days"), null, null);
 				}
 				address_fields = string_util.tokenizedStringToList(rs1.getString("address"),"(, )");
-				order_list.add(new Order(shop, customer, new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
+				order_list.add(new Order(shop, customer, rs1.getString("id"), new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
 								rs1.getString("status"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), 
 								address_fields.get(4)), rs1.getTime("delivery_time"), rs1.getString("note"), rider));
 			}
@@ -218,7 +220,7 @@ public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoExce
 						          rs3.getString("closing_days"), null, null);
 				}
 				address_fields = string_util.tokenizedStringToList(rs1.getString("address"),"(, )");
-				order_list.add(new Order(shop, customer, new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
+				order_list.add(new Order(shop, customer, rs1.getString("id"), new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
 								rs1.getString("status"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), 
 								address_fields.get(4)), null, rs1.getString("note"), null));
 			}
@@ -235,4 +237,37 @@ public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoExce
 		return order_list;
 	}
 
+	public void updatePendingOrder(Order order, String rider_cf) throws DaoException {
+		try
+		{
+			update_pending_order_PS.setString(1, rider_cf);
+			update_pending_order_PS.setString(2, order.getId());
+			update_pending_order_PS.executeUpdate();
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			db_util.releaseResources(update_pending_order_PS);
+		}
+		return;
+	}
+	
+	public void updateDeliveringOrder(Order order, String stato) throws DaoException{
+		try {
+			update_delivering_order_PS.setString(1, stato);
+			update_delivering_order_PS.setString(2, order.getId());
+			update_delivering_order_PS.executeUpdate();
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			db_util.releaseResources(update_delivering_order_PS);
+		}
+		return;
+	}
+	
 }

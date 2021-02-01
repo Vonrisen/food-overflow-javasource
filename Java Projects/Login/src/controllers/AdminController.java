@@ -2,8 +2,6 @@ package controllers;
 
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -11,11 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.MealDAOPostgresImplementation;
-import daos_implementation.RiderDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
-import daos_interfaces.RiderDAO;
 import daos_interfaces.ShopDAO;
 import entities.Address;
 import entities.Customer;
@@ -28,25 +24,20 @@ import gui.AdminFrame;
 import gui.AdminMealFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
-import gui.ShopRiderFrame;
 import utilities.DButility;
 import utilities.InputUtility;
 import utilities.TableModelUtility;
 
 public class AdminController {
 	
-
-	
-
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	private List<Customer>customer_list = new ArrayList<Customer>();
 	public List<Shop>shop_list= new ArrayList<Shop>();
 	private TableModelUtility table_utility = new TableModelUtility();
 	
-	public  AdminController()
-	{
-		
+	public  AdminController(){	
 	}
+	
 	public void openAdminFrame(JFrame frame)
 	{
 		frame.dispose();
@@ -58,7 +49,8 @@ public class AdminController {
 	{	
 		admin_frame.dispose();
 		AdminShopFrame admin_shop_frame = new AdminShopFrame(this);
-	    initializeAdminShopFrameTable(admin_shop_frame);
+	    initializeAdminShopFrameTable();
+	    table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 	    admin_shop_frame.setVisible(true);
 	    return;
 	}
@@ -66,7 +58,7 @@ public class AdminController {
 	public void openAdminRiderFrame(AdminShopFrame admin_shop_frame)
 	{
 		
-		AdminRiderFrame admin_rider_frame = new AdminRiderFrame(this);
+		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
 		if(initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame))
 		admin_rider_frame.setVisible(true);
 		return;
@@ -76,7 +68,8 @@ public class AdminController {
 	{
 		admin_frame.dispose();
 		AdminMealFrame admin_meal_frame = new AdminMealFrame(this);
-		initializeAdminMealFrameTable(admin_meal_frame);
+		initializeAdminMealFrameTable();
+		table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 		admin_meal_frame.setVisible(true);
 		return;
 	}
@@ -85,12 +78,13 @@ public class AdminController {
 	{
 		admin_frame.dispose();
 		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame(this);
-		initializeAdminCustomerFrameTable(admin_customer_frame);
+		initializeAdminCustomerFrameTable();
+		table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		admin_customer_frame.setVisible(true);
 		return;
 	}
 	
-	public void initializeAdminShopFrameTable(AdminShopFrame admin_shop_frame)
+	public void initializeAdminShopFrameTable()
 	{
 		try {
 			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
@@ -99,11 +93,10 @@ public class AdminController {
 			System.out.println(e.getLocalizedMessage());
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 		return;
 	}
 
-	public void initializeAdminCustomerFrameTable(AdminCustomerFrame admin_customer_frame)
+	public void initializeAdminCustomerFrameTable()
 	{
 		try {
 			CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
@@ -111,7 +104,18 @@ public class AdminController {
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
+		return;
+	}
+	
+	public void initializeAdminMealFrameTable() {
+		
+		try {
+			MealDAO meal_dao = new MealDAOPostgresImplementation();
+			meal_list = meal_dao.getAllMeals();
+			
+		}catch(DaoException e) {
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		}
 		return;
 	}
 	
@@ -157,23 +161,6 @@ public class AdminController {
 			shop_list.add(shop);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, email, working hours and closing days ;)","Error",JOptionPane.ERROR_MESSAGE);
-		}
-		return;
-	}
-	
-	public void initializeAdminMealFrameTable(AdminMealFrame admin_meal_frame) {
-		
-		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
-			meal_list = meal_dao.getAllMeals();
-			if(meal_list.isEmpty())
-				JOptionPane.showMessageDialog(null, "There are no shops to visualize","Error",JOptionPane.ERROR_MESSAGE);
-			else
-			{
-				table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
-			}
-		}catch(DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		return;
 	}
@@ -230,7 +217,6 @@ public class AdminController {
 		return;
 	}
 	
-
 	public void removeMeal(AdminMealFrame admin_meal_frame)
 	{
 		
@@ -255,7 +241,6 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, "Select the meal you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
-	
 	
 	public void removeCustomer(AdminCustomerFrame admin_customer_frame)
 	 {
@@ -343,6 +328,7 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
 	}
+	
 	public void closeWindow(JFrame frame)
 	{
 		DButility db_utility = new DButility();
@@ -350,6 +336,5 @@ public class AdminController {
 		db_utility.closeCurrentConnection();
 		return;
 	}
-	
 	
 }

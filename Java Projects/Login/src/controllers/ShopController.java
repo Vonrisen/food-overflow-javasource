@@ -1,5 +1,4 @@
 package controllers;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +21,7 @@ import entities.Meal;
 import entities.Order;
 import entities.Rider;
 import exceptions.DaoException;
+import gui.AdminRiderFrame;
 import gui.ShopAllMealsFrame;
 import gui.ShopDeliveringOrdersFrame;
 import gui.ShopFrame;
@@ -41,6 +41,9 @@ public class ShopController {
 	private TableModelUtility table = new TableModelUtility();
 	private List<Rider> rider_list = new ArrayList<Rider>();
 	private List<Meal> meal_list = new ArrayList<Meal>();
+	private List<Order> all_order_list = new ArrayList<Order>();
+	private List<Order> pending_order_list = new ArrayList<Order>();
+	private List<Order> delivering_order_list = new ArrayList<Order>();
 	
 	public ShopController(String email) 
 	{
@@ -59,7 +62,8 @@ public class ShopController {
 	{
 		shop_frame.dispose();
 		ShopMealFrame shop_meal_frame = new ShopMealFrame(this);
-		initializeShopMealFrameTable(shop_meal_frame);
+		initializeShopMealFrameTable();
+		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
 		shop_meal_frame.setVisible(true);
 		return;
 	}
@@ -68,7 +72,8 @@ public class ShopController {
 	{
 		shop_frame.dispose();
 		ShopRiderFrame shop_rider_frame = new ShopRiderFrame(this);
-		initializeShopRiderFrameTable(shop_rider_frame);
+		initializeShopRiderFrameTable();
+		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
 		shop_rider_frame.setVisible(true);
 		return;
 	}
@@ -77,11 +82,25 @@ public class ShopController {
 	{
 		
 		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
-		initializeShopAllMealsFrameTable(shop_all_meals_frame);
+		List<Meal> meal_list = initializeShopAllMealsFrameTable();
+		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
 		shop_all_meals_frame.setVisible(true);
 		return;
 	}
 
+	public void openAdminRiderFrame() {
+		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
+		if(rider_list.isEmpty()) {
+			try {
+				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+				rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+			} 
+		}
+		table.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
+		admin_rider_frame.setVisible(true);
+	}
 	
 	public void openShopOrderManagementFrame(JFrame frame)
 	{
@@ -95,62 +114,59 @@ public class ShopController {
 	{
 		frame.dispose();
 		ShopViewOrdersFrame shop_view_orders_frame = new ShopViewOrdersFrame(this);
-		initializeShopViewOrdersFrame(shop_view_orders_frame);
+		initializeShopViewOrdersFrame();
+		table.initializeCompletedOrderTable(shop_view_orders_frame.getModel(), all_order_list);
 		shop_view_orders_frame.setVisible(true);
 	}
 	
 	public void openShopDeliveringOrdersFrame(JFrame frame) {
 		frame.dispose();
 		ShopDeliveringOrdersFrame shop_delivering_orders_frame = new ShopDeliveringOrdersFrame(this);
-		initializeShopDeliveringOrdersFrame(shop_delivering_orders_frame);
+		initializeShopDeliveringOrdersFrame();
+		table.initializeDeliveringOrderTable(shop_delivering_orders_frame.getModel(), delivering_order_list);
 		shop_delivering_orders_frame.setVisible(true);
 	}
 	
 	public void openShopPendingOrdersFrame(JFrame frame) {
 		frame.dispose();
 		ShopPendingOrdersFrame shop_pending_orders_frame = new ShopPendingOrdersFrame(this);
-		initializeShopPendingOrdersFrame(shop_pending_orders_frame);
+		initializeShopPendingOrdersFrame();
+		table.initializePendingOrderTable(shop_pending_orders_frame.getModel(), pending_order_list);
 		shop_pending_orders_frame.setVisible(true);
 	}
 	
-	public void initializeShopPendingOrdersFrame(ShopPendingOrdersFrame shop_pending_orders_frame) {
-		List<Order> order_list=null;
+	public void initializeShopPendingOrdersFrame() {
 		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		try {
-			order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
+			pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializePendingOrderTable(shop_pending_orders_frame.getModel(), order_list);
 		return;
 	}
 	
-	public void initializeShopDeliveringOrdersFrame(ShopDeliveringOrdersFrame shop_delivering_orders_frame) {
-		List<Order> order_list=null;
+	public void initializeShopDeliveringOrdersFrame() {
 		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		try {
-			order_list = order_dao.getDeliveringOrdersOfAShop(current_shop_email);
+			delivering_order_list = order_dao.getDeliveringOrdersOfAShop(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeDeliveringOrderTable(shop_delivering_orders_frame.getModel(), order_list);
 		return;
 	}
 	
-	public void initializeShopViewOrdersFrame(ShopViewOrdersFrame shop_view_orders_frame)
+	public void initializeShopViewOrdersFrame()
 	{
-		List<Order> order_list=null;
 		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		try {
-			order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
+			all_order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(),"Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeCompletedOrderTable(shop_view_orders_frame.getModel(), order_list);
 		return;
 	}
 	
-	public void initializeShopMealFrameTable(ShopMealFrame shop_meal_frame)
+	public void initializeShopMealFrameTable()
 	{
 		try {
 			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
@@ -158,22 +174,22 @@ public class ShopController {
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
 		return;
 	}
 	
-	public void initializeShopRiderFrameTable(ShopRiderFrame shop_rider_frame) {
+	public void initializeShopRiderFrameTable() {
 		
-		try {
-			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
-			rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		if (rider_list.isEmpty()) {
+			try {
+				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+				rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+			} 
 		}
-		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
 	}
 	
-	public void initializeShopAllMealsFrameTable(ShopAllMealsFrame shop_all_meals_frame) {
+	public List<Meal> initializeShopAllMealsFrameTable() {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
 			MealDAO meal_dao = new MealDAOPostgresImplementation();
@@ -181,7 +197,7 @@ public class ShopController {
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
+		return meal_list;
 	}
 	
 	public void addMeal(ShopMealFrame shop_meal_frame) {
@@ -335,8 +351,8 @@ public class ShopController {
 		else
 			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
-	
 	}
+	
 	public void updateRiderTableColumns(ShopRiderFrame shop_rider_frame, int selected_row, Rider rider)
 	{
 		InputUtility date_util = new InputUtility();
@@ -357,6 +373,40 @@ public class ShopController {
 		return;
 	}
 	
+	public void updatePendingOrder(ShopPendingOrdersFrame shop_pending_orders_frame) {
+		OrderDAO order_dao = new OrderDAOPostgresImplementation();
+		int i=0;
+		try {
+			while(!pending_order_list.get(i).getId().equals(shop_pending_orders_frame.getOrderTF().getText()))
+				i++;
+			order_dao.updatePendingOrder(pending_order_list.get(i), shop_pending_orders_frame.getRiderTF().getText());
+			delivering_order_list.add(pending_order_list.get(i));
+			pending_order_list.remove(i);
+			shop_pending_orders_frame.getModel().removeRow(i);
+		} catch (IndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(null, "ID non trovato. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_order_frame) {
+		OrderDAO order_dao = new OrderDAOPostgresImplementation();
+		int i=0;
+		try {
+			while(!delivering_order_list.get(i).getId().equals(shop_delivering_order_frame.getOrderTF().getText()))
+				i++;
+			order_dao.updateDeliveringOrder(delivering_order_list.get(i), shop_delivering_order_frame.getStatusCB().getSelectedItem().toString());
+			all_order_list.add(delivering_order_list.get(i));
+			delivering_order_list.remove(i);
+			shop_delivering_order_frame.getModel().removeRow(i);
+		} catch (IndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(null, "ID non trovato. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	public String getcurrent_shop_email() {
 		return current_shop_email;
 	}

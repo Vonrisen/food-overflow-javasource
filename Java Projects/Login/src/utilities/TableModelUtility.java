@@ -110,43 +110,46 @@ public class TableModelUtility {
 	
 	public void initializeCompletedOrderTable(DefaultTableModel model,  List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
-		Object[] row = new Object[8];
+		Object[] row = new Object[9];
 		for(Order order : order_list) {
-			row[0] = date_util.formatDate(order.getDate());
-			row[1] = order.getDeliveried_time();
-			row[2] = order.getAddress().toString();
-			row[3] = order.getStatus();
-			row[4] = order.getPayment();
-			row[5] = order.getNote();
-			row[6] = order.getCustomer().getCf();
-			row[7] = order.getRider().getCf();
+			row[0] = order.getId();
+			row[1] = date_util.formatDate(order.getDate());
+			row[2] = order.getDeliveried_time();
+			row[3] = order.getAddress().toString();
+			row[4] = order.getStatus();
+			row[5] = order.getPayment();
+			row[6] = order.getNote();
+			row[7] = order.getCustomer().getCf();
+			row[8] = order.getRider().getCf();
 			model.addRow(row);
 		}
 	}
 	 
 	public void initializePendingOrderTable(DefaultTableModel model,  List<Order> order_list){
 		InputUtility date_util = new InputUtility();
-		Object[] row = new Object[5];
+		Object[] row = new Object[6];
 		for(Order order : order_list) {
-			row[0] = date_util.formatDate(order.getDate());
-			row[1] = order.getAddress().toString();
-			row[2] = order.getPayment();
-			row[3] = order.getNote();
-			row[4] = order.getCustomer().getCf();
+			row[0] = order.getId();
+			row[1] = date_util.formatDate(order.getDate());
+			row[2] = order.getAddress().toString();
+			row[3] = order.getPayment();
+			row[4] = order.getNote();
+			row[5] = order.getCustomer().getCf();
 			model.addRow(row);
 		}
 	}
 
 	public void initializeDeliveringOrderTable(DefaultTableModel model,  List<Order> order_list){
 		InputUtility date_util = new InputUtility();
-		Object[] row = new Object[6];
+		Object[] row = new Object[7];
 		for(Order order : order_list) {
-			row[0] = date_util.formatDate(order.getDate());
-			row[1] = order.getAddress().toString();
-			row[2] = order.getPayment();
-			row[3] = order.getNote();
-			row[4] = order.getCustomer().getCf();
-			row[5] = order.getRider().getCf();
+			row[0] = order.getId();
+			row[1] = date_util.formatDate(order.getDate());
+			row[2] = order.getAddress().toString();
+			row[3] = order.getPayment();
+			row[4] = order.getNote();
+			row[5] = order.getCustomer().getCf();
+			row[6] = order.getRider().getCf();
 			model.addRow(row);
 		}
 	}

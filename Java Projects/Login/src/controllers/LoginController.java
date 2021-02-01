@@ -1,12 +1,8 @@
 package controllers;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.ShopDAO;
-import db_connection.DBconnection;
 import exceptions.DaoException;
 import gui.LoginFrame;
 import utilities.DButility;

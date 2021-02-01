@@ -1,6 +1,5 @@
 package daos_interfaces;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import entities.Order;
@@ -12,5 +11,9 @@ public interface OrderDAO {
 	public List<Order> getDeliveringOrdersOfAShop(String current_shop_email) throws DaoException;
 
 	public List<Order> getPendingOrdersOfAShop(String current_shop_email) throws DaoException;
+	
+	public void updatePendingOrder(Order order, String rider_cf) throws DaoException;
+	
+	public void updateDeliveringOrder(Order order, String stato) throws DaoException;
 
 }

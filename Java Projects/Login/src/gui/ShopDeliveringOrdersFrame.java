@@ -3,7 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
@@ -22,7 +21,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.AdminController;
 import controllers.ShopController;
 import gui_support.RoundJTextField;
 
@@ -120,7 +118,7 @@ public class ShopDeliveringOrdersFrame extends JFrame{
 		this.setTitle("Admin Panel: Customers");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
-		String[] columns = {"Date","Address","Payment","Note","Customer","Rider"};
+		String[] columns = {"ID","Date","Address","Payment","Note","Customer","Rider"};
 	    table.setFocusable(false);
 	    table.setAutoCreateRowSorter(true);
 	    table.setRowSelectionAllowed(true);
@@ -207,7 +205,8 @@ public class ShopDeliveringOrdersFrame extends JFrame{
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
+				
+				shop_controller.updateDeliveringOrder(ShopDeliveringOrdersFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -322,6 +321,22 @@ public class ShopDeliveringOrdersFrame extends JFrame{
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
+	}
+
+	public JTextField getOrderTF() {
+		return orderTF;
+	}
+
+	public void setOrderTF(JTextField orderTF) {
+		this.orderTF = orderTF;
+	}
+
+	public JComboBox<String> getStatusCB() {
+		return statusCB;
+	}
+
+	public void setStatusCB(JComboBox<String> statusCB) {
+		this.statusCB = statusCB;
 	}
 
 }

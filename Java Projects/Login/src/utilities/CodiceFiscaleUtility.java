@@ -4,7 +4,6 @@ import java.util.TimeZone;
 
 import javax.swing.JOptionPane;
 
-import db_connection.DBconnection;
 import db_connection.DBconnection_ProvincesAndCities;
 
 import java.sql.Connection;

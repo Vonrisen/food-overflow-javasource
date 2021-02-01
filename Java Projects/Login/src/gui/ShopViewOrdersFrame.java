@@ -88,7 +88,7 @@ public class ShopViewOrdersFrame extends JFrame{
 	   
 		private void frameSetup() {
 			
-			String[] columns = {"Date","Delivery time","Address","Status","Payment","Note","Customer","Rider"};
+			String[] columns = {"ID","Date","Delivery time","Address","Status","Payment","Note","Customer","Rider"};
 		    model = new DefaultTableModel(columns, 0);
 			table.setModel(model);
 			table.setAutoCreateRowSorter(true);

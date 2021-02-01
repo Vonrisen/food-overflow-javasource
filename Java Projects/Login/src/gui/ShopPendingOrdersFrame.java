@@ -123,7 +123,7 @@ public class ShopPendingOrdersFrame extends JFrame{
 		this.setTitle("Admin Panel: Customers");
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(800,500));
-		String[] columns = {"Date","Address","Payment","Note","Customer"};
+		String[] columns = {"ID","Date","Address","Payment","Note","Customer"};
 	    table.setFocusable(false);
 	    table.setAutoCreateRowSorter(true);
 	    table.setRowSelectionAllowed(true);
@@ -213,7 +213,8 @@ public class ShopPendingOrdersFrame extends JFrame{
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
+				
+				shop_controller.updatePendingOrder(ShopPendingOrdersFrame.this);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -285,7 +286,7 @@ public class ShopPendingOrdersFrame extends JFrame{
 		riders_searchJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-//			admin_controller.openAdminRiderFrame(AdminShopFrame.this);
+			shop_controller.openAdminRiderFrame();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -364,6 +365,22 @@ public class ShopPendingOrdersFrame extends JFrame{
 
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
+	}
+
+	public JTextField getOrderTF() {
+		return orderTF;
+	}
+
+	public void setOrderTF(JTextField orderTF) {
+		this.orderTF = orderTF;
+	}
+
+	public JTextField getRiderTF() {
+		return riderTF;
+	}
+
+	public void setRiderTF(JTextField riderTF) {
+		this.riderTF = riderTF;
 	}
 
 }

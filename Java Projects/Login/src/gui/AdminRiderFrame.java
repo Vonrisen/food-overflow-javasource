@@ -47,14 +47,12 @@ public class AdminRiderFrame extends JFrame {
 	private Color background_color = new Color(0xf3ecd7);
 	
 	DefaultTableModel model;
-	AdminController admin_controller;
 	
-	public AdminRiderFrame(AdminController admin_controller) {
+	public AdminRiderFrame() {
 		
 		initialize();
 		frameSetup();
 		events();
-		this.admin_controller=admin_controller;
 	}
 
 	   private void initialize() {
@@ -85,7 +83,7 @@ public class AdminRiderFrame extends JFrame {
 
 	private void frameSetup() {
 		
-		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours"};
+		String[] columns = {"CF", "Name", "Surname", "Birth date", "Birth place", "Address", "Gender", "Cellphone", "Vehicle", "Working hours","Deliveri number"};
 	    model = new DefaultTableModel(columns, 0);
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
@@ -166,6 +164,7 @@ public class AdminRiderFrame extends JFrame {
 	         @Override
 	         public void windowClosing(WindowEvent e)
 	         {
+	        	 AdminController admin_controller = new AdminController();
 	             admin_controller.closeWindow(AdminRiderFrame.this);
 	         }
 	     });
