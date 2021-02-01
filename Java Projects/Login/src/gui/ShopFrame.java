@@ -42,9 +42,6 @@ public class ShopFrame extends JFrame{
 	private ShopController shop_controller;
 	private LoginController login_controller = new LoginController();
 
-	/**
-	 * Create the application.
-	 */
 	public ShopFrame(ShopController shop_controller) {
 		
 		initialize();
@@ -53,9 +50,6 @@ public class ShopFrame extends JFrame{
 		this.shop_controller = shop_controller;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		
 		riders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\riderButtonInactive.png");

@@ -74,9 +74,6 @@ public class ShopMealFrame extends JFrame{
 	private ShopController shop_controller;
 	private DefaultTableModel model;
 
-	/**
-	 * Create the application.
-	 */
 	public ShopMealFrame(ShopController shop_controller) {
 		initialize();
 		setupFrame();

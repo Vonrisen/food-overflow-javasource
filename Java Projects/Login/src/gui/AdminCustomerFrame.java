@@ -209,7 +209,6 @@ public class AdminCustomerFrame extends JFrame {
 		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//UPDATE
 				admin_controller.updateCustomer(AdminCustomerFrame.this);
 
 			}
@@ -230,8 +229,6 @@ public class AdminCustomerFrame extends JFrame {
 		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-				//DELETE
 			
 					admin_controller.removeCustomer(AdminCustomerFrame.this);
 			}
@@ -254,8 +251,6 @@ public class AdminCustomerFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//Apre AdminCustomerFrame
-				AdminController admin_controller = new AdminController();
 				admin_controller.openAdminFrame(AdminCustomerFrame.this);
 			
 			}

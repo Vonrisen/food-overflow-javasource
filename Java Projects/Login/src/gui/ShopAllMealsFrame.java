@@ -55,9 +55,6 @@ public class ShopAllMealsFrame extends JFrame {
 		this.shop_controller = shop_controller;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		
 		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");

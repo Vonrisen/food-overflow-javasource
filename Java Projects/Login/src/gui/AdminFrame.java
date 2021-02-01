@@ -157,7 +157,6 @@ public class AdminFrame extends JFrame{
 		shopJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento AdminShopFrame
 				admin_controller.openAdminShopFrame(AdminFrame.this);
 			}
 			@Override
@@ -199,7 +198,6 @@ public class AdminFrame extends JFrame{
 		customerJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento AdminCustomerFrame
 				admin_controller.openAdminCustomerFrame(AdminFrame.this);
 			}
 			@Override
@@ -219,7 +217,6 @@ public class AdminFrame extends JFrame{
 		mealJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento AdminMealFrame
 				admin_controller.openAdminMealFrame(AdminFrame.this);
 			}
 			@Override
@@ -239,7 +236,6 @@ public class AdminFrame extends JFrame{
 		disconnectJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Spostamento LoginFrame
 				login_controller.openLoginFrame(AdminFrame.this);
 			}
 			@Override

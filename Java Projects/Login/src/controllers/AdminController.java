@@ -32,7 +32,7 @@ public class AdminController {
 	
 	private List<Meal> meal_list = new ArrayList<Meal>();
 	private List<Customer>customer_list = new ArrayList<Customer>();
-	public List<Shop>shop_list= new ArrayList<Shop>();
+	private List<Shop>shop_list= new ArrayList<Shop>();
 	private TableModelUtility table_utility = new TableModelUtility();
 	
 	public  AdminController(){	
@@ -45,11 +45,11 @@ public class AdminController {
 		admin_frame.setVisible(true);
 	}
 	
-	public void openAdminShopFrame(AdminFrame admin_frame)
-	{	
-		admin_frame.dispose();
+	public void openAdminShopFrame(JFrame frame)
+	{
+		frame.dispose();
 		AdminShopFrame admin_shop_frame = new AdminShopFrame(this);
-	    initializeAdminShopFrameTable();
+	    initializeShopList();
 	    table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 	    admin_shop_frame.setVisible(true);
 	    return;
@@ -57,94 +57,102 @@ public class AdminController {
 	
 	public void openAdminRiderFrame(AdminShopFrame admin_shop_frame)
 	{
-		
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
-		if(initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame))
+		initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame);
 		admin_rider_frame.setVisible(true);
 		return;
 	}
 	
-	public void openAdminMealFrame(AdminFrame admin_frame)
+	public void openAdminMealFrame(JFrame frame)
 	{
-		admin_frame.dispose();
+		frame.dispose();
 		AdminMealFrame admin_meal_frame = new AdminMealFrame(this);
-		initializeAdminMealFrameTable();
+		initializeMealList();
 		table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 		admin_meal_frame.setVisible(true);
 		return;
 	}
 	
-	public void openAdminCustomerFrame(AdminFrame admin_frame)
+	public void openAdminCustomerFrame(JFrame frame)
 	{
-		admin_frame.dispose();
+		frame.dispose();
 		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame(this);
-		initializeAdminCustomerFrameTable();
+		initializeCustomerList();
 		table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		admin_customer_frame.setVisible(true);
 		return;
 	}
 	
-	public void initializeAdminShopFrameTable()
+	public void initializeShopList()
 	{
-		try {
-			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
-			shop_list = shop_dao.getAllShops();
-		} catch (DaoException e) {
-			System.out.println(e.getLocalizedMessage());
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		if (shop_list.isEmpty()) {
+			try {
+				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
+				shop_list = shop_dao.getAllShops();
+			} catch (DaoException e) {
+				System.out.println(e.getLocalizedMessage());
+				JOptionPane.showMessageDialog(null,
+						"An error has occurred, please try again or contact the administrator", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} 
 		}
 		return;
 	}
 
-	public void initializeAdminCustomerFrameTable()
+	public void initializeCustomerList()
 	{
-		try {
-			CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
-			customer_list = customer_dao.getAllCustomers();
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		if (customer_list.isEmpty()) {
+			try {
+				CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
+				customer_list = customer_dao.getAllCustomers();
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null,
+						"An error has occurred, please try again or contact the administrator", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} 
 		}
 		return;
 	}
 	
-	public void initializeAdminMealFrameTable() {
+	public void initializeMealList() {
 		
-		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
-			meal_list = meal_dao.getAllMeals();
-			
-		}catch(DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		if (meal_list.isEmpty()) {
+			try {
+				MealDAO meal_dao = new MealDAOPostgresImplementation();
+				meal_list = meal_dao.getAllMeals();
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+			} 
 		}
 		return;
 	}
 	
-	public boolean initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
+	public void initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
 	{
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
-		int selected_row = admin_shop_frame.getTable().getSelectedRow();
-		List<Rider>rider_list = new ArrayList<Rider>();
-		String shop_email = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
-		int i = 0;
-		while(!shop_list.get(i).getEmail().equals(shop_email))
-			i++;
-		rider_list = shop_list.get(i).getEmployed_riders_list();
-		if(!rider_list.isEmpty())
-		{
-			table_utility.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
+			int selected_row = admin_shop_frame.getTable().getSelectedRow();
+			List<Rider>rider_list = new ArrayList<Rider>();
+			String shop_email = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
+			int i = 0;
+			while(!shop_list.get(i).getEmail().equals(shop_email))
+				i++;
+			rider_list = shop_list.get(i).getEmployed_riders_list();
+			if(!rider_list.isEmpty())
+			{
+				table_utility.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Selected shop doesn't have riders","Error",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
-		 else
-		 {
-			 JOptionPane.showMessageDialog(null, "Selected shop doesn't have riders","Error",JOptionPane.ERROR_MESSAGE);
-			 return false;
-		 }
-	}
 		else
 		{
 			JOptionPane.showMessageDialog(null, "Select a shop first","Error",JOptionPane.ERROR_MESSAGE);
-			return false;
+			return;
 		}
-		return true;
+		return;
 	}
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 

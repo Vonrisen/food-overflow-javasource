@@ -86,9 +86,6 @@ public class AdminMealFrame extends JFrame{
 	AdminController admin_controller;
 	private Color background_color = new Color(0xf3ecd7);
 
-	/**
-	 * Create the application.
-	 */
 	public AdminMealFrame(AdminController admin_controller) {
 		
 		initialize();
@@ -97,9 +94,6 @@ public class AdminMealFrame extends JFrame{
 		this.admin_controller=admin_controller;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		
 		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
