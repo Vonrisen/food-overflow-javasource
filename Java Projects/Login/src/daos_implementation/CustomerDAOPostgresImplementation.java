@@ -40,7 +40,6 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		
-
 }
 	public List<Customer> getAllCustomers() throws DaoException {
 		

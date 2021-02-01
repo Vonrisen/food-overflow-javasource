@@ -180,16 +180,6 @@ public class AdminRiderFrame extends JFrame {
 		});
 		
 
-		 addWindowListener(new WindowAdapter()
-	     {
-	         @Override
-	         public void windowClosing(WindowEvent e)
-	         {
-	        	 AdminController admin_controller = new AdminController();
-	             admin_controller.closeWindow(AdminRiderFrame.this);
-	         }
-	     });
-		
 	}
 	
 	private void createStandardPanel(JPanel panel, Color color, Dimension dimension) {

@@ -129,15 +129,7 @@ public class AdminShopFrame extends JFrame{
 		sql_panel = new JPanel();
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
-		
-		table = (new JTable() {
-			
-			@Override
-			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-				super.changeSelection(rowIndex, columnIndex, true, false);
-			}
-			
-		});
+		table = new JTable();
 		scroll_pane = new JScrollPane(table);
 		
 		shops_table_titleLB = new JLabel();
@@ -347,13 +339,12 @@ public class AdminShopFrame extends JFrame{
 		
 		 table.addMouseListener(new java.awt.event.MouseAdapter() {
 		        @Override
-		        public void mouseClicked(java.awt.event.MouseEvent evt) {
-		            int row = table.rowAtPoint(evt.getPoint());
-		            int col = table.columnAtPoint(evt.getPoint());		           
-		            InputUtility input_util= new InputUtility();
-		            Address address;
-	        		String closing_days;
-	        	    if (row >= 0 && col >= 0) {
+		        public void mouseClicked(java.awt.event.MouseEvent evt) {	           
+		        	
+                        if(!table.getSelectionModel().isSelectionEmpty()) {
+			            InputUtility input_util= new InputUtility();
+			            Address address;
+		        		String closing_days;
 	        	    	address = input_util.tokenizedAddressToString(table.getModel().getValueAt(table.getSelectedRow(), 3).toString(), "(, )");
 	        	    	try
 	        	    	{
@@ -372,7 +363,8 @@ public class AdminShopFrame extends JFrame{
 	        			working_hoursTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
 	        			closing_daysTF.setText(closing_days);
 	        			passwordTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
-	        	    }
+	        			
+		        	} 
 	        	}
 	        	});
 		 

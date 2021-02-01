@@ -81,7 +81,7 @@ public class ShopController {
 	public void openShopAllMealsFrame()
 	{
 		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
-		List<Meal> meal_list = initializeReturnMealsList();
+		List<Meal> meal_list = getAllMealsExceptShopMeals();
 		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
 		shop_all_meals_frame.setVisible(true);
 		return;
@@ -150,7 +150,7 @@ public class ShopController {
 		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		if (delivering_order_list.isEmpty()) {
 			try {
-				delivering_order_list = order_dao.getDeliveringOrdersOfAShop(current_shop_email);
+				delivering_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
 			} 
@@ -198,7 +198,7 @@ public class ShopController {
 		}
 	}
 	
-	public List<Meal> initializeReturnMealsList() {
+	public List<Meal> getAllMealsExceptShopMeals() {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
 			MealDAO meal_dao = new MealDAOPostgresImplementation();

@@ -58,8 +58,8 @@ public class AdminController {
 	public void openAdminRiderFrame(AdminShopFrame admin_shop_frame)
 	{
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
-		initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame);
-		admin_rider_frame.setVisible(true);
+		if(initializeAdminRiderFrameTable(admin_rider_frame, admin_shop_frame))
+			admin_rider_frame.setVisible(true);
 		return;
 	}
 	
@@ -127,7 +127,7 @@ public class AdminController {
 		return;
 	}
 	
-	public void initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
+	public boolean initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
 	{
 		if(admin_shop_frame.getTable().getSelectedRow() != -1) {
 			int selected_row = admin_shop_frame.getTable().getSelectedRow();
@@ -144,15 +144,15 @@ public class AdminController {
 			else
 			{
 				JOptionPane.showMessageDialog(null, "Selected shop doesn't have riders","Error",JOptionPane.ERROR_MESSAGE);
-				return;
+				return false;
 			}
 		}
 		else
 		{
 			JOptionPane.showMessageDialog(null, "Select a shop first","Error",JOptionPane.ERROR_MESSAGE);
-			return;
+			return false;
 		}
-		return;
+		return true;
 	}
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 

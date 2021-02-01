@@ -146,10 +146,11 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		{
 			db_util.releaseResources(rs1);
 			db_util.releaseResources(rs2);
+			
 		}
 		return meal_list;
 	}
-	public List<Meal> getMealsOfAShopByShopEmailAndCloseResources(String shop_email) throws DaoException {
+	   public List<Meal> getMealsOfAShopByShopEmailAndCloseResources(String shop_email) throws DaoException {
 		ArrayList<String> allergens;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
 		ResultSet rs2 = null;
@@ -180,7 +181,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		return meal_list;
 	}
-	
 	
        public List<Rider> getRidersOfAShopByShopEmail(String shop_email) throws DaoException {
 		

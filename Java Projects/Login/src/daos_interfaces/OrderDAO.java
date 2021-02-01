@@ -8,7 +8,7 @@ import exceptions.DaoException;
 public interface OrderDAO {
 	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException;
 
-	public List<Order> getDeliveringOrdersOfAShop(String current_shop_email) throws DaoException;
+	public List<Order> getInDeliveryOrdersOfAShop(String current_shop_email) throws DaoException;
 
 	public List<Order> getPendingOrdersOfAShop(String current_shop_email) throws DaoException;
 	
