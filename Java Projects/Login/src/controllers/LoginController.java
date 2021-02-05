@@ -17,7 +17,7 @@ public class LoginController{
 	{
 		
 	}
-	//Metodo per aprire login frame dopo essersi disconnessi dall' admin frame
+	//Metodo per aprire login frame dopo essersi disconnessi da altri frame
 	public void openLoginFrame(JFrame frame)
 	{
 		frame.dispose();

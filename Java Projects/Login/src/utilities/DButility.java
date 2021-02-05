@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 import db_connection.DBconnection;
+import db_connection.DBconnection_ProvincesAndCities;
 
 public class DButility {
 	
@@ -80,13 +83,10 @@ public class DButility {
 			DBconnection instance = DBconnection.getInstance();
 			Connection connection = instance.getConnection();
 			closeConnection(connection);
-			System.out.println("CONNECTION CLOSED");
+			System.out.println("Conn closed");
 		} catch (SQLException e) {
 			/* ignored */
 		}
-	}
-	
-
-	
+	}	
 
 }

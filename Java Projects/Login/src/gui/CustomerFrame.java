@@ -61,7 +61,7 @@ public class CustomerFrame extends JFrame {
 	private JLabel magheggio;
 	private JLabel magheggio2;
 	
-	private JTextField addressTF;
+	private JTextField provinceTF;
 	private JButton searchJB;
 	private JButton profileJB;
 	private CustomerController customer_controller;
@@ -101,7 +101,7 @@ public class CustomerFrame extends JFrame {
 		background = new JLabel();
 		logo = new JLabel();
 		
-		addressTF = new RoundJTextField(new Color(0x771007));	
+		provinceTF = new RoundJTextField(new Color(0x771007));	
 		searchJB = new JButton();
 		profileJB = new JButton();
 		magheggio = new JLabel();
@@ -169,8 +169,8 @@ public class CustomerFrame extends JFrame {
 		logo_panel.add(logo);
 		logo.setFocusable(true);
 		
-		createTextField(addressTF, "Inserisci la provincia", long_dim_of_textfield);
-		search_panel.add(addressTF, BorderLayout.CENTER);
+		createTextField(provinceTF, "Inserisci la provincia", long_dim_of_textfield);
+		search_panel.add(provinceTF, BorderLayout.CENTER);
 	
 		magheggio.setPreferredSize(new Dimension(15,15));
 		logo_panel.add(magheggio);
@@ -222,21 +222,27 @@ public class CustomerFrame extends JFrame {
 				
 				searchJB.setIcon(search_inactiveIMG);
 				
-			}	
+			}
+			
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.checkProvinceAndOpenShopListFrame(CustomerFrame.this);
+			}
+			
 			
 		});
 		
-		addressTF.addFocusListener(new FocusAdapter() {
+		provinceTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				
-				textFieldFocusGained(addressTF, "Inserisci la provincia");
+				textFieldFocusGained(provinceTF, "Inserisci la provincia");
 				
 			}
 			@Override
 			public void focusLost(FocusEvent e) {
 				
-				textFieldFocusLost(addressTF, "Inserisci la provincia");
+				textFieldFocusLost(provinceTF, "Inserisci la provincia");
 				
 			}
 		});
@@ -297,6 +303,16 @@ public class CustomerFrame extends JFrame {
 		panel.setPreferredSize(dimension);
 
 	}
+
+	public JTextField getProvinceTF() {
+		return provinceTF;
+	}
+
+	public void setProvinceTF(JTextField provinceTF) {
+		this.provinceTF = provinceTF;
+	}
+	
+	
 	
 	
 

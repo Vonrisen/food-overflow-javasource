@@ -29,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
+import controllers.CustomerController;
+import controllers.LoginController;
 import gui_support.RoundJTextField;
 
 public class CustomerShopListFrame extends JFrame {
@@ -66,14 +68,14 @@ public class CustomerShopListFrame extends JFrame {
 	
 	private JLabel background;
 	DefaultTableModel model;
+	private CustomerController customer_controller;
 	
-	
-	public CustomerShopListFrame() {
+	public CustomerShopListFrame(CustomerController customer_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.customer_controller = customer_controller;
 	}
 
 	//Initialize variables
@@ -241,6 +243,11 @@ public class CustomerShopListFrame extends JFrame {
 				homeJB.setIcon(home_inactiveIMG);
 				
 			}
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.openCustomerFrame(CustomerShopListFrame.this);
+			}
+			
 		});
 		
 		logoutJB.addMouseListener(new MouseAdapter() {
@@ -255,6 +262,11 @@ public class CustomerShopListFrame extends JFrame {
 				
 				logoutJB.setIcon(logout_inactiveIMG);
 				
+			}
+			public void mousePressed(MouseEvent e) {
+				
+				LoginController login_controller = new LoginController();
+				login_controller.openLoginFrame(CustomerShopListFrame.this);
 			}
 		});
 		
