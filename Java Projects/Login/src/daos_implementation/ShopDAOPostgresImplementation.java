@@ -26,7 +26,7 @@ import utilities.InputUtility;
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	private Connection connection;
-	PreparedStatement look_for_shop_by_email_and_password_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS ;
+	PreparedStatement authenticateShopLogin, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS ;
 	CallableStatement update_shop_CS;
 	DButility db_util = new DButility();
 	public ShopDAOPostgresImplementation() {
@@ -39,11 +39,11 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		try {
 			
-			look_for_shop_by_email_and_password_PS = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
+			authenticateShopLogin = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
-			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?,?)");
+			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?,?,?)");
 			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE email=?");
-			update_shop_CS = connection.prepareCall("CALL updateShop(?,?,?,?,?,?,?)");
+			update_shop_CS = connection.prepareCall("CALL updateShop(?,?,?,?,?,?,?,?)");
 			get_riders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number\r\n"
 					+ "FROM Rider WHERE shop_id=(SELECT id FROM Shop WHERE email=?)");
 			get_meals_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
@@ -76,7 +76,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			List<Meal> meal_list = getMealsOfAShopByShopEmail(rs.getString("email"));
 			shop_list.add(new Shop(rs.getString("email"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
-				          rs.getString("closing_days"), employed_rider_list, meal_list));
+				          rs.getString("closing_days"), employed_rider_list, meal_list, rs.getString("home_phone")));
 		}}catch(SQLException s)
 		{
 			throw new DaoException();
@@ -208,15 +208,15 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		return rider_list;
 	}
-	public boolean lookForShopByEmailAndPassword(String email, String password) throws DaoException {
+	public boolean isShopLoginValidated(String email, String password) throws DaoException {
 		
 		Boolean row_founded;
 		ResultSet rs = null;
 		try
 		{
-		look_for_shop_by_email_and_password_PS.setString(1, email);
-		look_for_shop_by_email_and_password_PS.setString(2, password);
-		rs = look_for_shop_by_email_and_password_PS.executeQuery();
+		authenticateShopLogin.setString(1, email);
+		authenticateShopLogin.setString(2, password);
+		rs = authenticateShopLogin.executeQuery();
 		row_founded = rs.next();
 		}catch(SQLException s)
 		{
@@ -224,7 +224,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		finally
 		{
-			 db_util.releaseResources(rs, look_for_shop_by_email_and_password_PS);
+			 db_util.releaseResources(rs, authenticateShopLogin);
 		}
 		return row_founded;	
 	}
@@ -283,7 +283,8 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		update_shop_CS.setString(4, shop.getClosing_days());
 		update_shop_CS.setString(5, shop.getPassword());
 		update_shop_CS.setString(6, shop.getEmail());
-		update_shop_CS.setString(7, old_email);
+		update_shop_CS.setString(7, shop.getHome_phone());
+		update_shop_CS.setString(8, old_email);
 	    update_shop_CS.executeUpdate();
 		}catch(SQLException s)
 		{

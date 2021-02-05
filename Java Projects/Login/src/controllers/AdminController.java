@@ -157,12 +157,11 @@ public class AdminController {
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 
 	{
-
 		try {
 			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 			Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(),admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
-				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null);
+				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null, admin_shop_frame.getHome_phoneTF().getText());
 			shop_dao.insertShop(shop);
 			admin_shop_frame.getModel().insertRow(shop_list.size(), new Object[] {shop.getEmail(), shop.getPassword(),
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});

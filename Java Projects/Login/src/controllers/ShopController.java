@@ -44,6 +44,7 @@ public class ShopController {
 	private List<Order> all_order_list = new ArrayList<Order>();
 	private List<Order> pending_order_list = new ArrayList<Order>();
 	private List<Order> delivering_order_list = new ArrayList<Order>();
+	OrderDAO order_dao= new OrderDAOPostgresImplementation();
 	
 	public ShopController(String email) 
 	{
@@ -147,7 +148,6 @@ public class ShopController {
 	}
 	
 	public void initializeDeliveringOrdersList() {
-		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		if (delivering_order_list.isEmpty()) {
 			try {
 				delivering_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
@@ -273,10 +273,10 @@ public class ShopController {
 	
 	public void removeMeal(ShopMealFrame shop_meal_frame){
 		
-		if(shop_meal_frame.getShop_meals_table().getSelectedRow() != -1) {
+		if(shop_meal_frame.getTable().getSelectedRow() != -1) {
 
-			int selected_row = shop_meal_frame.getShop_meals_table().getSelectedRow();
-			String meal_name_to_remove = shop_meal_frame.getShop_meals_table().getValueAt(selected_row, 0).toString();
+			int selected_row = shop_meal_frame.getTable().getSelectedRow();
+			String meal_name_to_remove = shop_meal_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
 				MealDAO meal_dao = new MealDAOPostgresImplementation();

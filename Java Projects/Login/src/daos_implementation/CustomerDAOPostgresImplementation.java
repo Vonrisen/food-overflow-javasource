@@ -19,7 +19,7 @@ import utilities.InputUtility;
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 	private Connection connection;
-	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS;
 	DButility db_util = new DButility();
 	public CustomerDAOPostgresImplementation() {
 		
@@ -35,6 +35,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
 			delete_customer_PS = connection.prepareStatement("DELETE FROM Customer WHERE email=?");
 			update_customer_PS = connection.prepareStatement("UPDATE Customer SET email=?, password=? WHERE cellphone=?");
+			authenticateCustomerLogin_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=? AND password=?");
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
@@ -129,6 +130,27 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			db_util.releaseResources(update_customer_PS);
 		}
 		return;
+	}
+	
+	public boolean isCustomerLoginValidated(String email, String password) throws DaoException {
+		
+		Boolean row_founded;
+		ResultSet rs = null;
+		try
+		{
+		 authenticateCustomerLogin_PS.setString(1, email);
+		 authenticateCustomerLogin_PS.setString(2, password);
+		 rs = authenticateCustomerLogin_PS.executeQuery();
+		 row_founded = rs.next();
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(rs, authenticateCustomerLogin_PS);
+		}
+		return row_founded;	
 	}
 
 	

@@ -1,7 +1,10 @@
 package controllers;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
+import daos_interfaces.CustomerDAO;
 import daos_interfaces.ShopDAO;
 import exceptions.DaoException;
 import gui.LoginFrame;
@@ -38,6 +41,7 @@ public class LoginController{
 		//SE ACCEDE L' ADMIN
 		AdminController admin_controller = new AdminController();
 		boolean access_succeded = false;
+		DButility db_utility = new DButility();
 		if(login_frame.getLogoLabel().getIcon() == login_frame.getAdminLogoImage())
 		{
 			
@@ -45,44 +49,60 @@ public class LoginController{
 		{
 			
 			JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
-			login_frame.getUsernameTF().setText("");
-			login_frame.getPasswordTF().setText("");
 		}
 		else
 		{
 			//Chiudo il login frame e passo all' admin frame
-			access_succeded=true;
 			admin_controller.openAdminFrame(login_frame);
 		}
 		}
 		//SE ACCEDE LO SHOP
-		else
+		else if(login_frame.getLogoLabel().getIcon() == login_frame.getShopLogoImage())
 		{
+			
 			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 			try {
-				access_succeded = shop_dao.lookForShopByEmailAndPassword(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
+				access_succeded = shop_dao.isShopLoginValidated(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
 				if(access_succeded)
 				{
 					login_frame.setVisible(false);
-					String email= login_frame.getUsernameTF().getText();
-					ShopController shop_controller = new ShopController(email);
+					String shop_email= login_frame.getUsernameTF().getText();
+					ShopController shop_controller = new ShopController(shop_email);
 					shop_controller.openShopFrame(login_frame);
 				}
 				else
 				{
-					DButility db_utility = new DButility();
 					db_utility.closeCurrentConnection();
-					access_succeded=false;
 					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
-					login_frame.getUsernameTF().setText("");
-					login_frame.getPasswordTF().setText("");
 				}
 			} catch (DaoException e) {
 				
 				JOptionPane.showMessageDialog(null, "Critical error, please try again or contact the administrator");
 			}
 			
-	}
+	} //SE ACCEDE IL CUSTOMER
+		else
+		{
+			CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
+			try {
+				access_succeded = customer_dao.isCustomerLoginValidated(login_frame.getUsernameTF().getText(), login_frame.getPasswordTF().getText());
+				if(access_succeded)
+				{
+					login_frame.setVisible(false);
+					String customer_email= login_frame.getUsernameTF().getText();
+					CustomerController customer_controller = new CustomerController(customer_email);
+					customer_controller.openCustomerFrame(login_frame);
+				}
+				else
+				{
+					db_utility.closeCurrentConnection();
+					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (DaoException e) {
+				
+				JOptionPane.showMessageDialog(null, "Critical error, please try again or contact the administrator");	
+			}	
+			}
 		return;
 	
 }

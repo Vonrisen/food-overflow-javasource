@@ -11,19 +11,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import controllers.AdminController;
 import controllers.LoginController;
 
 public class AdminFrame extends JFrame{
-
 	
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+	
 	private GridBagLayout gbl;
 	private GridBagConstraints gcon;
 	
@@ -35,7 +33,6 @@ public class AdminFrame extends JFrame{
 	private ImageIcon orders_button_inactiveIMG;
 	private ImageIcon meal_button_inactiveIMG;
 	private ImageIcon disconnect_button_inactiveIMG;
-	
 	private ImageIcon customer_button_activeIMG;
 	private ImageIcon shop_button_activeIMG;
 	private ImageIcon orders_button_activeIMG;
@@ -47,16 +44,19 @@ public class AdminFrame extends JFrame{
 	private JButton ordersJB;
 	private JButton mealJB;
 	private JButton disconnectJB;
-
+	
 	private Color background_color = new Color(0xf3ecd7);
 	private AdminController admin_controller;
 	private LoginController login_controller = new LoginController();
-
+	
+	
+	//Costruttore
 	public AdminFrame() {
 		initialize();
 		frameSetup();
 		events();
 	}
+	
 	
 	private void initialize() {
 		
@@ -86,10 +86,10 @@ public class AdminFrame extends JFrame{
 		
 	}
 	
+	
 	private void frameSetup() {
-		
+
 		//Layout setup
-		
 		this.setTitle("Admin Panel");
 		this.setSize(1280,720);
 		this.setResizable(false);
@@ -109,19 +109,15 @@ public class AdminFrame extends JFrame{
 		this.getContentPane().add(south_panel, BorderLayout.SOUTH);
 		
 		setupButton(customerJB, customer_button_inactiveIMG);
-
 		setupButton(shopJB, shop_button_inactiveIMG);
-		
 		setupButton(ordersJB, orders_button_inactiveIMG);
-
 		setupButton(mealJB, meal_button_inactiveIMG);
-		
 		setupButton(disconnectJB, disconnect_button_inactiveIMG);
 		disconnectJB.setBounds(565,20,150,100);
 		south_panel.add(disconnectJB);
 		
-		//Gridbaglayout setup
 		
+		//Gridbaglayout setup
 		gcon.insets = new Insets(10,50,10,50);
 		gcon.weightx = 1;
 		gcon.weighty = 1;
@@ -142,7 +138,7 @@ public class AdminFrame extends JFrame{
 		
 		gcon.gridx = 0;
 		gcon.gridy = 2;
-
+		
 		gbl.setConstraints(ordersJB, gcon);
 		center_panel.add(ordersJB);
 		
@@ -155,133 +151,101 @@ public class AdminFrame extends JFrame{
 	}
 
 	private void events() {
-		
+
 		shopJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				admin_controller.openAdminShopFrame(AdminFrame.this);
-				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 				shopJB.setIcon(shop_button_activeIMG);
-				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 				shopJB.setIcon(shop_button_inactiveIMG);
-				
 			}
 		});
-		
+
 		ordersJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
-				
-			
+				//TODO
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 				ordersJB.setIcon(orders_button_activeIMG);
-				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 				ordersJB.setIcon(orders_button_inactiveIMG);
-				
 			}
 		});
-		
+
 		customerJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				admin_controller.openAdminCustomerFrame(AdminFrame.this);
-				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 				customerJB.setIcon(customer_button_activeIMG);
-				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 				customerJB.setIcon(customer_button_inactiveIMG);
-				
 			}
 		});
-		
+
 		mealJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				admin_controller.openAdminMealFrame(AdminFrame.this);
-				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 				mealJB.setIcon(meal_button_activeIMG);
-				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 				mealJB.setIcon(meal_button_inactiveIMG);
-				
 			}
 		});
-		
+
 		disconnectJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				login_controller.openLoginFrame(AdminFrame.this);
-				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 				disconnectJB.setIcon(disconnect_button_activeIMG);
-				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
 				disconnectJB.setIcon(disconnect_button_inactiveIMG);
-				
 			}
 		});
-		
 
-		 addWindowListener(new WindowAdapter()
-	     {
-	         @Override
-	         public void windowClosing(WindowEvent e)
-	         {
-	        	 
-	             admin_controller.closeWindow(AdminFrame.this);
-	             
-	         }
-	     });
+
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				admin_controller.closeWindow(AdminFrame.this);
+			}
+		});
 	}
-	
-	 
+
+
 	private void setupButton(JButton button, ImageIcon image) {
-		
+
 		button.setIcon(image);
 		button.setBorder(null);
 		button.setFocusable(false);
 		button.setContentAreaFilled(false);
-		
+
 	}
-	
+
 }

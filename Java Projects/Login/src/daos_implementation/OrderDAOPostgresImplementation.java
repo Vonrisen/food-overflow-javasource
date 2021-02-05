@@ -94,7 +94,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
 			shop = new Shop(rs.getString("email"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
 				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
-				          rs.getString("closing_days"), null, null);
+				          rs.getString("closing_days"), null, null, rs.getString("home_phone"));
 		}
 		}catch(SQLException s)
 		{

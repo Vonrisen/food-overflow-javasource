@@ -1,78 +1,27 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import controllers.ShopController;
 import entities.Address;
 import gui_support.RoundJTextField;
 import utilities.InputUtility;
 
-public class ShopRiderFrame extends JFrame{
 
-	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	
-	private ImageIcon delete_inactiveIMG;
-	private ImageIcon delete_activeIMG;
-	private ImageIcon insert_inactiveIMG;
-	private ImageIcon insert_activeIMG;
-	private ImageIcon update_inactiveIMG;
-	private ImageIcon update_activeIMG;
-	private ImageIcon go_back_inactiveIMG;
-	private ImageIcon go_back_activeIMG;
-	private ImageIcon riders_table_title;
-	
-	private Dimension long_dim_of_textfield;
-	private Dimension short_dim_of_textfield;
-	
+public class ShopRiderFrame extends ComplexFrame{
+
 	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Veicolo", "Orario di lavoro"};
-	
-	private Dimension button_size;
-	private Dimension west_east_size;
-	private Dimension north_south_size;
-	
-	private JPanel west_panel;
-	private JPanel east_panel;
-	private JPanel north_panel;
-	private JPanel south_panel;
-	private JPanel center_panel;
-	private JPanel sql_panel;
-	private JTable table;
-
-	private JPanel attributes_panel;
-	private JPanel buttons_panel;
-	private JScrollPane scroll_pane;
-	
-	private JButton insert_sqlJB;
-	private JButton update_sqlJB;
-	private JButton delete_sqlJB;
-	private JButton go_backJB;
-	
-	private JLabel riders_table_titleLB;
-	
 	private String[] vehicleStrings = {"Bicicletta", "Motoveicolo", "Autoveicolo"};
 	private String[] genderStrings = {"Maschio", "Femmina"};
-	
+
 	private JTextField nameTF;
 	private JTextField surnameTF;
 	private JTextField birth_dateTF;
@@ -84,63 +33,24 @@ public class ShopRiderFrame extends JFrame{
 	private JTextField address_provinceTF;
 	private JTextField working_hoursTF;
 	private JTextField cellphoneTF;
-	
+
 	private JComboBox<String> vehicleCB;
 	private JComboBox<String> genderCB;
-	
-	private DefaultTableModel model;
-	private Color background_color = new Color(0xf3ecd7);
-	
 	private ShopController shop_controller;
-	
+
+
+	//Costruttore
 	public ShopRiderFrame(ShopController shop_controller) {
-		
 		initialize();
 		setupFrame();
 		events();
 		this.shop_controller = shop_controller;
-		
 	}
 
+
 	private void initialize() {
-		
-		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
-		delete_activeIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonActive.png");
-		insert_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonInactive.png");
-		insert_activeIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonActive.png");
-		update_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonInactive.png");
-		update_activeIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonActive.png");
-		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
-		riders_table_title = new ImageIcon("src\\images\\tableTitles\\riders.png");
-		
-		long_dim_of_textfield = new Dimension(335,25);
-		short_dim_of_textfield = new Dimension(150,25);
-		button_size = new Dimension(150,30);
-		west_east_size = new Dimension(100,50);
-		north_south_size = new Dimension(100,75);
-		
-		west_panel = new JPanel();
-		east_panel = new JPanel();
-		north_panel = new JPanel();
-		south_panel = new JPanel();
-		center_panel = new JPanel();
-		sql_panel = new JPanel();
-		attributes_panel = new JPanel();
-		buttons_panel = new JPanel();
-		
-		table = (new JTable() {
-			
-			@Override
-			public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-				super.changeSelection(rowIndex, columnIndex, true, false);
-			}
-			
-		});
-		scroll_pane = new JScrollPane(table);
-		
-		riders_table_titleLB = new JLabel();
-		
+
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\riders.png"));
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
 		birth_dateTF = new RoundJTextField(new Color(0x771007));
@@ -152,494 +62,250 @@ public class ShopRiderFrame extends JFrame{
 		address_provinceTF = new RoundJTextField(new Color(0x771007));
 		working_hoursTF = new RoundJTextField(new Color(0x771007));
 		cellphoneTF = new RoundJTextField(new Color(0x771007));
-		
 		vehicleCB = new JComboBox<String>(vehicleStrings);
 		genderCB = new JComboBox<String>(genderStrings);
-		
-		go_backJB = new JButton();
-		insert_sqlJB = new JButton();
-		update_sqlJB = new JButton();
-		delete_sqlJB = new JButton();
-		
+		getTable().setModel(model = new DefaultTableModel(columns, 0));
 	}
-	
-	private void setupFrame() {
-		
-		//Layout setup
-		
-		this.setTitle("[Shop Panel] Gestione riders");
-		this.setSize(1280,720);
-		this.setMinimumSize(new Dimension(800,680));
-		int central_width = screen_dim.width/2-this.getSize().width/2;
-		int central_height = screen_dim.height/2-this.getSize().height/2;
-		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
-		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().setBackground(background_color);
-		
-		
-		createStandardPanel(west_panel, null, west_east_size);
-		this.getContentPane().add(west_panel, BorderLayout.WEST);
-		
-		createStandardPanel(east_panel, null, west_east_size);
-		this.getContentPane().add(east_panel, BorderLayout.EAST);
-		
-		createStandardPanel(north_panel, null, north_south_size);
-		this.getContentPane().add(north_panel, BorderLayout.NORTH);
-		
-		createStandardPanel(south_panel, null, north_south_size);
-		this.getContentPane().add(south_panel, BorderLayout.SOUTH);
-		
-		center_panel.setLayout(new BorderLayout());
-		center_panel.setBackground(null);
-		this.getContentPane().add(center_panel, BorderLayout.CENTER);
-		
-		//Impostazione JTable
-		
-	    table.setAutoCreateRowSorter(true);
-	    table.setRowSelectionAllowed(true);
-	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(model = new DefaultTableModel(columns, 0) {
 
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		       return false;
-		    }
-		});
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setPreferredScrollableViewportSize(new Dimension(500,50));
-		table.setFillsViewportHeight(true);
-		
-		//Sottopannelli di "center_panel"
-		
-		sql_panel.setLayout(new BorderLayout());
-		createStandardPanel(sql_panel, null, (new Dimension(400,50)));
-		center_panel.add(sql_panel, BorderLayout.EAST);
-		
-		center_panel.add(scroll_pane, BorderLayout.CENTER);
-		
-		//Sottopannelli di "sql_panel"
-		
-		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,20));
-		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
-		sql_panel.add(attributes_panel, BorderLayout.CENTER);
-		
-		createStandardPanel(buttons_panel, null, (new Dimension(100,100)));
-		sql_panel.add(buttons_panel, BorderLayout.SOUTH);
-		
+	private void setupFrame() {
+
+		//Layout setup
+		this.setTitle("[Shop Panel] Gestione riders");
+
+
 		//Textfields setup
-		
-		createTextField(nameTF, "Nome", short_dim_of_textfield);
-		attributes_panel.add(nameTF);
-		
-		createTextField(surnameTF, "Cognome", short_dim_of_textfield);
-		attributes_panel.add(surnameTF);
-		
-		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", short_dim_of_textfield);
-		attributes_panel.add(birth_dateTF);
-		
-		createTextField(birth_placeTF, "Luogo di nascita", short_dim_of_textfield);
-		attributes_panel.add(birth_placeTF);
-		
-		createTextField(address_nameTF, "Nome dell'indirizzo", long_dim_of_textfield);
-		attributes_panel.add(address_nameTF);
-		
-		createTextField(address_civic_numberTF, "Numero civico", short_dim_of_textfield);
-		attributes_panel.add(address_civic_numberTF);
-		
-		createTextField(address_capTF, "CAP", short_dim_of_textfield);
-		attributes_panel.add(address_capTF);
-		
-		createTextField(address_cityTF, "Comune", short_dim_of_textfield);
-		attributes_panel.add(address_cityTF);
-		
-		createTextField(address_provinceTF, "Provincia", short_dim_of_textfield);
-		attributes_panel.add(address_provinceTF);
-		
-		createTextField(cellphoneTF, "Cellulare", short_dim_of_textfield);
-		attributes_panel.add(cellphoneTF);
-		
-		genderCB.setPreferredSize(short_dim_of_textfield);
-		attributes_panel.add(genderCB);
-		
-		vehicleCB.setPreferredSize(short_dim_of_textfield);
-		attributes_panel.add(vehicleCB);
-		
-		createTextField(working_hoursTF, "Orario di lavoro", short_dim_of_textfield);
-		attributes_panel.add(working_hoursTF);
-		
+		createTextField(nameTF, "Nome", getShort_dim_of_textfield());
+		getAttributes_panel().add(nameTF);
+
+		createTextField(surnameTF, "Cognome", getShort_dim_of_textfield());
+		getAttributes_panel().add(surnameTF);
+
+		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_dateTF);
+
+		createTextField(birth_placeTF, "Luogo di nascita", getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_placeTF);
+
+		createTextField(address_nameTF, "Nome dell'indirizzo", getLong_dim_of_textfield());
+		getAttributes_panel().add(address_nameTF);
+
+		createTextField(address_civic_numberTF, "Numero civico", getShort_dim_of_textfield());
+		getAttributes_panel().add(address_civic_numberTF);
+
+		createTextField(address_capTF, "CAP", getShort_dim_of_textfield());
+		getAttributes_panel().add(address_capTF);
+
+		createTextField(address_cityTF, "Comune", getShort_dim_of_textfield());
+		getAttributes_panel().add(address_cityTF);
+
+		createTextField(address_provinceTF, "Provincia", getShort_dim_of_textfield());
+		getAttributes_panel().add(address_provinceTF);
+
+		createTextField(cellphoneTF, "Cellulare", getShort_dim_of_textfield());
+		getAttributes_panel().add(cellphoneTF);
+
+		genderCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(genderCB);
+
+		vehicleCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(vehicleCB);
+
+		createTextField(working_hoursTF, "Orario di lavoro", getShort_dim_of_textfield());
+		getAttributes_panel().add(working_hoursTF);
+
+
 		//Buttons & Label setup
-		
-		riders_table_titleLB.setIcon(riders_table_title);
-		riders_table_titleLB.setSize(225,100);
-		north_panel.add(riders_table_titleLB);
-		
-		setupButton(insert_sqlJB, insert_inactiveIMG, button_size);
-		buttons_panel.add(insert_sqlJB);
-		
-		setupButton(update_sqlJB, update_inactiveIMG, button_size);
-		buttons_panel.add(update_sqlJB);
-		
-		setupButton(delete_sqlJB, delete_inactiveIMG, button_size);
-		buttons_panel.add(delete_sqlJB);
-		
-		setupButton(go_backJB, go_back_inactiveIMG, button_size);
-		buttons_panel.add(go_backJB);
-		
+		getTable_titleLB().setIcon(getTable_title());
+		getButtons_panel().add(getInsert_sqlJB());
+		getButtons_panel().add(getUpdate_sqlJB());
+		getButtons_panel().add(getDelete_sqlJB());
+		getButtons_panel().add(getGo_backJB());
+
 	}
-	
+
+
 	private void events() {
-		
-		insert_sqlJB.addMouseListener(new MouseAdapter() {
+
+		getInsert_sqlJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
-						shop_controller.addRider(ShopRiderFrame.this);
+				shop_controller.addRider(ShopRiderFrame.this);
 			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				insert_sqlJB.setIcon(insert_activeIMG);
-				
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				insert_sqlJB.setIcon(insert_inactiveIMG);
-				
-			}
-			
 		});
-		
-		update_sqlJB.addMouseListener(new MouseAdapter() {
+
+		getUpdate_sqlJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.updateRider(ShopRiderFrame.this);
-		
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				update_sqlJB.setIcon(update_activeIMG);
-				
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				update_sqlJB.setIcon(update_inactiveIMG);
-				
 			}
 		});
-		
-		
-		delete_sqlJB.addMouseListener(new MouseAdapter() {
+
+
+		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
 				shop_controller.removeRider(ShopRiderFrame.this);
 			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
+		});
 
-			delete_sqlJB.setIcon(delete_activeIMG);
-
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			delete_sqlJB.setIcon(delete_inactiveIMG);
-
-			}
-			});
-		
-		go_backJB.addMouseListener(new MouseAdapter() {
+		getGo_backJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
 				shop_controller.openShopFrame(ShopRiderFrame.this);
-			
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				go_backJB.setIcon(go_back_activeIMG);
-				
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				go_backJB.setIcon(go_back_inactiveIMG);
-				
 			}
 		});
-		
-		 table.addMouseListener(new java.awt.event.MouseAdapter() {
-		        @Override
-		        public void mouseClicked(java.awt.event.MouseEvent evt) {
-		            int row = table.rowAtPoint(evt.getPoint());
-		            int col = table.columnAtPoint(evt.getPoint());
-		            InputUtility input_util= new InputUtility();
-		            Address address;
-	        	    if (row >= 0 && col >= 0) {
-	        	    	address = input_util.tokenizedAddressToString(table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), "(, )");
-	        			nameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
-	        			surnameTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
-	        			birth_dateTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
-	        			birth_placeTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
-	        			address_nameTF.setText(address.getName());
-	        			address_civic_numberTF.setText(address.getCivic_number());
-	        			address_capTF.setText(address.getCap());
-	        			address_cityTF.setText(address.getCity());
-	        			address_provinceTF.setText(address.getProvince_abbrevation());
-	        			cellphoneTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 7).toString());
-	        			working_hoursTF.setText(table.getModel().getValueAt(table.getSelectedRow(), 9).toString());
-	        	    }
-	        	}
-	        	});
-		 
 
-		 addWindowListener(new WindowAdapter()
-	     {
-	         @Override
-	         public void windowClosing(WindowEvent e)
-	         {
-	             shop_controller.closeWindow(ShopRiderFrame.this);
-	         }
-	     });
-		
+		getTable().addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				InputUtility input_util= new InputUtility();
+				Address address;
+				if (!getTable().getSelectionModel().isSelectionEmpty()) {
+					address = input_util.tokenizedAddressToString(getTable().getModel().getValueAt(getTable().getSelectedRow(), 5).toString(), "(, )");
+					nameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
+					surnameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 2).toString());
+					birth_dateTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString());
+					birth_placeTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
+					address_nameTF.setText(address.getName());
+					address_civic_numberTF.setText(address.getCivic_number());
+					address_capTF.setText(address.getCap());
+					address_cityTF.setText(address.getCity());
+					address_provinceTF.setText(address.getProvince_abbrevation());
+					cellphoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 7).toString());
+					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 9).toString());
+				}
+			}
+		});
+
+
 		//FocusListeners
-		
+
 		nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(nameTF, "Nome");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(nameTF, "Nome");
-				
 			}
 		});
-		
+
 		surnameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(surnameTF, "Cognome");
-
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				
 				textFieldFocusLost(surnameTF, "Cognome");
-				
 			}
 		});
-		
+
 		birth_dateTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(birth_dateTF, "Data di n. (dd/mm/yy)");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(birth_dateTF, "Data di n. (dd/mm/yy)");
-				
 			}
 		});
-		
+
 		birth_placeTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(birth_placeTF, "Luogo di nascita");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(birth_placeTF, "Luogo di nascita");
-				
 			}
 		});
-		
+
 		address_nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(address_nameTF, "Nome dell'indirizzo");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(address_nameTF, "Nome dell'indirizzo");
-
 			}
 		});
-		
+
 		address_civic_numberTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(address_civic_numberTF, "Numero civico");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(address_civic_numberTF, "Numero civico");
-
 			}
 		});
-		
+
 		address_capTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(address_capTF, "CAP");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(address_capTF, "CAP");
-
 			}
 		});
-		
+
 		address_cityTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(address_cityTF, "Comune");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(address_cityTF, "Comune");
-
 			}
 		});
-		
+
 		address_provinceTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(address_provinceTF, "Provincia");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(address_provinceTF, "Provincia");
-
 			}
 		});
-		
+
 		cellphoneTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(cellphoneTF, "Cellulare");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(cellphoneTF, "Cellulare");
-
 			}
 		});
-		
+
 		working_hoursTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-
 				textFieldFocusGained(working_hoursTF, "Orario di lavoro");
-
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-
 				textFieldFocusLost(working_hoursTF, "Orario di lavoro");
-
 			}
 		});
-		
-		
-		
-	}
 
-	private void textFieldFocusGained(JTextField text_field, String string) {
-		
-		if (text_field.getText().equals(string)) {
-			
-			text_field.setText("");
-			text_field.setHorizontalAlignment(JTextField.LEFT);
-			
-		}
-		
-	}
-	
-	private void textFieldFocusLost(JTextField text_field, String string) {
-		
-		if (text_field.getText().equals("")) {
-			text_field.setText(string);
-			text_field.setHorizontalAlignment(JTextField.CENTER);
-		}
-		
-	}
-	
-	private void createTextField(JTextField text_field, String text, Dimension dimension) {
 
-		text_field.setHorizontalAlignment(JTextField.CENTER);
-		text_field.setText(text);
-		text_field.setPreferredSize(dimension);
-
-	}
-	
-	private void setupButton(JButton button, ImageIcon image, Dimension dimension) {
-		
-		button.setIcon(image);
-		button.setSize(dimension);
-		button.setBorder(null);
-		button.setFocusable(false);
-		button.setContentAreaFilled(false);
-		
-	}
-	
-	private void createStandardPanel(JPanel panel, Color color, Dimension dimension) {
-
-		panel.setBackground(color);
-		panel.setPreferredSize(dimension);
 
 	}
 
-	public JTable getTable() {
-		return table;
-	}
-
-	public void setTable(JTable table) {
-		this.table = table;
-	}
 
 	public JTextField getNameTF() {
 		return nameTF;
@@ -737,14 +403,6 @@ public class ShopRiderFrame extends JFrame{
 		this.genderCB = genderCB;
 	}
 
-	public DefaultTableModel getModel() {
-		return model;
-	}
-
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
 	public JTextField getWorking_hoursTF() {
 		return working_hoursTF;
 	}
@@ -752,5 +410,5 @@ public class ShopRiderFrame extends JFrame{
 	public void setWorking_hoursTF(JTextField working_hoursTF) {
 		this.working_hoursTF = working_hoursTF;
 	}
-	
+
 }

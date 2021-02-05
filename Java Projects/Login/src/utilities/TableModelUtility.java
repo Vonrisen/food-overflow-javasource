@@ -18,7 +18,7 @@ public class TableModelUtility {
 	public void initializeShopTable(DefaultTableModel model,  List<Shop> shop_list)
 	{
 		
-		Object[] row = new Object[6];
+		Object[] row = new Object[7];
 		for(Shop shop : shop_list) {
 			row[0] = shop.getEmail();
 			row[1] = shop.getPassword();
@@ -26,6 +26,7 @@ public class TableModelUtility {
 			row[3] = shop.getAddress();
 			row[4] = shop.getWorking_hours();
 			row[5] = shop.getClosing_days();
+			row[6] = shop.getHome_phone();
 			model.addRow(row);
 		}
 		return;

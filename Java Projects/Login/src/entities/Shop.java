@@ -14,10 +14,10 @@ public class Shop {
 	private String closing_days;
 	private List<Rider> employed_riders_list;
 	private List<Meal> meal_list;
+	private String home_phone;
 	
-	//COSTRUTTORE PER IL GET
 	public Shop(String email, String name, String password, String working_hours, Address address,
-			String closing_days, List<Rider> employed_riders_list, List<Meal> meal_list) {
+			String closing_days, List<Rider> employed_riders_list, List<Meal> meal_list, String home_phone) {
 		
 		super();
 		this.email = email;
@@ -28,21 +28,7 @@ public class Shop {
 		this.closing_days = closing_days;
 		this.employed_riders_list = employed_riders_list;
 		this.meal_list = meal_list;
-	}
-
-	//COSTRUTTORE PER IL SET
-
-
-	public Shop(String name, String password, String working_hours, Address address, String closing_days,
-			List<Rider> employed_riders_list, List<Meal> meal_list) {
-		super();
-		this.name = name;
-		this.password = password;
-		this.working_hours = working_hours;
-		this.address = address;
-		this.closing_days = closing_days;
-		this.employed_riders_list = employed_riders_list;
-		this.meal_list = meal_list;
+		this.home_phone = home_phone;
 	}
 
 	
@@ -126,6 +112,16 @@ public class Shop {
 		return "Shop [email=" + email + ", name=" + name + ", password=" + password + ", working_hours=" + working_hours
 				+ ", address=" + address + ", closing_days=" + closing_days + ", employed_riders_list="
 				+ employed_riders_list + ", meal_list=" + meal_list + "]";
+	}
+
+
+	public String getHome_phone() {
+		return home_phone;
+	}
+
+
+	public void setHome_phone(String home_phone) {
+		this.home_phone = home_phone;
 	}
 	
 }
