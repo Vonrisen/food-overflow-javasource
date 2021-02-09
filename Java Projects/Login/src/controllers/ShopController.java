@@ -93,7 +93,7 @@ public class ShopController {
 		if(rider_list.isEmpty()) {
 			try {
 				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
-				rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
+				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
 			} 
@@ -176,7 +176,7 @@ public class ShopController {
 		if (meal_list.isEmpty()) {
 			try {
 				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
-				meal_list = shop_dao.getMealsOfAShopByShopEmailAndCloseResources(current_shop_email);
+				meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,
 						"An error has occurred, please try again or contact the administrator", "Error",
@@ -191,7 +191,7 @@ public class ShopController {
 		if (rider_list.isEmpty()) {
 			try {
 				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
-				rider_list = shop_dao.getRidersOfAShopByShopEmailAndCloseResources(current_shop_email);
+				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
 			} 

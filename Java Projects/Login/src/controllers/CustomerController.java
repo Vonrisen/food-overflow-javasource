@@ -17,7 +17,10 @@ public class CustomerController {
 	{
 		this.customer_email = email;
 	}
-	
+	public CustomerController()
+	{
+		
+	}
 	public void openCustomerFrame(JFrame frame)
 	{
 		frame.dispose();
@@ -53,4 +56,6 @@ public class CustomerController {
 		customer_shop_list_frame.setVisible(true);
 		return;
 	}
+
+	
 }

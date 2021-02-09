@@ -3,16 +3,16 @@ package entities;
 public class Address {
 
 	//ATTRIBUTI
-	private String name;
+	private String address;
 	private String civic_number;
 	private String cap;
 	private String city;
 	private String province_abbrevation;
 	
 	//COSTRUTTORE
-	public Address(String name, String civic_number, String cap, String city, String province_abbrevation) {
+	public Address(String address, String civic_number, String cap, String city, String province_abbrevation) {
 		
-		this.name = name;
+		this.address = address;
 		this.civic_number = civic_number;
 		this.cap = cap;
 		this.city = city;
@@ -20,16 +20,18 @@ public class Address {
 	}
 
 	//GETTER AND SETTER
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	public String getCivic_number() {
 		return civic_number;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public void setCivic_number(String civic_number) {
@@ -62,7 +64,7 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return name + ", " + civic_number + ", " + cap + ", " + city
+		return address + ", " + civic_number + ", " + cap + ", " + city
 				+ ", " + province_abbrevation;
 	}
 	

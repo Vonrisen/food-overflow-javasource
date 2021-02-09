@@ -161,12 +161,12 @@ public class ShopRiderFrame extends ComplexFrame{
 				InputUtility input_util= new InputUtility();
 				Address address;
 				if (!getTable().getSelectionModel().isSelectionEmpty()) {
-					address = input_util.tokenizedAddressToString(getTable().getModel().getValueAt(getTable().getSelectedRow(), 5).toString(), "(, )");
+					address = input_util.tokenizedStringToAddress(getTable().getModel().getValueAt(getTable().getSelectedRow(), 5).toString(), "(, )");
 					nameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
 					surnameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 2).toString());
 					birth_dateTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString());
 					birth_placeTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
-					address_nameTF.setText(address.getName());
+					address_nameTF.setText(address.getAddress());
 					address_civic_numberTF.setText(address.getCivic_number());
 					address_capTF.setText(address.getCap());
 					address_cityTF.setText(address.getCity());

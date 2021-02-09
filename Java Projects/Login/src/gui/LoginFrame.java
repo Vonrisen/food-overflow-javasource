@@ -360,6 +360,11 @@ public class LoginFrame extends JFrame{
 				registerButton.setIcon(registerButtonActive);
 
 			}
+			public void mousePressed(MouseEvent cursore_su_loginButton) {
+				
+				login_controller.openRegisterFrame(LoginFrame.this);
+
+			}
 
 			@Override
 			public void mouseExited(MouseEvent cursore_fuori_loginButton) {
