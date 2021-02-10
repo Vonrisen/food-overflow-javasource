@@ -109,6 +109,7 @@ public class CustomerMealListFrame extends JFrame {
 	private JTextField price_minTF;
 	private JTextField price_maxTF;
 	private JTextField meal_nameTF;
+	private JTextField quantityTF;
 	
 	JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 40, 0, 500);
 	
@@ -175,7 +176,6 @@ public class CustomerMealListFrame extends JFrame {
 			
 		});
 		scroll_pane = new JScrollPane(table);
-		scroll_pane2 = new JScrollPane(filters_panel);
 		
 		profileJB = new JButton();
 		homeJB = new JButton();
@@ -189,6 +189,7 @@ public class CustomerMealListFrame extends JFrame {
 		price_minTF = new RoundJTextField(new Color(0x771007));
 		price_maxTF = new RoundJTextField(new Color(0x771007));
 		meal_nameTF = new RoundJTextField(new Color(0x771007));
+		quantityTF = new RoundJTextField(new Color(0x771007));
 		
 	}
 	
@@ -246,13 +247,6 @@ public class CustomerMealListFrame extends JFrame {
 		table.setFillsViewportHeight(true);
 		scroll_pane.setBorder(BorderFactory.createEmptyBorder());
 		
-		//Setup scroll_pane2
-		
-		scroll_pane2.setBorder(BorderFactory.createEmptyBorder());
-		scroll_pane2.getViewport().setBackground(new Color(0xf2eee1));
-		scroll_pane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll_pane2.setSize(new Dimension(10,10));
-		
 		
 		//Sottopannell di "center_panel"
 		
@@ -280,7 +274,7 @@ public class CustomerMealListFrame extends JFrame {
 		
 		//Sottopannelli di "sql_panel2"
 		
-		createStandardPanel(title_panel, null, new Dimension(100,80));
+		createStandardPanel(title_panel, null, new Dimension(100,70));
 		sql_panel2.add(title_panel, BorderLayout.NORTH);
 //		title_panel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(0x771007)));
 		
@@ -289,7 +283,8 @@ public class CustomerMealListFrame extends JFrame {
 		filters_panel.setLayout(new FlowLayout());
 		sql_panel2.add(filters_panel, BorderLayout.CENTER);
 		
-		createStandardPanel(buttons_panel2, null, new Dimension(100,70));
+		createStandardPanel(buttons_panel2, null, new Dimension(100,100));
+		buttons_panel2.setLayout(new BorderLayout(0,3));
 		sql_panel2.add(buttons_panel2, BorderLayout.SOUTH);
 		
 		//Sottopannelli di filters_panel
@@ -357,6 +352,20 @@ public class CustomerMealListFrame extends JFrame {
 		
 		setupButton(add_to_cartJB, add_to_cart_inactiveIMG, new Dimension(200,50));
 		buttons_panel2.add(add_to_cartJB);
+		
+		JPanel quantity_panel;
+		quantity_panel = new JPanel();
+		createStandardPanel(quantity_panel, null, new Dimension(100,30));
+		buttons_panel2.add(quantity_panel, BorderLayout.NORTH);
+
+		
+		JLabel quantityLB;
+		quantityLB = new JLabel("Quantità: ");
+		quantityLB.setSize(new Dimension(100,25));
+		quantity_panel.add(quantityLB);
+		
+		createTextField(quantityTF, "1", new Dimension(100,25));
+		quantity_panel.add(quantityTF);
 		
 			
 	}
@@ -455,6 +464,60 @@ public class CustomerMealListFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				
 				backJB.setIcon(back_button_inactiveIMG);
+				
+			}
+		});
+		
+		meal_nameTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(meal_nameTF, "Nome dell'alimento");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(meal_nameTF, "Nome dell'alimento");
+				
+			}
+		});
+		
+		price_minTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(price_minTF, "Prezzo minimo");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(price_minTF, "Prezzo minimo");
+				
+			}
+		});
+		
+		price_maxTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(price_maxTF, "Prezzo massimo");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(price_maxTF, "Prezzo massimo");
+				
+			}
+		});
+		
+		quantityTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(quantityTF, "1");
 				
 			}
 		});
