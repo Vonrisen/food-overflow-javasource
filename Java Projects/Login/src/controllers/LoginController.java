@@ -9,10 +9,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import daos_implementation.AddressDAOPostgresImplementation;
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
-import daos_interfaces.AddressDAO;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.ShopDAO;
 import entities.Address;
@@ -23,6 +21,7 @@ import gui.RegisterFrame;
 import utilities.CodiceFiscaleUtility;
 import utilities.DButility;
 import utilities.InputUtility;
+import utilities.IstatUtils;
 public class LoginController{
 	
 
@@ -125,9 +124,9 @@ public class LoginController{
 		frame.dispose();
 		RegisterFrame register_frame = new RegisterFrame(this);
 		register_frame.setVisible(true);
-		AddressDAO address_dao = new AddressDAOPostgresImplementation();
-		List<String> nations = address_dao.getAllNations();
-		List<String> provinces = address_dao.getAllProvinces();
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> nations = istat_utils.getNations();
+		List<String> provinces = istat_utils.getProvinces();
 		register_frame.getStatiCB().addItem("ITALIA");
 		for(String s : nations)
 		{
@@ -175,8 +174,8 @@ public class LoginController{
 	
 	public List<String> updateAddressProvinceCB(String selected_province, RegisterFrame frame)
 	{
-		AddressDAO address_dao = new AddressDAOPostgresImplementation();
-		List<String> towns = address_dao.getTownsByProvince(selected_province);
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> towns = istat_utils.getTownsByProvince(selected_province);
 		frame.getAddress_cityCB().removeAllItems();
 		for(String s : towns)
 			frame.getAddress_cityCB().addItem(s);
@@ -184,9 +183,9 @@ public class LoginController{
 	}
 	
 	public List<String> updateProvincesCB(String selected_province, RegisterFrame frame)
-	{
-		AddressDAO address_dao = new AddressDAOPostgresImplementation();
-		List<String> towns = address_dao.getTownsByProvince(selected_province);
+	{	
+		IstatUtils istat_utils = new IstatUtils();
+	    List<String> towns = istat_utils.getTownsByProvince(selected_province);
 		frame.getTownsCB().removeAllItems();
 		for(String s : towns)
 			frame.getTownsCB().addItem(s);

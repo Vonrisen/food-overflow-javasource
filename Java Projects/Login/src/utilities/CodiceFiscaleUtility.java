@@ -3,9 +3,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import javax.swing.JOptionPane;
-
-import db_connection.DBconnection_ProvincesAndCities;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,17 +16,8 @@ public class CodiceFiscaleUtility {
 
  
 	private String codice_fiscale = "";
-	private Connection connection;
+
 	public CodiceFiscaleUtility() {
-		try
-		{
-			DBconnection_ProvincesAndCities instance = DBconnection_ProvincesAndCities.getInstance();
-			this.connection = instance.getConnection();
-		}
-		catch (SQLException e)
-		{
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		}
 	}
 	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) {
 		int n_consonanti=0;
@@ -128,20 +116,14 @@ public class CodiceFiscaleUtility {
 			codice_fiscale += String.valueOf(day + 40);
 		}
 		// FETCH CODICE CATASTALE
-		try {
-			getCodiceCatastalePS = connection.prepareStatement("SELECT cadastral_code FROM town WHERE name =?");
-			getCodiceCatastalePS.setString(1, birth_place_town);
-			ResultSet rs = getCodiceCatastalePS.executeQuery();
-			if(rs.next())
-			{
-				codice_fiscale += rs.getString("cadastral_code");
+		IstatUtils istat_util = new IstatUtils();
+		String cadastral_code = istat_util.getCadastral_codeByTownName(birth_place_town);
+			if(cadastral_code!=null)			{
+				codice_fiscale += cadastral_code;
 				comune_trovato=true;
 			}
 			else
-				JOptionPane.showMessageDialog(null, "Couldn't fetch your birth place. Try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+				System.exit(-1);
 		// FETCH CARATTERE DI CONTROLLO
 		conta = 1;
 		char curr;
