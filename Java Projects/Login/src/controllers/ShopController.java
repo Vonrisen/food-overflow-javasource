@@ -20,6 +20,7 @@ import entities.Address;
 import entities.Meal;
 import entities.Order;
 import entities.Rider;
+import exceptions.CfException;
 import exceptions.DaoException;
 import gui.AdminRiderFrame;
 import gui.ShopAllMealsFrame;
@@ -267,6 +268,9 @@ public class ShopController {
 			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 		} catch (ParseException e1) {
 			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
+		}catch(CfException c)
+		{
+			JOptionPane.showMessageDialog(null, c.getMessage());
 		}
 		return;
 	}
@@ -355,6 +359,9 @@ public class ShopController {
 			}
 		      catch (ParseException e1) {
 				JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
+			}catch(CfException c)
+			{
+				JOptionPane.showMessageDialog(null, c.getMessage());
 			}
 		}
 		else

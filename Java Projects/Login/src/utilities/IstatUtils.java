@@ -12,12 +12,10 @@ public class IstatUtils {
 	public IstatUtils() {}
 	public List<String>getNations () {
 	List<String> nations = new ArrayList<String>();
-	try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Utente\\Desktop\\CittaProvinceCodiciCatastali_ISTAT.txt"))) {
+	try (BufferedReader br = new BufferedReader(new FileReader("NazioniIstat.txt"))) {
 	    String line;
 	    while ((line = br.readLine()) != null) {
-	        String[] values = line.split(",");
-	        if(values[0].equals("n"))
-	        nations.add(values[3]);
+	        nations.add(line);
 	    }
 	} catch (FileNotFoundException e) {
 	} catch (IOException i) {
@@ -27,12 +25,10 @@ public class IstatUtils {
 	public List<String>getProvinces (){
 		
 		List<String> provinces = new ArrayList<String>();
-		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Utente\\Desktop\\CittaProvinceCodiciCatastali_ISTAT.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("ProvinceIstat.txt"))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
-		        String[] values = line.split(",");
-		        if(!values[0].equals("n"))
-		        	provinces.add(values[0]);
+		        	provinces.add(line);
 		    }
 		} catch (FileNotFoundException e) {
 		} catch (IOException i) {
@@ -41,12 +37,14 @@ public class IstatUtils {
 	}
 	public String getCadastral_codeByTownName(String town_name) {
 		
-		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Utente\\Desktop\\CittaProvinceCodiciCatastali_ISTAT.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("CittaProvinceCodiciCatastaliIstat.txt"))) {
+
 		    String line;
-		    while ((line = br.readLine()) != null && !line.split(",")[2].equals(town_name)) {
+		    town_name = town_name.toUpperCase();
+		    while ((line = br.readLine()) != null) {
+			    if(line.split(",")[3].equals(town_name))
+			    	return line.split(",")[2];
 		    }
-		    if(line.split(",")[2].equals("town_name"))
-		    	return line.split(",")[2];
 		} catch (FileNotFoundException e) {
 		} catch (IOException i) {
 		}
@@ -54,12 +52,13 @@ public class IstatUtils {
 	}
 	public boolean isProvinceValid(String province) {
 		
-		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Utente\\Desktop\\CittaProvinceCodiciCatastali_ISTAT.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("ProvinceIstat.txt"))) {
 		    String line;
-		    while ((line = br.readLine()) != null && !line.split(",")[0].equals(province)) {
+		    province = province.toUpperCase();
+		    while ((line = br.readLine()) != null) {
+			    if(line.equals(province))
+			    	return true;
 		    }
-		    if(line.split(",")[0].equals(province))
-		    	return true;
 		} catch (FileNotFoundException e) {
 		} catch (IOException i) {
 		}
@@ -69,11 +68,12 @@ public class IstatUtils {
 		
     	
 		List<String> towns = new ArrayList<String>();
-		try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Utente\\Desktop\\CittaProvinceCodiciCatastali_ISTAT.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("CittaProvinceCodiciCatastaliIstat.txt"))) {
 		    String line;
+		    province = province.toUpperCase();
 		    while ((line = br.readLine()) != null) {
 		        String[] values = line.split(",");
-		        if(!values[0].equals(province))
+		        if(values[0].equals(province))
 		        	towns.add(values[3]);
 		    }
 		} catch (FileNotFoundException e) {

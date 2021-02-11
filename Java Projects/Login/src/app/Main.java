@@ -1,5 +1,6 @@
 package app;
 import controllers.LoginController;
+import utilities.IstatUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +19,5 @@ public class Main {
 		
 		LoginController login_controller = new LoginController();
 		login_controller.openLoginFrame();
-	
 }
 }
