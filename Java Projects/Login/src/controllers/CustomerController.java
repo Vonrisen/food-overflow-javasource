@@ -1,13 +1,12 @@
 package controllers;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
-import daos_implementation.AddressDAOPostgresImplementation;
-import daos_interfaces.AddressDAO;
+import javax.swing.JOptionPane;
 import exceptions.DaoException;
 import gui.CustomerFrame;
 import gui.CustomerShopListFrame;
+import utilities.IstatUtils;
 
 public class CustomerController {
 	
@@ -30,26 +29,15 @@ public class CustomerController {
 
 	public void checkProvinceAndOpenShopListFrame(CustomerFrame customer_frame) {
 	
-		AddressDAO address_dao = new AddressDAOPostgresImplementation();
-		try
-		{
-			if(address_dao.isProvinceValid(customer_frame.getProvinceTF().getText()))
+		IstatUtils istat_utils = new IstatUtils();
+			if(istat_utils.isProvinceValid(customer_frame.getProvinceTF().getText()))
 			{
 				customer_frame.dispose();
 				openCustomerShopListFrame();
 			}
 			else
-			{
 				JOptionPane.showMessageDialog(null,"Non sono riuscito a trovare la tua provincia, riprovare", "Error",JOptionPane.ERROR_MESSAGE);
-			}
-			
-		}catch(DaoException d)
-		{
-			JOptionPane.showMessageDialog(null,"Errore critico, contattare l' amministratore", "Error",JOptionPane.ERROR_MESSAGE);
-		}
-		
 	}
-	
 	public void openCustomerShopListFrame() {
 		
 		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this);

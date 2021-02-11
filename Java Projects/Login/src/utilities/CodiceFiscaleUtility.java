@@ -4,7 +4,7 @@ import java.util.TimeZone;
 
 import javax.swing.JOptionPane;
 
-import db_connection.DBconnection_ProvincesAndCities;
+import exceptions.CfException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,19 +19,10 @@ public class CodiceFiscaleUtility {
 
  
 	private String codice_fiscale = "";
-	private Connection connection;
+
 	public CodiceFiscaleUtility() {
-		try
-		{
-			DBconnection_ProvincesAndCities instance = DBconnection_ProvincesAndCities.getInstance();
-			this.connection = instance.getConnection();
-		}
-		catch (SQLException e)
-		{
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		}
 	}
-	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) {
+	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) throws CfException {
 		int n_consonanti=0;
 		int n_vocali = 0;
 		int conta = 0;
@@ -46,7 +37,7 @@ public class CodiceFiscaleUtility {
 		boolean comune_trovato=false;
 		if (surname.length() < 3) {
 			if (surname.length() == 1)
-				JOptionPane.showMessageDialog(null, "Surname must have more than two characters","Error",JOptionPane.ERROR_MESSAGE);
+				throw new CfException("Il cognome deve avere almeno due caratteri");
 			else {
 				if ((char1 != 'A' && char1 != 'E' && char1 != 'I'&& char1 != 'O' && char1 != 'U')&& (char2 == 'A' || char2 == 'E' || char2 == 'I'|| char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
@@ -55,7 +46,7 @@ public class CodiceFiscaleUtility {
 				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
 				else if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I'&& char2 != 'O' && char2 != 'U'))
-					JOptionPane.showMessageDialog(null, "Surname cannot be composed of only two consonants","Error",JOptionPane.ERROR_MESSAGE);
+					throw new CfException("Il cognome inserito non puo' avere al massimo due consonanti");
 			}
 		} else {
 			while (n_consonanti + n_vocali != 3) {
@@ -107,7 +98,7 @@ public class CodiceFiscaleUtility {
 		else if (n_vocali >= 2 && n_consonanti == 0)
 			codice_fiscale += array_vocali.get(0) + array_vocali.get(1) + "X";
 		else
-			JOptionPane.showMessageDialog(null, "This name is not valid, try again","Error",JOptionPane.ERROR_MESSAGE);
+			throw new CfException("Nome non valido, riprovare");
 		// FETCH DATA NASCITA
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		cal.setTime(birth_date);
@@ -128,20 +119,14 @@ public class CodiceFiscaleUtility {
 			codice_fiscale += String.valueOf(day + 40);
 		}
 		// FETCH CODICE CATASTALE
-		try {
-			getCodiceCatastalePS = connection.prepareStatement("SELECT cadastral_code FROM town WHERE name =?");
-			getCodiceCatastalePS.setString(1, birth_place_town);
-			ResultSet rs = getCodiceCatastalePS.executeQuery();
-			if(rs.next())
-			{
-				codice_fiscale += rs.getString("cadastral_code");
-				comune_trovato=true;
+		IstatUtils istat_util = new IstatUtils();
+		System.out.println(birth_place_town);
+		String cadastral_code = istat_util.getCadastral_codeByTownName(birth_place_town);
+			if(cadastral_code!=null)			{
+				codice_fiscale += cadastral_code;
 			}
 			else
-				JOptionPane.showMessageDialog(null, "Couldn't fetch your birth place. Try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+				throw new CfException("Non e' stato possibile trovare il tuo comune");
 		// FETCH CARATTERE DI CONTROLLO
 		conta = 1;
 		char curr;
@@ -263,8 +248,6 @@ public class CodiceFiscaleUtility {
 		char tabella_resti[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
 				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 		codice_fiscale += String.valueOf(tabella_resti[somma % 26]);
-		if(!comune_trovato)
-			return "Errore!";
 		return codice_fiscale;
 	}
 }

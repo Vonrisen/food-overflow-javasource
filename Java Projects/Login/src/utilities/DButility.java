@@ -1,14 +1,12 @@
 package utilities;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JOptionPane;
-
 import db_connection.DBconnection;
-import db_connection.DBconnection_ProvincesAndCities;
 
 public class DButility {
 	
