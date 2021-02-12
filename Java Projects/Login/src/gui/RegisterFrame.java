@@ -636,6 +636,15 @@ public class RegisterFrame extends JFrame{
 			}
 		});
 		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             login_controller.releaseAllDaoResourcesAndDisposeFrame(RegisterFrame.this);
+	         }
+	     });
+		
 	}
 
 	public void provincesCBitemStateChanged(ItemEvent e) {

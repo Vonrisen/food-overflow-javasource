@@ -164,7 +164,7 @@ public class StandardFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				new AdminController().closeWindow(StandardFrame.this);
+				
 			}
 		});
 		

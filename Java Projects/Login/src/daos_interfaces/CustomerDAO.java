@@ -13,4 +13,5 @@ public interface CustomerDAO {
 	public void deleteCustomer(Customer customer) throws DaoException;
 	public void updateCustomerFromAdmin(Customer customer) throws DaoException;
 	public boolean isCustomerLoginValidated(String email, String password) throws DaoException;
+	public void closeStatements() throws DaoException;
 }

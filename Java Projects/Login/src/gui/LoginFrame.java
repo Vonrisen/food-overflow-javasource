@@ -67,12 +67,13 @@ public class LoginFrame extends JFrame{
 
 	private JTextField usernameTF;
 	private JPasswordField passwordTF;
-	private LoginController login_controller = new LoginController();
-	public LoginFrame() {
+	private LoginController login_controller;
+	public LoginFrame(LoginController login_controller) {
 		
 		initialize();
 		setupFrame();
 		events();
+		this.login_controller = login_controller;
 		
 	}
 
@@ -387,6 +388,15 @@ public class LoginFrame extends JFrame{
 				
 			}
 		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             login_controller.releaseAllDaoResourcesAndDisposeFrame(LoginFrame.this);
+	         }
+	     });
 		
 		usernameTF.addFocusListener(new FocusAdapter() {
 			@Override

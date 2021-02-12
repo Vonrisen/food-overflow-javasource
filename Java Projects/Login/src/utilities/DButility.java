@@ -14,39 +14,6 @@ public class DButility {
 	{
 		
 	}
-	public void releaseResources(ResultSet rs, Statement st, Connection conn)
-	{
-		 if (rs != null) {
-		        try {
-		            rs.close();
-		        } catch (SQLException e) { /* ignored */}
-		    }
-		    if (st != null) {
-		        try {
-		        	st.close();
-		        } catch (SQLException e) { /* ignored */}
-		    }
-		    if (conn!= null) {
-		        try {
-		            conn.close();
-		        } catch (SQLException e) { /* ignored */}
-	}
-		    return;
-	}
-	public void releaseResources(ResultSet rs, Statement st)
-	{
-		 if (rs != null) {
-		        try {
-		            rs.close();
-		        } catch (SQLException e) { /* ignored */}
-		        if (st != null) {
-			        try {
-			        	st.close();
-			        } catch (SQLException e) { /* ignored */}
-			    }       
-		    return;
-		 }
-	}
 		 public void releaseResources(Statement st)
 			{
 				        if (st != null) {
@@ -70,21 +37,10 @@ public class DButility {
 		if (conn!= null) {
 	        try {
 	            conn.close();
+	            System.out.println("conn chiusa");
 	        } catch (SQLException e) { /* ignored */}
 }
 	    return;
 	}
-	
-	public void closeCurrentConnection()
-	{
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			Connection connection = instance.getConnection();
-			closeConnection(connection);
-			System.out.println("Conn closed");
-		} catch (SQLException e) {
-			/* ignored */
-		}
-	}	
 
 }

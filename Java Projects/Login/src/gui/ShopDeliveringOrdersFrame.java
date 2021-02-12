@@ -6,6 +6,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -89,6 +92,15 @@ public class ShopDeliveringOrdersFrame extends ComplexFrame{
 				textFieldFocusLost(orderTF, "Inserisci l'ID dell'ordine");
 			}
 		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopDeliveringOrdersFrame.this);
+	         }
+	     });
 
 	}
 

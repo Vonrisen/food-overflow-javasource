@@ -25,21 +25,13 @@ import utilities.InputUtility;
 
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
-	private Connection connection;
-	PreparedStatement authenticateShopLogin, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS ;
+	PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS ;
 	CallableStatement update_shop_CS;
 	DButility db_util = new DButility();
-	public ShopDAOPostgresImplementation() {
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			this.connection = instance.getConnection();
-		}catch(SQLException s)
-		{
-			JOptionPane.showMessageDialog(null, "Network error, please try again","Error",JOptionPane.ERROR_MESSAGE);
-		}
+	public ShopDAOPostgresImplementation(Connection connection) {
 		try {
 			
-			authenticateShopLogin = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
+			authenticate_shop_login_PS = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");
 			get_all_shops_PS = connection.prepareStatement("SELECT * FROM Shop ORDER BY id");
 			insert_shop_PS = connection.prepareStatement("INSERT INTO Shop VALUES (DEFAULT,?,?,?,?,?,?,?)");
 			delete_shop_PS = connection.prepareStatement("DELETE FROM Shop WHERE email=?");
@@ -119,11 +111,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		finally
 		{
-			 db_util.releaseResources(get_riders_of_a_shop_by_shop_email_PS);
-			 db_util.releaseResources(get_meals_of_a_shop_by_shop_email_PS);
-			 db_util.releaseResources(get_allergens_of_a_meal_PS);
-			 db_util.releaseResources(rs, get_all_shops_PS);
-			 db_util.closeConnection(connection);
+			 db_util.releaseResources(rs);
 		}
 		return shop_list;
 	}
@@ -150,7 +138,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs, get_riders_of_a_shop_by_shop_email_PS);
+			db_util.releaseResources(rs);
 		}
 		return rider_list;
 	}
@@ -181,8 +169,8 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2, get_allergens_of_a_meal_PS);
-			db_util.releaseResources(rs1, get_meals_of_a_shop_by_shop_email_PS);
+			db_util.releaseResources(rs2);
+			db_util.releaseResources(rs1);
 		}
 		return meal_list;
 	}
@@ -193,9 +181,9 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		ResultSet rs = null;
 		try
 		{
-		authenticateShopLogin.setString(1, email);
-		authenticateShopLogin.setString(2, password);
-		rs = authenticateShopLogin.executeQuery();
+		authenticate_shop_login_PS.setString(1, email);
+		authenticate_shop_login_PS.setString(2, password);
+		rs = authenticate_shop_login_PS.executeQuery();
 		row_founded = rs.next();
 		}catch(SQLException s)
 		{
@@ -203,7 +191,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		finally
 		{
-			 db_util.releaseResources(rs, authenticateShopLogin);
+			 db_util.releaseResources(rs);
 		}
 		return row_founded;	
 	}
@@ -223,11 +211,8 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.executeUpdate();
 		}catch(SQLException s)
 		{
+			System.out.println(s.getMessage());
 			throw new DaoException();
-		}
-		finally
-		{
-			 db_util.releaseResources(insert_shop_PS);
 		}
 		return;
 	}
@@ -243,10 +228,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		catch(SQLException s)
 		{
 			throw new DaoException();
-		}
-		finally
-		{
-			 db_util.releaseResources(delete_shop_PS);
 		}
 		return;
 	}
@@ -269,11 +250,22 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			 db_util.releaseResources(update_shop_CS);
-		}
 	    return;
+	}
+	
+	public void closeStatements() throws DaoException {
+		
+		DButility db_util = new DButility();
+		db_util.releaseResources(authenticate_shop_login_PS);
+		db_util.releaseResources(get_all_shops_PS);
+		db_util.releaseResources(insert_shop_PS);
+		db_util.releaseResources(delete_shop_PS);
+		db_util.releaseResources(get_riders_of_a_shop_by_shop_email_PS);
+		db_util.releaseResources(get_meals_of_a_shop_by_shop_email_PS);
+		db_util.releaseResources(get_allergens_of_a_meal_PS);
+		db_util.releaseResources(update_shop_CS);
+		return;
+		
 	}
 	
 }

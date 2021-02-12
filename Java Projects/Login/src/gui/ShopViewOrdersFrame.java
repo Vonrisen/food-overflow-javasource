@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import controllers.ShopController;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class ShopViewOrdersFrame extends StandardFrame{
@@ -35,8 +37,19 @@ public class ShopViewOrdersFrame extends StandardFrame{
 				shop_controller.openShopOrderManagementFrame(ShopViewOrdersFrame.this);
 			}
 		});
+		
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopViewOrdersFrame.this);
+			}
+		});
 
 	}
+	
+	
 
 
 }

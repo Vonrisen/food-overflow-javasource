@@ -17,23 +17,14 @@ import utilities.InputUtility;
 
 public class MealDAOPostgresImplementation implements MealDAO {
 
-	private Connection connection;
 	PreparedStatement  get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
 					  insert_supply_PS, delete_from_supply_PS;
 	CallableStatement add_allergens_CS;
 	DButility db_util = new DButility();
-	public MealDAOPostgresImplementation() {
+	public MealDAOPostgresImplementation(Connection connection) {
 		
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			connection = instance.getConnection();
-		}catch(SQLException s)
-		{
-			JOptionPane.showMessageDialog(null, "Network error, please try again","Error",JOptionPane.ERROR_MESSAGE);
-		}
 		try {
 			
-		
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
@@ -72,8 +63,8 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2, get_allergens_of_a_meal_PS);
-			db_util.releaseResources(rs1, get_all_meals_PS);
+			db_util.releaseResources(rs2);
+			db_util.releaseResources(rs1);
 		}
 		return meal_list;
 	}
@@ -102,7 +93,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2, get_allergens_of_a_meal_PS);
+			db_util.releaseResources(rs2);
 			db_util.releaseResources(rs1);
 		}
 		return meal_list;
@@ -123,10 +114,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(insert_meal_PS);
-		}
 		return;
 	}
 	
@@ -141,10 +128,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(add_allergens_CS);
-		}
 		return;
 	}
 	
@@ -157,10 +140,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}catch(SQLException s)
 		{
 			throw new DaoException();
-		}
-		finally
-		{
-			db_util.releaseResources(delete_meal_PS);
 		}
 		return;
 	}
@@ -176,10 +155,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(insert_supply_PS);
-		}
 		return;
 	}
 	
@@ -194,11 +169,21 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(delete_from_supply_PS);
-		}
 		return;
+	}
+	
+	public void closeStatements() throws DaoException {
+		
+		db_util.releaseResources(get_allergens_of_a_meal_PS);
+		db_util.releaseResources(get_all_meals_PS);
+		db_util.releaseResources(insert_meal_PS);
+		db_util.releaseResources(delete_meal_PS);
+		db_util.releaseResources(get_all_meals_except_shop_meals_PS);
+		db_util.releaseResources(insert_supply_PS);
+		db_util.releaseResources(delete_from_supply_PS);
+		db_util.releaseResources(add_allergens_CS);
+		return;
+		
 	}
 	
 

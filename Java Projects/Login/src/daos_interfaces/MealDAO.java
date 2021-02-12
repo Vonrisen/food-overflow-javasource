@@ -13,5 +13,6 @@ public interface MealDAO {
 	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DaoException;
 	public void insertSupply(String shop_email, Meal meal) throws DaoException;
 	public void deleteFromSupply(String shop_email, Meal meal)throws DaoException;
+	public void closeStatements() throws DaoException;
 
 }

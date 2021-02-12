@@ -6,6 +6,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -20,7 +23,7 @@ public class AdminShopFrame extends ComplexFrame{
 
 	private ImageIcon search_riders_inactiveIMG;
 	private ImageIcon search_riders_activeIMG;
-	private String[]columns = {"E-mail", "Password", "Nome", "Indirizzo", "Orario", "Giorni di chiusura", "Telefono fisso"};
+	private String[]columns = {"E-mail", "Password", "Nome", "Indirizzo", "Orario di chiusura", "Giorni di chiusura", "Telefono fisso"};
 	private JButton	riders_searchJB;
 
 
@@ -35,7 +38,6 @@ public class AdminShopFrame extends ComplexFrame{
 	private JTextField working_hoursTF;
 	private JTextField passwordTF;
 	private JTextField closing_daysTF;
-
 	private AdminController admin_controller;
 
 
@@ -94,7 +96,7 @@ public class AdminShopFrame extends ComplexFrame{
 		createTextField(emailTF, "E-mail", getShort_dim_of_textfield());
 		getAttributes_panel().add(emailTF);
 		
-		createTextField(home_phoneTF, "Num. di cellulare", getShort_dim_of_textfield());
+		createTextField(home_phoneTF, "Telefono fisso", getShort_dim_of_textfield());
 		getAttributes_panel().add(home_phoneTF);
 
 		createTextField(address_nameTF, "Nome dell'indirizzo", getShort_dim_of_textfield());
@@ -112,7 +114,7 @@ public class AdminShopFrame extends ComplexFrame{
 		createTextField(address_provinceTF, "Provincia", getShort_dim_of_textfield());
 		getAttributes_panel().add(address_provinceTF);
 
-		createTextField(working_hoursTF, "Orario", getShort_dim_of_textfield());
+		createTextField(working_hoursTF, "Orario di apertura", getShort_dim_of_textfield());
 		getAttributes_panel().add(working_hoursTF);
 
 		createTextField(passwordTF, "Password", getShort_dim_of_textfield());
@@ -324,6 +326,15 @@ public class AdminShopFrame extends ComplexFrame{
 				textFieldFocusLost(closing_daysTF, "Giorni di chiusura");
 			}
 		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.releaseAllDaoResourcesAndDisposeFrame(AdminShopFrame.this);
+	         }
+	     });
 
 	}
 

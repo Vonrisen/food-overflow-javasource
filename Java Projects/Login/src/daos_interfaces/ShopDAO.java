@@ -16,4 +16,5 @@ public interface ShopDAO {
 	public void updateShop(Shop shop, String old_email) throws DaoException;
 	public List<Rider> getRidersOfAShopByShopEmail(String current_shop_email) throws DaoException;
 	public List<Meal>getMealsOfAShopByShopEmail(String shop_email) throws DaoException;
+	public void closeStatements() throws DaoException;
 }

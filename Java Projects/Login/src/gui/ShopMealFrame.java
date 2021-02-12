@@ -124,7 +124,7 @@ public class ShopMealFrame extends ComplexFrame{
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				shop_controller.closeWindow(ShopMealFrame.this);
+				shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopMealFrame.this);
 			}
 		});
 

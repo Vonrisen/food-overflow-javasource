@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,24 @@ public class AdminController {
 	private List<Customer>customer_list = new ArrayList<Customer>();
 	private List<Shop>shop_list= new ArrayList<Shop>();
 	private TableModelUtility table_utility = new TableModelUtility();
+	private Connection connection;
+	private LoginController login_controller;
+	CustomerDAO customer_dao;
+	ShopDAO shop_dao;
+	MealDAO meal_dao;
 	
-	public  AdminController(){	
+	public  AdminController(Connection connection, LoginController login_controller, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao){	
+		this.login_controller = login_controller;
+		this.connection = connection;
+		this.customer_dao = customer_dao;
+		this.shop_dao = shop_dao;
+		this.meal_dao = meal_dao;
 	}
 	
 	public void openAdminFrame(JFrame frame)
 	{
 		frame.dispose();
-		AdminFrame admin_frame = new AdminFrame();
+		AdminFrame admin_frame = new AdminFrame(this, login_controller);
 		admin_frame.setVisible(true);
 	}
 	
@@ -87,10 +98,8 @@ public class AdminController {
 	{
 		if (shop_list.isEmpty()) {
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				shop_list = shop_dao.getAllShops();
 			} catch (DaoException e) {
-				System.out.println(e.getLocalizedMessage());
 				JOptionPane.showMessageDialog(null,
 						"An error has occurred, please try again or contact the administrator", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -103,7 +112,6 @@ public class AdminController {
 	{
 		if (customer_list.isEmpty()) {
 			try {
-				CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
 				customer_list = customer_dao.getAllCustomers();
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,
@@ -118,7 +126,7 @@ public class AdminController {
 		
 		if (meal_list.isEmpty()) {
 			try {
-				MealDAO meal_dao = new MealDAOPostgresImplementation();
+				meal_dao = new MealDAOPostgresImplementation(connection);
 				meal_list = meal_dao.getAllMeals();
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
@@ -158,7 +166,6 @@ public class AdminController {
 	public void addShop(AdminShopFrame admin_shop_frame) 
 	{
 		try {
-			ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 			Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(),admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
 				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null, admin_shop_frame.getHome_phoneTF().getText());
@@ -182,7 +189,6 @@ public class AdminController {
 		}
 		
 		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
 			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 			meal_dao.insertMeal(meal);
@@ -207,7 +213,6 @@ public class AdminController {
 			String shop_email_to_remove = admin_shop_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				while(!shop_list.get(i).getEmail().equals(shop_email_to_remove))
 					i++;
 				shop_dao.deleteShop(shop_list.get(i));
@@ -233,7 +238,6 @@ public class AdminController {
 			String name_of_meal_to_delete = admin_meal_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				MealDAO meal_dao = new MealDAOPostgresImplementation();
 				while(!meal_list.get(i).getName().equals(name_of_meal_to_delete))
 					i++;
 				meal_dao.deleteMeal(meal_list.get(i));
@@ -256,7 +260,6 @@ public class AdminController {
 		int i=0;
 		if(email!=null) {
 			try {
-				CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
 				while(!customer_list.get(i).getEmail().equals(email))
 					i++;
 				admin_customer_frame.getTable().getSelectionModel().clearSelection();
@@ -283,7 +286,6 @@ public class AdminController {
 		String new_password = admin_customer_frame.getPasswordTF().getText();
 		int i=0;
 		try {
-			CustomerDAO customer_dao = new CustomerDAOPostgresImplementation();
 			while(!customer_list.get(i).getCellphone().equals(cellphone_of_customer_to_update))
 				i++;
 			if(new_email.equals("E-Mail"))
@@ -313,7 +315,6 @@ public class AdminController {
 			String email_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 			while(!shop_list.get(i).getEmail().equals(email_of_shop_to_update))
 				i++;
 			 shop_list.get(i).setName(admin_shop_frame.getNameTF().getText());
@@ -324,6 +325,7 @@ public class AdminController {
 			 shop_list.get(i).setWorking_hours(admin_shop_frame.getWorking_hoursTF().getText());
 			 shop_list.get(i).setPassword(admin_shop_frame.getPasswordTF().getText());
 			 shop_list.get(i).setEmail(admin_shop_frame.getEmailTF().getText());
+			 shop_list.get(i).setHome_phone(admin_shop_frame.getHome_phoneTF().getText());
 			 shop_dao.updateShop(shop_list.get(i), email_of_shop_to_update);
 			 table_utility.updateShopTableColumns(admin_shop_frame, selected_row, shop_list.get(i));
 				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
@@ -336,11 +338,21 @@ public class AdminController {
 		return;
 	}
 	
-	public void closeWindow(JFrame frame)
+	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame)
 	{
 		DButility db_utility = new DButility();
-		frame.dispose();
-		db_utility.closeCurrentConnection();
+		try {
+			shop_dao.closeStatements();
+			meal_dao.closeStatements();
+			customer_dao.closeStatements();
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
+		finally {
+			db_utility.closeConnection(connection);
+			frame.dispose();
+		}
 		return;
 	}
 	

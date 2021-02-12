@@ -32,6 +32,22 @@ public class TableModelUtility {
 		return;
 	}
 	
+	public void initializeCustomerShopTable(DefaultTableModel model,  List<Shop> shop_list)
+	{
+		
+		Object[] row = new Object[6];
+		for(Shop shop : shop_list) {
+			row[0] = shop.getName();
+			row[1] = shop.getAddress();
+			row[2] = shop.getWorking_hours();
+			row[3] = shop.getClosing_days();
+			row[4] = shop.getHome_phone();
+			row[5] = shop.getEmail();
+			model.addRow(row);
+		}
+		return;
+	}
+	
 	public void initializeCustomerTable( DefaultTableModel model,  List<Customer> customer_list)
 	{
 		Object[] row = new Object[10];
@@ -88,14 +104,15 @@ public class TableModelUtility {
 	
 	public void updateShopTableColumns(AdminShopFrame admin_shop_frame, int selected_row, Shop shop)
 	{
-		Object[] row = new Object[6];
+		Object[] row = new Object[7];
 		row[0] = shop.getEmail();
 		row[1] = shop.getPassword();
 		row[2] = shop.getName();
 		row[3] = shop.getAddress();
 		row[4] = shop.getWorking_hours();
 		row[5] = shop.getClosing_days();
-		for (int i=0; i<6; i++)
+		row[6] = shop.getHome_phone();
+		for (int i=0; i<7; i++)
 		admin_shop_frame.getModel().setValueAt(row[i], selected_row, i);
 		return;
 	}

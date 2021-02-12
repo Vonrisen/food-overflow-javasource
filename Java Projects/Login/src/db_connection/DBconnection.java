@@ -39,16 +39,19 @@ public class DBconnection {
 		return connection;
 	}
 	
-	public static DBconnection getInstance() throws SQLException {
+	public static DBconnection getInstance() {
         if (instance == null)
         {
             instance = new DBconnection();
-        }
-        else
-            if (instance.getConnection().isClosed())
-            {
-                instance = new DBconnection();
-            }
+        } else
+			try {
+				if (instance.getConnection().isClosed())
+				{
+				    instance = new DBconnection();
+				}
+			} catch (SQLException e) {
+
+			}
 
         return instance;
     }

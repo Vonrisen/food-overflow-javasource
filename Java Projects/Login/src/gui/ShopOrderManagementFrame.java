@@ -160,7 +160,7 @@ public class ShopOrderManagementFrame extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				shop_controller.closeWindow(ShopOrderManagementFrame.this);
+				shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopOrderManagementFrame.this);
 			}
 		});
 

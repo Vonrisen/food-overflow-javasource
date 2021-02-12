@@ -1,25 +1,16 @@
 package utilities;
 import java.util.Date;
+
 import java.util.TimeZone;
-
-import javax.swing.JOptionPane;
-
 import exceptions.CfException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.Calendar;
 
 
 public class CodiceFiscaleUtility {
 
  
-	private String codice_fiscale = "";
-
+	private String codice_fiscale="";
 	public CodiceFiscaleUtility() {
 	}
 	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) throws CfException {
@@ -27,14 +18,12 @@ public class CodiceFiscaleUtility {
 		int n_vocali = 0;
 		int conta = 0;
 		boolean vocale = false;
-		PreparedStatement getCodiceCatastalePS;
 		surname = surname.toUpperCase();
 		name = name.toUpperCase();
 		birth_place_town = birth_place_town.toUpperCase();
 		// FETCH COGNOME
 		char char1=surname.charAt(0);
 		char char2=surname.charAt(1);
-		boolean comune_trovato=false;
 		if (surname.length() < 3) {
 			if (surname.length() == 1)
 				throw new CfException("Il cognome deve avere almeno due caratteri");
@@ -120,7 +109,6 @@ public class CodiceFiscaleUtility {
 		}
 		// FETCH CODICE CATASTALE
 		IstatUtils istat_util = new IstatUtils();
-		System.out.println(birth_place_town);
 		String cadastral_code = istat_util.getCadastral_codeByTownName(birth_place_town);
 			if(cadastral_code!=null)			{
 				codice_fiscale += cadastral_code;

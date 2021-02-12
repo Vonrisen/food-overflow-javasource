@@ -47,20 +47,21 @@ public class AdminFrame extends JFrame{
 	
 	private Color background_color = new Color(0xf3ecd7);
 	private AdminController admin_controller;
-	private LoginController login_controller = new LoginController();
+	private LoginController login_controller;
 	
 	
 	//Costruttore
-	public AdminFrame() {
+	public AdminFrame(AdminController admin_controller, LoginController login_controller) {
 		initialize();
 		frameSetup();
 		events();
+		this.admin_controller = admin_controller;
+		this.login_controller = login_controller;
 	}
 	
 	
 	private void initialize() {
 		
-		admin_controller = new AdminController();
 		customer_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonInactive.png");
 		shop_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonInactive.png");
 		orders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonInactive.png");
@@ -233,7 +234,7 @@ public class AdminFrame extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				admin_controller.closeWindow(AdminFrame.this);
+				admin_controller.releaseAllDaoResourcesAndDisposeFrame(AdminFrame.this);
 			}
 		});
 	}

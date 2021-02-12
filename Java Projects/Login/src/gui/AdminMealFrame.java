@@ -6,6 +6,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -22,13 +25,13 @@ public class AdminMealFrame extends ComplexFrame{
 	
 	private String[] dish_array_strings = {"Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
 	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", "Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
-	private String[] columns = {"Nome", "Categoria", "Prezzo in €", "Ingredienti", "Allergeni"};
+	private String[] columns = {"Nome", "Categoria", "Prezzo", "Ingredienti", "Allergeni"};
 	private JComboBox<Object> dishJCB;
 	private JPanel dish_panel;
 	private JPanel allergens_panel;
 	private JPanel allergens_panel2;
 	private JLabel allergensLB;
-	AdminController controller = new AdminController();
+	AdminController admin_controller;
 	private JCheckBox[] allergens = new JCheckBox[14];
 	private JTextField nameTF;
 	private JTextField priceTF;
@@ -40,7 +43,7 @@ public class AdminMealFrame extends ComplexFrame{
 		initialize();
 		frameSetup();
 		events();
-		this.controller = controller;
+		this.admin_controller = controller;
 	}
 	
 	
@@ -122,21 +125,21 @@ public class AdminMealFrame extends ComplexFrame{
 		getInsert_sqlJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				controller.addMeal(AdminMealFrame.this);
+				admin_controller.addMeal(AdminMealFrame.this);
 			}
 		});
 		
 		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				controller.removeMeal(AdminMealFrame.this);
+				admin_controller.removeMeal(AdminMealFrame.this);
 			}
 		});
 		
 		getGo_backJB().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				controller.openAdminFrame(AdminMealFrame.this);
+				admin_controller.openAdminFrame(AdminMealFrame.this);
 			}
 		});
 		
@@ -172,6 +175,15 @@ public class AdminMealFrame extends ComplexFrame{
 				textFieldFocusLost(ingredientsTF, "Ingredienti");
 			}
 		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             admin_controller.releaseAllDaoResourcesAndDisposeFrame(AdminMealFrame.this);
+	         }
+	     });
 		
 	}
 	

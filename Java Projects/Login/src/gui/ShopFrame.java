@@ -192,7 +192,7 @@ public class ShopFrame extends JFrame{
 	         @Override
 	         public void windowClosing(WindowEvent e)
 	         {
-	             shop_controller.closeWindow(ShopFrame.this);
+	             shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopFrame.this);
 	         }
 	     });
 	}

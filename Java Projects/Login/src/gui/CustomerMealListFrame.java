@@ -2,9 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -14,27 +17,39 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
+import controllers.CustomerController;
 import gui_support.RoundJTextField;
 
 public class CustomerMealListFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 	private Dimension long_dim_of_textfield;
+	private Dimension short_dim_of_textfield;
 	private ImageIcon backgroundIMG;
 	private ImageIcon profile_inactiveIMG;
 	private ImageIcon profile_activeIMG;
@@ -42,12 +57,24 @@ public class CustomerMealListFrame extends JFrame {
 	private ImageIcon home_activeIMG;
 	private ImageIcon logout_inactiveIMG;
 	private ImageIcon logout_activeIMG;
+	private ImageIcon cart_button_inactiveIMG;
+	private ImageIcon cart_button_activeIMG;
+	private ImageIcon filtriIMG;
+	private ImageIcon add_to_cart_inactiveIMG;
+	private ImageIcon add_to_cart_activeIMG;
+	private ImageIcon back_button_inactiveIMG;
+	private ImageIcon back_button_activeIMG;
 	
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
-	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Email", "Password"};
+	private String[] columns = {"Nome", "Categoria", "Prezzo", "Ingredienti", "Allergeni"};
+	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
+			"Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
+	private String[] dish_array_strings = {"Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
 	
+	private JCheckBox[] allergens = new JCheckBox[14];
+	private JComboBox<Object> dishCB;
 	
 	private JPanel west_panel;
 	private JPanel east_panel;
@@ -56,25 +83,45 @@ public class CustomerMealListFrame extends JFrame {
 	private JPanel center_panel;
 	private JPanel sql_panel;
 	private JPanel sql_panel2;
+	private JPanel title_panel;
+	private JPanel filters_panel;
+	private JPanel buttons_panel2;
 	private JTable table;
 	private JPanel attributes_panel;
 	private JPanel buttons_panel;
 	private JScrollPane scroll_pane;
+	private JScrollPane scroll_pane2;
+	private JPanel allergens_panel;
+	private JPanel allergens_panel2;
+	
+	private JPanel filters_subpanel;
+	private JPanel filters_subpanel2;
 	
 	private JButton profileJB;
 	private JButton homeJB;
+	private JButton cartJB;
 	private JButton logoutJB;
+	private JButton backJB;
 	
 	private JLabel background;
+	private JLabel filtriLB;
+	private JLabel allergensLB;
+	private JButton add_to_cartJB;
 	DefaultTableModel model;
 	
+	private JTextField price_minTF;
+	private JTextField price_maxTF;
+	private JTextField meal_nameTF;
+	private JTextField quantityTF;
 	
-	public CustomerMealListFrame() {
+	JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 40, 0, 500);
+	CustomerController customer_controller;
+	public CustomerMealListFrame(CustomerController customer_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
-		
+		this.customer_controller = customer_controller;
 	}
 
 	//Initialize variables
@@ -83,12 +130,22 @@ public class CustomerMealListFrame extends JFrame {
 		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
 		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive2.PNG");
 		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive2.PNG");
+		cart_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cartButtonInactive.PNG");
+		cart_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cartButtonActive.PNG");
 		home_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonInactive.PNG");
 		home_activeIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonActive.PNG");
 		logout_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonInactive.PNG");
 		logout_activeIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonActive.PNG");
+		filtriIMG = new ImageIcon("src\\images\\CustomerImages\\filtri.PNG");
+		add_to_cart_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\addToCartInactive.PNG");
+		add_to_cart_activeIMG = new ImageIcon("src\\images\\CustomerImages\\addToCartActive.PNG");
+		back_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonInactive.PNG");
+		back_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonActive.PNG");
+		
+		
 		
 		long_dim_of_textfield = new Dimension(335,25);
+		short_dim_of_textfield = new Dimension(150,25);
 		west_east_size = new Dimension(100,80);
 		north_south_size = new Dimension(100,50);
 		
@@ -101,8 +158,17 @@ public class CustomerMealListFrame extends JFrame {
 		sql_panel2 = new JPanel();
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
+		filters_subpanel = new JPanel();
+		filters_subpanel2 = new JPanel();
+		
+		title_panel = new JPanel();
+		filters_panel = new JPanel();
+		buttons_panel2 = new JPanel();
 		
 		background = new JLabel();
+		filtriLB = new JLabel();
+		allergensLB = new JLabel("Seleziona le tue allergie alimentari:");
+		add_to_cartJB = new JButton();
 		
 		table = (new JTable() {
 			
@@ -116,7 +182,17 @@ public class CustomerMealListFrame extends JFrame {
 		
 		profileJB = new JButton();
 		homeJB = new JButton();
+		cartJB = new JButton();
 		logoutJB = new JButton();
+		backJB = new JButton();
+		allergens_panel = new JPanel();
+		allergens_panel2 = new JPanel();
+		dishCB = new JComboBox<Object>(dish_array_strings);
+		
+		price_minTF = new RoundJTextField(new Color(0x771007));
+		price_maxTF = new RoundJTextField(new Color(0x771007));
+		meal_nameTF = new RoundJTextField(new Color(0x771007));
+		quantityTF = new RoundJTextField(new Color(0x771007));
 		
 	}
 	
@@ -124,7 +200,7 @@ public class CustomerMealListFrame extends JFrame {
 		
 		//Layout setup
 		
-		this.setTitle("Food Overflow - Lista dei ristoranti nella tua zona");
+		this.setTitle("Food Overflow - Lista degli alimenti");
 		this.setSize(1280,720);
 		background.setIcon(resize(backgroundIMG, this.getWidth(), this.getHeight()));
 		this.setMinimumSize(new Dimension(800,650));
@@ -174,6 +250,7 @@ public class CustomerMealListFrame extends JFrame {
 		table.setFillsViewportHeight(true);
 		scroll_pane.setBorder(BorderFactory.createEmptyBorder());
 		
+		
 		//Sottopannell di "center_panel"
 		
 		sql_panel.setLayout(new BorderLayout());
@@ -182,7 +259,7 @@ public class CustomerMealListFrame extends JFrame {
 		sql_panel.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, new Color(0x771007)));
 		
 		sql_panel2.setLayout(new BorderLayout());
-		createStandardPanel(sql_panel2, null, (new Dimension(200,100)));
+		createStandardPanel(sql_panel2, null, (new Dimension(350,100)));
 		center_panel.add(sql_panel2, BorderLayout.WEST);
 		sql_panel2.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 5, new Color(0x771007)));
 		
@@ -194,9 +271,70 @@ public class CustomerMealListFrame extends JFrame {
 		createStandardPanel(attributes_panel, null, (new Dimension(100,500)));
 		sql_panel.add(attributes_panel, BorderLayout.CENTER);
 		
-		createStandardPanel(buttons_panel, null, (new Dimension(135,100)));
-		buttons_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 0,15));
+		createStandardPanel(buttons_panel, null, (new Dimension(255,100)));
+		buttons_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 15,15));
 		sql_panel.add(buttons_panel, BorderLayout.EAST);
+		
+		//Sottopannelli di "sql_panel2"
+		
+		createStandardPanel(title_panel, null, new Dimension(100,70));
+		sql_panel2.add(title_panel, BorderLayout.NORTH);
+//		title_panel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(0x771007)));
+		
+		filters_panel.setBackground(null);
+		filters_panel.setPreferredSize(new Dimension(100,500));
+		filters_panel.setLayout(new FlowLayout());
+		sql_panel2.add(filters_panel, BorderLayout.CENTER);
+		
+		createStandardPanel(buttons_panel2, null, new Dimension(100,100));
+		buttons_panel2.setLayout(new BorderLayout(0,3));
+		sql_panel2.add(buttons_panel2, BorderLayout.SOUTH);
+		
+		//Sottopannelli di filters_panel
+		
+		createStandardPanel(filters_subpanel,null, new Dimension(350,115));
+		filters_subpanel.setLayout(new FlowLayout(FlowLayout.LEADING, 17,15));
+		filters_panel.add(filters_subpanel);
+		
+		allergens_panel.setLayout(new BoxLayout(allergens_panel, BoxLayout.Y_AXIS));
+		createStandardPanel(allergens_panel, null, new Dimension(150,200));
+		filters_panel.add(allergens_panel);
+		
+		allergens_panel2.setLayout(new BoxLayout(allergens_panel2, BoxLayout.Y_AXIS));
+		createStandardPanel(allergens_panel2, null, new Dimension(150,200));
+		filters_panel.add(allergens_panel2);
+		
+		
+		//
+		
+		filtriLB.setIcon(filtriIMG);
+		filtriLB.setFocusable(true);
+		filtriLB.setPreferredSize(new Dimension(250,100));
+		title_panel.add(filtriLB);
+		
+		//
+		
+
+		
+		dishCB.setPreferredSize(short_dim_of_textfield);
+		dishCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		dishCB.setFocusable(false);
+		dishCB.setBackground(Color.white);
+		filters_subpanel.add(dishCB);
+
+		
+		createTextField(meal_nameTF, "Nome dell'alimento", short_dim_of_textfield);
+		filters_subpanel.add(meal_nameTF);
+		
+		createTextField(price_minTF, "Prezzo minimo", short_dim_of_textfield);
+		filters_subpanel.add(price_minTF);
+		
+		createTextField(price_maxTF, "Prezzo massimo", short_dim_of_textfield);
+		filters_subpanel.add(price_maxTF);
+		
+		filters_subpanel.add(allergensLB);
+		
+		allergensLoader();
 		
 		//
 		
@@ -206,8 +344,31 @@ public class CustomerMealListFrame extends JFrame {
 		setupButton(profileJB,profile_inactiveIMG,new Dimension(50,100));
 		attributes_panel.add(profileJB);
 		
+		setupButton(cartJB,cart_button_inactiveIMG, new Dimension(50,100));
+		attributes_panel.add(cartJB);
+		
+		setupButton(backJB, back_button_inactiveIMG, new Dimension(100,50));
+		buttons_panel.add(backJB);
+		
 		setupButton(logoutJB,logout_inactiveIMG,new Dimension(50,100));
 		buttons_panel.add(logoutJB);
+		
+		setupButton(add_to_cartJB, add_to_cart_inactiveIMG, new Dimension(200,50));
+		buttons_panel2.add(add_to_cartJB);
+		
+		JPanel quantity_panel;
+		quantity_panel = new JPanel();
+		createStandardPanel(quantity_panel, null, new Dimension(100,30));
+		buttons_panel2.add(quantity_panel, BorderLayout.NORTH);
+
+		
+		JLabel quantityLB;
+		quantityLB = new JLabel("Quantità: ");
+		quantityLB.setSize(new Dimension(100,25));
+		quantity_panel.add(quantityLB);
+		
+		createTextField(quantityTF, "1", new Dimension(100,25));
+		quantity_panel.add(quantityTF);
 		
 			
 	}
@@ -265,6 +426,114 @@ public class CustomerMealListFrame extends JFrame {
 			}
 		});
 		
+		cartJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				cartJB.setIcon(cart_button_activeIMG);
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				cartJB.setIcon(cart_button_inactiveIMG);
+				
+			}
+		});
+		
+		add_to_cartJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				add_to_cartJB.setIcon(add_to_cart_activeIMG);
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				add_to_cartJB.setIcon(add_to_cart_inactiveIMG);
+				
+			}
+		});
+		
+		backJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				backJB.setIcon(back_button_activeIMG);
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				backJB.setIcon(back_button_inactiveIMG);
+				
+			}
+		});
+		
+		meal_nameTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(meal_nameTF, "Nome dell'alimento");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(meal_nameTF, "Nome dell'alimento");
+				
+			}
+		});
+		
+		price_minTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(price_minTF, "Prezzo minimo");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(price_minTF, "Prezzo minimo");
+				
+			}
+		});
+		
+		price_maxTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(price_maxTF, "Prezzo massimo");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(price_maxTF, "Prezzo massimo");
+				
+			}
+		});
+		
+		quantityTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(quantityTF, "1");
+				
+			}
+		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             customer_controller.releaseAllDaoResourcesAndDisposeFrame(CustomerMealListFrame.this);
+	         }
+	     });
+		
 	}
 	
 	private ImageIcon resize(ImageIcon im, int w, int h) {
@@ -276,6 +545,57 @@ public class CustomerMealListFrame extends JFrame {
 		gd.dispose();
 		
 		return new ImageIcon(bi);
+	}
+	
+	
+	
+	private void allergensLoader() {
+		
+		int i=0;
+		for(String a: allergens_array_strings) {
+			
+			allergens[i] = new JCheckBox(a);
+			allergens[i].setFocusable(false);
+			allergens[i].setContentAreaFilled(false);
+			
+			if(i<=(allergens_array_strings.length/2)-1)  
+				allergens_panel.add(allergens[i]);
+			
+			else	
+				allergens_panel2.add(allergens[i]);
+
+			i++;
+			
+		}
+		
+	}
+
+	private void textFieldFocusGained(JTextField text_field, String string) {
+		
+		if (text_field.getText().equals(string)) {
+			
+			text_field.setText("");
+			text_field.setHorizontalAlignment(JTextField.LEFT);
+			
+		}
+		
+	}
+	
+	private void textFieldFocusLost(JTextField text_field, String string) {
+		
+		if (text_field.getText().equals("")) {
+			text_field.setText(string);
+			text_field.setHorizontalAlignment(JTextField.CENTER);
+		}
+		
+	}
+	
+	private void createTextField(JTextField text_field, String text, Dimension dimension) {
+
+		text_field.setHorizontalAlignment(JTextField.CENTER);
+		text_field.setText(text);
+		text_field.setPreferredSize(dimension);
+
 	}
 	
 	private void setupButton(JButton button, ImageIcon image, Dimension dimension) {
@@ -293,6 +613,14 @@ public class CustomerMealListFrame extends JFrame {
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 	
 	

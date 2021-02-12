@@ -18,18 +18,9 @@ import utilities.InputUtility;
 
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
-	private Connection connection;
 	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS;
 	DButility db_util = new DButility();
-	public RiderDAOPostgresImplementation() {
-		
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			connection = instance.getConnection();
-		}catch(SQLException s)
-		{
-			JOptionPane.showMessageDialog(null, "Network error, please try again","Error",JOptionPane.ERROR_MESSAGE);
-		}
+	public RiderDAOPostgresImplementation(Connection connection) {
 		try {
 			
 			get_all_riders_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, vehicle, working_hours, deliveries_number FROM Rider");
@@ -67,7 +58,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}
 		finally
 		{
-			 db_util.releaseResources(rs, get_all_riders_PS);
+			 db_util.releaseResources(rs);
 		}
 		return rider_list;
 	}
@@ -95,10 +86,6 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(insert_rider_PS);
-		}
 		return;
 	}
 	
@@ -110,10 +97,6 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}catch(SQLException s)
 		{
 			throw new DaoException();
-		}
-		finally
-		{
-			db_util.releaseResources(dismiss_rider_PS);
 		}
 		return;
 	}
@@ -139,11 +122,17 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(update_rider_PS);
-		}
 		return;
+	}
+	
+	public void closeStatements() throws DaoException {
+		
+		db_util.releaseResources(get_all_riders_PS);
+		db_util.releaseResources(insert_rider_PS);
+		db_util.releaseResources(dismiss_rider_PS);
+		db_util.releaseResources(update_rider_PS);
+		return;
+		
 	}
 
 }

@@ -23,19 +23,11 @@ import utilities.InputUtility;
 
 public class OrderDAOPostgresImplementation implements OrderDAO {
 	
-	private Connection connection;
 	private PreparedStatement update_delivering_order_PS, update_pending_order_PS, get_orders_of_a_shop_by_shop_email_PS, get_customer_of_the_order_PS, 
 							  get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS;
 	DButility db_util = new DButility();
-	public OrderDAOPostgresImplementation() {
+	public OrderDAOPostgresImplementation(Connection connection) {
 		
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			connection = instance.getConnection();
-		}catch(SQLException s)
-		{
-			JOptionPane.showMessageDialog(null, "Errore di connessione");
-		}
 		try {
 			
 			update_delivering_order_PS = connection.prepareStatement("UPDATE Customerorder SET delivery_time = current_time, status=? WHERE id=?");
@@ -139,11 +131,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs, get_customer_email_PS);
-			db_util.releaseResources(rs1, get_orders_of_a_shop_by_shop_email_PS);
-			db_util.releaseResources(get_rider_of_the_order_PS);
-			db_util.releaseResources(get_customer_of_the_order_PS);
-			db_util.releaseResources(get_shop_of_the_order_PS);
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
 		}
 		return order_list;
 	}
@@ -180,11 +169,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs, get_customer_email_PS);
-			db_util.releaseResources(rs1, get_delivering_orders_of_a_shop_PS);
-			db_util.releaseResources(get_rider_of_the_order_PS);
-			db_util.releaseResources(get_customer_of_the_order_PS);
-			db_util.releaseResources(get_shop_of_the_order_PS);
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
 		}
 		return order_list;
 	}
@@ -208,9 +194,6 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		{
 			throw new DaoException();
 		
-		}
-		finally
-		{
 		}
 		return customer;
 	}
@@ -245,11 +228,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs, get_customer_email_PS);
-			db_util.releaseResources(rs1, get_pending_orders_of_a_shop_PS);
-			db_util.releaseResources(get_rider_of_the_order_PS);
-			db_util.releaseResources(get_customer_of_the_order_PS);
-			db_util.releaseResources(get_shop_of_the_order_PS);
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
 		}
 		return order_list;
 	}
@@ -264,10 +244,6 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(update_pending_order_PS);
-		}
 		return;
 	}
 	
@@ -280,10 +256,21 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		{
 			throw new DaoException();
 		}
-		finally
-		{
-			db_util.releaseResources(update_delivering_order_PS);
-		}
 		return;
+	}
+	
+	public void closeStatements() throws DaoException {
+		
+		db_util.releaseResources(update_delivering_order_PS);
+		db_util.releaseResources(update_pending_order_PS);
+		db_util.releaseResources(get_orders_of_a_shop_by_shop_email_PS);
+		db_util.releaseResources(get_customer_of_the_order_PS);
+		db_util.releaseResources(get_rider_of_the_order_PS);
+		db_util.releaseResources(get_shop_of_the_order_PS);
+		db_util.releaseResources(get_delivering_orders_of_a_shop_PS);
+		db_util.releaseResources(get_pending_orders_of_a_shop_PS);
+		db_util.releaseResources(get_customer_email_PS);
+		return;
+		
 	}
 }

@@ -18,18 +18,10 @@ import utilities.InputUtility;
 
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
-	private Connection connection;
+
 	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS;
 	DButility db_util = new DButility();
-	public CustomerDAOPostgresImplementation() {
-		
-		try {
-			DBconnection instance = DBconnection.getInstance();
-			connection = instance.getConnection();
-		}catch(SQLException s)
-		{
-			JOptionPane.showMessageDialog(null, "Network error, please try again","Error",JOptionPane.ERROR_MESSAGE);
-		}
+	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
 			get_all_customers_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer");
 			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
@@ -64,7 +56,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			db_util.releaseResources(rs, get_all_customers_PS);
+			db_util.releaseResources(rs);
 		}
 		return customer_list;
 	}
@@ -87,6 +79,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.executeUpdate();
 		}catch(SQLException s)
 		{
+			System.out.println(s.getMessage());
 			throw new DaoException();
 		}
 		finally
@@ -148,10 +141,24 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			 db_util.releaseResources(rs, authenticateCustomerLogin_PS);
+			 db_util.releaseResources(rs);
 		}
 		return row_founded;	
 	}
+	
+   public void closeStatements() throws DaoException {
+		
+	  
+		db_util.releaseResources(get_all_customers_PS);
+		db_util.releaseResources(insert_customer_PS);
+		db_util.releaseResources(delete_customer_PS);
+		db_util.releaseResources(update_customer_PS);
+		db_util.releaseResources(authenticateCustomerLogin_PS);
+		return;
+		
+	}
+	
 
+	
 	
 }

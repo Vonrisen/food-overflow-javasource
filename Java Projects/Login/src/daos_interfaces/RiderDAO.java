@@ -10,4 +10,5 @@ public interface RiderDAO {
 	public void insertRider(Rider rider, String shop_email) throws DaoException;
 	public void dismissRider(Rider rider) throws DaoException;
 	public void updateRider(Rider rider) throws DaoException;
+	public void closeStatements() throws DaoException;
 }

@@ -15,5 +15,7 @@ public interface OrderDAO {
 	public void updatePendingOrder(Order order, String rider_cf) throws DaoException;
 	
 	public void updateDeliveringOrder(Order order, String stato) throws DaoException;
+	
+	public void closeStatements() throws DaoException;
 
 }

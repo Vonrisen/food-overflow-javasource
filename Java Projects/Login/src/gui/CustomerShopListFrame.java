@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
@@ -14,6 +15,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
@@ -31,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
 import controllers.CustomerController;
 import controllers.LoginController;
+import entities.Shop;
 import gui_support.RoundJTextField;
 
 public class CustomerShopListFrame extends JFrame {
@@ -48,7 +52,7 @@ public class CustomerShopListFrame extends JFrame {
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
-	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Email", "Password"};
+	private String[] columns = {"Nome", "Indirizzo", "Orario di apertura", "Giorni festivi", "Telefono fisso", "Email"};
 	
 	
 	private JPanel west_panel;
@@ -117,6 +121,7 @@ public class CustomerShopListFrame extends JFrame {
 		profileJB = new JButton();
 		homeJB = new JButton();
 		logoutJB = new JButton();
+		
 		
 	}
 	
@@ -270,6 +275,23 @@ public class CustomerShopListFrame extends JFrame {
 			}
 		});
 		
+		table.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent mouseEvent) {
+		    	if(!table.getSelectionModel().isSelectionEmpty()) {
+		    	customer_controller.openCustomerMealListFrame(CustomerShopListFrame.this, table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
+		    	}
+		    }
+		});
+		
+		addWindowListener(new WindowAdapter()
+	     {
+	         @Override
+	         public void windowClosing(WindowEvent e)
+	         {
+	             customer_controller.releaseAllDaoResourcesAndDisposeFrame(CustomerShopListFrame.this);
+	         }
+	     });
+		
 	}
 	
 	private ImageIcon resize(ImageIcon im, int w, int h) {
@@ -293,11 +315,21 @@ public class CustomerShopListFrame extends JFrame {
 		
 	}
 	
+	
+	
 	private void createStandardPanel(JPanel panel, Color color, Dimension dimension) {
 
 		panel.setBackground(color);
 		panel.setPreferredSize(dimension);
 
+	}
+
+	public DefaultTableModel getModel() {
+		return model;
+	}
+
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
 	
 	

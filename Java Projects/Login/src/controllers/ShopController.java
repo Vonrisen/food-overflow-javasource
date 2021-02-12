@@ -1,4 +1,5 @@
 package controllers;
+import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import daos_implementation.MealDAOPostgresImplementation;
 import daos_implementation.OrderDAOPostgresImplementation;
 import daos_implementation.RiderDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
+import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
 import daos_interfaces.RiderDAO;
@@ -45,11 +47,23 @@ public class ShopController {
 	private List<Order> all_order_list = new ArrayList<Order>();
 	private List<Order> pending_order_list = new ArrayList<Order>();
 	private List<Order> delivering_order_list = new ArrayList<Order>();
-	OrderDAO order_dao= new OrderDAOPostgresImplementation();
+	Connection connection;
+	private ShopDAO shop_dao;
+	private OrderDAO order_dao;
+	private MealDAO meal_dao;
+	private RiderDAO rider_dao;
+	private CustomerDAO customer_dao;
+	DButility db_utility = new DButility();
 	
-	public ShopController(String email) 
+	public ShopController(String email, Connection connection, ShopDAO shop_dao, CustomerDAO customer_dao, MealDAO meal_dao) 
 	{
+		this.connection = connection;
 		this.current_shop_email=email;
+		this.shop_dao = shop_dao;
+		this.customer_dao = customer_dao;
+		this.meal_dao = meal_dao;
+		this.rider_dao = new RiderDAOPostgresImplementation(connection);
+		this.order_dao = new OrderDAOPostgresImplementation(connection);
 	}
 	
 	public void openShopFrame(JFrame frame)
@@ -83,7 +97,7 @@ public class ShopController {
 	public void openShopAllMealsFrame()
 	{
 		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
-		List<Meal> meal_list = getAllMealsExceptShopMeals();
+		meal_list = getAllMealsExceptShopMeals();
 		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
 		shop_all_meals_frame.setVisible(true);
 		return;
@@ -93,7 +107,6 @@ public class ShopController {
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
 		if(rider_list.isEmpty()) {
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
@@ -137,7 +150,6 @@ public class ShopController {
 	}
 	
 	public void initializePendingOrdersList() {
-		OrderDAO order_dao= new OrderDAOPostgresImplementation();
 		if (pending_order_list.isEmpty()) {
 			try {
 				pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
@@ -161,7 +173,7 @@ public class ShopController {
 	
 	public void initializeAllOrdersList()
 	{
-		OrderDAO order_dao= new OrderDAOPostgresImplementation();
+		
 		if (all_order_list.isEmpty()) {
 			try {
 				all_order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
@@ -176,7 +188,6 @@ public class ShopController {
 	{
 		if (meal_list.isEmpty()) {
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,
@@ -191,7 +202,6 @@ public class ShopController {
 		
 		if (rider_list.isEmpty()) {
 			try {
-				ShopDAO shop_dao = new ShopDAOPostgresImplementation();
 				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
@@ -202,7 +212,6 @@ public class ShopController {
 	public List<Meal> getAllMealsExceptShopMeals() {
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
@@ -216,7 +225,6 @@ public class ShopController {
 		int i=0;
 			
 		try {
-			MealDAO meal_dao = new MealDAOPostgresImplementation();
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
 				i++;
@@ -240,7 +248,6 @@ public class ShopController {
 		InputUtility input_util = new InputUtility();
 		CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 		try {
-			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			String name = shop_rider_frame.getNameTF().getText();
 			String surname = shop_rider_frame.getSurnameTF().getText();
 			String birth_date = shop_rider_frame.getBirth_dateTF().getText();
@@ -283,7 +290,6 @@ public class ShopController {
 			String meal_name_to_remove = shop_meal_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				MealDAO meal_dao = new MealDAOPostgresImplementation();
 				while(!meal_list.get(i).getName().equals(meal_name_to_remove))
 					i++;
 				meal_dao.deleteFromSupply(current_shop_email, meal_list.get(i));
@@ -308,7 +314,6 @@ public class ShopController {
 			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
 			int i = 0;
 			try {
-				RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 				while(!rider_list.get(i).getCf().equals(cf_of_the_rider_to_dismiss))
 					i++;
 				rider_dao.dismissRider(rider_list.get(i));
@@ -333,7 +338,6 @@ public class ShopController {
 			CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 			int i = 0;
 			try {
-			RiderDAO rider_dao = new RiderDAOPostgresImplementation();
 			while(!rider_list.get(i).getCf().equals(cf_of_rider_to_update))
 				i++;
 			String CF = codice_fiscale.getCF(shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(),new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()),shop_rider_frame.getBirth_placeTF().getText(),shop_rider_frame.getGenderCB().getSelectedItem().toString().charAt(0) );
@@ -390,7 +394,6 @@ public class ShopController {
 	}
 	
 	public void updatePendingOrder(ShopPendingOrdersFrame shop_pending_orders_frame) {
-		OrderDAO order_dao = new OrderDAOPostgresImplementation();
 		int i=0;
 		try {
 			while(!pending_order_list.get(i).getId().equals(shop_pending_orders_frame.getOrderTF().getText()))
@@ -407,7 +410,6 @@ public class ShopController {
 	}
 	
 	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_order_frame) {
-		OrderDAO order_dao = new OrderDAOPostgresImplementation();
 		int i=0;
 		try {
 			while(!delivering_order_list.get(i).getId().equals(shop_delivering_order_frame.getOrderTF().getText()))
@@ -431,11 +433,33 @@ public class ShopController {
 		this.current_shop_email = current_shop_email;
 	}
 	
-	public void closeWindow(JFrame frame)
+	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame)
 	{
-		DButility db_utility = new DButility();
-		frame.dispose();
-		db_utility.closeCurrentConnection();
+		try {
+			shop_dao.closeStatements();
+			order_dao.closeStatements();
+			meal_dao.closeStatements();
+			rider_dao.closeStatements();
+			customer_dao.closeStatements();
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
+		finally {
+			db_utility.closeConnection(connection);
+			frame.dispose();
+		}
+		return;
+	}
+	//Metodo che chiude solo gli statement usati dallo shop, quando ad esempio ci si disconnette da un frame e si ritorna al login frame
+	public void releaseDaoResourcesWhenSwitchingFrame() {
+		try {
+			order_dao.closeStatements();
+			rider_dao.closeStatements();
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
 		return;
 	}
 }
