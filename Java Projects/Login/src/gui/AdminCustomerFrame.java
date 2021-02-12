@@ -66,19 +66,19 @@ public class AdminCustomerFrame extends ComplexFrame {
 
 	private void events() {
 
-		getUpdate_sqlJB().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				admin_controller.updateCustomer(AdminCustomerFrame.this);
-			}
-		});
-
-		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				admin_controller.removeCustomer(AdminCustomerFrame.this);
-			}
-		});
+//		getUpdate_sqlJB().addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				admin_controller.updateCustomer(AdminCustomerFrame.this);
+//			}
+//		});
+//
+//		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				admin_controller.removeCustomer(AdminCustomerFrame.this);
+//			}
+//		});
 
 		getGo_backJB().addMouseListener(new MouseAdapter() {
 			@Override

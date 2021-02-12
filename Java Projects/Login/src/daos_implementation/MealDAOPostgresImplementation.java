@@ -18,7 +18,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	PreparedStatement  get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
-					  insert_supply_PS, delete_from_supply_PS;
+					  insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS;
 	CallableStatement add_allergens_CS;
 	DButility db_util = new DButility();
 	public MealDAOPostgresImplementation(Connection connection) {
@@ -27,6 +27,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
+			get_meal_by_name_PS = connection.prepareStatement("SELECT * FROM Meal WHERE name=?");
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
@@ -108,7 +109,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		insert_meal_PS.setFloat(3, meal.getPrice());
 		insert_meal_PS.setString(4, meal.getIngredients());
 		insert_meal_PS.executeUpdate();
-		if(meal.getAllergen_list().size()>0)
+		if(!meal.getAllergen_list().isEmpty())
 			associateAllergensToMeal(meal);
 		}catch(SQLException s)
 		{
@@ -184,6 +185,31 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		db_util.releaseResources(add_allergens_CS);
 		return;
 		
+	}
+
+	@Override
+	public Meal getMealByName(String name) throws DaoException {
+		
+		ResultSet rs = null;
+		ResultSet rs1 = null;
+		List<String>allergens = new ArrayList<String>();
+		Meal meal;
+		try {
+			get_meal_by_name_PS.setString(1, name);
+			rs = get_meal_by_name_PS.executeQuery();
+			while(rs.next())
+				get_allergens_of_a_meal_PS.setString(1,rs.getString("id"));
+			    rs1 = get_allergens_of_a_meal_PS.executeQuery();
+				while(rs1.next())
+					allergens.add(rs1.getString("allergen_name"));
+				meal = new Meal(rs.getString("name"), rs.getFloat("price"), rs.getString("ingredients"), rs.getString("category"), allergens);
+		} catch (SQLException e) {
+			throw new DaoException();
+		}finally {
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
+		}
+		return meal;
 	}
 	
 

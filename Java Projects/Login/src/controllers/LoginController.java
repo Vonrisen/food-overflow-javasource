@@ -148,15 +148,16 @@ public class LoginController{
 
 		String name = frame.getNameTF().getText();
 		String surname = frame.getSurnameTF().getText();
+		IstatUtils istat_util = new IstatUtils();
 		Date birth_date = null;
 		try {
 			birth_date = new SimpleDateFormat("dd/MM/yyyy").parse(frame.getBirth_dateTF().getText());
 		String birth_place = frame.getTownsCB().getSelectedItem().toString();
 		String gender = frame.getGenderCB().getSelectedItem().toString().substring(0,1);
 		String cellphone = frame.getCellphoneTF().getText();
-//		String province_abbrv = db_util.getProvinceAbbreviationByName(frame.getAddress_provinceCB().getSelectedItem().toString());
+		String province_abbrv = istat_util.getProvinceAbbreviationByName(frame.getAddress_provinceCB().getSelectedItem().toString());
 		Address address = new Address(frame.getAddress_nameTF().getText(), frame.getAddress_civic_numberTF().getText(), frame.getAddress_capTF().getText(),
-									  frame.getAddress_cityCB().getSelectedItem().toString(),"MI");
+									  frame.getAddress_cityCB().getSelectedItem().toString(),province_abbrv);
 		String email = frame.getEmailTF().getText();
 		String password = frame.getPasswordTF().getText();
 		CodiceFiscaleUtility cf_util = new CodiceFiscaleUtility();

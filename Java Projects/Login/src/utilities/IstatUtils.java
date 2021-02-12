@@ -81,4 +81,21 @@ public class IstatUtils {
 		}
 		return towns;
 	}
+    
+    public String getProvinceAbbreviationByName (String province)
+    {
+    	
+    	try (BufferedReader br = new BufferedReader(new FileReader("CittaProvinceCodiciCatastaliIstat.txt"))) {
+		    String line;
+		    province = province.toUpperCase();
+		    while ((line = br.readLine()) != null) {
+		        String[] values = line.split(",");
+		        if(values[0].equals(province))
+		        	return values[1];
+		    }
+		} catch (FileNotFoundException e) {
+		} catch (IOException i) {
+		}
+		return null;
+    }
 	}
