@@ -162,7 +162,6 @@ public class CustomerMealListFrame extends JFrame {
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
 		filters_subpanel = new JPanel();
-		filters_subpanel2 = new JPanel();
 		
 		title_panel = new JPanel();
 		filters_panel = new JPanel();
