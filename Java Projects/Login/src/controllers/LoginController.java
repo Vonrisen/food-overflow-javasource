@@ -134,6 +134,8 @@ public class LoginController{
 		List<String> nations = istat_utils.getNations();
 		List<String> provinces = istat_utils.getProvinces();
 		register_frame.getStatiCB().addItem("ITALIA");
+		register_frame.getAddress_provinceCB().addItem("Seleziona provincia di residenza");
+		register_frame.getAddress_provinceCB().addItem("-------------------");
 		for(String s : nations)
 		    register_frame.getStatiCB().addItem(s);
 		for(String s : provinces)
@@ -155,9 +157,8 @@ public class LoginController{
 		String birth_place = frame.getTownsCB().getSelectedItem().toString();
 		String gender = frame.getGenderCB().getSelectedItem().toString().substring(0,1);
 		String cellphone = frame.getCellphoneTF().getText();
-		String province_abbrv = istat_util.getProvinceAbbreviationByName(frame.getAddress_provinceCB().getSelectedItem().toString());
 		Address address = new Address(frame.getAddress_nameTF().getText(), frame.getAddress_civic_numberTF().getText(), frame.getAddress_capTF().getText(),
-									  frame.getAddress_cityCB().getSelectedItem().toString(),province_abbrv);
+									  frame.getAddress_cityCB().getSelectedItem().toString(), frame.getAddress_provinceCB().getSelectedItem().toString());
 		String email = frame.getEmailTF().getText();
 		String password = frame.getPasswordTF().getText();
 		CodiceFiscaleUtility cf_util = new CodiceFiscaleUtility();
@@ -177,24 +178,24 @@ public class LoginController{
 		return;
 	}
 	
-	public List<String> updateAddressProvinceCB(String selected_province, RegisterFrame frame)
+	public void updateAddressTownsCB(String selected_province, RegisterFrame frame)
 	{
 		IstatUtils istat_utils = new IstatUtils();
 		List<String> towns = istat_utils.getTownsByProvince(selected_province);
 		frame.getAddress_cityCB().removeAllItems();
 		for(String s : towns)
 			frame.getAddress_cityCB().addItem(s);
-		return towns;
+		return;
 	}
 	
-	public List<String> updateProvincesCB(String selected_province, RegisterFrame frame)
+	public void updateTownsCB(String selected_province, RegisterFrame frame)
 	{	
 		IstatUtils istat_utils = new IstatUtils();
 	    List<String> towns = istat_utils.getTownsByProvince(selected_province);
 		frame.getTownsCB().removeAllItems();
 		for(String s : towns)
 			frame.getTownsCB().addItem(s);
-		return towns;
+		return;
 	}
 	
 	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame)

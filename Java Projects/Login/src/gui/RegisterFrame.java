@@ -258,9 +258,7 @@ public class RegisterFrame extends JFrame{
 		passwordTF1.setBounds(135, 102, 310, 25);
 		loginPanel.add(passwordTF1);
 		
-		provincesCB.addItemListener(this::provincesCBitemStateChanged);
-		statiCB.addItemListener(this::townsCBitemStateChanged);
-		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
+
 		//Buttons & Label setup
 		
 		logoLabel.setIcon(register_logoIMG);
@@ -645,27 +643,36 @@ public class RegisterFrame extends JFrame{
 	         }
 	     });
 		
+		provincesCB.addItemListener(this::provincesCBitemStateChanged);
+		statiCB.addItemListener(this::townsCBitemStateChanged);
+		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
+		
 	}
 
 	public void provincesCBitemStateChanged(ItemEvent e) {
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 	        String selected_item = (String) e.getItem();
-	        login_controller.updateProvincesCB(selected_item, RegisterFrame.this);
-	        
+	        login_controller.updateTownsCB(selected_item, RegisterFrame.this);
 	    }
 	}
 	public void addressProvinceCBitemStateChanged(ItemEvent e) {
 		
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 	        String selected_item = (String) e.getItem();
-	        login_controller.updateAddressProvinceCB(selected_item, RegisterFrame.this);
+	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia di residenza"))
+	        	 login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);
+	    	if(selected_item.equals("Seleziona provincia di residenza"))
+	    	{
+	    		this.getAddress_cityCB().removeAllItems();
+	    		this.getAddress_cityCB().addItem("Seleziona comune di residenza");
+	    	}
+	       
 	    }
 		
 	}
 
 	public void townsCBitemStateChanged(ItemEvent e) {
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
-
 	    	if(statiCB.getSelectedItem().equals("ITALIA")) {
 	    		
 	    		if(!nameTF.isVisible())

@@ -24,7 +24,7 @@ import utilities.InputUtility;
 public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	private PreparedStatement update_delivering_order_PS, update_pending_order_PS, get_orders_of_a_shop_by_shop_email_PS, get_customer_of_the_order_PS, 
-							  get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS;
+							  get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS, get_order_by_id_PS;
 	DButility db_util = new DButility();
 	public OrderDAOPostgresImplementation(Connection connection) {
 		
@@ -38,6 +38,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			get_customer_of_the_order_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email =?");
 			get_rider_of_the_order_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf =?");
 			get_orders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE delivery_time is not null and shop_id IN (SELECT id FROM Shop WHERE email=?)");
+			get_order_by_id_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE id=?");
 			get_customer_email_PS = connection.prepareStatement("SELECT email FROM Customer WHERE id=?");
 			
 		}catch(SQLException s)
@@ -271,6 +272,45 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		db_util.releaseResources(get_pending_orders_of_a_shop_PS);
 		db_util.releaseResources(get_customer_email_PS);
 		return;
+		
+	}
+	@Override
+	public Order getOrderById(String id) throws DaoException {
+		ResultSet rs1 = null;
+		ResultSet rs = null;
+		Customer customer = null;
+		Rider rider = null;
+		Shop shop = null;
+		Order order = null;
+		String customer_email = null;
+		InputUtility string_util = new InputUtility();
+		List<String>address_fields = new ArrayList<String>();
+		try
+		{
+		get_order_by_id_PS.setString(1, id);
+		rs1 = get_order_by_id_PS.executeQuery();
+		while(rs1.next()) {
+			get_customer_email_PS.setString(1,rs1.getString("customer_id"));
+			rs = get_customer_email_PS.executeQuery();
+			while(rs.next())
+			customer_email = rs.getString("email");
+			customer = getCustomerOfTheOrderByEmail(customer_email);
+			rider = getRiderOfTheOrderByCF(rs1.getString("rider_cf"));
+			shop = getShopOfTheOrderByEmail(id);
+			address_fields = string_util.tokenizedStringToList(rs1.getString("address"),"(, )");
+			order = new Order(shop, customer, rs1.getString("id"), new Date(rs1.getDate("date").getTime()), rs1.getString("payment"), 
+					rs1.getString("status"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), 
+					address_fields.get(4)), rs1.getTime("delivery_time"), rs1.getString("note"), rider);
+		}}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
+		}
+		return order;
 		
 	}
 }

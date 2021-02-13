@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -28,7 +29,6 @@ public class ShopRiderFrame extends ComplexFrame{
 	private JTextField nameTF;
 	private JTextField surnameTF;
 	private JTextField birth_dateTF;
-	private JTextField birth_placeTF;
 	private JTextField address_nameTF;
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
@@ -39,6 +39,11 @@ public class ShopRiderFrame extends ComplexFrame{
 
 	private JComboBox<String> vehicleCB;
 	private JComboBox<String> genderCB;
+	private JComboBox<String> address_provinceCB;
+	private JComboBox<String> address_townCB;
+	private JComboBox<String> birth_townCB;
+	private JComboBox<String> birth_nationCB;
+	private JComboBox<String> birth_provinceCB;
 	private ShopController shop_controller;
 
 
@@ -57,17 +62,21 @@ public class ShopRiderFrame extends ComplexFrame{
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
 		birth_dateTF = new RoundJTextField(new Color(0x771007));
-		birth_placeTF = new RoundJTextField(new Color(0x771007));
 		address_nameTF = new RoundJTextField(new Color(0x771007));
 		address_civic_numberTF = new RoundJTextField(new Color(0x771007));
 		address_capTF = new RoundJTextField(new Color(0x771007));
-		address_cityTF = new RoundJTextField(new Color(0x771007));
-		address_provinceTF = new RoundJTextField(new Color(0x771007));
 		working_hoursTF = new RoundJTextField(new Color(0x771007));
 		cellphoneTF = new RoundJTextField(new Color(0x771007));
 		vehicleCB = new JComboBox<String>(vehicleStrings);
 		genderCB = new JComboBox<String>(genderStrings);
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
+		
+		address_provinceCB = new JComboBox<String>();
+		address_townCB = new JComboBox<String>();
+		birth_nationCB = new JComboBox<String>();
+		birth_townCB = new JComboBox<String>();
+		birth_provinceCB = new JComboBox<String>();
+		
 	}
 
 	private void setupFrame() {
@@ -85,9 +94,15 @@ public class ShopRiderFrame extends ComplexFrame{
 
 		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", getShort_dim_of_textfield());
 		getAttributes_panel().add(birth_dateTF);
-
-		createTextField(birth_placeTF, "Luogo di nascita", getShort_dim_of_textfield());
-		getAttributes_panel().add(birth_placeTF);
+		
+		birth_nationCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_nationCB);
+		
+		birth_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_provinceCB);
+		
+		birth_townCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_townCB);
 
 		createTextField(address_nameTF, "Nome dell'indirizzo", getLong_dim_of_textfield());
 		getAttributes_panel().add(address_nameTF);
@@ -97,12 +112,12 @@ public class ShopRiderFrame extends ComplexFrame{
 
 		createTextField(address_capTF, "CAP", getShort_dim_of_textfield());
 		getAttributes_panel().add(address_capTF);
-
-		createTextField(address_cityTF, "Comune", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_cityTF);
-
-		createTextField(address_provinceTF, "Provincia", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_provinceTF);
+		
+		address_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(address_provinceCB);
+		
+		address_townCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(address_townCB);
 
 		createTextField(cellphoneTF, "Cellulare", getShort_dim_of_textfield());
 		getAttributes_panel().add(cellphoneTF);
@@ -168,18 +183,21 @@ public class ShopRiderFrame extends ComplexFrame{
 					nameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
 					surnameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 2).toString());
 					birth_dateTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString());
-					birth_placeTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
 					address_nameTF.setText(address.getAddress());
 					address_civic_numberTF.setText(address.getCivic_number());
 					address_capTF.setText(address.getCap());
 					address_cityTF.setText(address.getCity());
-					address_provinceTF.setText(address.getProvince_abbrevation());
+					address_provinceTF.setText(address.getProvince());
 					cellphoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 7).toString());
 					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 9).toString());
 				}
+				
 			}
+		
+			
 		});
 
+		
 
 		//FocusListeners
 
@@ -217,17 +235,6 @@ public class ShopRiderFrame extends ComplexFrame{
 			}
 		});
 
-		birth_placeTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(birth_placeTF, "Luogo di nascita");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(birth_placeTF, "Luogo di nascita");
-			}
-		});
-
 		address_nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -261,28 +268,6 @@ public class ShopRiderFrame extends ComplexFrame{
 			}
 		});
 
-		address_cityTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(address_cityTF, "Comune");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(address_cityTF, "Comune");
-			}
-		});
-
-		address_provinceTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(address_provinceTF, "Provincia");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(address_provinceTF, "Provincia");
-			}
-		});
-
 		cellphoneTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -313,9 +298,58 @@ public class ShopRiderFrame extends ComplexFrame{
 				shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopRiderFrame.this);
 			}
 		});
+		
+		birth_provinceCB.addItemListener(this::birth_provinceCBitemStateChanged);
+		birth_nationCB.addItemListener(this::birth_nationCBitemStateChanged);
+		address_provinceCB.addItemListener(this::address_provinceCBitemStateChanged);
 
 	}
 
+	public void birth_provinceCBitemStateChanged(ItemEvent e) {
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+	        String selected_item = (String) e.getItem();
+	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia di nascita"))
+	            shop_controller.updateBirth_townCB(selected_item, ShopRiderFrame.this);
+	    	if(selected_item.equals("Seleziona provincia di nascita"))
+	    	{
+	    		this.getBirth_townCB().removeAllItems();
+	    		this.getBirth_townCB().addItem("Seleziona comune di nascita");
+	    	}
+	        
+	    }
+	}
+	public void address_provinceCBitemStateChanged(ItemEvent e) {
+		
+		
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+	        String selected_item = (String) e.getItem();
+	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia di residenza"))
+		        shop_controller.updateAddress_townCB(selected_item, ShopRiderFrame.this);
+	    	if(selected_item.equals("Seleziona provincia di residenza"))
+	    	{
+	    		getAddress_townCB().removeAllItems();
+				getAddress_townCB().addItem("Seleziona comune di residenza");
+	    	}
+	    }
+		
+	}
+
+	public void birth_nationCBitemStateChanged(ItemEvent e) {
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+
+	    	if(birth_nationCB.getSelectedItem().equals("ITALIA")) {
+	    		birth_provinceCB.setVisible(true);
+	    		birth_townCB.setVisible(true);
+	    	} else {
+	    		
+	    		birth_provinceCB.setVisible(false);
+	    		birth_townCB.setVisible(false);
+	    		
+	    	}
+	    	
+	    }
+	}
+	
 
 	public JTextField getNameTF() {
 		return nameTF;
@@ -339,14 +373,6 @@ public class ShopRiderFrame extends ComplexFrame{
 
 	public void setBirth_dateTF(JTextField birth_dateTF) {
 		this.birth_dateTF = birth_dateTF;
-	}
-
-	public JTextField getBirth_placeTF() {
-		return birth_placeTF;
-	}
-
-	public void setBirth_placeTF(JTextField birth_placeTF) {
-		this.birth_placeTF = birth_placeTF;
 	}
 
 	public JTextField getAddress_nameTF() {
@@ -420,5 +446,56 @@ public class ShopRiderFrame extends ComplexFrame{
 	public void setWorking_hoursTF(JTextField working_hoursTF) {
 		this.working_hoursTF = working_hoursTF;
 	}
+
+
+	public JComboBox<String> getAddress_provinceCB() {
+		return address_provinceCB;
+	}
+
+
+	public void setAddress_provinceCB(JComboBox<String> address_provinceCB) {
+		this.address_provinceCB = address_provinceCB;
+	}
+
+
+	public JComboBox<String> getAddress_townCB() {
+		return address_townCB;
+	}
+
+
+	public void setAddress_townCB(JComboBox<String> address_townCB) {
+		this.address_townCB = address_townCB;
+	}
+
+
+	public JComboBox<String> getBirth_townCB() {
+		return birth_townCB;
+	}
+
+
+	public void setBirth_townCB(JComboBox<String> birth_townCB) {
+		this.birth_townCB = birth_townCB;
+	}
+
+
+	public JComboBox<String> getBirth_nationCB() {
+		return birth_nationCB;
+	}
+
+
+	public void setBirth_nationCB(JComboBox<String> birth_nationCB) {
+		this.birth_nationCB = birth_nationCB;
+	}
+
+
+	public JComboBox<String> getBirth_provinceCB() {
+		return birth_provinceCB;
+	}
+
+
+	public void setBirth_provinceCB(JComboBox<String> birth_provinceCB) {
+		this.birth_provinceCB = birth_provinceCB;
+	}
+	
 
 }

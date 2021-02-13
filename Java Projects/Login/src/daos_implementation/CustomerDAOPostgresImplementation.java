@@ -79,7 +79,6 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.executeUpdate();
 		}catch(SQLException s)
 		{
-			System.out.println(s.getMessage());
 			throw new DaoException();
 		}
 		finally
@@ -148,7 +147,6 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 	
    public void closeStatements() throws DaoException {
 		
-	  
 		db_util.releaseResources(get_all_customers_PS);
 		db_util.releaseResources(insert_customer_PS);
 		db_util.releaseResources(delete_customer_PS);

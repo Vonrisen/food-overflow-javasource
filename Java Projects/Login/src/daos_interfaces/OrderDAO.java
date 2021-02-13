@@ -17,5 +17,7 @@ public interface OrderDAO {
 	public void updateDeliveringOrder(Order order, String stato) throws DaoException;
 	
 	public void closeStatements() throws DaoException;
+	
+	public Order getOrderById(String id) throws DaoException;
 
 }

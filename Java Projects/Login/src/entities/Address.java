@@ -7,16 +7,17 @@ public class Address {
 	private String civic_number;
 	private String cap;
 	private String city;
-	private String province_abbrevation;
+	private String province;
 	
 	//COSTRUTTORE
-	public Address(String address, String civic_number, String cap, String city, String province_abbrevation) {
+	public Address(String address, String civic_number, String cap, String city, String province) {
 		
 		this.address = address;
 		this.civic_number = civic_number;
 		this.cap = cap;
 		this.city = city;
-		this.province_abbrevation = province_abbrevation;
+		this.province = province;
+		
 	}
 
 	//GETTER AND SETTER
@@ -54,18 +55,18 @@ public class Address {
 		this.city = city;
 	}
 
-	public String getProvince_abbrevation() {
-		return province_abbrevation;
+	public String getProvince() {
+		return province;
 	}
 
-	public void setProvince_abbrevation(String province_abbrevation) {
-		this.province_abbrevation = province_abbrevation;
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	@Override
 	public String toString() {
 		return address + ", " + civic_number + ", " + cap + ", " + city
-				+ ", " + province_abbrevation;
+				+ ", " + province;
 	}
 	
 	

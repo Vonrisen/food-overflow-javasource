@@ -25,19 +25,19 @@ import gui.AdminFrame;
 import gui.AdminMealFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
+import gui.RegisterFrame;
 import utilities.DButility;
 import utilities.InputUtility;
+import utilities.IstatUtils;
 import utilities.TableModelUtility;
 
 public class AdminController {
 	
-	private TableModelUtility table_utility = new TableModelUtility();
 	private Connection connection;
 	private LoginController login_controller;
 	CustomerDAO customer_dao;
 	ShopDAO shop_dao;
 	MealDAO meal_dao;
-	
 	public  AdminController(Connection connection, LoginController login_controller, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao){	
 		this.login_controller = login_controller;
 		this.connection = connection;
@@ -52,12 +52,32 @@ public class AdminController {
 		AdminFrame admin_frame = new AdminFrame(this, login_controller);
 		admin_frame.setVisible(true);
 	}
-	
+//	frame.dispose();
+//	RegisterFrame register_frame = new RegisterFrame(this);
+//	register_frame.setVisible(true);
+//	IstatUtils istat_utils = new IstatUtils();
+//	List<String> nations = istat_utils.getNations();
+//	List<String> provinces = istat_utils.getProvinces();
+//	register_frame.getStatiCB().addItem("ITALIA");
+//	for(String s : nations)
+//	    register_frame.getStatiCB().addItem(s);
+//	for(String s : provinces)
+//	{
+//		register_frame.getProvincesCB().addItem(s);
+//		register_frame.getAddress_provinceCB().addItem(s);
+//	}
+//	return;
 	public void openAdminShopFrame(JFrame frame)
 	{
 		frame.dispose();
+		TableModelUtility table_utility = new TableModelUtility();
 		AdminShopFrame admin_shop_frame = new AdminShopFrame(this);
-	    
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> provinces = istat_utils.getProvinces();
+		admin_shop_frame.getAddress_provinceCB().addItem("Seleziona provincia");
+		admin_shop_frame.getAddress_provinceCB().addItem("-------------------");
+		for(String s : provinces)
+				admin_shop_frame.getAddress_provinceCB().addItem(s);
 		try {
 			List<Shop> shop_list = shop_dao.getAllShops();
 		    table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
@@ -79,6 +99,7 @@ public class AdminController {
 	public void openAdminMealFrame(JFrame frame)
 	{
 		frame.dispose();
+		TableModelUtility table_utility = new TableModelUtility();
 		AdminMealFrame admin_meal_frame = new AdminMealFrame(this);
 		try {
 			List<Meal> meal_list = meal_dao.getAllMeals();
@@ -93,6 +114,7 @@ public class AdminController {
 	public void openAdminCustomerFrame(JFrame frame)
 	{
 		frame.dispose();
+		TableModelUtility table_utility = new TableModelUtility();
 		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame(this);
 		List<Customer> customer_list;
 		try {
@@ -108,6 +130,7 @@ public class AdminController {
 	public boolean initializeAdminRiderFrameTable(AdminRiderFrame admin_rider_frame, AdminShopFrame admin_shop_frame)
 	{
 		int row = admin_shop_frame.getTable().getSelectedRow();
+	    TableModelUtility table_utility = new TableModelUtility();
 		if(row != -1) {
 			List<Rider>rider_list = new ArrayList<Rider>();
 			String shop_email = admin_shop_frame.getTable().getValueAt(row, 0).toString();
@@ -139,9 +162,9 @@ public class AdminController {
 		try {
 			Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(),admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
-				     admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()), admin_shop_frame.getClosing_daysTF().getText(), null, null, admin_shop_frame.getHome_phoneTF().getText());
+				     admin_shop_frame.getAddress_townCB().getSelectedItem().toString(), admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString()), admin_shop_frame.getClosing_daysTF().getText(), null, null, admin_shop_frame.getHome_phoneTF().getText());
 			shop_dao.insertShop(shop);
-			admin_shop_frame.getModel().insertRow(admin_shop_frame.getModel().getRowCount()+1, new Object[] {shop.getEmail(), shop.getPassword(),
+			admin_shop_frame.getModel().insertRow(admin_shop_frame.getModel().getRowCount(), new Object[] {shop.getEmail(), shop.getPassword(),
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi.\nHint: Controlla la validita' dell' indirizzo, email, orario lavorativo e giorni di chiusura","Error",JOptionPane.ERROR_MESSAGE);
@@ -214,65 +237,12 @@ public class AdminController {
 			JOptionPane.showMessageDialog(null, "Select the meal you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
-	 //POTENZIALMENTE DA ELIMINARE
-//	public void removeCustomer(AdminCustomerFrame admin_customer_frame)
-//	 {
-//		
-//		String email = JOptionPane.showInputDialog("Insert email of the customer you want to delete");
-//		int i=0;
-//		if(email!=null) {
-//			try {
-//				while(!customer_list.get(i).getEmail().equals(email))
-//					i++;
-//				admin_customer_frame.getTable().getSelectionModel().clearSelection();
-//				customer_dao.deleteCustomer(customer_list.get(i));
-//				admin_customer_frame.getModel().removeRow(i);
-//				customer_list.remove(i);
-//				JOptionPane.showMessageDialog(null, "Customer deleted successfully");
-//			}catch (IndexOutOfBoundsException in) {
-//				JOptionPane.showMessageDialog(null, "No customer has been found with this email","Errore",JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}
-//			catch (DaoException e) {
-//				JOptionPane.showMessageDialog(null, "Could not delete selected customer, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-//			}
-//		}
-//		else
-//			JOptionPane.showMessageDialog(null, "Email must not be empty","Warning",JOptionPane.WARNING_MESSAGE);
-//		return;
-//	}
-//	
-//	public void updateCustomer(AdminCustomerFrame admin_customer_frame) {
-//		String cellphone_of_customer_to_update = JOptionPane.showInputDialog("Insert the cellphone of the customer you want to update");
-//		String new_email = admin_customer_frame.getEmailTF().getText();
-//		String new_password = admin_customer_frame.getPasswordTF().getText();
-//		int i=0;
-//		try {
-//			while(!customer_list.get(i).getCellphone().equals(cellphone_of_customer_to_update))
-//				i++;
-//			if(new_email.equals("E-Mail"))
-//				new_email = customer_list.get(i).getEmail();
-//			if(new_password.equals("Password"))
-//				new_password = customer_list.get(i).getPassword();
-//			customer_list.get(i).setEmail(new_email);
-//			customer_list.get(i).setPassword(new_password);
-//			customer_dao.updateCustomerFromAdmin(customer_list.get(i));
-//			table_utility.updateCustomerTableColumns(admin_customer_frame, i);
-//			JOptionPane.showMessageDialog(null, "Customer updated");
-//		}catch (IndexOutOfBoundsException in) {
-//			JOptionPane.showMessageDialog(null, "No customer with this cellphone has been found","Error",JOptionPane.ERROR_MESSAGE);
-//			return;
-//		}
-//		catch (DaoException e) {
-//			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the email","Error",JOptionPane.ERROR_MESSAGE);
-//			return;
-//		}
-//		return;
-//	}
+
 	
 	public void updateShop(AdminShopFrame admin_shop_frame) {
 
 		int row = admin_shop_frame.getTable().getSelectedRow();
+		TableModelUtility table_utility = new TableModelUtility();
 		if(row != -1) {
 			String email_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(row, 0).toString();
 			try {
@@ -280,7 +250,7 @@ public class AdminController {
 			shop_to_update.setName(admin_shop_frame.getNameTF().getText());
 			shop_to_update.setAddress(new Address(admin_shop_frame.getAddress_nameTF().getText(),
 					admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(),
-					admin_shop_frame.getAddress_cityTF().getText(), admin_shop_frame.getAddress_provinceTF().getText()));
+					admin_shop_frame.getAddress_townCB().getSelectedItem().toString(), admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString()));
 			shop_to_update.setClosing_days(admin_shop_frame.getClosing_daysTF().getText());
 			shop_to_update.setWorking_hours(admin_shop_frame.getWorking_hoursTF().getText());
 			shop_to_update.setPassword(admin_shop_frame.getPasswordTF().getText());
@@ -295,6 +265,16 @@ public class AdminController {
 		}
 		else
 			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Warning",JOptionPane.WARNING_MESSAGE);
+		return;
+	}
+	
+	public void updateAddressTownsCB(String selected_province, AdminShopFrame frame)
+	{	
+		IstatUtils istat_utils = new IstatUtils();
+	    List<String> towns = istat_utils.getTownsByProvince(selected_province);
+		frame.getAddress_townCB().removeAllItems();
+		for(String s : towns)
+			frame.getAddress_townCB().addItem(s);
 		return;
 	}
 	

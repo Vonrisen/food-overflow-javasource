@@ -64,6 +64,8 @@ public class CustomerMealListFrame extends JFrame {
 	private ImageIcon add_to_cart_activeIMG;
 	private ImageIcon back_button_inactiveIMG;
 	private ImageIcon back_button_activeIMG;
+	private ImageIcon search_button_inactiveIMG;
+	private ImageIcon search_button_activeIMG;
 	
 	private Dimension west_east_size;
 	private Dimension north_south_size;
@@ -86,36 +88,35 @@ public class CustomerMealListFrame extends JFrame {
 	private JPanel title_panel;
 	private JPanel filters_panel;
 	private JPanel buttons_panel2;
-	private JTable table;
 	private JPanel attributes_panel;
 	private JPanel buttons_panel;
-	private JScrollPane scroll_pane;
-	private JScrollPane scroll_pane2;
+	private JPanel quantity_panel;
 	private JPanel allergens_panel;
 	private JPanel allergens_panel2;
-	
 	private JPanel filters_subpanel;
-	private JPanel filters_subpanel2;
+	private JScrollPane scroll_pane;
 	
 	private JButton profileJB;
 	private JButton homeJB;
 	private JButton cartJB;
 	private JButton logoutJB;
 	private JButton backJB;
+	private JButton searchJB;
+	private JTable table;
 	
 	private JLabel background;
 	private JLabel filtriLB;
+	private JLabel quantityLB;
 	private JLabel allergensLB;
 	private JButton add_to_cartJB;
-	DefaultTableModel model;
+	private DefaultTableModel model;
 	
 	private JTextField price_minTF;
 	private JTextField price_maxTF;
 	private JTextField meal_nameTF;
 	private JTextField quantityTF;
 	
-	JScrollBar vbar=new JScrollBar(JScrollBar.VERTICAL, 30, 40, 0, 500);
-	CustomerController customer_controller;
+	private CustomerController customer_controller;
 	public CustomerMealListFrame(CustomerController customer_controller) {
 		
 		initialize();
@@ -141,6 +142,8 @@ public class CustomerMealListFrame extends JFrame {
 		add_to_cart_activeIMG = new ImageIcon("src\\images\\CustomerImages\\addToCartActive.PNG");
 		back_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonInactive.PNG");
 		back_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonActive.PNG");
+		search_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\ricercaFiltroButtonInactive.PNG");
+		search_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\ricercaFiltroButtonActive.PNG");
 		
 		
 		
@@ -159,7 +162,6 @@ public class CustomerMealListFrame extends JFrame {
 		attributes_panel = new JPanel();
 		buttons_panel = new JPanel();
 		filters_subpanel = new JPanel();
-		filters_subpanel2 = new JPanel();
 		
 		title_panel = new JPanel();
 		filters_panel = new JPanel();
@@ -169,6 +171,7 @@ public class CustomerMealListFrame extends JFrame {
 		filtriLB = new JLabel();
 		allergensLB = new JLabel("Seleziona le tue allergie alimentari:");
 		add_to_cartJB = new JButton();
+		searchJB = new JButton();
 		
 		table = (new JTable() {
 			
@@ -188,6 +191,9 @@ public class CustomerMealListFrame extends JFrame {
 		allergens_panel = new JPanel();
 		allergens_panel2 = new JPanel();
 		dishCB = new JComboBox<Object>(dish_array_strings);
+		quantity_panel = new JPanel();
+
+		quantityLB = new JLabel("  Quantità:");
 		
 		price_minTF = new RoundJTextField(new Color(0x771007));
 		price_maxTF = new RoundJTextField(new Color(0x771007));
@@ -287,7 +293,7 @@ public class CustomerMealListFrame extends JFrame {
 		sql_panel2.add(filters_panel, BorderLayout.CENTER);
 		
 		createStandardPanel(buttons_panel2, null, new Dimension(100,100));
-		buttons_panel2.setLayout(new BorderLayout(0,3));
+		buttons_panel2.setLayout(new BorderLayout(0,0));
 		sql_panel2.add(buttons_panel2, BorderLayout.SOUTH);
 		
 		//Sottopannelli di filters_panel
@@ -353,22 +359,27 @@ public class CustomerMealListFrame extends JFrame {
 		setupButton(logoutJB,logout_inactiveIMG,new Dimension(50,100));
 		buttons_panel.add(logoutJB);
 		
-		setupButton(add_to_cartJB, add_to_cart_inactiveIMG, new Dimension(200,50));
-		buttons_panel2.add(add_to_cartJB);
-		
-		JPanel quantity_panel;
-		quantity_panel = new JPanel();
-		createStandardPanel(quantity_panel, null, new Dimension(100,30));
-		buttons_panel2.add(quantity_panel, BorderLayout.NORTH);
+
+		setupButton(searchJB, search_button_inactiveIMG, new Dimension(200,30));
+		buttons_panel2.add(searchJB);
 
 		
-		JLabel quantityLB;
-		quantityLB = new JLabel("Quantità: ");
+
+		createStandardPanel(quantity_panel, null, new Dimension(100,50));
+		buttons_panel2.add(quantity_panel, BorderLayout.SOUTH);
+
+		setupButton(add_to_cartJB, add_to_cart_inactiveIMG, new Dimension(200,30));
+		quantity_panel.add(add_to_cartJB);
+		
+
 		quantityLB.setSize(new Dimension(100,25));
 		quantity_panel.add(quantityLB);
 		
-		createTextField(quantityTF, "1", new Dimension(100,25));
+		createTextField(quantityTF, "1", new Dimension(50,25));
 		quantity_panel.add(quantityTF);
+		
+
+		
 		
 			
 	}
@@ -467,6 +478,21 @@ public class CustomerMealListFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				
 				backJB.setIcon(back_button_inactiveIMG);
+				
+			}
+		});
+		
+		searchJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				searchJB.setIcon(search_button_activeIMG);
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				searchJB.setIcon(search_button_inactiveIMG);
 				
 			}
 		});

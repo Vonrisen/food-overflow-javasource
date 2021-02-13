@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
@@ -33,12 +36,13 @@ public class AdminShopFrame extends ComplexFrame{
 	private JTextField address_nameTF;
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
-	private JTextField address_cityTF;
-	private JTextField address_provinceTF;
 	private JTextField working_hoursTF;
 	private JTextField passwordTF;
 	private JTextField closing_daysTF;
 	private AdminController admin_controller;
+	
+	private JComboBox<String> address_provinceCB;
+	private JComboBox<String> address_townCB;
 
 
 	//Create the application
@@ -63,14 +67,14 @@ public class AdminShopFrame extends ComplexFrame{
 		address_nameTF = new RoundJTextField(new Color(0x771007));
 		address_civic_numberTF = new RoundJTextField(new Color(0x771007));
 		address_capTF = new RoundJTextField(new Color(0x771007));
-		address_cityTF = new RoundJTextField(new Color(0x771007));
-		address_provinceTF = new RoundJTextField(new Color(0x771007));
 		working_hoursTF = new RoundJTextField(new Color(0x771007));
 		passwordTF = new RoundJTextField(new Color(0x771007));
 		closing_daysTF = new RoundJTextField(new Color(0x771007));
 
 		riders_searchJB = new JButton();
-
+		address_provinceCB = new JComboBox<String>();
+		address_townCB = new JComboBox<String>();
+		
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 	}
 
@@ -108,12 +112,11 @@ public class AdminShopFrame extends ComplexFrame{
 		createTextField(address_capTF, "CAP", getShort_dim_of_textfield());
 		getAttributes_panel().add(address_capTF);
 
-		createTextField(address_cityTF, "Comune", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_cityTF);
-
-		createTextField(address_provinceTF, "Provincia", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_provinceTF);
-
+		address_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(address_provinceCB);
+		
+		address_townCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(address_townCB);
 		createTextField(working_hoursTF, "Orario di apertura", getShort_dim_of_textfield());
 		getAttributes_panel().add(working_hoursTF);
 
@@ -125,6 +128,8 @@ public class AdminShopFrame extends ComplexFrame{
 
 		setupButton(riders_searchJB, search_riders_inactiveIMG, new Dimension(335,30));
 		getAttributes_panel().add(riders_searchJB);
+		
+		
 
 	}
 
@@ -171,8 +176,6 @@ public class AdminShopFrame extends ComplexFrame{
 					address_nameTF.setText(address.getAddress());
 					address_civic_numberTF.setText(address.getCivic_number());
 					address_capTF.setText(address.getCap());
-					address_cityTF.setText(address.getCity());
-					address_provinceTF.setText(address.getProvince_abbrevation());
 					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
 					closing_daysTF.setText(closing_days);
 					passwordTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
@@ -271,28 +274,6 @@ public class AdminShopFrame extends ComplexFrame{
 			}
 		});
 
-		address_cityTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(address_cityTF, "Comune");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(address_cityTF, "Comune");
-			}
-		});
-
-		address_provinceTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(address_provinceTF, "Provincia");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(address_provinceTF, "Provincia");
-			}
-		});
-
 		working_hoursTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -335,7 +316,23 @@ public class AdminShopFrame extends ComplexFrame{
 	             admin_controller.releaseAllDaoResourcesAndDisposeFrame(AdminShopFrame.this);
 	         }
 	     });
+		
+		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
+	}
 
+	public void addressProvinceCBitemStateChanged(ItemEvent e) {
+		
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+	    	String selected_item = (String) e.getItem();
+	    	if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia"))
+	    		admin_controller.updateAddressTownsCB(selected_item, AdminShopFrame.this);	
+	    	if(selected_item.equals("Seleziona provincia"))
+	    	{
+	    		getAddress_townCB().removeAllItems();
+				getAddress_townCB().addItem("Seleziona comune");
+	    	}
+	    }
+		
 	}
 
 
@@ -379,24 +376,6 @@ public class AdminShopFrame extends ComplexFrame{
 	}
 
 
-	public JTextField getAddress_cityTF() {
-		return address_cityTF;
-	}
-
-
-	public void setAddress_cityTF(JTextField address_cityTF) {
-		this.address_cityTF = address_cityTF;
-	}
-
-
-	public JTextField getAddress_provinceTF() {
-		return address_provinceTF;
-	}
-
-
-	public void setAddress_provinceTF(JTextField address_provinceTF) {
-		this.address_provinceTF = address_provinceTF;
-	}
 
 
 	public JTextField getWorking_hoursTF() {
@@ -448,4 +427,21 @@ public class AdminShopFrame extends ComplexFrame{
 	}
 
 
+	public JComboBox<String> getAddress_townCB() {
+		return address_townCB;
+	}
+
+
+	public void setAddress_townCB(JComboBox<String> address_townCB) {
+		this.address_townCB = address_townCB;
+	}
+
+
+	public JComboBox<String> getAddress_provinceCB() {
+		return address_provinceCB;
+	}
+
+
+
+	
 }

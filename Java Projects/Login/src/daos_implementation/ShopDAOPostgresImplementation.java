@@ -212,6 +212,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.setString(4, shop.getClosing_days());
 		insert_shop_PS.setString(5, shop.getPassword());
 		insert_shop_PS.setString(6, shop.getEmail());
+		insert_shop_PS.setString(7, shop.getHome_phone());
 		insert_shop_PS.executeUpdate();
 		}catch(SQLException s)
 		{

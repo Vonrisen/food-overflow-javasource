@@ -18,7 +18,7 @@ import utilities.InputUtility;
 
 public class RiderDAOPostgresImplementation implements RiderDAO {
 	
-	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS;
+	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS, get_rider_by_CF_PS;
 	DButility db_util = new DButility();
 	public RiderDAOPostgresImplementation(Connection connection) {
 		try {
@@ -27,7 +27,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			insert_rider_PS = connection.prepareStatement("INSERT INTO Rider (SELECT ?,?,?,?,?,?,?,?,?,?,?,id FROM Shop WHERE email=?)");
 			dismiss_rider_PS = connection.prepareStatement("DELETE FROM Rider WHERE cf=?");
 			update_rider_PS = connection.prepareStatement("UPDATE Rider SET name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
-			
+			get_rider_by_CF_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf =?");
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
@@ -124,7 +124,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}
 		return;
 	}
-	
+
 	public void closeStatements() throws DaoException {
 		
 		db_util.releaseResources(get_all_riders_PS);
@@ -135,4 +135,30 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		
 	}
 
+	@Override
+	public Rider getRiderByCf(String cf) throws DaoException {
+		ResultSet rs = null;
+		List<String>address_fields = new ArrayList<String>();
+		InputUtility string_util = new InputUtility(); 
+		Rider rider = null;
+		try {
+			get_rider_by_CF_PS.setString(1, cf);
+			rs = get_rider_by_CF_PS.executeQuery();
+			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
+			while(rs.next())
+			{
+				address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
+				rider = (new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"), new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),rs.getString("gender"),
+					       rs.getString("cellphone"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+						   rs.getString("vehicle"),rs.getString("working_hours"),rs.getShort("deliveries_number")));
+				
+			}
+		} catch (SQLException e) {
+			throw new DaoException();
+		}finally
+		{
+			db_util.releaseResources(rs);
+		}
+		return rider;
+	}
 }

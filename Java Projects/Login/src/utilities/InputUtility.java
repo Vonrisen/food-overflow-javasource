@@ -33,7 +33,7 @@ public class InputUtility {
 	public String addressToTokenizedString(Address address, String delimiters)
 	{
 		String tokenized_address;
-		tokenized_address = address.getAddress()+delimiters+address.getCivic_number()+delimiters+address.getCap()+delimiters+address.getCity()+delimiters+address.getProvince_abbrevation();
+		tokenized_address = address.getAddress()+delimiters+address.getCivic_number()+delimiters+address.getCap()+delimiters+address.getCity()+delimiters+address.getProvince();
 		return tokenized_address;
 	}
 	

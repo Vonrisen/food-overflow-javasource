@@ -11,4 +11,5 @@ public interface RiderDAO {
 	public void dismissRider(Rider rider) throws DaoException;
 	public void updateRider(Rider rider) throws DaoException;
 	public void closeStatements() throws DaoException;
+	public Rider getRiderByCf(String cf) throws DaoException;
 }

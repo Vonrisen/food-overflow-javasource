@@ -4,15 +4,13 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import daos_implementation.MealDAOPostgresImplementation;
 import daos_implementation.OrderDAOPostgresImplementation;
 import daos_implementation.RiderDAOPostgresImplementation;
-import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
@@ -36,24 +34,18 @@ import gui.ShopViewOrdersFrame;
 import utilities.CodiceFiscaleUtility;
 import utilities.DButility;
 import utilities.InputUtility;
+import utilities.IstatUtils;
 import utilities.TableModelUtility;
 
 public class ShopController {
 	
 	private String current_shop_email;
-	private TableModelUtility table = new TableModelUtility();
-	private List<Rider> rider_list = new ArrayList<Rider>();
-	private List<Meal> meal_list = new ArrayList<Meal>();
-	private List<Order> all_order_list = new ArrayList<Order>();
-	private List<Order> pending_order_list = new ArrayList<Order>();
-	private List<Order> delivering_order_list = new ArrayList<Order>();
 	Connection connection;
 	private ShopDAO shop_dao;
 	private OrderDAO order_dao;
 	private MealDAO meal_dao;
 	private RiderDAO rider_dao;
 	private CustomerDAO customer_dao;
-	DButility db_utility = new DButility();
 	
 	public ShopController(String email, Connection connection, ShopDAO shop_dao, CustomerDAO customer_dao, MealDAO meal_dao) 
 	{
@@ -77,45 +69,69 @@ public class ShopController {
 	public void openShopMealFrame(JFrame frame)
 	{
 		frame.dispose();
+		TableModelUtility table = new TableModelUtility();
 		ShopMealFrame shop_meal_frame = new ShopMealFrame(this);
-		initializeMealList();
-		table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
+		List<Meal>meal_list = new ArrayList<Meal>();
+		try {
+			meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
+			table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null,
+					"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+		} 
 		shop_meal_frame.setVisible(true);
 		return;
 	}
 	
 	public void openShopRiderFrame(JFrame frame)
 	{
+		
 		frame.dispose();
+		TableModelUtility table = new TableModelUtility();
 		ShopRiderFrame shop_rider_frame = new ShopRiderFrame(this);
-		initializeRiderList();
-		table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
-		shop_rider_frame.setVisible(true);
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> nations = istat_utils.getNations();
+		List<String> provinces = istat_utils.getProvinces();
+		shop_rider_frame.getBirth_nationCB().addItem("ITALIA");
+		shop_rider_frame.getAddress_provinceCB().addItem("Seleziona provincia di residenza");
+		shop_rider_frame.getAddress_provinceCB().addItem("-------------------");
+		for(String s : nations)
+			shop_rider_frame.getBirth_nationCB().addItem(s);
+		for(String s : provinces)
+		{
+			shop_rider_frame.getBirth_provinceCB().addItem(s);
+			shop_rider_frame.getAddress_provinceCB().addItem(s);
+		}
+		List<Rider>rider_list = new ArrayList<Rider>();
+			try {
+				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
+				table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
+				shop_rider_frame.setVisible(true);
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+			} 
+			shop_rider_frame.setVisible(true);
 		return;
 	}
 	
 	public void openShopAllMealsFrame()
 	{
 		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
-		meal_list = getAllMealsExceptShopMeals();
-		table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
+		TableModelUtility table = new TableModelUtility();
+		List<Meal> meal_list = new ArrayList<Meal>();
+		try {
+			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
+			if(!meal_list.isEmpty())
+				table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
+			else
+				JOptionPane.showMessageDialog(null, "Lo shop selezionato non vende alimenti","Warning",JOptionPane.WARNING_MESSAGE);
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+		}
 		shop_all_meals_frame.setVisible(true);
 		return;
 	}
 
-	public void openAdminRiderFrame() {
-		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
-		if(rider_list.isEmpty()) {
-			try {
-				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-		table.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
-		admin_rider_frame.setVisible(true);
-	}
-	
 	public void openShopOrderManagementFrame(JFrame frame)
 	{
 		frame.dispose();
@@ -126,104 +142,97 @@ public class ShopController {
 	
 	public void openShopViewOrdersFrame(JFrame frame)
 	{
-		frame.dispose();
+		frame.setVisible(false);
+		TableModelUtility table = new TableModelUtility();
 		ShopViewOrdersFrame shop_view_orders_frame = new ShopViewOrdersFrame(this);
-		initializeAllOrdersList();
-		table.initializeCompletedOrderTable(shop_view_orders_frame.getModel(), all_order_list);
-		shop_view_orders_frame.setVisible(true);
-	}
-	
-	public void openShopDeliveringOrdersFrame(JFrame frame) {
-		frame.dispose();
-		ShopDeliveringOrdersFrame shop_delivering_orders_frame = new ShopDeliveringOrdersFrame(this);
-		initializeDeliveringOrdersList();
-		table.initializeDeliveringOrderTable(shop_delivering_orders_frame.getModel(), delivering_order_list);
-		shop_delivering_orders_frame.setVisible(true);
-	}
-	
-	public void openShopPendingOrdersFrame(JFrame frame) {
-		frame.dispose();
-		ShopPendingOrdersFrame shop_pending_orders_frame = new ShopPendingOrdersFrame(this);
-		initializePendingOrdersList();
-		table.initializePendingOrderTable(shop_pending_orders_frame.getModel(), pending_order_list);
-		shop_pending_orders_frame.setVisible(true);
-	}
-	
-	public void initializePendingOrdersList() {
-		if (pending_order_list.isEmpty()) {
-			try {
-				pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-		return;
-	}
-	
-	public void initializeDeliveringOrdersList() {
-		if (delivering_order_list.isEmpty()) {
-			try {
-				delivering_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-		return;
-	}
-	
-	public void initializeAllOrdersList()
-	{
-		
-		if (all_order_list.isEmpty()) {
-			try {
-				all_order_list = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-		return;
-	}
-	
-	public void initializeMealList()
-	{
-		if (meal_list.isEmpty()) {
-			try {
-				meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null,
-						"An error has occurred, please try again or contact the administrator", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-		return;
-	}
-	
-	public void initializeRiderList() {
-		
-		if (rider_list.isEmpty()) {
-			try {
-				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
-			} 
-		}
-	}
-	
-	public List<Meal> getAllMealsExceptShopMeals() {
-		List<Meal> meal_list = new ArrayList<Meal>();
+		List<Order> all_orders = new ArrayList<Order>();
 		try {
-			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
+			all_orders = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
+			if(!all_orders.isEmpty())
+			{
+			    table.initializeCompletedOrderTable(shop_view_orders_frame.getModel(), all_orders);
+			    shop_view_orders_frame.setVisible(true);
+			}
+			else
+			{
+				frame.setVisible(true);
+				JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha ordini completati","Warning",JOptionPane.WARNING_MESSAGE);
+			}
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		} 
+
+		return;
+	}
+	public void openAdminRiderFrame()
+	{
+		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
+		TableModelUtility table = new TableModelUtility();
+		List<Rider>employed_rider_list = new ArrayList<Rider>();
+		try {
+			employed_rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
 		}
-		return meal_list;
+		if(!employed_rider_list.isEmpty())
+		{
+			table.initializeRiderTable(admin_rider_frame.getModel(), employed_rider_list);
+			admin_rider_frame.setVisible(true);
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha rider in servizio","Warning",JOptionPane.WARNING_MESSAGE);
+		return;
+	}
+	public void openShopDeliveringOrdersFrame(JFrame frame) {
+		frame.setVisible(false);
+		ShopDeliveringOrdersFrame shop_delivering_orders_frame = new ShopDeliveringOrdersFrame(this);
+		TableModelUtility table = new TableModelUtility();
+		List<Order> in_delivery_order_list = new ArrayList<Order>();
+			try {
+				in_delivery_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
+				if(!in_delivery_order_list.isEmpty())
+				{
+				    table.initializeDeliveringOrderTable(shop_delivering_orders_frame.getModel(), in_delivery_order_list);
+					shop_delivering_orders_frame.setVisible(true);
+				}
+				else
+				{
+					frame.setVisible(true);
+					JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha ordini in consegna","Warning",JOptionPane.WARNING_MESSAGE);
+				}
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+	}
+			return;
 	}
 	
+	public void openShopPendingOrdersFrame(JFrame frame) {
+		
+		frame.setVisible(false);
+		TableModelUtility table = new TableModelUtility();
+		ShopPendingOrdersFrame shop_pending_orders_frame = new ShopPendingOrdersFrame(this);
+		List<Order> pending_order_list = new ArrayList<Order>();
+		try {
+			pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
+			if(!pending_order_list.isEmpty())
+			{
+			    table.initializePendingOrderTable(shop_pending_orders_frame.getModel(), pending_order_list);
+				shop_pending_orders_frame.setVisible(true);
+			}
+			else
+			{
+				frame.setVisible(true);
+				JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha ordini in attesa di essere ritirati dai rider","Warning",JOptionPane.WARNING_MESSAGE);
+			}
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		} 
+		return;
+	}	
 	public void addMeal(ShopMealFrame shop_meal_frame) {
 		
 		List<Meal> meal_list = new ArrayList<Meal>();
 		int i=0;
-			
 		try {
 			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
@@ -233,12 +242,12 @@ public class ShopController {
 					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
 					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list().toString().substring(1,meal_list.get(i).getAllergen_list().toString().length()-1)});
 			meal_list.remove(meal_list.get(i));
-			JOptionPane.showMessageDialog(null, "Meal succesfully added");
+			JOptionPane.showMessageDialog(null, "Pasto aggiunto correttamente");
 		}
 		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Errore",JOptionPane.ERROR_MESSAGE);
 		}catch (IndexOutOfBoundsException in) {
-			JOptionPane.showMessageDialog(null, "Wrong meal name or meal already inserted","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Pasto errato oppure e' gia' disponibile nel negozio","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 			return;
 	}
@@ -247,28 +256,25 @@ public class ShopController {
 		
 		InputUtility input_util = new InputUtility();
 		CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
+		IstatUtils istat_utils = new IstatUtils();
 		try {
 			String name = shop_rider_frame.getNameTF().getText();
 			String surname = shop_rider_frame.getSurnameTF().getText();
-			String birth_date = shop_rider_frame.getBirth_dateTF().getText();
-			String birth_place_town = shop_rider_frame.getBirth_placeTF().getText();
+			Date birth_date = new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText());
+			String birth_place_town = shop_rider_frame.getBirth_townCB().getSelectedItem().toString();
 			String gender = shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1);
-			String CF = codice_fiscale.getCF(name,surname ,	new SimpleDateFormat("dd/MM/yyyy").parse(birth_date) ,birth_place_town ,gender.charAt(0));
+			String CF = codice_fiscale.getCF(name,surname ,	birth_date ,birth_place_town ,gender.charAt(0));
 			if(!CF.equals("Errore!"))
 			{
-			Rider rider = new Rider(CF,shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(), 
-					new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()), shop_rider_frame.getBirth_placeTF().getText(), 
-					shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1), shop_rider_frame.getCellphoneTF().getText(),
-					new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
+			Rider rider = new Rider(CF,name ,surname , birth_date, birth_place_town,gender , shop_rider_frame.getCellphoneTF().getText(), new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
 					shop_rider_frame.getAddress_capTF().getText(), shop_rider_frame.getAddress_cityTF().getText(), 
 					shop_rider_frame.getAddress_provinceTF().getText()), shop_rider_frame.getVehicleCB().getSelectedItem().toString(), 
 					shop_rider_frame.getWorking_hoursTF().getText(),(short)0);
 			rider_dao.insertRider(rider,current_shop_email);
-			shop_rider_frame.getModel().insertRow(rider_list.size(), new Object[] {rider.getCf(), rider.getName(), rider.getSurname(), 
+			shop_rider_frame.getModel().insertRow(shop_rider_frame.getModel().getRowCount(), new Object[] {rider.getCf(), rider.getName(), rider.getSurname(), 
 					input_util.formatDate(rider.getBirth_date()), rider.getBirth_place(), rider.getAddress().toString(), rider.getGender(), rider.getCellphone(), 
 					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
-			rider_list.add(rider);
-			JOptionPane.showMessageDialog(null, "This rider can now work for this shop");
+			JOptionPane.showMessageDialog(null, "Rider assunto con successo");
 			
 		} }
 		catch (DaoException e) {
@@ -284,17 +290,15 @@ public class ShopController {
 	
 	public void removeMeal(ShopMealFrame shop_meal_frame){
 		
-		if(shop_meal_frame.getTable().getSelectedRow() != -1) {
+		int row = shop_meal_frame.getTable().getSelectedRow() ;
+		if(row != -1) {
 
-			int selected_row = shop_meal_frame.getTable().getSelectedRow();
-			String meal_name_to_remove = shop_meal_frame.getTable().getValueAt(selected_row, 0).toString();
+			String meal_name_to_remove = shop_meal_frame.getTable().getValueAt(row, 0).toString();
 			int i = 0;
 			try {
-				while(!meal_list.get(i).getName().equals(meal_name_to_remove))
-					i++;
-				meal_dao.deleteFromSupply(current_shop_email, meal_list.get(i));
-				shop_meal_frame.getModel().removeRow(selected_row);
-				meal_list.remove(i);
+				Meal meal_to_remove = meal_dao.getMealByName(meal_name_to_remove);
+				meal_dao.deleteFromSupply(current_shop_email, meal_to_remove);
+				shop_meal_frame.getModel().removeRow(row);
 				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
@@ -308,18 +312,15 @@ public class ShopController {
 	
 	public void removeRider(ShopRiderFrame shop_rider_frame) {
 		
-		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
-
-			int selected_row = shop_rider_frame.getTable().getSelectedRow();
-			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(selected_row, 0).toString();
+		int row = shop_rider_frame.getTable().getSelectedRow();
+		if(row != -1) {
+			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(row, 0).toString();
 			int i = 0;
 			try {
-				while(!rider_list.get(i).getCf().equals(cf_of_the_rider_to_dismiss))
-					i++;
-				rider_dao.dismissRider(rider_list.get(i));
-				shop_rider_frame.getModel().removeRow(selected_row);
-				rider_list.remove(i);
-				JOptionPane.showMessageDialog(null, "Selected rider dismissed successfully");
+				Rider rider_to_dismiss = rider_dao.getRiderByCf(cf_of_the_rider_to_dismiss);
+				rider_dao.dismissRider(rider_to_dismiss);
+				shop_rider_frame.getModel().removeRow(row);
+				JOptionPane.showMessageDialog(null, "Rider licenziato con successo");
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errors while trying to dismiss selected rider","Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -338,26 +339,26 @@ public class ShopController {
 			CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 			int i = 0;
 			try {
-			while(!rider_list.get(i).getCf().equals(cf_of_rider_to_update))
-				i++;
-			String CF = codice_fiscale.getCF(shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(),new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()),shop_rider_frame.getBirth_placeTF().getText(),shop_rider_frame.getGenderCB().getSelectedItem().toString().charAt(0) );
+			
+			Rider rider_to_update = rider_dao.getRiderByCf(cf_of_rider_to_update);
+			String CF = codice_fiscale.getCF(shop_rider_frame.getNameTF().getText(), shop_rider_frame.getSurnameTF().getText(),new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()),shop_rider_frame.getBirth_townCB().getSelectedItem().toString(),shop_rider_frame.getGenderCB().getSelectedItem().toString().charAt(0) );
 			if(!CF.equals("Errore!"))
 			{
-			rider_list.get(i).setCf(CF);
-			rider_list.get(i).setName(shop_rider_frame.getNameTF().getText());
-			rider_list.get(i).setSurname(shop_rider_frame.getSurnameTF().getText());
-			rider_list.get(i).setAddress(new Address(shop_rider_frame.getAddress_nameTF().getText(),
+			rider_to_update.setCf(CF);
+			rider_to_update.setName(shop_rider_frame.getNameTF().getText());
+			rider_to_update.setSurname(shop_rider_frame.getSurnameTF().getText());
+			rider_to_update.setAddress(new Address(shop_rider_frame.getAddress_nameTF().getText(),
 					shop_rider_frame.getAddress_civic_numberTF().getText(), shop_rider_frame.getAddress_capTF().getText(),
 					shop_rider_frame.getAddress_cityTF().getText(), shop_rider_frame.getAddress_provinceTF().getText()));
-			rider_list.get(i).setCellphone(shop_rider_frame.getCellphoneTF().getText());
-			rider_list.get(i).setGender(shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1));
-			rider_list.get(i).setVehicle(shop_rider_frame.getVehicleCB().getSelectedItem().toString());
-			rider_list.get(i).setWorking_hours(shop_rider_frame.getWorking_hoursTF().getText());
-			rider_list.get(i).setBirth_date(new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()));
-			rider_list.get(i).setBirth_place(shop_rider_frame.getBirth_placeTF().getText());
-			rider_dao.updateRider(rider_list.get(i));
-			updateRiderTableColumns(shop_rider_frame, selected_row, rider_list.get(i));
-				JOptionPane.showMessageDialog(null, "Selected shop updated succesfully");
+			rider_to_update.setCellphone(shop_rider_frame.getCellphoneTF().getText());
+			rider_to_update.setGender(shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1));
+			rider_to_update.setVehicle(shop_rider_frame.getVehicleCB().getSelectedItem().toString());
+			rider_to_update.setWorking_hours(shop_rider_frame.getWorking_hoursTF().getText());
+			rider_to_update.setBirth_date(new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()));
+			rider_to_update.setBirth_place(shop_rider_frame.getBirth_townCB().getSelectedItem().toString());
+			rider_dao.updateRider(rider_to_update);
+			updateRiderTableColumns(shop_rider_frame, selected_row, rider_to_update);
+				JOptionPane.showMessageDialog(null, "Shop aggiornato con successo");
 			} }catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -394,14 +395,11 @@ public class ShopController {
 	}
 	
 	public void updatePendingOrder(ShopPendingOrdersFrame shop_pending_orders_frame) {
-		int i=0;
+		
 		try {
-			while(!pending_order_list.get(i).getId().equals(shop_pending_orders_frame.getOrderTF().getText()))
-				i++;
-			order_dao.updatePendingOrder(pending_order_list.get(i), shop_pending_orders_frame.getRiderTF().getText());
-			delivering_order_list.add(pending_order_list.get(i));
-			pending_order_list.remove(i);
-			shop_pending_orders_frame.getModel().removeRow(i);
+			Order pending_order = order_dao.getOrderById(shop_pending_orders_frame.getOrderTF().getText());
+			order_dao.updatePendingOrder(pending_order, shop_pending_orders_frame.getRiderTF().getText());
+			shop_pending_orders_frame.getModel().removeRow(shop_pending_orders_frame.getTable().getSelectedRow());
 		} catch (IndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "ID non trovato. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
 		} catch (DaoException e) {
@@ -409,15 +407,13 @@ public class ShopController {
 		}
 	}
 	
-	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_order_frame) {
+	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_orders_frame) {
 		int i=0;
 		try {
-			while(!delivering_order_list.get(i).getId().equals(shop_delivering_order_frame.getOrderTF().getText()))
-				i++;
-			order_dao.updateDeliveringOrder(delivering_order_list.get(i), shop_delivering_order_frame.getStatusCB().getSelectedItem().toString());
-			all_order_list.add(delivering_order_list.get(i));
-			delivering_order_list.remove(i);
-			shop_delivering_order_frame.getModel().removeRow(i);
+			
+			Order in_delivery_order = order_dao.getOrderById(shop_delivering_orders_frame.getOrderTF().getText());
+			order_dao.updateDeliveringOrder(in_delivery_order, shop_delivering_orders_frame.getStatusCB().getSelectedItem().toString());
+			shop_delivering_orders_frame.getModel().removeRow(shop_delivering_orders_frame.getTable().getSelectedRow());
 		} catch (IndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "ID non trovato. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
 		} catch (DaoException e) {
@@ -428,13 +424,10 @@ public class ShopController {
 	public String getcurrent_shop_email() {
 		return current_shop_email;
 	}
-
-	public void setcurrent_shop_email(String current_shop_email) {
-		this.current_shop_email = current_shop_email;
-	}
 	
 	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame)
 	{
+		DButility db_utility = new DButility();
 		try {
 			shop_dao.closeStatements();
 			order_dao.closeStatements();
@@ -461,5 +454,27 @@ public class ShopController {
 			System.exit(-1);
 		}
 		return;
+	}
+
+	public void updateBirth_townCB(String selected_province, ShopRiderFrame shopRiderFrame) {
+		
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> towns = istat_utils.getTownsByProvince(selected_province);
+		shopRiderFrame.getBirth_townCB().removeAllItems();
+		for(String s : towns)
+			shopRiderFrame.getBirth_townCB().addItem(s);
+		return;
+		
+	}
+
+	public void updateAddress_townCB(String selected_province, ShopRiderFrame shopRiderFrame) {
+		
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> towns = istat_utils.getTownsByProvince(selected_province);
+		shopRiderFrame.getAddress_townCB().removeAllItems();
+		for(String s : towns)
+			shopRiderFrame.getAddress_townCB().addItem(s);
+		return;
+		
 	}
 }
