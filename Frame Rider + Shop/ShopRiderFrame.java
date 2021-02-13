@@ -42,6 +42,7 @@ public class ShopRiderFrame extends ComplexFrame{
 	private JComboBox<String> address_townCB;
 	private JComboBox<String> birth_placeCB;
 	private JComboBox<String> birth_stateCB;
+	private JComboBox<String> birth_provinceCB;
 	private ShopController shop_controller;
 
 
@@ -73,6 +74,7 @@ public class ShopRiderFrame extends ComplexFrame{
 		address_townCB = new JComboBox<String>();
 		birth_stateCB = new JComboBox<String>();
 		birth_placeCB = new JComboBox<String>();
+		birth_provinceCB = new JComboBox<String>();
 	}
 
 	private void setupFrame() {
@@ -91,13 +93,16 @@ public class ShopRiderFrame extends ComplexFrame{
 		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", getShort_dim_of_textfield());
 		getAttributes_panel().add(birth_dateTF);
 		
-		birth_placeCB.setPreferredSize(getShort_dim_of_textfield());
-		getAttributes_panel().add(birth_placeCB);
-		
 		birth_stateCB.setPreferredSize(getShort_dim_of_textfield());
 		getAttributes_panel().add(birth_stateCB);
+		
+		birth_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_provinceCB);
+		
+		birth_placeCB.setPreferredSize(getShort_dim_of_textfield());
+		getAttributes_panel().add(birth_placeCB);
 
-		createTextField(address_nameTF, "Nome dell'indirizzo", getShort_dim_of_textfield());
+		createTextField(address_nameTF, "Nome dell'indirizzo", getLong_dim_of_textfield());
 		getAttributes_panel().add(address_nameTF);
 
 		createTextField(address_civic_numberTF, "Numero civico", getShort_dim_of_textfield());
