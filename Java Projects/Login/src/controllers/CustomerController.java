@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.ShopDAO;
+import entities.Customer;
 import entities.Meal;
 import entities.Shop;
 import exceptions.DaoException;
@@ -23,17 +24,18 @@ import utilities.TableModelUtility;
 
 public class CustomerController {
 	
-	
-	private String customer_email;
+	private Customer customer;
+	//Negozio sul quale l' utente al momento sta effettuando acquisti
+	private Shop shop;
 	CustomerDAO customer_dao;
 	ShopDAO shop_dao;
 	MealDAO meal_dao;
 	Connection connection;
 	
-	public CustomerController(String email, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao)
+	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao)
 	{
 		
-		this.customer_email = email;
+		this.customer = customer;
 		this.connection = connection;
 		this.customer_dao = customer_dao;
 		this.shop_dao = shop_dao;
@@ -57,24 +59,24 @@ public class CustomerController {
 			if(istat_utils.isProvinceValid(customer_frame.getProvinceTF().getText()))
 			{
 				customer_frame.dispose();
-				openCustomerShopListFrame();
+				openCustomerShopListFrame(customer_frame.getProvinceTF().getText());
 			}
 			else
 				JOptionPane.showMessageDialog(null,"Non sono riuscito a trovare la tua provincia, riprovare", "Error",JOptionPane.ERROR_MESSAGE);
 	}
-	public void openCustomerShopListFrame() {
+	public void openCustomerShopListFrame(String shop_province) {
 		
 		TableModelUtility table_util = new TableModelUtility();
 		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this);
 		List<Shop>shop_list = new ArrayList<Shop>();
 		try {
-			shop_list = shop_dao.getAllShops();
+			shop_list = shop_dao.getShopByProvince(shop_province);
+			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null,
 					"An error has occurred, please try again or contact the administrator", "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	    table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
 		customer_shop_list_frame.setVisible(true);
 		return;
 	}
@@ -87,6 +89,7 @@ public class CustomerController {
 		List<Meal>meal_list = new ArrayList<Meal>();
 		try {
 			meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
+			this.shop = shop_dao.getShopByEmail(shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null,
 					"An error has occurred, please try again or contact the administrator", "Error",

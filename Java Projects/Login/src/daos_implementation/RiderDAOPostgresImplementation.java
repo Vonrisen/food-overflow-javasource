@@ -50,7 +50,6 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			rider_list.add(new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"), new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),rs.getString("gender"),
 				       rs.getString("cellphone"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
 					   rs.getString("vehicle"),rs.getString("working_hours"),rs.getShort("deliveries_number")));
-			
 		}
 		}catch(SQLException s)
 		{

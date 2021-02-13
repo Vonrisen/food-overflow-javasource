@@ -20,6 +20,7 @@ import controllers.AdminController;
 import entities.Address;
 import gui_support.RoundJTextField;
 import utilities.InputUtility;
+import utilities.IstatUtils;
 
 
 public class AdminShopFrame extends ComplexFrame{
@@ -160,7 +161,7 @@ public class AdminShopFrame extends ComplexFrame{
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				if(!getTable().getSelectionModel().isSelectionEmpty()) {
-					InputUtility input_util= new InputUtility();
+					InputUtility input_util = new InputUtility();
 					Address address;
 					String closing_days;
 					address = input_util.tokenizedStringToAddress(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString(), "(, )");
@@ -180,7 +181,6 @@ public class AdminShopFrame extends ComplexFrame{
 					closing_daysTF.setText(closing_days);
 					passwordTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
 					home_phoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 6).toString());
-
 				}
 			}
 		});

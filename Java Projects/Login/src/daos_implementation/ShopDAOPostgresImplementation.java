@@ -25,7 +25,8 @@ import utilities.InputUtility;
 
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
-	PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS,get_shop_by_email_PS ;
+	PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS, get_riders_of_a_shop_by_shop_email_PS,get_meals_of_a_shop_by_shop_email_PS,
+					  get_allergens_of_a_meal_PS,get_shop_by_email_PS, get_shop_by_province_PS;
 	CallableStatement update_shop_CS;
 	DButility db_util = new DButility();
 	public ShopDAOPostgresImplementation(Connection connection) {
@@ -41,6 +42,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 					+ "FROM Rider WHERE shop_id=(SELECT id FROM Shop WHERE email=?)");
 			get_meals_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM MEAL WHERE id IN(SELECT meal_id FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_allergens_of_a_meal_PS = connection.prepareStatement("SELECT allergen_name FROM MEALCOMPOSITION WHERE meal_id=?");
+			get_shop_by_province_PS = connection.prepareStatement("SELECT * FROM Shop WHERE SPLIT_PART(address,', ',5)=UPPER(?)");
 			
 		}catch(SQLException s)
 		{
@@ -216,7 +218,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		insert_shop_PS.executeUpdate();
 		}catch(SQLException s)
 		{
-			System.out.println(s.getMessage());
 			throw new DaoException();
 		}
 		return;
@@ -250,7 +251,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		update_shop_CS.setString(6, shop.getEmail());
 		update_shop_CS.setString(7, shop.getHome_phone());
 		update_shop_CS.setString(8, old_email);
-	    update_shop_CS.executeUpdate();
+	    System.out.println(update_shop_CS.executeUpdate());
 		}catch(SQLException s)
 		{
 			throw new DaoException();
@@ -346,5 +347,79 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 		return shop;
 	}
+	
+	public List<Shop> getShopByProvince(String province) throws DaoException {
+		
+		InputUtility string_util = new InputUtility();
+		List<Shop> shop_list = new ArrayList<Shop>();
+		List<String>address_fields = new ArrayList<String>();
+		List<Rider> employed_rider_list;
+		List<Meal> meal_list;
+		ResultSet rs = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		try
+		{
+		get_shop_by_province_PS.setString(1, province);
+		rs = get_shop_by_province_PS.executeQuery();
+		while(rs.next())
+		{
+			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
+			employed_rider_list = new ArrayList<Rider>();
+			meal_list = new ArrayList<Meal>();
+			try
+			{
+			get_riders_of_a_shop_by_shop_email_PS.setString(1, rs.getString("email"));
+			rs1 = get_riders_of_a_shop_by_shop_email_PS.executeQuery();
+			while(rs1.next())
+			{
+				address_fields = string_util.tokenizedStringToList(rs1.getString("address"),"(, )");
+				employed_rider_list.add(new Rider(rs1.getString("cf"),rs1.getString("name"),rs1.getString("surname"), new Date(rs1.getDate("birth_date").getTime()),rs1.getString("birth_place"),rs1.getString("gender"),
+						rs1.getString("cellphone"),new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+						rs1.getString("vehicle"),rs.getString("working_hours"),rs1.getShort("deliveries_number")));
+			}}catch(SQLException s)
+			{
+				throw new DaoException();
+			}
+			try
+			{
+			get_meals_of_a_shop_by_shop_email_PS.setString(1, rs.getString("email"));
+			rs2 = get_meals_of_a_shop_by_shop_email_PS.executeQuery();
+			meal_list = new ArrayList<Meal>();
+			while(rs2.next())
+			{
+				get_allergens_of_a_meal_PS.setString(1, rs2.getString("id"));
+				rs3 = get_allergens_of_a_meal_PS.executeQuery();
+				ArrayList<String> allergens = new ArrayList<String>();;
+				while(rs3.next())
+				{
+					String allergen = rs3.getString("allergen_name");
+					allergens.add(allergen);
+				}
+				meal_list.add(new Meal(rs2.getString("name"),rs2.getFloat("price"),rs2.getString("ingredients"),rs2.getString("category"),allergens));
+			}}catch(SQLException s)
+			{
+				throw new DaoException();
+			}
+			shop_list.add(new Shop(rs.getString("email"),rs.getString("name"), rs.getString("password"), rs.getString("working_hours"),
+				          new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+				          rs.getString("closing_days"), employed_rider_list, meal_list, rs.getString("home_phone")));
+		}}catch(SQLException s)
+		{
+
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.releaseResources(rs);
+			 db_util.releaseResources(rs1);
+			 db_util.releaseResources(rs2);
+			 db_util.releaseResources(rs3);
+		}
+		return shop_list;
+	}
+	
+	
 	
 }

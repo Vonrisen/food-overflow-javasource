@@ -52,21 +52,6 @@ public class AdminController {
 		AdminFrame admin_frame = new AdminFrame(this, login_controller);
 		admin_frame.setVisible(true);
 	}
-//	frame.dispose();
-//	RegisterFrame register_frame = new RegisterFrame(this);
-//	register_frame.setVisible(true);
-//	IstatUtils istat_utils = new IstatUtils();
-//	List<String> nations = istat_utils.getNations();
-//	List<String> provinces = istat_utils.getProvinces();
-//	register_frame.getStatiCB().addItem("ITALIA");
-//	for(String s : nations)
-//	    register_frame.getStatiCB().addItem(s);
-//	for(String s : provinces)
-//	{
-//		register_frame.getProvincesCB().addItem(s);
-//		register_frame.getAddress_provinceCB().addItem(s);
-//	}
-//	return;
 	public void openAdminShopFrame(JFrame frame)
 	{
 		frame.dispose();
@@ -165,7 +150,7 @@ public class AdminController {
 				     admin_shop_frame.getAddress_townCB().getSelectedItem().toString(), admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString()), admin_shop_frame.getClosing_daysTF().getText(), null, null, admin_shop_frame.getHome_phoneTF().getText());
 			shop_dao.insertShop(shop);
 			admin_shop_frame.getModel().insertRow(admin_shop_frame.getModel().getRowCount(), new Object[] {shop.getEmail(), shop.getPassword(),
-			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days()});
+			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days(), shop.getHome_phone()});
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi.\nHint: Controlla la validita' dell' indirizzo, email, orario lavorativo e giorni di chiusura","Error",JOptionPane.ERROR_MESSAGE);
 		}
@@ -185,7 +170,7 @@ public class AdminController {
 			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
 			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 			meal_dao.insertMeal(meal);
-			admin_meal_frame.getModel().insertRow(admin_meal_frame.getModel().getRowCount()+1, new Object[]{meal.getName(), meal.getCategory(), new DecimalFormat("00.00").format(meal.getPrice()),
+			admin_meal_frame.getModel().insertRow(admin_meal_frame.getModel().getRowCount(), new Object[]{meal.getName(), meal.getCategory(), new DecimalFormat("00.00").format(meal.getPrice()),
 														meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi","Error",JOptionPane.ERROR_MESSAGE);
@@ -223,7 +208,6 @@ public class AdminController {
 		if(row!=-1)
 		{
 			String name_of_meal_to_delete = admin_meal_frame.getTable().getModel().getValueAt(row, 0).toString();
-			int i = 0;
 			try {
 				Meal meal = meal_dao.getMealByName(name_of_meal_to_delete);
 				meal_dao.deleteMeal(meal);

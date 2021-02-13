@@ -190,27 +190,30 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	@Override
 	public Meal getMealByName(String name) throws DaoException {
 		
-		ResultSet rs = null;
+		ArrayList<String> allergens;
+		Meal meal = null;
+		ResultSet rs2 = null;
 		ResultSet rs1 = null;
-		List<String>allergens = new ArrayList<String>();
-		Meal meal;
-		try {
-			get_meal_by_name_PS.setString(1, name);
-			rs = get_meal_by_name_PS.executeQuery();
-			while(rs.next())
-				get_allergens_of_a_meal_PS.setString(1,rs.getString("id"));
-			    rs1 = get_allergens_of_a_meal_PS.executeQuery();
-				while(rs1.next())
-					allergens.add(rs1.getString("allergen_name"));
-				meal = new Meal(rs.getString("name"), rs.getFloat("price"), rs.getString("ingredients"), rs.getString("category"), allergens);
-		} catch (SQLException e) {
+		try
+		{
+		get_meal_by_name_PS.setString(1, name);
+		rs1 = get_meal_by_name_PS.executeQuery();
+		while(rs1.next()){
+			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
+			rs2 = get_allergens_of_a_meal_PS.executeQuery();
+			allergens = new ArrayList<String>();
+			while(rs2.next())
+				allergens.add(rs2.getString("allergen_name"));
+			meal = new Meal(rs1.getString("name"),rs1.getFloat("price"),rs1.getString("ingredients"),rs1.getString("category"),allergens);
+		}}catch(SQLException s)
+		{
 			throw new DaoException();
-		}finally {
-			db_util.releaseResources(rs);
+		}
+		finally
+		{
+			db_util.releaseResources(rs2);
 			db_util.releaseResources(rs1);
 		}
 		return meal;
 	}
-	
-
 }

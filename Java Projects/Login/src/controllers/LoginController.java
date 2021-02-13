@@ -108,8 +108,8 @@ public class LoginController{
 				if(access_succeded)
 				{
 					login_frame.setVisible(false);
-					String customer_email= login_frame.getUsernameTF().getText();
-					CustomerController customer_controller = new CustomerController(customer_email, connection, customer_dao, shop_dao, meal_dao);
+					Customer customer = customer_dao.getCustomerByEmail(login_frame.getUsernameTF().getText());
+					CustomerController customer_controller = new CustomerController(customer, connection, customer_dao, shop_dao, meal_dao);
 					customer_controller.openCustomerFrame(login_frame);
 				}
 				else

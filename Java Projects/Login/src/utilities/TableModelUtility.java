@@ -108,7 +108,7 @@ public class TableModelUtility {
 		row[0] = shop.getEmail();
 		row[1] = shop.getPassword();
 		row[2] = shop.getName();
-		row[3] = shop.getAddress();
+		row[3] = shop.getAddress().toString();
 		row[4] = shop.getWorking_hours();
 		row[5] = shop.getClosing_days();
 		row[6] = shop.getHome_phone();

@@ -19,7 +19,7 @@ import utilities.InputUtility;
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 
-	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS, get_customer_by_email;
 	DButility db_util = new DButility();
 	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
@@ -28,6 +28,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			delete_customer_PS = connection.prepareStatement("DELETE FROM Customer WHERE email=?");
 			update_customer_PS = connection.prepareStatement("UPDATE Customer SET email=?, password=? WHERE cellphone=?");
 			authenticateCustomerLogin_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=? AND password=?");
+			get_customer_by_email = connection.prepareStatement("SELECT * FROM Customer WHERE email=?");
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
@@ -155,6 +156,32 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		return;
 		
 	}
+    public Customer getCustomerByEmail(String email) throws DaoException {
+	
+	ResultSet rs = null;
+	Customer customer = null;
+	List<String>address_fields = new ArrayList<String>();
+	InputUtility string_util = new InputUtility();
+	try
+	{
+	rs = get_all_customers_PS.executeQuery();
+	while(rs.next())
+	{
+		address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
+		customer = new Customer(rs.getString("cf"),rs.getString("name"),rs.getString("surname"),new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),
+				          rs.getString("gender"),rs.getString("cellphone"),  new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+						  rs.getString("email"),
+				          rs.getString("password"));
+	}}catch(SQLException s)
+	{
+		throw new DaoException();
+	}
+	finally
+	{
+		db_util.releaseResources(rs);
+	}
+	return customer;
+}
 	
 
 	
