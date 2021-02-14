@@ -116,7 +116,7 @@ public class ShopController {
 	
 	public void openShopAllMealsFrame()
 	{
-		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame(this);
+		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame();
 		TableModelUtility table = new TableModelUtility();
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
@@ -241,7 +241,6 @@ public class ShopController {
 			shop_meal_frame.getModel().insertRow(shop_meal_frame.getModel().getRowCount(), new Object[]{meal_list.get(i).getName(),
 					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
 					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list().toString().substring(1,meal_list.get(i).getAllergen_list().toString().length()-1)});
-			meal_list.remove(meal_list.get(i));
 			JOptionPane.showMessageDialog(null, "Pasto aggiunto correttamente");
 		}
 		catch (DaoException e) {
@@ -256,26 +255,35 @@ public class ShopController {
 		
 		InputUtility input_util = new InputUtility();
 		CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
-		IstatUtils istat_utils = new IstatUtils();
+		String birth_place_town;
+		if(!shop_rider_frame.getBirth_nationCB().getSelectedItem().toString().equals("ITALIA"))
+			birth_place_town = shop_rider_frame.getBirth_nationCB().getSelectedItem().toString();
+		else
+			birth_place_town = shop_rider_frame.getBirth_townCB().getSelectedItem().toString();
 		try {
 			String name = shop_rider_frame.getNameTF().getText();
 			String surname = shop_rider_frame.getSurnameTF().getText();
 			Date birth_date = new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText());
-			String birth_place_town = shop_rider_frame.getBirth_townCB().getSelectedItem().toString();
+			
 			String gender = shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0,1);
 			String CF = codice_fiscale.getCF(name,surname ,	birth_date ,birth_place_town ,gender.charAt(0));
+			String address = shop_rider_frame.getAddress_nameTF().getText();
+			String address_civic_number = shop_rider_frame.getAddress_civic_numberTF().getText();
+			String cap = shop_rider_frame.getAddress_capTF().getText();
+			String address_town = shop_rider_frame.getAddress_townCB().getSelectedItem().toString();
+			String province_town = shop_rider_frame.getAddress_provinceCB().getSelectedItem().toString();
+			String vehicle = shop_rider_frame.getVehicleCB().getSelectedItem().toString();
+			String working_hours = shop_rider_frame.getWorking_hoursTF().getText();
+			String cellphone = shop_rider_frame.getCellphoneTF().getText();
 			if(!CF.equals("Errore!"))
 			{
-			Rider rider = new Rider(CF,name ,surname , birth_date, birth_place_town,gender , shop_rider_frame.getCellphoneTF().getText(), new Address(shop_rider_frame.getAddress_nameTF().getText(), shop_rider_frame.getAddress_civic_numberTF().getText(), 
-					shop_rider_frame.getAddress_capTF().getText(), shop_rider_frame.getAddress_cityTF().getText(), 
-					shop_rider_frame.getAddress_provinceTF().getText()), shop_rider_frame.getVehicleCB().getSelectedItem().toString(), 
-					shop_rider_frame.getWorking_hoursTF().getText(),(short)0);
+			Rider rider = new Rider(CF,name ,surname , birth_date, birth_place_town,gender ,cellphone , new Address(address, address_civic_number, 
+					cap, address_town, province_town),vehicle, working_hours,(short)0);
 			rider_dao.insertRider(rider,current_shop_email);
-			shop_rider_frame.getModel().insertRow(shop_rider_frame.getModel().getRowCount(), new Object[] {rider.getCf(), rider.getName(), rider.getSurname(), 
-					input_util.formatDate(rider.getBirth_date()), rider.getBirth_place(), rider.getAddress().toString(), rider.getGender(), rider.getCellphone(), 
-					rider.getVehicle(), rider.getWorking_hours(), rider.getDeliveries_number()});
+			shop_rider_frame.getModel().insertRow(shop_rider_frame.getModel().getRowCount(), new Object[] {CF, name, surname, 
+					input_util.formatDate(birth_date), birth_place_town, input_util.addressToTokenizedString(rider.getAddress(), ", "), gender, cellphone, 
+					vehicle, working_hours, (short)0});
 			JOptionPane.showMessageDialog(null, "Rider assunto con successo");
-			
 		} }
 		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
@@ -285,6 +293,7 @@ public class ShopController {
 		{
 			JOptionPane.showMessageDialog(null, c.getMessage());
 		}
+				
 		return;
 	}
 	

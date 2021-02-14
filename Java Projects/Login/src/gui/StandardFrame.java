@@ -158,16 +158,6 @@ public class StandardFrame extends JFrame {
 				go_backJB.setIcon(go_back_inactiveIMG);
 			}
 		});
-		
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				
-			}
-		});
-		
 	}
 	
 	

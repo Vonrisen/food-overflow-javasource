@@ -21,13 +21,12 @@ import controllers.ShopController;
 public class ShopAllMealsFrame extends StandardFrame {
 	
 	private String[] columns = {"Nome", "Categoria", "Prezzo in €", "Ingredienti", "Allergeni"};
-	private ShopController shop_controller;
+
 
 	
 	//Costruttore
-	public ShopAllMealsFrame(ShopController shop_controller) {
+	public ShopAllMealsFrame() {
 		frame();
-		this.shop_controller = shop_controller;
 	}
 
 	

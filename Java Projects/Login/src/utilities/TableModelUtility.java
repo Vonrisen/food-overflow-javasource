@@ -123,15 +123,6 @@ public class TableModelUtility {
 		return;
 	}
 	
-	public void updateCustomerTableColumns(AdminCustomerFrame admin_customer_frame, int selected_row)
-	{
-		Object email = admin_customer_frame.getEmailTF().getText();
-		Object password = admin_customer_frame.getPasswordTF().getText();
-		admin_customer_frame.getModel().setValueAt(email, selected_row, 8);
-		admin_customer_frame.getModel().setValueAt(password, selected_row, 9);
-		return;
-	}
-	
 	public void initializeCompletedOrderTable(DefaultTableModel model,  List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[9];

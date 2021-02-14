@@ -2,6 +2,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextField;
+
 public class Cart {
 
 	Shop shop;
@@ -60,5 +62,14 @@ public class Cart {
 		
 		this.order_composition_list.add(meal);
 		
+	}
+
+	public float getTotalPrice() {
+		float total_price = 0;
+		for(OrderComposition o : order_composition_list)
+		{
+			total_price += o.getMeal().getPrice() * o.getQuantity();
+		}
+		return total_price;
 	}
 }

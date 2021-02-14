@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.Connection;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
 import gui.CustomerCartFrame;
+import gui.CustomerCheckoutFrame;
 import gui.CustomerFrame;
 import gui.CustomerMealListFrame;
 import gui.CustomerShopListFrame;
@@ -34,12 +36,12 @@ public class CustomerController {
 	private Customer customer;
 	//Negozio sul quale l' utente al momento sta effettuando acquisti
 	private Shop shop;
+	private LoginController login_controller;
+	private Cart cart;
 	private CustomerDAO customer_dao;
 	private ShopDAO shop_dao;
 	private MealDAO meal_dao;
 	private Connection connection;
-	private LoginController login_controller;
-	private Cart cart;
 	
 	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao, LoginController login_controller)
 	{
@@ -73,7 +75,7 @@ public class CustomerController {
 				openCustomerShopListFrame(customer_frame.getProvinceTF().getText());
 			}
 			else
-				JOptionPane.showMessageDialog(null,"Non sono riuscito a trovare la tua provincia, riprovare", "Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Non sono riuscito a trovare la tua provincia, riprovare", "Errore",JOptionPane.ERROR_MESSAGE);
 	}
 	public void openCustomerShopListFrame(String shop_province) {
 		
@@ -85,7 +87,7 @@ public class CustomerController {
 			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null,
-					"An error has occurred, please try again or contact the administrator", "Error",
+					"An error has occurred, please try again or contact the administrator", "Errore",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		customer_shop_list_frame.setVisible(true);
@@ -103,7 +105,7 @@ public class CustomerController {
 			this.shop = shop_dao.getShopByEmail(shop_email);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null,
-					"An error has occurred, please try again or contact the administrator", "Error",
+					"An error has occurred, please try again or contact the administrator", "Errore",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	    table_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
@@ -139,7 +141,7 @@ public class CustomerController {
 			cart.addMealIntoCart(new_meal);
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 	
@@ -258,10 +260,20 @@ public class CustomerController {
 	
 		if(!cart.getOrder_composition_list().isEmpty())
 		{
-		for(int i = 0; i<cart.getOrder_composition_list().size(); i++)
-			cart.getOrder_composition_list().remove(i);
 		customer_customer_frame.getModel().setRowCount(0);
 		}else
 			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto","Error",JOptionPane.ERROR_MESSAGE);
+	}
+	public void openCustomerCheckoutFrame() {
+		
+		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame();
+		InputUtility input_util = new InputUtility();
+		customer_checkout_frame.setVisible(true);
+		customer_checkout_frame.setAddressTF(input_util.addressToTokenizedString(customer.getAddress(),", "));
+		customer_checkout_frame.setShopTF(shop.getName());
+		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
+		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
+		customer_checkout_frame.setTotal_priceTF(String.valueOf(cart.getTotalPrice()));
+		return;
 	}
 }

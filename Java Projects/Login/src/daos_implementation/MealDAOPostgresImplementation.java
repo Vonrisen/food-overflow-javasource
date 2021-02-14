@@ -25,8 +25,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		
 		try {
 			
-			
-			
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
 			get_meal_by_name_PS = connection.prepareStatement("SELECT * FROM Meal WHERE name=?");
@@ -82,7 +80,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		try
 		{
 		get_all_meals_except_shop_meals_PS.setString(1, shop_email);
-		get_all_meals_except_shop_meals_PS.closeOnCompletion();
 		rs1 = get_all_meals_except_shop_meals_PS.executeQuery();
 		while(rs1.next()){
 			get_allergens_of_a_meal_PS.setString(1, rs1.getString("id"));
@@ -93,6 +90,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			meal_list.add(new Meal(rs1.getString("name"),rs1.getFloat("price"),rs1.getString("ingredients"),rs1.getString("category"),allergens));
 		}}catch(SQLException s)
 		{
+			
 			throw new DaoException();
 		}
 		finally

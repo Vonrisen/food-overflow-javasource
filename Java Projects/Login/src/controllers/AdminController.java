@@ -177,7 +177,7 @@ public class AdminController {
 		}
 		 catch (NumberFormatException e)
 		{
-			 JOptionPane.showMessageDialog(null, "Inserci un prezzo valido","Error",JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Inserci un prezzo valido ","Error",JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
