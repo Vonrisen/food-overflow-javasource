@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import entities.Cart;
 import entities.Customer;
 import entities.Meal;
 import entities.Order;
+import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
 import gui.AdminCustomerFrame;
 import gui.AdminShopFrame;
+import gui.CustomerCartFrame;
 
 public class TableModelUtility {
 	
@@ -173,6 +176,26 @@ public class TableModelUtility {
 			row[6] = order.getRider().getCf();
 			model.addRow(row);
 		}
+	}
+
+	public void initializeCustomerCartTable(DefaultTableModel model, Cart cart) {
+		
+		InputUtility input_util = new InputUtility();
+		Object[] row = new Object[6];
+		for(OrderComposition o  : cart.getOrder_composition_list())
+		{
+			row[0] = o.getMeal().getName();
+			row[1] = o.getMeal().getCategory();
+			row[2] = o.getMeal().getPrice();
+			row[3] = o.getMeal().getIngredients();
+			if(o.getMeal().getAllergen_list()!=null)
+			row[4] = input_util.arrayListToTokenizedString(o.getMeal().getAllergen_list(), ", ");
+			else
+				row[4]="";
+			row[5] = o.getQuantity();
+			model.addRow(row);
+		}
+		
 	}
 
 }

@@ -20,6 +20,7 @@ import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
+import gui.CustomerCartFrame;
 import gui.CustomerFrame;
 import gui.CustomerMealListFrame;
 import gui.CustomerShopListFrame;
@@ -179,6 +180,7 @@ public class CustomerController {
 			if(cb.isSelected())
 				allergen_list.add(cb.getText());
 		}
+
 		if(!category.equals("Visualizza tutti i pasti"))
 		{
 		try {
@@ -189,8 +191,8 @@ public class CustomerController {
 		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		}
-		else
+		}else
+		{
 			try {
 				List<Meal> meal_list = shop_dao.getMealsOfAShopByShopEmail(shop.getEmail());
 				customer_meal_list_frame.getModel().setRowCount(0);
@@ -199,5 +201,67 @@ public class CustomerController {
 			catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 			}
+		}
+	}
+	
+	public void openCustomerCartFrame(JFrame frame)
+	{
+		frame.setVisible(false);
+		TableModelUtility table_util = new TableModelUtility();
+		CustomerCartFrame customer_cart_frame = new CustomerCartFrame(this);
+		table_util.initializeCustomerCartTable(customer_cart_frame.getModel(), cart);
+		customer_cart_frame.setVisible(true);
+		return;
+	}
+	public Shop getShop() {
+		return shop;
+	}
+	public void updateMealQuantity(CustomerCartFrame customerCartFrame) {
+		
+		
+		int row = customerCartFrame.getTable().getSelectedRow();
+		if(row != -1) {
+			String meal_name = customerCartFrame.getModel().getValueAt(row, 0).toString();
+			try {
+				
+			short new_quantity = Short.parseShort(customerCartFrame.getQuantityTF().getText());
+			for(OrderComposition o : cart.getOrder_composition_list())
+			{
+				if(o.getMeal().getName().equals(meal_name))
+				{
+					o.setQuantity(new_quantity);
+					customerCartFrame.getModel().setValueAt(new_quantity, row, 5);
+				}
+			}
+		}catch(NumberFormatException n)
+		{
+			JOptionPane.showMessageDialog(null, "Inserire un prezzo valido","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Seleziona qualcosa","Error",JOptionPane.ERROR_MESSAGE);
+		return;
+		
+	}
+	public void removeMealFromCart(CustomerCartFrame customer_customer_frame) {
+		
+		int row = customer_customer_frame.getTable().getSelectedRow();
+		if(row != -1)
+		{
+			cart.getOrder_composition_list().remove(row);
+			customer_customer_frame.getModel().removeRow(row);
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Seleziona qualcosa","Error",JOptionPane.ERROR_MESSAGE);
+	}
+	public void removeEverythingFromCart(CustomerCartFrame customer_customer_frame) {
+	
+		if(!cart.getOrder_composition_list().isEmpty())
+		{
+		for(int i = 0; i<cart.getOrder_composition_list().size(); i++)
+			cart.getOrder_composition_list().remove(i);
+		customer_customer_frame.getModel().setRowCount(0);
+		}else
+			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto","Error",JOptionPane.ERROR_MESSAGE);
 	}
 }
