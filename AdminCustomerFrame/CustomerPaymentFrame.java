@@ -101,7 +101,7 @@ public class CustomerPaymentFrame extends JFrame{
 		this.getContentPane().add(shopLB);
 		
 		shopTF.setEditable(false);
-		shopTF.setBounds(115,201,150,25);
+		shopTF.setBounds(90,201,280,25);
 		this.getContentPane().add(shopTF);
 		
 		cellphoneLB.setIcon(cellphoneIMG);
