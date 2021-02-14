@@ -9,7 +9,7 @@ public class OrderComposition {
 	
 	//COSTRUTTORE
 	
-	public OrderComposition(Meal meal, Short quantity) {
+	public OrderComposition(Meal meal, short quantity) {
 
 		this.meal = meal;
 		this.quantity = quantity;

@@ -109,7 +109,7 @@ public class LoginController{
 				{
 					login_frame.setVisible(false);
 					Customer customer = customer_dao.getCustomerByEmail(login_frame.getUsernameTF().getText());
-					CustomerController customer_controller = new CustomerController(customer, connection, customer_dao, shop_dao, meal_dao);
+					CustomerController customer_controller = new CustomerController(customer, connection, customer_dao, shop_dao, meal_dao, this);
 					customer_controller.openCustomerFrame(login_frame);
 				}
 				else

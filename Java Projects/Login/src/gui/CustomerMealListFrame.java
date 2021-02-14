@@ -43,6 +43,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controllers.AdminController;
 import controllers.CustomerController;
+import controllers.LoginController;
 import gui_support.RoundJTextField;
 
 public class CustomerMealListFrame extends JFrame {
@@ -73,10 +74,10 @@ public class CustomerMealListFrame extends JFrame {
 	private String[] columns = {"Nome", "Categoria", "Prezzo", "Ingredienti", "Allergeni"};
 	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", 
 			"Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
-	private String[] dish_array_strings = {"Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
+	private String[] dish_array_strings = {"Visualizza tutti i pasti", "Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
 	
 	private JCheckBox[] allergens = new JCheckBox[14];
-	private JComboBox<Object> dishCB;
+	private JComboBox<Object> categoryCB;
 	
 	private JPanel west_panel;
 	private JPanel east_panel;
@@ -117,12 +118,15 @@ public class CustomerMealListFrame extends JFrame {
 	private JTextField quantityTF;
 	
 	private CustomerController customer_controller;
-	public CustomerMealListFrame(CustomerController customer_controller) {
+	LoginController login_controller;
+	
+	public CustomerMealListFrame(CustomerController customer_controller, LoginController login_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
+		this.login_controller = login_controller;
 	}
 
 	//Initialize variables
@@ -190,7 +194,7 @@ public class CustomerMealListFrame extends JFrame {
 		backJB = new JButton();
 		allergens_panel = new JPanel();
 		allergens_panel2 = new JPanel();
-		dishCB = new JComboBox<Object>(dish_array_strings);
+		categoryCB = new JComboBox<Object>(dish_array_strings);
 		quantity_panel = new JPanel();
 
 		quantityLB = new JLabel("  Quantità:");
@@ -322,11 +326,11 @@ public class CustomerMealListFrame extends JFrame {
 		
 
 		
-		dishCB.setPreferredSize(short_dim_of_textfield);
-		dishCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
-		dishCB.setFocusable(false);
-		dishCB.setBackground(Color.white);
-		filters_subpanel.add(dishCB);
+		categoryCB.setPreferredSize(short_dim_of_textfield);
+		categoryCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		categoryCB.setFocusable(false);
+		categoryCB.setBackground(Color.white);
+		filters_subpanel.add(categoryCB);
 
 		
 		createTextField(meal_nameTF, "Nome dell'alimento", short_dim_of_textfield);
@@ -420,7 +424,11 @@ public class CustomerMealListFrame extends JFrame {
 				homeJB.setIcon(home_inactiveIMG);
 				
 			}
-		});
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.openCustomerFrame(CustomerMealListFrame.this);
+				
+			}});
 		
 		logoutJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -435,6 +443,12 @@ public class CustomerMealListFrame extends JFrame {
 				logoutJB.setIcon(logout_inactiveIMG);
 				
 			}
+			public void mousePressed(MouseEvent e) {
+				
+				login_controller.openLoginFrame(CustomerMealListFrame.this);
+				
+			}
+			
 		});
 		
 		cartJB.addMouseListener(new MouseAdapter() {
@@ -465,6 +479,12 @@ public class CustomerMealListFrame extends JFrame {
 				add_to_cartJB.setIcon(add_to_cart_inactiveIMG);
 				
 			}
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.addMealToCart(CustomerMealListFrame.this);
+				
+			}
+			
 		});
 		
 		backJB.addMouseListener(new MouseAdapter() {
@@ -493,6 +513,11 @@ public class CustomerMealListFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				
 				searchJB.setIcon(search_button_inactiveIMG);
+				
+			}
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.doCustomerComplexSearch(CustomerMealListFrame.this);
 				
 			}
 		});
@@ -645,8 +670,37 @@ public class CustomerMealListFrame extends JFrame {
 		return model;
 	}
 
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public JTextField getQuantityTF() {
+		return quantityTF;
+	}
+
+	public JTextField getMeal_nameTF() {
+		return meal_nameTF;
+	}
+
+	public void setMeal_nameTF(JTextField meal_nameTF) {
+		this.meal_nameTF = meal_nameTF;
+	}
+
+	public JCheckBox[] getAllergens() {
+		return allergens;
+	}
+
+	public JComboBox<Object> getCategoryCB() {
+		return categoryCB;
+	}
+
+	public JTextField getPrice_minTF() {
+		return price_minTF;
+	}
+
+	public JTextField getPrice_maxTF() {
+		return price_maxTF;
 	}
 	
 	

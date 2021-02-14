@@ -1,9 +1,11 @@
 package controllers;
 
 import java.sql.Connection;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
@@ -11,14 +13,18 @@ import javax.swing.JOptionPane;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.ShopDAO;
+import entities.Cart;
 import entities.Customer;
 import entities.Meal;
+import entities.OrderComposition;
+import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
 import gui.CustomerFrame;
 import gui.CustomerMealListFrame;
 import gui.CustomerShopListFrame;
 import utilities.DButility;
+import utilities.InputUtility;
 import utilities.IstatUtils;
 import utilities.TableModelUtility;
 
@@ -27,12 +33,14 @@ public class CustomerController {
 	private Customer customer;
 	//Negozio sul quale l' utente al momento sta effettuando acquisti
 	private Shop shop;
-	CustomerDAO customer_dao;
-	ShopDAO shop_dao;
-	MealDAO meal_dao;
-	Connection connection;
+	private CustomerDAO customer_dao;
+	private ShopDAO shop_dao;
+	private MealDAO meal_dao;
+	private Connection connection;
+	private LoginController login_controller;
+	private Cart cart;
 	
-	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao)
+	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao, LoginController login_controller)
 	{
 		
 		this.customer = customer;
@@ -40,6 +48,8 @@ public class CustomerController {
 		this.customer_dao = customer_dao;
 		this.shop_dao = shop_dao;
 		this.meal_dao = meal_dao;
+		this.login_controller = login_controller;
+		this.cart = new Cart(shop, customer);
 		
 	}
 	public CustomerController()
@@ -67,7 +77,7 @@ public class CustomerController {
 	public void openCustomerShopListFrame(String shop_province) {
 		
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this);
+		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this, login_controller);
 		List<Shop>shop_list = new ArrayList<Shop>();
 		try {
 			shop_list = shop_dao.getShopByProvince(shop_province);
@@ -84,7 +94,7 @@ public class CustomerController {
 	public void openCustomerMealListFrame(JFrame frame, String shop_email) {
 		
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this);
+		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this, login_controller);
 		frame.dispose();
 		List<Meal>meal_list = new ArrayList<Meal>();
 		try {
@@ -97,6 +107,38 @@ public class CustomerController {
 		}
 	    table_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
 	    customer_meal_list_frame.setVisible(true);
+		return;
+	}
+	
+	public void addMealToCart(CustomerMealListFrame frame) {
+		
+		int row = frame.getTable().getSelectedRow();
+		boolean meal_already_inserted = false;
+		InputUtility input_util = new InputUtility();
+		if(row != -1) {
+			List<String>allergen_list = new ArrayList<String>();
+			try {
+				allergen_list = input_util.tokenizedStringToList(frame.getTable().getValueAt(row, 4).toString(), "(, )");
+			}catch(NullPointerException n)
+			{
+			}
+			Meal meal = new Meal(frame.getTable().getValueAt(row, 0).toString(), Float.parseFloat(frame.getTable().getValueAt(row, 2).toString()), frame.getTable().getValueAt(row, 3).toString(),
+								 frame.getTable().getValueAt(row, 1).toString(), allergen_list);
+			short quantity = Short.parseShort(frame.getQuantityTF().getText());
+			OrderComposition new_meal = new OrderComposition(meal,quantity);
+			for(OrderComposition o : cart.getOrder_composition_list())
+			{
+				if(o.getMeal().getName().equals(meal.getName()))
+				{
+					o.setQuantity((short) (quantity+o.getQuantity()));
+					meal_already_inserted = true;
+				}
+			}
+			if(!meal_already_inserted)
+			cart.addMealIntoCart(new_meal);
+		}
+		else
+			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello","Error",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 	
@@ -117,6 +159,45 @@ public class CustomerController {
 		}
 		return;
 	}
-
-	
+	public void doCustomerComplexSearch(CustomerMealListFrame customer_meal_list_frame) {
+		
+		String meal_to_find_name = customer_meal_list_frame.getMeal_nameTF().getText();
+		String category = customer_meal_list_frame.getCategoryCB().getSelectedItem().toString();
+		float min_price = 0;
+		float max_price = 0;
+		try
+		{
+		min_price = Float.parseFloat(customer_meal_list_frame.getPrice_minTF().getText());
+		max_price = Float.parseFloat(customer_meal_list_frame.getPrice_maxTF().getText());
+		}catch(NumberFormatException n)
+		{
+			JOptionPane.showMessageDialog(null, "Inserire un prezzo valido","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		List<String>allergen_list = new ArrayList<String>();
+		TableModelUtility table_model_util = new TableModelUtility();
+		for(JCheckBox cb : customer_meal_list_frame.getAllergens()) {
+			if(cb.isSelected())
+				allergen_list.add(cb.getText());
+		}
+		if(!category.equals("Visualizza tutti i pasti"))
+		{
+		try {
+			List<Meal> meal_list = meal_dao.doCustomerComplexSearch(category, meal_to_find_name, min_price, max_price, allergen_list, shop.getEmail());
+			customer_meal_list_frame.getModel().setRowCount(0);
+			table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+		}
+		catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		}
+		else
+			try {
+				List<Meal> meal_list = shop_dao.getMealsOfAShopByShopEmail(shop.getEmail());
+				customer_meal_list_frame.getModel().setRowCount(0);
+				table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+			}
+			catch (DaoException e) {
+				JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			}
+	}
 }

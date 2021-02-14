@@ -18,12 +18,14 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	PreparedStatement  get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS, get_all_meals_except_shop_meals_PS,
-					  insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS;
+					  insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS, customer_complex_search_PS;
 	CallableStatement add_allergens_CS;
 	DButility db_util = new DButility();
 	public MealDAOPostgresImplementation(Connection connection) {
 		
 		try {
+			
+			
 			
 			get_all_meals_except_shop_meals_PS = connection.prepareStatement("SELECT * FROM meal WHERE id NOT IN (select meal_id from supply where shop_id=(SELECT id FROM Shop WHERE email=?)) ORDER BY category, name");
 			get_all_meals_PS = connection.prepareStatement("SELECT * FROM MEAL ORDER BY category, name");
@@ -34,6 +36,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
 			insert_supply_PS = connection.prepareStatement("INSERT INTO Supply SELECT (SELECT id FROM Shop WHERE email=?), id FROM MEAL WHERE name=?");
 			delete_from_supply_PS = connection.prepareStatement("DELETE FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?) AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
+			customer_complex_search_PS = connection.prepareStatement("SELECT * FROM  effettuaRicercaComplessaCustomer(?,?,?,?,?,?) AS t(name varchar, category varchar, price real, ingredients varchar, id character(4))");
 	
 		}catch(SQLException s)
 		{
@@ -215,5 +218,42 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			db_util.releaseResources(rs1);
 		}
 		return meal;
+	}
+	
+	public List<Meal> doCustomerComplexSearch(String category, String meal_name, float min_price, float max_price, List<String> allergens, String shop_email) throws DaoException
+	{
+		List<String>allergen_list;
+		List<Meal>meal_list = new ArrayList<>();
+		ResultSet rs = null;
+		ResultSet rs1 = null;
+		InputUtility input_util = new InputUtility();
+
+		try {
+			customer_complex_search_PS.setString(1, category);
+			customer_complex_search_PS.setString(2, meal_name);
+			customer_complex_search_PS.setFloat(3, min_price);
+			customer_complex_search_PS.setFloat(4, max_price);
+			customer_complex_search_PS.setString(5, input_util.arrayListToTokenizedString(allergens,","));
+			customer_complex_search_PS.setString(6, shop_email);
+			rs = customer_complex_search_PS.executeQuery();
+			while (rs.next())
+			{
+				get_allergens_of_a_meal_PS.setString(1, rs.getString("id"));
+				rs1 = get_allergens_of_a_meal_PS.executeQuery();
+				allergen_list = new ArrayList<String>();
+				while(rs1.next())
+					allergen_list.add(rs1.getString("allergen_name"));
+				meal_list.add(new Meal(rs.getString("name"),rs.getFloat("price"),rs.getString("ingredients"),rs.getString("category"),allergen_list));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new DaoException();
+		}finally
+		{
+			db_util.releaseResources(rs);
+			db_util.releaseResources(rs1);
+		}
+			
+		return meal_list;
 	}
 }

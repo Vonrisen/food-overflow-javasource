@@ -56,7 +56,7 @@ public class Cart {
 
 
 
-	public void addIntoOrderComposition(OrderComposition meal) {
+	public void addMealIntoCart(OrderComposition meal) {
 		
 		this.order_composition_list.add(meal);
 		

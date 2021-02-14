@@ -15,5 +15,6 @@ public interface MealDAO {
 	public void deleteFromSupply(String shop_email, Meal meal)throws DaoException;
 	public Meal getMealByName(String name)throws DaoException;
 	public void closeStatements() throws DaoException;
+	public List<Meal> doCustomerComplexSearch(String category, String meal_name, float min_price, float max_price, List<String> allergens, String shop_email) throws DaoException;
 
 }

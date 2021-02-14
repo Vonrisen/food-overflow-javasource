@@ -73,13 +73,15 @@ public class CustomerShopListFrame extends JFrame {
 	private JLabel background;
 	DefaultTableModel model;
 	private CustomerController customer_controller;
+	LoginController login_controller;
 	
-	public CustomerShopListFrame(CustomerController customer_controller) {
+	public CustomerShopListFrame(CustomerController customer_controller, LoginController login_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
+		this.login_controller = login_controller;
 	}
 
 	//Initialize variables
