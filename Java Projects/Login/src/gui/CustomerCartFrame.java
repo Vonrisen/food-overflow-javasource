@@ -63,7 +63,7 @@ public class CustomerCartFrame extends JFrame {
 	private Dimension west_east_size;
 	private Dimension north_south_size;
 	
-	private String[] columns = {"Nome", "Indirizzo", "Orario di apertura", "Giorni festivi", "Telefono fisso", "Email"};
+	private String[] columns = {"Nome", "Categoria", "Prezzo", "Ingredienti", "Allergeni","Quantita'"};
 	
 	
 	private JPanel west_panel;
@@ -406,7 +406,7 @@ public class CustomerCartFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				//
+				customer_controller.openCustomerMealListFrame(CustomerCartFrame.this, customer_controller.getShop().getEmail());
 			}
 			
 		});
@@ -426,7 +426,7 @@ public class CustomerCartFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				//
+				customer_controller.updateMealQuantity(CustomerCartFrame.this);
 			}
 			
 		});
@@ -446,7 +446,7 @@ public class CustomerCartFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				//
+				customer_controller.removeMealFromCart(CustomerCartFrame.this);
 			}
 			
 		});
@@ -466,7 +466,8 @@ public class CustomerCartFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				//
+				customer_controller.removeEverythingFromCart(CustomerCartFrame.this);
+				
 			}
 			
 		});
@@ -510,15 +511,8 @@ public class CustomerCartFrame extends JFrame {
 				login_controller.openLoginFrame(CustomerCartFrame.this);
 			}
 		});
-		
-		table.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent mouseEvent) {
-		    	if(!table.getSelectionModel().isSelectionEmpty()) {
-		    	customer_controller.openCustomerMealListFrame(CustomerCartFrame.this, table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
-		    	}
-		    }
-		});
-		
+	
+	
 		addWindowListener(new WindowAdapter()
 	     {
 	         @Override
@@ -595,6 +589,19 @@ public class CustomerCartFrame extends JFrame {
 	public void setModel(DefaultTableModel model) {
 		this.model = model;
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public JTextField getQuantityTF() {
+		return quantityTF;
+	}
+
+	public void setQuantityTF(JTextField quantityTF) {
+		this.quantityTF = quantityTF;
+	}
+	
 	
 	
 

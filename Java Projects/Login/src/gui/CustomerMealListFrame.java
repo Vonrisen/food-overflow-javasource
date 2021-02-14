@@ -464,6 +464,11 @@ public class CustomerMealListFrame extends JFrame {
 				cartJB.setIcon(cart_button_inactiveIMG);
 				
 			}
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.openCustomerCartFrame(CustomerMealListFrame.this);
+				
+			}
 		});
 		
 		add_to_cartJB.addMouseListener(new MouseAdapter() {
@@ -498,6 +503,11 @@ public class CustomerMealListFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				
 				backJB.setIcon(back_button_inactiveIMG);
+				
+			}
+			public void mousePressed(MouseEvent e) {
+				
+				customer_controller.openCustomerShopListFrame(customer_controller.getShop().getAddress().getProvince());
 				
 			}
 		});
