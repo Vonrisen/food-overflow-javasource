@@ -169,6 +169,7 @@ public class ShopFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
+				shop_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(ShopFrame.this);
 				
 			}

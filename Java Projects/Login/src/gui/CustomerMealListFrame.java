@@ -445,7 +445,7 @@ public class CustomerMealListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				login_controller.openLoginFrame(CustomerMealListFrame.this);
+//				login_controller.openLoginFrame(CustomerMealListFrame.this); DA CANCELLARE
 				
 			}
 			
