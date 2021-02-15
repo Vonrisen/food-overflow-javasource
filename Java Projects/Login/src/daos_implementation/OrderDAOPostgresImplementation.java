@@ -1,5 +1,6 @@
 package daos_implementation;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +14,10 @@ import javax.swing.JOptionPane;
 import daos_interfaces.OrderDAO;
 import db_connection.DBconnection;
 import entities.Address;
+import entities.Cart;
 import entities.Customer;
 import entities.Order;
+import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
@@ -25,7 +28,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	private PreparedStatement update_delivering_order_PS, update_pending_order_PS, get_orders_of_a_shop_by_shop_email_PS, get_customer_of_the_order_PS, 
 							  get_rider_of_the_order_PS, get_shop_of_the_order_PS, get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS, get_order_by_id_PS;
-	DButility db_util = new DButility();
+	private CallableStatement create_order_CS;
 	public OrderDAOPostgresImplementation(Connection connection) {
 		
 		try {
@@ -40,6 +43,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			get_orders_of_a_shop_by_shop_email_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE delivery_time is not null and shop_id IN (SELECT id FROM Shop WHERE email=?)");
 			get_order_by_id_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE id=?");
 			get_customer_email_PS = connection.prepareStatement("SELECT email FROM Customer WHERE id=?");
+			create_order_CS = connection.prepareCall("CALL CreateOrder(?,'Contrassegno',?,?,?,?,?)");
 			
 		}catch(SQLException s)
 		{
@@ -51,6 +55,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		ResultSet rs = null;
 		List<String>address_fields = new ArrayList<String>();
 		InputUtility string_util = new InputUtility();
+		DButility db_util = new DButility();
 		Rider rider = null;
 		try
 		{
@@ -79,6 +84,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		List<String>address_fields = new ArrayList<String>();
 		Shop shop = null;
 		ResultSet rs = null;
+		DButility db_util = new DButility();
 		try
 		{
 		get_shop_of_the_order_PS.setString(1, email);
@@ -101,6 +107,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	}
 	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException{
 		
+		DButility db_util = new DButility();
 		ResultSet rs1 = null;
 		ResultSet rs = null;
 		Customer customer = null;
@@ -140,6 +147,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	public List<Order> getInDeliveryOrdersOfAShop(String shop_email) throws DaoException{
 		
+		DButility db_util = new DButility();
 		ResultSet rs = null;
 		ResultSet rs1 = null;
 		Customer customer = null;
@@ -178,6 +186,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	public Customer getCustomerOfTheOrderByEmail(String email) throws DaoException{
 		
+		DButility db_util = new DButility();
 		InputUtility string_util = new InputUtility();
 		List<String>address_fields = new ArrayList<String>();
 		Customer customer = null;
@@ -200,6 +209,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	}
 	public List<Order> getPendingOrdersOfAShop(String shop_email) throws DaoException{
 		
+		DButility db_util = new DButility();
 		ResultSet rs = null;
 		ResultSet rs1 = null;
 		Customer customer = null;
@@ -262,6 +272,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	
 	public void closeStatements() throws DaoException {
 		
+		DButility db_util = new DButility();
 		db_util.releaseResources(update_delivering_order_PS);
 		db_util.releaseResources(update_pending_order_PS);
 		db_util.releaseResources(get_orders_of_a_shop_by_shop_email_PS);
@@ -276,6 +287,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	}
 	@Override
 	public Order getOrderById(String id) throws DaoException {
+		
+		DButility db_util = new DButility();
 		ResultSet rs1 = null;
 		ResultSet rs = null;
 		Customer customer = null;
@@ -312,5 +325,31 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 		return order;
 		
+	}
+	@Override
+	public void createOrder(Address address, String payment, String note, Shop shop, Customer customer, Cart cart)throws DaoException {
+		
+		InputUtility input_util = new InputUtility();
+		List<String>meals_name = new ArrayList<String>();
+		List<String>quantities = new ArrayList<String>();
+		for(OrderComposition o : cart.getOrder_composition_list())
+		{
+			meals_name.add(o.getMeal().getName());
+			quantities.add(o.getQuantity().toString());
+		}
+		try {
+			create_order_CS.setString(1, input_util.addressToTokenizedString(customer.getAddress(), ", "));
+			create_order_CS.setString(2, note);
+			create_order_CS.setString(3, shop.getEmail());
+			create_order_CS.setString(4, customer.getEmail());
+			create_order_CS.setString(5, input_util.arrayListToTokenizedString(meals_name, ", "));
+			create_order_CS.setString(6, input_util.arrayListToTokenizedString(quantities, ", "));
+			create_order_CS.executeUpdate();
+		} catch (SQLException e) {
+			
+			System.out.println(e.getMessage());
+			throw new DaoException();
+		}
+		return;
 	}
 }

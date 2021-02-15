@@ -3,7 +3,9 @@ package controllers;
 import java.sql.Connection;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JCheckBox;
@@ -11,8 +13,10 @@ import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
 
+import daos_implementation.OrderDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
+import daos_interfaces.OrderDAO;
 import daos_interfaces.ShopDAO;
 import entities.Cart;
 import entities.Customer;
@@ -42,6 +46,7 @@ public class CustomerController {
 	private ShopDAO shop_dao;
 	private MealDAO meal_dao;
 	private Connection connection;
+	private OrderDAO order_dao;
 	
 	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao, LoginController login_controller)
 	{
@@ -80,6 +85,7 @@ public class CustomerController {
 	public void openCustomerShopListFrame(String shop_province) {
 		
 		TableModelUtility table_util = new TableModelUtility();
+		this.order_dao = new OrderDAOPostgresImplementation(connection);
 		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this, login_controller);
 		List<Shop>shop_list = new ArrayList<Shop>();
 		try {
@@ -266,7 +272,7 @@ public class CustomerController {
 	}
 	public void openCustomerCheckoutFrame() {
 		
-		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame();
+		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame(this);
 		InputUtility input_util = new InputUtility();
 		customer_checkout_frame.setVisible(true);
 		customer_checkout_frame.setAddressTF(input_util.addressToTokenizedString(customer.getAddress(),", "));
@@ -275,5 +281,23 @@ public class CustomerController {
 		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
 		customer_checkout_frame.setTotal_priceTF(String.valueOf(cart.getTotalPrice()));
 		return;
+	}
+	public void completeOrder(CustomerCheckoutFrame customerCheckoutFrame) {
+		
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+		date.setHours(date.getHours()+1);
+		date.setMinutes(date.getMinutes()+30);
+		try {
+			order_dao.createOrder(customer.getAddress(), "Contrassegno","da inserire" , shop, customer, cart);
+			JOptionPane.showMessageDialog(null, "Ordine completato. Consegna garantita entro le: "+formatter.format(date));
+			cart.getOrder_composition_list().clear();
+			this.openCustomerMealListFrame(customerCheckoutFrame, shop.getEmail());
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Non e' stato possibile completare l' ordine","Errore",JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return;
+		
 	}
 }

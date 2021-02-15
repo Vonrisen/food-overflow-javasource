@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import controllers.CustomerController;
 import gui_support.RoundJTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,11 +38,13 @@ public class CustomerCheckoutFrame extends JFrame{
 	private JTextField total_priceTF;
 	private JTextField shopTF;
 	private JTextField cellphoneTF;
+	CustomerController customer_controller;
 
-	public CustomerCheckoutFrame() {
+	public CustomerCheckoutFrame(CustomerController customer_controller) {
 		initialize();
 		frameSetup();
 		events();
+		this.customer_controller = customer_controller;
 	}
 
 	private void initialize() {
@@ -157,6 +160,7 @@ public class CustomerCheckoutFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				
 				//Effettuo ordine, cancello il carrello, chiudo questo frame
+				customer_controller.completeOrder(CustomerCheckoutFrame.this);
 				
 			}
 		});
