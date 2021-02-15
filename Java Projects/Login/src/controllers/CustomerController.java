@@ -158,6 +158,7 @@ public class CustomerController {
 			shop_dao.closeStatements();
 			customer_dao.closeStatements();
 			meal_dao.closeStatements();
+			order_dao.closeStatements();
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 			System.exit(-1);
@@ -170,31 +171,32 @@ public class CustomerController {
 	}
 	public void doCustomerComplexSearch(CustomerMealListFrame customer_meal_list_frame) {
 		
-		String meal_to_find_name = customer_meal_list_frame.getMeal_nameTF().getText();
-		String category = customer_meal_list_frame.getCategoryCB().getSelectedItem().toString();
+		String selected_meal = customer_meal_list_frame.getMeal_nameTF().getText();
+		String selected_category = customer_meal_list_frame.getCategoryCB().getSelectedItem().toString();
+		String min_price_string = customer_meal_list_frame.getPrice_minTF().getText();
+		String max_price_string = customer_meal_list_frame.getPrice_maxTF().getText();
 		float min_price = 0;
 		float max_price = 0;
 		try
 		{
-		min_price = Float.parseFloat(customer_meal_list_frame.getPrice_minTF().getText());
-		max_price = Float.parseFloat(customer_meal_list_frame.getPrice_maxTF().getText());
+		min_price = Float.parseFloat(min_price_string);
+		max_price = Float.parseFloat(max_price_string);
 		}catch(NumberFormatException n)
 		{
 			JOptionPane.showMessageDialog(null, "Inserire un prezzo valido","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		List<String>allergen_list = new ArrayList<String>();
-		TableModelUtility table_model_util = new TableModelUtility();
 		for(JCheckBox cb : customer_meal_list_frame.getAllergens()) {
 			if(cb.isSelected())
 				allergen_list.add(cb.getText());
 		}
-
-		if(!category.equals("Visualizza tutti i pasti"))
+		TableModelUtility table_model_util = new TableModelUtility();
+		String shop_email = shop.getEmail();
+		List<Meal> meal_list = new ArrayList<Meal>();
+		if(!selected_category.equals("Visualizza tutti i pasti"))
 		{
 		try {
-			List<Meal> meal_list = meal_dao.doCustomerComplexSearch(category, meal_to_find_name, min_price, max_price, allergen_list, shop.getEmail());
-			customer_meal_list_frame.getModel().setRowCount(0);
-			table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+			meal_list = meal_dao.doCustomerComplexSearch(selected_category, selected_meal, min_price, max_price, allergen_list, shop_email);
 		}
 		catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
@@ -202,14 +204,15 @@ public class CustomerController {
 		}else
 		{
 			try {
-				List<Meal> meal_list = shop_dao.getMealsOfAShopByShopEmail(shop.getEmail());
-				customer_meal_list_frame.getModel().setRowCount(0);
-				table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+				meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
 			}
 			catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		customer_meal_list_frame.getModel().setRowCount(0);
+		table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+		return;
 	}
 	
 	public void openCustomerCartFrame(JFrame frame)
@@ -296,8 +299,17 @@ public class CustomerController {
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Non e' stato possibile completare l' ordine","Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		
 		return;
 		
+	}
+	
+	public void releaseDaoResourcesWhenLoggingOut() {
+		try {
+			order_dao.closeStatements();
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
+		return;
 	}
 }

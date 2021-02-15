@@ -272,7 +272,7 @@ public class CustomerShopListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				LoginController login_controller = new LoginController();
+				customer_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(CustomerShopListFrame.this);
 			}
 		});

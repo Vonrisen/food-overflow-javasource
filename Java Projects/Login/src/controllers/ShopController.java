@@ -453,8 +453,8 @@ public class ShopController {
 		}
 		return;
 	}
-	//Metodo che chiude solo gli statement usati dallo shop, quando ad esempio ci si disconnette da un frame e si ritorna al login frame
-	public void releaseDaoResourcesWhenSwitchingFrame() {
+	//Metodo che chiude solo gli statement usati dallo shop, quando ci si disconnette dallo shop frame e si ritorna al login frame
+	public void releaseDaoResourcesWhenLoggingOut() {
 		try {
 			order_dao.closeStatements();
 			rider_dao.closeStatements();
