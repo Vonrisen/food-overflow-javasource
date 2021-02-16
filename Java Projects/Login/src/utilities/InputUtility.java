@@ -47,10 +47,10 @@ public class InputUtility {
 	
 	public String arrayListToTokenizedString(List<String>strings, String delimiters){
 	String tokenized_string = "";
+	if(strings==null || strings.isEmpty())
+		return "";
 	for(String s : strings)
 		tokenized_string+=s+", ";
-	if(tokenized_string.equals(""))
-		return null;
 	return tokenized_string.substring(0, tokenized_string.length()-2);
 	}
 	

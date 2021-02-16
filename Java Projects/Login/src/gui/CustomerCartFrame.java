@@ -487,7 +487,7 @@ public class CustomerCartFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				customer_controller.openCustomerCheckoutFrame();
+				customer_controller.openCustomerCheckoutFrame(CustomerCartFrame.this);
 			}
 			
 		});

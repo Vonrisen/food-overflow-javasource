@@ -14,7 +14,7 @@ public class DButility {
 	{
 		
 	}
-		 public void releaseResources(Statement st)
+		public void closeStatement(Statement st)
 			{
 				        if (st != null) {
 					        try {
@@ -23,7 +23,7 @@ public class DButility {
 					    }       
 				    return;
 			 }
-		 public void releaseResources(ResultSet rs)
+		 public void closeResultSet(ResultSet rs)
 			{
 				        if (rs != null) {
 					        try {

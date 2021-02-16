@@ -76,19 +76,20 @@ public class CustomerController {
 		IstatUtils istat_utils = new IstatUtils();
 			if(istat_utils.isProvinceValid(customer_frame.getProvinceTF().getText()))
 			{
-				customer_frame.dispose();
-				openCustomerShopListFrame(customer_frame.getProvinceTF().getText());
+				openCustomerShopListFrame(customer_frame, customer_frame.getProvinceTF().getText().toUpperCase());
 			}
 			else
 				JOptionPane.showMessageDialog(null,"Non sono riuscito a trovare la tua provincia, riprovare", "Errore",JOptionPane.ERROR_MESSAGE);
 	}
-	public void openCustomerShopListFrame(String shop_province) {
+	public void openCustomerShopListFrame(JFrame frame, String shop_province) {
 		
+		frame.dispose();
 		TableModelUtility table_util = new TableModelUtility();
 		this.order_dao = new OrderDAOPostgresImplementation(connection);
 		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this, login_controller);
 		List<Shop>shop_list = new ArrayList<Shop>();
 		try {
+
 			shop_list = shop_dao.getShopByProvince(shop_province);
 			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
 		} catch (DaoException e) {
@@ -142,9 +143,9 @@ public class CustomerController {
 					o.setQuantity((short) (quantity+o.getQuantity()));
 					meal_already_inserted = true;
 				}
+				else
+					cart.addMealIntoCart(new_meal);
 			}
-			if(!meal_already_inserted)
-			cart.addMealIntoCart(new_meal);
 		}
 		else
 			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello","Errore",JOptionPane.ERROR_MESSAGE);
@@ -177,55 +178,41 @@ public class CustomerController {
 		String max_price_string = customer_meal_list_frame.getPrice_maxTF().getText();
 		float min_price = 0;
 		float max_price = 0;
+		List<Meal> meal_list = new ArrayList<Meal>();
 		try
 		{
 		min_price = Float.parseFloat(min_price_string);
-		max_price = Float.parseFloat(max_price_string);
+		max_price = Float.parseFloat(max_price_string);	
+		List<String>allergen_list = new ArrayList<String>();
+		for(JCheckBox allergen_cb : customer_meal_list_frame.getAllergens()) {
+			if(allergen_cb.isSelected())
+				allergen_list.add(allergen_cb.getText());
+		}
+		String shop_email = shop.getEmail();
+		meal_list = meal_dao.doCustomerComplexSearch(selected_category, selected_meal, min_price, max_price, allergen_list, shop_email);
+		customer_meal_list_frame.getModel().setRowCount(0);
 		}catch(NumberFormatException n)
 		{
 			JOptionPane.showMessageDialog(null, "Inserire un prezzo valido","Errore",JOptionPane.ERROR_MESSAGE);
-		}
-		List<String>allergen_list = new ArrayList<String>();
-		for(JCheckBox cb : customer_meal_list_frame.getAllergens()) {
-			if(cb.isSelected())
-				allergen_list.add(cb.getText());
-		}
-		TableModelUtility table_model_util = new TableModelUtility();
-		String shop_email = shop.getEmail();
-		List<Meal> meal_list = new ArrayList<Meal>();
-		if(!selected_category.equals("Visualizza tutti i pasti"))
-		{
-		try {
-			meal_list = meal_dao.doCustomerComplexSearch(selected_category, selected_meal, min_price, max_price, allergen_list, shop_email);
-		}
-		catch (DaoException e) {
+		}catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		}else
-		{
-			try {
-				meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
-			}
-			catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		customer_meal_list_frame.getModel().setRowCount(0);
+		TableModelUtility table_model_util = new TableModelUtility();
 		table_model_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
 		return;
 	}
 	
 	public void openCustomerCartFrame(JFrame frame)
 	{
-		frame.setVisible(false);
-		TableModelUtility table_util = new TableModelUtility();
+		frame.dispose();
 		CustomerCartFrame customer_cart_frame = new CustomerCartFrame(this);
+		TableModelUtility table_util = new TableModelUtility();
 		table_util.initializeCustomerCartTable(customer_cart_frame.getModel(), cart);
 		customer_cart_frame.setVisible(true);
 		return;
 	}
 	public Shop getShop() {
-		return shop;
+		return this.shop;
 	}
 	public void updateMealQuantity(CustomerCartFrame customerCartFrame) {
 		
@@ -273,9 +260,9 @@ public class CustomerController {
 		}else
 			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto","Error",JOptionPane.ERROR_MESSAGE);
 	}
-	public void openCustomerCheckoutFrame() {
+	public void openCustomerCheckoutFrame(CustomerCartFrame customer_cart_frame) {
 		
-		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame(this);
+		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame(this, customer_cart_frame);
 		InputUtility input_util = new InputUtility();
 		customer_checkout_frame.setVisible(true);
 		customer_checkout_frame.setAddressTF(input_util.addressToTokenizedString(customer.getAddress(),", "));
@@ -285,17 +272,14 @@ public class CustomerController {
 		customer_checkout_frame.setTotal_priceTF(String.valueOf(cart.getTotalPrice()));
 		return;
 	}
-	public void completeOrder(CustomerCheckoutFrame customerCheckoutFrame) {
+	public void completeOrder(CustomerCheckoutFrame customer_checkout_frame, CustomerCartFrame customer_cart_frame) {
 		
-		Date date = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-		date.setHours(date.getHours()+1);
-		date.setMinutes(date.getMinutes()+30);
 		try {
 			order_dao.createOrder(customer.getAddress(), "Contrassegno","da inserire" , shop, customer, cart);
-			JOptionPane.showMessageDialog(null, "Ordine completato. Consegna garantita entro le: "+formatter.format(date));
+			JOptionPane.showMessageDialog(null, "Ordine completato. Tra poco l' ordine partira' dal ristorante!");
+			customer_cart_frame.dispose();
 			cart.getOrder_composition_list().clear();
-			this.openCustomerMealListFrame(customerCheckoutFrame, shop.getEmail());
+			openCustomerMealListFrame(customer_checkout_frame, shop.getEmail());
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Non e' stato possibile completare l' ordine","Errore",JOptionPane.ERROR_MESSAGE);
 		}

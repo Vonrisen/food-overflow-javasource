@@ -34,7 +34,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
 			insert_supply_PS = connection.prepareStatement("INSERT INTO Supply SELECT (SELECT id FROM Shop WHERE email=?), id FROM MEAL WHERE name=?");
 			delete_from_supply_PS = connection.prepareStatement("DELETE FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?) AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
-			customer_complex_search_PS = connection.prepareStatement("SELECT * FROM  effettuaRicercaComplessaCustomer(?,?,?,?,?,?) AS t(name varchar, category varchar, price real, ingredients varchar, id character(4))");
+			customer_complex_search_PS = connection.prepareStatement("SELECT * FROM  effettuaRicercaComplessaCustomer(?,?,?,?,?) AS t(name varchar, category varchar, price real, ingredients varchar, id character(4))");
 	
 		}catch(SQLException s)
 		{
@@ -65,8 +65,8 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2);
-			db_util.releaseResources(rs1);
+			db_util.closeResultSet(rs2);
+			db_util.closeResultSet(rs1);
 		}
 		return meal_list;
 	}
@@ -95,8 +95,8 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2);
-			db_util.releaseResources(rs1);
+			db_util.closeResultSet(rs2);
+			db_util.closeResultSet(rs1);
 		}
 		return meal_list;
 	}
@@ -176,14 +176,14 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	
 	public void closeStatements() throws DaoException {
 		
-		db_util.releaseResources(get_allergens_of_a_meal_PS);
-		db_util.releaseResources(get_all_meals_PS);
-		db_util.releaseResources(insert_meal_PS);
-		db_util.releaseResources(delete_meal_PS);
-		db_util.releaseResources(get_all_meals_except_shop_meals_PS);
-		db_util.releaseResources(insert_supply_PS);
-		db_util.releaseResources(delete_from_supply_PS);
-		db_util.releaseResources(add_allergens_CS);
+		db_util.closeStatement(get_allergens_of_a_meal_PS);
+		db_util.closeStatement(get_all_meals_PS);
+		db_util.closeStatement(insert_meal_PS);
+		db_util.closeStatement(delete_meal_PS);
+		db_util.closeStatement(get_all_meals_except_shop_meals_PS);
+		db_util.closeStatement(insert_supply_PS);
+		db_util.closeStatement(delete_from_supply_PS);
+		db_util.closeStatement(add_allergens_CS);
 		return;
 		
 	}
@@ -212,8 +212,8 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		}
 		finally
 		{
-			db_util.releaseResources(rs2);
-			db_util.releaseResources(rs1);
+			db_util.closeResultSet(rs2);
+			db_util.closeResultSet(rs1);
 		}
 		return meal;
 	}
@@ -225,14 +225,12 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		ResultSet rs = null;
 		ResultSet rs1 = null;
 		InputUtility input_util = new InputUtility();
-
 		try {
 			customer_complex_search_PS.setString(1, category);
-			customer_complex_search_PS.setString(2, meal_name);
-			customer_complex_search_PS.setFloat(3, min_price);
-			customer_complex_search_PS.setFloat(4, max_price);
-			customer_complex_search_PS.setString(5, input_util.arrayListToTokenizedString(allergens,","));
-			customer_complex_search_PS.setString(6, shop_email);
+			customer_complex_search_PS.setFloat(2, min_price);
+			customer_complex_search_PS.setFloat(3, max_price);
+			customer_complex_search_PS.setString(4, input_util.arrayListToTokenizedString(allergens,","));
+			customer_complex_search_PS.setString(5, shop_email);
 			rs = customer_complex_search_PS.executeQuery();
 			while (rs.next())
 			{
@@ -244,12 +242,11 @@ public class MealDAOPostgresImplementation implements MealDAO {
 				meal_list.add(new Meal(rs.getString("name"),rs.getFloat("price"),rs.getString("ingredients"),rs.getString("category"),allergen_list));
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 			throw new DaoException();
 		}finally
 		{
-			db_util.releaseResources(rs);
-			db_util.releaseResources(rs1);
+			db_util.closeResultSet(rs);
+			db_util.closeResultSet(rs1);
 		}
 			
 		return meal_list;

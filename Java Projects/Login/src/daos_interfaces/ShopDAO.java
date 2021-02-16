@@ -17,6 +17,7 @@ public interface ShopDAO {
 	public List<Rider> getRidersOfAShopByShopEmail(String current_shop_email) throws DaoException;
 	public List<Meal>getMealsOfAShopByShopEmail(String shop_email) throws DaoException;
 	public Shop getShopByEmail(String email) throws DaoException;
-	public List<Shop> getShopByProvince(String email) throws DaoException;
+	public List<Shop> getShopByProvince(String province) throws DaoException;
 	public void closeStatements() throws DaoException;
+	public List<Rider> getRidersOfAShopMax2DeliveriesByShopEmail(String shop_email) throws DaoException;
 }

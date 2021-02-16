@@ -71,13 +71,14 @@ public class ShopController {
 		frame.dispose();
 		TableModelUtility table = new TableModelUtility();
 		ShopMealFrame shop_meal_frame = new ShopMealFrame(this);
-		List<Meal>meal_list = new ArrayList<Meal>();
 		try {
-			meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
+			List<Meal> meal_list = shop_dao.getMealsOfAShopByShopEmail(current_shop_email);
+			List<Meal> meals_not_in_menu = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
 			table.initializeMealTable(shop_meal_frame.getModel(), meal_list);
+			table.initializeMealTable(shop_meal_frame.getModel2(), meals_not_in_menu);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null,
-					"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+					"Errore critico, contattare l' amministratore", "Error",JOptionPane.ERROR_MESSAGE);
 		} 
 		shop_meal_frame.setVisible(true);
 		return;
@@ -102,33 +103,15 @@ public class ShopController {
 			shop_rider_frame.getBirth_provinceCB().addItem(s);
 			shop_rider_frame.getAddress_provinceCB().addItem(s);
 		}
-		List<Rider>rider_list = new ArrayList<Rider>();
+
 			try {
-				rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
+				List<Rider> rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 				table.initializeRiderTable(shop_rider_frame.getModel(), rider_list);
 				shop_rider_frame.setVisible(true);
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null,"An error has occurred, please try again or contact the administrator", "Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"Errore critico, contattare l' amministratore", "Error",JOptionPane.ERROR_MESSAGE);
 			} 
 			shop_rider_frame.setVisible(true);
-		return;
-	}
-	
-	public void openShopAllMealsFrame()
-	{
-		ShopAllMealsFrame shop_all_meals_frame = new ShopAllMealsFrame();
-		TableModelUtility table = new TableModelUtility();
-		List<Meal> meal_list = new ArrayList<Meal>();
-		try {
-			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
-			if(!meal_list.isEmpty())
-				table.initializeMealTable(shop_all_meals_frame.getModel(), meal_list);
-			else
-				JOptionPane.showMessageDialog(null, "Lo shop selezionato non vende alimenti","Warning",JOptionPane.WARNING_MESSAGE);
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-		}
-		shop_all_meals_frame.setVisible(true);
 		return;
 	}
 
@@ -145,9 +128,8 @@ public class ShopController {
 		frame.setVisible(false);
 		TableModelUtility table = new TableModelUtility();
 		ShopViewOrdersFrame shop_view_orders_frame = new ShopViewOrdersFrame(this);
-		List<Order> all_orders = new ArrayList<Order>();
 		try {
-			all_orders = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
+			List<Order> all_orders = order_dao.getOrdersOfAShopByShopEmail(current_shop_email);
 			if(!all_orders.isEmpty())
 			{
 			    table.initializeCompletedOrderTable(shop_view_orders_frame.getModel(), all_orders);
@@ -159,7 +141,7 @@ public class ShopController {
 				JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha ordini completati","Warning",JOptionPane.WARNING_MESSAGE);
 			}
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore", "Errore", JOptionPane.ERROR_MESSAGE);
 		} 
 
 		return;
@@ -168,11 +150,11 @@ public class ShopController {
 	{
 		AdminRiderFrame admin_rider_frame = new AdminRiderFrame();
 		TableModelUtility table = new TableModelUtility();
-		List<Rider>employed_rider_list = new ArrayList<Rider>();
+		List<Rider> employed_rider_list = new ArrayList<Rider>();
 		try {
 			employed_rider_list = shop_dao.getRidersOfAShopByShopEmail(current_shop_email);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 		if(!employed_rider_list.isEmpty())
 		{
@@ -187,9 +169,8 @@ public class ShopController {
 		frame.setVisible(false);
 		ShopDeliveringOrdersFrame shop_delivering_orders_frame = new ShopDeliveringOrdersFrame(this);
 		TableModelUtility table = new TableModelUtility();
-		List<Order> in_delivery_order_list = new ArrayList<Order>();
 			try {
-				in_delivery_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
+				List<Order> in_delivery_order_list = order_dao.getInDeliveryOrdersOfAShop(current_shop_email);
 				if(!in_delivery_order_list.isEmpty())
 				{
 				    table.initializeDeliveringOrderTable(shop_delivering_orders_frame.getModel(), in_delivery_order_list);
@@ -201,7 +182,7 @@ public class ShopController {
 					JOptionPane.showMessageDialog(null, "Lo shop selezionato non ha ordini in consegna","Warning",JOptionPane.WARNING_MESSAGE);
 				}
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 			return;
 	}
@@ -211,12 +192,13 @@ public class ShopController {
 		frame.setVisible(false);
 		TableModelUtility table = new TableModelUtility();
 		ShopPendingOrdersFrame shop_pending_orders_frame = new ShopPendingOrdersFrame(this);
-		List<Order> pending_order_list = new ArrayList<Order>();
 		try {
-			pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
+			List<Order> pending_order_list = order_dao.getPendingOrdersOfAShop(current_shop_email);
+			List<Rider> rider_list = shop_dao.getRidersOfAShopMax2DeliveriesByShopEmail(current_shop_email);
 			if(!pending_order_list.isEmpty())
 			{
 			    table.initializePendingOrderTable(shop_pending_orders_frame.getModel(), pending_order_list);
+			    table.initializeRiderOrderTable(shop_pending_orders_frame.getModel2(), rider_list);
 				shop_pending_orders_frame.setVisible(true);
 			}
 			else
@@ -229,25 +211,25 @@ public class ShopController {
 		} 
 		return;
 	}	
-	public void addMeal(ShopMealFrame shop_meal_frame) {
+	public void addMealToMenu(ShopMealFrame shop_meal_frame) {
 		
-		List<Meal> meal_list = new ArrayList<Meal>();
-		int i=0;
+		int row_selected = shop_meal_frame.getTable2().getSelectedRow();
+		if(!shop_meal_frame.getTable2().getSelectionModel().isSelectionEmpty())
+		{
 		try {
-			meal_list = meal_dao.getAllMealsExceptShopMeals(current_shop_email);
-			while(!meal_list.get(i).getName().equals(shop_meal_frame.getMealTF().getText()))
-				i++;
-			meal_dao.insertSupply(current_shop_email,meal_list.get(i));
-			shop_meal_frame.getModel().insertRow(shop_meal_frame.getModel().getRowCount(), new Object[]{meal_list.get(i).getName(),
-					meal_list.get(i).getCategory(), new DecimalFormat("00.00").format(meal_list.get(i).getPrice()),
-					meal_list.get(i).getIngredients(),meal_list.get(i).getAllergen_list().toString().substring(1,meal_list.get(i).getAllergen_list().toString().length()-1)});
+			Meal meal = meal_dao.getMealByName(shop_meal_frame.getTable2().getValueAt(row_selected, 0).toString());
+			meal_dao.insertSupply(current_shop_email,meal);
+			shop_meal_frame.getModel().insertRow(shop_meal_frame.getModel().getRowCount(), new Object[]{meal.getName(),
+					meal.getCategory(), new DecimalFormat("00.00").format(meal.getPrice()),
+					meal.getIngredients(),meal.getAllergen_list().toString().substring(1,meal.getAllergen_list().toString().length()-1)});
+			shop_meal_frame.getModel2().removeRow(row_selected);
 			JOptionPane.showMessageDialog(null, "Pasto aggiunto correttamente");
 		}
 		catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator","Errore",JOptionPane.ERROR_MESSAGE);
-		}catch (IndexOutOfBoundsException in) {
-			JOptionPane.showMessageDialog(null, "Pasto errato oppure e' gia' disponibile nel negozio","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Non e' stato possibile aggiungere il pasto al menu', contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		}else
+			JOptionPane.showMessageDialog(null, "Selezionare un pasto","Errore",JOptionPane.ERROR_MESSAGE);
 			return;
 	}
 	
@@ -286,9 +268,9 @@ public class ShopController {
 			JOptionPane.showMessageDialog(null, "Rider assunto con successo");
 		} }
 		catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Riempi correttamente i campi.\nHint: Controlla la validita dell' indirizzo, data di nascita, orario lavorativo e cellulare","Errore",JOptionPane.ERROR_MESSAGE);
 		} catch (ParseException e1) {
-			JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Inserire data nel formato dd/mm/yyyy","Errore",JOptionPane.ERROR_MESSAGE);
 		}catch(CfException c)
 		{
 			JOptionPane.showMessageDialog(null, c.getMessage());
@@ -308,13 +290,13 @@ public class ShopController {
 				Meal meal_to_remove = meal_dao.getMealByName(meal_name_to_remove);
 				meal_dao.deleteFromSupply(current_shop_email, meal_to_remove);
 				shop_meal_frame.getModel().removeRow(row);
-				JOptionPane.showMessageDialog(null, "Selected shop deleted successfully");
+				JOptionPane.showMessageDialog(null, "Pasto rimosso con successo");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errors while deleting selected shop","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 	}
 		else
-			JOptionPane.showMessageDialog(null, "Select the shop you want to delete","Warning",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona il pasto da rimuovere","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
 	
 	}
@@ -331,11 +313,11 @@ public class ShopController {
 				shop_rider_frame.getModel().removeRow(row);
 				JOptionPane.showMessageDialog(null, "Rider licenziato con successo");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errors while trying to dismiss selected rider","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore","Error",JOptionPane.ERROR_MESSAGE);
 			}
 	}
 		else
-			JOptionPane.showMessageDialog(null, "Select the rider you want to dismiss","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona il rider da rimuovere","Error",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 	
@@ -367,19 +349,19 @@ public class ShopController {
 			rider_to_update.setBirth_place(shop_rider_frame.getBirth_townCB().getSelectedItem().toString());
 			rider_dao.updateRider(rider_to_update);
 			updateRiderTableColumns(shop_rider_frame, selected_row, rider_to_update);
-				JOptionPane.showMessageDialog(null, "Shop aggiornato con successo");
+				JOptionPane.showMessageDialog(null, "Rider aggiornato con successo");
 			} }catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Please, fill correctly the text fields.\nHint: Check the validity of the address, birth_date, working hours and cellphone","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Riempi correttamente i campi.\\nHint: Controlla la validita dell' indirizzo, data di nascita, orario lavorativo e cellulare","Error",JOptionPane.ERROR_MESSAGE);
 			}
 		      catch (ParseException e1) {
-				JOptionPane.showMessageDialog(null, "Insert date in a valid format","Errore",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Inserire data nel formato dd/mm/yyyy","Errore",JOptionPane.ERROR_MESSAGE);
 			}catch(CfException c)
 			{
 				JOptionPane.showMessageDialog(null, c.getMessage());
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona il rider da aggiornare","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 	
@@ -403,17 +385,29 @@ public class ShopController {
 		return;
 	}
 	
-	public void updatePendingOrder(ShopPendingOrdersFrame shop_pending_orders_frame) {
+	public void linkRiderToOrder(ShopPendingOrdersFrame shop_pending_orders_frame) {
 		
-		try {
-			Order pending_order = order_dao.getOrderById(shop_pending_orders_frame.getOrderTF().getText());
-			order_dao.updatePendingOrder(pending_order, shop_pending_orders_frame.getRiderTF().getText());
-			shop_pending_orders_frame.getModel().removeRow(shop_pending_orders_frame.getTable().getSelectedRow());
-		} catch (IndexOutOfBoundsException e) {
-			JOptionPane.showMessageDialog(null, "ID non trovato. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
+		
+		if(shop_pending_orders_frame.getTable().getSelectionModel().isSelectionEmpty()||shop_pending_orders_frame.getTable2().getSelectionModel().isSelectionEmpty()) 
+			JOptionPane.showMessageDialog(null, "Seleziona un ordine da associare ad un rider","Errore",JOptionPane.ERROR_MESSAGE);
+		else
+		{
+
+			int selected_order_row = shop_pending_orders_frame.getTable().getSelectedRow();
+			int selected_rider_row = shop_pending_orders_frame.getTable2().getSelectedRow();
+			try {
+				Order order = order_dao.getOrderById(shop_pending_orders_frame.getModel().getValueAt(selected_order_row, 0).toString());
+				Rider rider = rider_dao.getRiderByCf(shop_pending_orders_frame.getModel2().getValueAt(selected_rider_row, 0).toString());
+				order_dao.linkRiderToOrder(order, rider);
+				shop_pending_orders_frame.getModel().removeRow(selected_order_row);
+				shop_pending_orders_frame.getModel2().setValueAt(Integer.parseInt(shop_pending_orders_frame.getModel2().getValueAt(selected_rider_row, 4).toString())+1, selected_rider_row, 4);
+				if(shop_pending_orders_frame.getModel2().getValueAt(selected_rider_row, 4).toString().equals("3"))
+					shop_pending_orders_frame.getModel2().removeRow(selected_rider_row);
+			} catch (DaoException e) {
+				JOptionPane.showMessageDialog(null, "Non e' stato possibile associare l' ordine al rider","Errore",JOptionPane.ERROR_MESSAGE);
+			}
 		}
+		return;
 	}
 	
 	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_orders_frame) {

@@ -57,7 +57,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		}
 		finally
 		{
-			 db_util.releaseResources(rs);
+			 db_util.closeResultSet(rs);
 		}
 		return rider_list;
 	}
@@ -126,37 +126,39 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 
 	public void closeStatements() throws DaoException {
 		
-		db_util.releaseResources(get_all_riders_PS);
-		db_util.releaseResources(insert_rider_PS);
-		db_util.releaseResources(dismiss_rider_PS);
-		db_util.releaseResources(update_rider_PS);
+		db_util.closeStatement(get_all_riders_PS);
+		db_util.closeStatement(insert_rider_PS);
+		db_util.closeStatement(dismiss_rider_PS);
+		db_util.closeStatement(update_rider_PS);
 		return;
 		
 	}
 
 	@Override
 	public Rider getRiderByCf(String cf) throws DaoException {
-		ResultSet rs = null;
-		List<String>address_fields = new ArrayList<String>();
-		InputUtility string_util = new InputUtility(); 
+		
 		Rider rider = null;
-		try {
-			get_rider_by_CF_PS.setString(1, cf);
-			rs = get_rider_by_CF_PS.executeQuery();
-			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
-			while(rs.next())
-			{
-				address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
-				rider = (new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"), new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),rs.getString("gender"),
-					       rs.getString("cellphone"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
-						   rs.getString("vehicle"),rs.getString("working_hours"),rs.getShort("deliveries_number")));
-				
-			}
-		} catch (SQLException e) {
-			throw new DaoException();
-		}finally
+		List<String>address_fields = new ArrayList<String>();
+		InputUtility string_util = new InputUtility();
+		ResultSet rs = null;
+		try
 		{
-			db_util.releaseResources(rs);
+		get_rider_by_CF_PS.setString(1, cf);
+		rs = get_rider_by_CF_PS.executeQuery();
+		while(rs.next())
+		{
+			address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");
+			rider = new Rider(rs.getString("cf"),rs.getString("name"),rs.getString("surname"), new Date(rs.getDate("birth_date").getTime()),rs.getString("birth_place"),rs.getString("gender"),
+				       rs.getString("cellphone"), new Address(address_fields.get(0),address_fields.get(1), address_fields.get(2), address_fields.get(3), address_fields.get(4)),
+					   rs.getString("vehicle"),rs.getString("working_hours"),rs.getShort("deliveries_number"));
+		}
+		}catch(SQLException s)
+		{
+			throw new DaoException();
+		}
+		finally
+		{
+			 db_util.closeResultSet(rs);
 		}
 		return rider;
 	}

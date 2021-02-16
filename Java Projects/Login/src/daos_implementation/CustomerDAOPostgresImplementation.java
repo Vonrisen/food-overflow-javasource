@@ -57,7 +57,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			db_util.releaseResources(rs);
+			db_util.closeResultSet(rs);
 		}
 		return customer_list;
 	}
@@ -84,7 +84,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			db_util.releaseResources(insert_customer_PS);
+			db_util.closeStatement(insert_customer_PS);
 		}
 		return;
 	}
@@ -101,7 +101,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			db_util.releaseResources(delete_customer_PS);
+			db_util.closeStatement(delete_customer_PS);
 		}
 		return;
 	}
@@ -120,7 +120,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			db_util.releaseResources(update_customer_PS);
+			db_util.closeStatement(update_customer_PS);
 		}
 		return;
 	}
@@ -141,18 +141,18 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		}
 		finally
 		{
-			 db_util.releaseResources(rs);
+			 db_util.closeResultSet(rs);
 		}
 		return row_founded;	
 	}
 	
    public void closeStatements() throws DaoException {
 		
-		db_util.releaseResources(get_all_customers_PS);
-		db_util.releaseResources(insert_customer_PS);
-		db_util.releaseResources(delete_customer_PS);
-		db_util.releaseResources(update_customer_PS);
-		db_util.releaseResources(authenticateCustomerLogin_PS);
+		db_util.closeStatement(get_all_customers_PS);
+		db_util.closeStatement(insert_customer_PS);
+		db_util.closeStatement(delete_customer_PS);
+		db_util.closeStatement(update_customer_PS);
+		db_util.closeStatement(authenticateCustomerLogin_PS);
 		return;
 		
 	}
@@ -178,7 +178,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 	}
 	finally
 	{
-		db_util.releaseResources(rs);
+		db_util.closeResultSet(rs);
 	}
 	return customer;
 }

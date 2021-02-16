@@ -186,12 +186,11 @@ public class ShopRiderFrame extends ComplexFrame{
 					address_nameTF.setText(address.getAddress());
 					address_civic_numberTF.setText(address.getCivic_number());
 					address_capTF.setText(address.getCap());
-					address_cityTF.setText(address.getCity());
-					address_provinceTF.setText(address.getProvince());
+					address_provinceCB.setSelectedItem(address.getProvince());
+					address_townCB.setSelectedItem(address.getCity());
 					cellphoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 7).toString());
 					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 9).toString());
 				}
-				
 			}
 		
 			

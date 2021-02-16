@@ -39,12 +39,14 @@ public class CustomerCheckoutFrame extends JFrame{
 	private JTextField shopTF;
 	private JTextField cellphoneTF;
 	CustomerController customer_controller;
+	CustomerCartFrame customer_cart_frame;
 
-	public CustomerCheckoutFrame(CustomerController customer_controller) {
+	public CustomerCheckoutFrame(CustomerController customer_controller, CustomerCartFrame customer_cart_frame) {
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
+		this.customer_cart_frame = customer_cart_frame;
 	}
 
 	private void initialize() {
@@ -160,7 +162,7 @@ public class CustomerCheckoutFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				
 				//Effettuo ordine, cancello il carrello, chiudo questo frame
-				customer_controller.completeOrder(CustomerCheckoutFrame.this);
+				customer_controller.completeOrder(CustomerCheckoutFrame.this,customer_cart_frame);
 				
 			}
 		});

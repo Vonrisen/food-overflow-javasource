@@ -118,7 +118,7 @@ public class CustomerMealListFrame extends JFrame {
 	private JTextField quantityTF;
 	
 	private CustomerController customer_controller;
-	LoginController login_controller;
+	private LoginController login_controller;
 	
 	public CustomerMealListFrame(CustomerController customer_controller, LoginController login_controller) {
 		
@@ -507,7 +507,7 @@ public class CustomerMealListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				customer_controller.openCustomerShopListFrame(customer_controller.getShop().getAddress().getProvince());
+				customer_controller.openCustomerShopListFrame(CustomerMealListFrame.this,customer_controller.getShop().getAddress().getProvince());
 				
 			}
 		});

@@ -69,7 +69,7 @@ public class LoginController{
 		if (!login_frame.getUsernameTF().getText().equals("admin") || !login_frame.getPasswordTF().getText().equals("admin"))
 		{
 			
-			JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		else
 		{
@@ -93,11 +93,11 @@ public class LoginController{
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare","Errore",JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (DaoException e) {
 				
-				JOptionPane.showMessageDialog(null, "Critical error, please try again or contact the administrator");
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore");
 			}
 			
 	} //SE ACCEDE IL CUSTOMER
@@ -114,11 +114,11 @@ public class LoginController{
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Incorrect credentials, please try again","Errore",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare","Errore",JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (DaoException e) {
 				
-				JOptionPane.showMessageDialog(null, "Critical error, please try again or contact the administrator");	
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore");
 			}	
 			}
 		return;

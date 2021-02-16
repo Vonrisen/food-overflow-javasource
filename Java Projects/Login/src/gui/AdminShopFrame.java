@@ -177,6 +177,8 @@ public class AdminShopFrame extends ComplexFrame{
 					address_nameTF.setText(address.getAddress());
 					address_civic_numberTF.setText(address.getCivic_number());
 					address_capTF.setText(address.getCap());
+					address_provinceCB.setSelectedItem(address.getProvince());
+					address_townCB.setSelectedItem(address.getCity());
 					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
 					closing_daysTF.setText(closing_days);
 					passwordTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());

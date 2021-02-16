@@ -79,11 +79,21 @@ public class TableModelUtility {
 			row[0] = meal.getName();
 			row[1] = meal.getCategory();
 			row[2] = meal.getPrice();
-			row[3] = meal.getIngredients();
-			if(meal.getAllergen_list()!=null)
+			row[3] = meal.getIngredients(); 
 			row[4] = input_util.arrayListToTokenizedString(meal.getAllergen_list(), ", ");
-			else
-				row[4]="";
+			model.addRow(row);
+		}
+	}
+	
+	public void initializeRiderOrderTable(DefaultTableModel model,  List<Rider> rider_list)
+	{
+		Object[] row = new Object[5];
+		for(Rider rider : rider_list) {
+			row[0] = rider.getCf();
+			row[1] = rider.getCellphone();
+			row[2] = rider.getVehicle();
+			row[3] = rider.getWorking_hours();
+			row[4] = rider.getDeliveries_number();
 			model.addRow(row);
 		}
 	}
@@ -171,19 +181,17 @@ public class TableModelUtility {
 
 	public void initializeCustomerCartTable(DefaultTableModel model, Cart cart) {
 		
+		
 		InputUtility input_util = new InputUtility();
 		Object[] row = new Object[6];
-		for(OrderComposition o  : cart.getOrder_composition_list())
+		for(OrderComposition order_comp  : cart.getOrder_composition_list())
 		{
-			row[0] = o.getMeal().getName();
-			row[1] = o.getMeal().getCategory();
-			row[2] = o.getMeal().getPrice();
-			row[3] = o.getMeal().getIngredients();
-			if(o.getMeal().getAllergen_list()!=null)
-			row[4] = input_util.arrayListToTokenizedString(o.getMeal().getAllergen_list(), ", ");
-			else
-				row[4]="";
-			row[5] = o.getQuantity();
+			row[0] = order_comp.getMeal().getName();
+			row[1] = order_comp.getMeal().getCategory();
+			row[2] = order_comp.getMeal().getPrice();  
+			row[3] = order_comp.getMeal().getIngredients();
+			row[4] = input_util.arrayListToTokenizedString(order_comp.getMeal().getAllergen_list(), ", ");
+			row[5] = order_comp.getQuantity();
 			model.addRow(row);
 		}
 		

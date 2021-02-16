@@ -6,6 +6,7 @@ import entities.Address;
 import entities.Cart;
 import entities.Customer;
 import entities.Order;
+import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
 
@@ -16,7 +17,7 @@ public interface OrderDAO {
 
 	public List<Order> getPendingOrdersOfAShop(String current_shop_email) throws DaoException;
 	
-	public void updatePendingOrder(Order order, String rider_cf) throws DaoException;
+	public void linkRiderToOrder(Order order, Rider rider) throws DaoException;
 	
 	public void updateDeliveringOrder(Order order, String stato) throws DaoException;
 	

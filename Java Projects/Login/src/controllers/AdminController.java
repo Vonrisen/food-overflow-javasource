@@ -101,9 +101,8 @@ public class AdminController {
 		frame.dispose();
 		TableModelUtility table_utility = new TableModelUtility();
 		AdminCustomerFrame admin_customer_frame = new AdminCustomerFrame(this);
-		List<Customer> customer_list;
 		try {
-			customer_list = customer_dao.getAllCustomers();
+			List<Customer> customer_list = customer_dao.getAllCustomers();
 			table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Error",JOptionPane.ERROR_MESSAGE);
@@ -212,13 +211,13 @@ public class AdminController {
 				Meal meal = meal_dao.getMealByName(name_of_meal_to_delete);
 				meal_dao.deleteMeal(meal);
 				admin_meal_frame.getModel().removeRow(row);
-				JOptionPane.showMessageDialog(null, "Selected meal deleted successfully");
+				JOptionPane.showMessageDialog(null, "Pasto rimosso con successo");
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Could not delete selected meal, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Select the meal you want to delete","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Select il pasto da rimuovere","Errore",JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 
@@ -248,7 +247,7 @@ public class AdminController {
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Select the shop you want to update","Warning",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona lo shop da aggiornare","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
 	}
 	
