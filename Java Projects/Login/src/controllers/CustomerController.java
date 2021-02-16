@@ -143,9 +143,9 @@ public class CustomerController {
 					o.setQuantity((short) (quantity+o.getQuantity()));
 					meal_already_inserted = true;
 				}
-				else
-					cart.addMealIntoCart(new_meal);
 			}
+			if(!meal_already_inserted)
+				cart.addMealIntoCart(new_meal);
 		}
 		else
 			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello","Errore",JOptionPane.ERROR_MESSAGE);

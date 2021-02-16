@@ -242,6 +242,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 				meal_list.add(new Meal(rs.getString("name"),rs.getFloat("price"),rs.getString("ingredients"),rs.getString("category"),allergen_list));
 			}
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			throw new DaoException();
 		}finally
 		{
