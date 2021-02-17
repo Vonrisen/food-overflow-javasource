@@ -33,7 +33,7 @@ public class AdminCustomerFrame extends StandardFrame {
 		
 		setTitle("[Admin Panel] Lista clienti");
 
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\customers.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\customers.png"));
 		getTable_titleLB().setIcon(getTable_title());
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 		

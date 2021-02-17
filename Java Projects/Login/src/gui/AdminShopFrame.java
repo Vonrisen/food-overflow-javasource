@@ -58,9 +58,9 @@ public class AdminShopFrame extends ComplexFrame{
 	//Initialize variables
 	private void initialize() {
 
-		search_riders_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonInactive.png");
-		search_riders_activeIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonActive.png");
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\shops.png"));
+		search_riders_inactiveIMG = new ImageIcon("src\\images\\buttons\\searchRidersButtonInactive.png");
+		search_riders_activeIMG = new ImageIcon("src\\images\\buttons\\searchRidersButtonActive.png");
+		setTable_title(new ImageIcon("src\\images\\others\\shops.png"));
 
 		nameTF = new RoundJTextField(new Color(0x771007));
 		emailTF = new RoundJTextField(new Color(0x771007));

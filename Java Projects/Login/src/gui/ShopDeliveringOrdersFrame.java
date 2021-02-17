@@ -36,7 +36,7 @@ public class ShopDeliveringOrdersFrame extends ComplexFrame{
 
 
 	private void initialize() {
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\orders.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\deliveringOrders.png"));
 		statusCB = new JComboBox<String>(status);
 		orderTF = new RoundJTextField(new Color(0x771007));
 		getTable().setModel(model = new DefaultTableModel(columns, 0));

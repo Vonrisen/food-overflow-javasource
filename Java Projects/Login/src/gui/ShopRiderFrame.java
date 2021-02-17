@@ -58,7 +58,7 @@ public class ShopRiderFrame extends ComplexFrame{
 
 	private void initialize() {
 
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\riders.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\riders.png"));
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
 		birth_dateTF = new RoundJTextField(new Color(0x771007));

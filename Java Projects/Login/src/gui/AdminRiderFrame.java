@@ -21,7 +21,7 @@ public class AdminRiderFrame extends StandardFrame {
 		
 		setTitle("[Admin Panel] Lista riders");
 
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\riders.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\riders.png"));
 		getTable_titleLB().setIcon(getTable_title());
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 		

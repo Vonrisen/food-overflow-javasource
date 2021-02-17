@@ -49,7 +49,7 @@ public class AdminMealFrame extends ComplexFrame{
 	
 	private void initialize() {
 		
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\meals.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\meals.png"));
 		
 		dish_panel = new JPanel();
 		allergens_panel = new JPanel();
