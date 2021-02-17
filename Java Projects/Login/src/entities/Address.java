@@ -22,7 +22,6 @@ public class Address {
 
 	//GETTER AND SETTER
 
-	
 	public String getCivic_number() {
 		return civic_number;
 	}

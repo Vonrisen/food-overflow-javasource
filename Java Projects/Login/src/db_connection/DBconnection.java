@@ -9,10 +9,10 @@ public class DBconnection {
 	private static DBconnection instance = null;
 	
 	private final String USERNAME="postgres";
-	private final String PWD="admin31";
+	private final String PWD="password123";
 	private final String IP="localhost";
 	private final String PORT="5432";
-	private final String DBNAME="food_overflow";
+	private final String DBNAME="FOOD-OVERFLOW_DB";
 	private Connection connection;
 	
 	private DBconnection() {
@@ -20,20 +20,12 @@ public class DBconnection {
 	 {
 		 Class.forName("org.postgresql.Driver");
 		 this.connection = DriverManager.getConnection("jdbc:postgresql://"+IP+":"+PORT+"/"+DBNAME,USERNAME,PWD);
-		 System.out.println("Connessione con il database avvenuta");
 	 }
-	 catch (SQLException e)
+	 catch (SQLException | ClassNotFoundException e)
 	 {
-			JOptionPane.showMessageDialog(null, "Network error, try again or contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
 	 }
-     catch (ClassNotFoundException e)
-	 
-     {
-    		JOptionPane.showMessageDialog(null, "Critical error, contact the administrator","Error",JOptionPane.ERROR_MESSAGE);
-     }
-	 
 	}
-	
 	public Connection getConnection()
 	{
 		return connection;

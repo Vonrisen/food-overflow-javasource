@@ -1,12 +1,10 @@
 package utilities;
 
 import java.sql.Connection;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import db_connection.DBconnection;
 
 public class DButility {
 	
@@ -19,7 +17,9 @@ public class DButility {
 				        if (st != null) {
 					        try {
 					        	st.close();
-					        } catch (SQLException e) { /* ignored */}
+					        } catch (SQLException e) { 
+					        	JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+							System.exit(-1);}
 					    }       
 				    return;
 			 }
@@ -28,7 +28,9 @@ public class DButility {
 				        if (rs != null) {
 					        try {
 					        	rs.close();
-					        } catch (SQLException e) { /* ignored */}
+					        } catch (SQLException e) { 
+					        	JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+								System.exit(-1);}
 					    }       
 				    return;
 			 }
@@ -37,8 +39,10 @@ public class DButility {
 		if (conn!= null) {
 	        try {
 	            conn.close();
-	            System.out.println("conn chiusa");
-	        } catch (SQLException e) { /* ignored */}
+	        } catch (SQLException e) {
+	        	JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+			}
 }
 	    return;
 	}

@@ -1,15 +1,12 @@
 package controllers;
+
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.MealDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
@@ -25,7 +22,6 @@ import gui.LoginFrame;
 import gui.RegisterFrame;
 import utilities.CodiceFiscaleUtility;
 import utilities.DButility;
-import utilities.InputUtility;
 import utilities.IstatUtils;
 public class LoginController{
 	

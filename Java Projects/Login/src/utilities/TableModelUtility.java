@@ -1,6 +1,5 @@
 package utilities;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -12,9 +11,7 @@ import entities.Order;
 import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
-import gui.AdminCustomerFrame;
 import gui.AdminShopFrame;
-import gui.CustomerCartFrame;
 
 public class TableModelUtility {
 	

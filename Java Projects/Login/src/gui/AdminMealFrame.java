@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -49,7 +48,7 @@ public class AdminMealFrame extends ComplexFrame{
 	
 	private void initialize() {
 		
-		setTable_title(new ImageIcon("src\\images\\others\\meals.png"));
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\meals.png"));
 		
 		dish_panel = new JPanel();
 		allergens_panel = new JPanel();

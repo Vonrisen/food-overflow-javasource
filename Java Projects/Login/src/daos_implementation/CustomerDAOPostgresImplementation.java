@@ -6,10 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import daos_interfaces.CustomerDAO;
-import db_connection.DBconnection;
 import entities.Address;
 import entities.Customer;
 import exceptions.DaoException;
@@ -19,7 +17,7 @@ import utilities.InputUtility;
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 
-	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS, get_customer_by_email;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS, get_customer_by_email_PS;
 	DButility db_util = new DButility();
 	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
@@ -28,7 +26,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 			delete_customer_PS = connection.prepareStatement("DELETE FROM Customer WHERE email=?");
 			update_customer_PS = connection.prepareStatement("UPDATE Customer SET email=?, password=? WHERE cellphone=?");
 			authenticateCustomerLogin_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=? AND password=?");
-			get_customer_by_email = connection.prepareStatement("SELECT * FROM Customer WHERE email=?");
+			get_customer_by_email_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=?");
 		}catch(SQLException s)
 		{
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator","Error",JOptionPane.ERROR_MESSAGE);
@@ -80,6 +78,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.executeUpdate();
 		}catch(SQLException s)
 		{
+			System.out.println(s.getMessage());
 			throw new DaoException();
 		}
 		finally
@@ -164,7 +163,8 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 	InputUtility string_util = new InputUtility();
 	try
 	{
-	rs = get_all_customers_PS.executeQuery();
+	get_customer_by_email_PS.setString(1, email);
+	rs = get_customer_by_email_PS.executeQuery();
 	while(rs.next())
 	{
 		address_fields = string_util.tokenizedStringToList(rs.getString("address"),"(, )");

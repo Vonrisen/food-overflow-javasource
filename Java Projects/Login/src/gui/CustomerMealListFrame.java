@@ -1,13 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
-
-
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -20,12 +16,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,15 +25,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.table.DefaultTableModel;
-
-import controllers.AdminController;
 import controllers.CustomerController;
 import controllers.LoginController;
 import gui_support.RoundJTextField;
@@ -118,36 +105,35 @@ public class CustomerMealListFrame extends JFrame {
 	private JTextField quantityTF;
 	
 	private CustomerController customer_controller;
-	private LoginController login_controller;
 	
-	public CustomerMealListFrame(CustomerController customer_controller, LoginController login_controller) {
+	public CustomerMealListFrame(CustomerController customer_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
-		this.login_controller = login_controller;
+		
 	}
 
 	//Initialize variables
 	private void initialize() {
 		
-		backgroundIMG = new ImageIcon("src\\images\\customer\\WALLPAPER.PNG");
-		profile_inactiveIMG = new ImageIcon("src\\images\\customer\\profileButtonInactive2.PNG");
-		profile_activeIMG = new ImageIcon("src\\images\\customer\\profileButtonActive2.PNG");
-		cart_button_inactiveIMG = new ImageIcon("src\\images\\customer\\cartButtonInactive.PNG");
-		cart_button_activeIMG = new ImageIcon("src\\images\\customer\\cartButtonActive.PNG");
-		home_inactiveIMG = new ImageIcon("src\\images\\customer\\homeButtonInactive.PNG");
-		home_activeIMG = new ImageIcon("src\\images\\customer\\homeButtonActive.PNG");
-		logout_inactiveIMG = new ImageIcon("src\\images\\customer\\logoutButtonInactive.PNG");
-		logout_activeIMG = new ImageIcon("src\\images\\customer\\logoutButtonActive.PNG");
-		filtriIMG = new ImageIcon("src\\images\\customer\\filtri.PNG");
-		add_to_cart_inactiveIMG = new ImageIcon("src\\images\\customer\\addToCartInactive.PNG");
-		add_to_cart_activeIMG = new ImageIcon("src\\images\\customer\\addToCartActive.PNG");
-		back_button_inactiveIMG = new ImageIcon("src\\images\\customer\\indietroButtonInactive.PNG");
-		back_button_activeIMG = new ImageIcon("src\\images\\customer\\indietroButtonActive.PNG");
-		search_button_inactiveIMG = new ImageIcon("src\\images\\customer\\ricercaFiltroButtonInactive.PNG");
-		search_button_activeIMG = new ImageIcon("src\\images\\customer\\ricercaFiltroButtonActive.PNG");
+		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
+		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive2.PNG");
+		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive2.PNG");
+		cart_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cartButtonInactive.PNG");
+		cart_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cartButtonActive.PNG");
+		home_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonInactive.PNG");
+		home_activeIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonActive.PNG");
+		logout_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonInactive.PNG");
+		logout_activeIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonActive.PNG");
+		filtriIMG = new ImageIcon("src\\images\\CustomerImages\\filtri.PNG");
+		add_to_cart_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\addToCartInactive.PNG");
+		add_to_cart_activeIMG = new ImageIcon("src\\images\\CustomerImages\\addToCartActive.PNG");
+		back_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonInactive.PNG");
+		back_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonActive.PNG");
+		search_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\ricercaFiltroButtonInactive.PNG");
+		search_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\ricercaFiltroButtonActive.PNG");
 		
 		
 		
@@ -197,7 +183,7 @@ public class CustomerMealListFrame extends JFrame {
 		categoryCB = new JComboBox<Object>(dish_array_strings);
 		quantity_panel = new JPanel();
 
-		quantityLB = new JLabel("  Quantità:");
+		quantityLB = new JLabel("  Quantita':");
 		
 		price_minTF = new RoundJTextField(new Color(0x771007));
 		price_maxTF = new RoundJTextField(new Color(0x771007));

@@ -32,7 +32,7 @@ public class ShopAllMealsFrame extends StandardFrame {
 	
 	private void frame() {
 		
-		setTable_title(new ImageIcon("src\\images\\others\\meals.png"));
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\meals.png"));
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 		
 		this.setTitle("[Shop Panel] Lista degli alimenti");

@@ -1,19 +1,12 @@
 package gui;
 
-import java.awt.Color;
-
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
-import gui_support.RoundJTextField;
 
 
 public class AdminCustomerFrame extends StandardFrame {
@@ -33,7 +26,7 @@ public class AdminCustomerFrame extends StandardFrame {
 		
 		setTitle("[Admin Panel] Lista clienti");
 
-		setTable_title(new ImageIcon("src\\images\\others\\customers.png"));
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\customers.png"));
 		getTable_titleLB().setIcon(getTable_title());
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 		

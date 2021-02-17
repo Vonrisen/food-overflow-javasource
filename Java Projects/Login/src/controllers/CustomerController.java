@@ -1,18 +1,11 @@
 package controllers;
 
 import java.sql.Connection;
-
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-
 import javax.swing.JOptionPane;
-
 import daos_implementation.OrderDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
@@ -22,7 +15,6 @@ import entities.Cart;
 import entities.Customer;
 import entities.Meal;
 import entities.OrderComposition;
-import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
 import gui.CustomerCartFrame;
@@ -104,7 +96,7 @@ public class CustomerController {
 	public void openCustomerMealListFrame(JFrame frame, String shop_email) {
 		
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this, login_controller);
+		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this);
 		frame.dispose();
 		List<Meal>meal_list = new ArrayList<Meal>();
 		try {
@@ -118,6 +110,7 @@ public class CustomerController {
 	    table_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
 	    customer_meal_list_frame.setVisible(true);
 		return;
+		
 	}
 	
 	public void addMealToCart(CustomerMealListFrame frame) {
@@ -256,6 +249,7 @@ public class CustomerController {
 	
 		if(!cart.getOrder_composition_list().isEmpty())
 		{
+			cart.getOrder_composition_list().clear();
 		customer_customer_frame.getModel().setRowCount(0);
 		}else
 			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto","Error",JOptionPane.ERROR_MESSAGE);

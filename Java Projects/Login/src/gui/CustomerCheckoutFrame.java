@@ -3,7 +3,6 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -51,13 +50,13 @@ public class CustomerCheckoutFrame extends JFrame{
 
 	private void initialize() {
 		
-		summaryIMG = new ImageIcon("src\\images\\customer\\riepilogo.PNG");
-		addressIMG = new ImageIcon("src\\images\\customer\\indirizzoConsegna.PNG");
-		total_priceIMG = new ImageIcon("src\\images\\customer\\totalePrezzo.PNG");
-		cellphoneIMG = new ImageIcon("src\\images\\customer\\telefonoRistorante.PNG");
-		shopIMG = new ImageIcon("src\\images\\customer\\ristorante.PNG");
-		ordina_inactiveIMG = new ImageIcon("src\\images\\customer\\ordinaInactive.PNG");
-		ordina_activeIMG = new ImageIcon("src\\images\\customer\\ordinaActive.PNG");
+		summaryIMG = new ImageIcon("src\\images\\CustomerImages\\riepilogo.PNG");
+		addressIMG = new ImageIcon("src\\images\\CustomerImages\\indirizzoConsegna.PNG");
+		total_priceIMG = new ImageIcon("src\\images\\CustomerImages\\totalePrezzo.PNG");
+		cellphoneIMG = new ImageIcon("src\\images\\CustomerImages\\telefonoRistorante.PNG");
+		shopIMG = new ImageIcon("src\\images\\CustomerImages\\ristorante.PNG");
+		ordina_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\ordinaInactive.PNG");
+		ordina_activeIMG = new ImageIcon("src\\images\\CustomerImages\\ordinaActive.PNG");
 		
 		summaryLB = new JLabel();
 		backgroundLB = new JLabel();

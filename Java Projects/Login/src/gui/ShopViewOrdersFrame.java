@@ -25,7 +25,7 @@ public class ShopViewOrdersFrame extends StandardFrame{
 
 	private void frame() {
 
-		setTable_title(new ImageIcon("src\\images\\others\\completedOrders.png"));
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\orders.png"));
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 
 		this.setTitle("[Shop Panel] Ordini completati");

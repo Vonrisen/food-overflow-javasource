@@ -95,15 +95,15 @@ public class RegisterFrame extends JFrame{
 
 	private void initialize() {
 		
-		register_logoIMG = new ImageIcon("src\\images\\startup\\registerLogo.png");
-		homeButtonActive = new ImageIcon("src\\images\\startup\\homeButtonActive.png");
-		homeButtonInactive = new ImageIcon("src\\images\\startup\\homeButtonInactive.png");
-		forward_button_inactive = new ImageIcon("src\\images\\startup\\avantiButtonInactive.png");
-		forward_button_active = new ImageIcon("src\\images\\startup\\avantiButtonActive.png");
-		back_button_inactive = new ImageIcon("src\\images\\startup\\indietroButtonInactive.png");
-		back_button_active = new ImageIcon("src\\images\\startup\\indietroButtonActive.png");
-		registerButtonActive = new ImageIcon("src\\images\\startup\\registerButtonActive.png");
-		registerButtonInactive = new ImageIcon("src\\images\\startup\\registerButtonInactive.png");
+		register_logoIMG = new ImageIcon("src\\images\\registerLogo.png");
+		homeButtonActive = new ImageIcon("src\\images\\LoginImages\\homeButtonActive.png");
+		homeButtonInactive = new ImageIcon("src\\images\\LoginImages\\homeButtonInactive.png");
+		forward_button_inactive = new ImageIcon("src\\images\\LoginImages\\avantiButtonInactive.png");
+		forward_button_active = new ImageIcon("src\\images\\LoginImages\\avantiButtonActive.png");
+		back_button_inactive = new ImageIcon("src\\images\\LoginImages\\indietroButtonInactive.png");
+		back_button_active = new ImageIcon("src\\images\\LoginImages\\indietroButtonActive.png");
+		registerButtonActive = new ImageIcon("src\\images\\LoginImages\\registerButtonActive.png");
+		registerButtonInactive = new ImageIcon("src\\images\\LoginImages\\registerButtonInactive.png");
 		
 		topPanel = new JPanel();
 		loginPanel = new JPanel();
@@ -565,6 +565,7 @@ public class RegisterFrame extends JFrame{
 		homeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent click_su_shopButton) {
+				login_controller.openLoginFrame(RegisterFrame.this);
 				
 			}
 		});
@@ -609,7 +610,6 @@ public class RegisterFrame extends JFrame{
 			}
 		});
 		
-		//
 		passwordTF1.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {

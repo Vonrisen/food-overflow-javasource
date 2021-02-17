@@ -8,9 +8,6 @@ import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import daos_implementation.CustomerDAOPostgresImplementation;
-import daos_implementation.MealDAOPostgresImplementation;
-import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.ShopDAO;
@@ -25,7 +22,6 @@ import gui.AdminFrame;
 import gui.AdminMealFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
-import gui.RegisterFrame;
 import utilities.DButility;
 import utilities.InputUtility;
 import utilities.IstatUtils;
@@ -67,7 +63,7 @@ public class AdminController {
 			List<Shop> shop_list = shop_dao.getAllShops();
 		    table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 	    admin_shop_frame.setVisible(true);
 	    return;
@@ -90,7 +86,7 @@ public class AdminController {
 			List<Meal> meal_list = meal_dao.getAllMeals();
 			table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		admin_meal_frame.setVisible(true);
 		return;
@@ -105,7 +101,7 @@ public class AdminController {
 			List<Customer> customer_list = customer_dao.getAllCustomers();
 			table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		admin_customer_frame.setVisible(true);
 		return;
@@ -121,7 +117,7 @@ public class AdminController {
 			try {
 				rider_list = shop_dao.getRidersOfAShopByShopEmail(shop_email);
 			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore imprevisto. Contattare l' admin.","Errore",JOptionPane.ERROR_MESSAGE);
 			}
 			if(!rider_list.isEmpty())
 			{
@@ -129,13 +125,13 @@ public class AdminController {
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Il negozio selezionato non ha rider al momento","Error",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Il negozio selezionato non ha rider al momento","Errore",JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Selezionare uno shop di cui visualizare i rider impiegati","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Selezionare uno shop di cui visualizare i rider impiegati","Errore",JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -143,6 +139,8 @@ public class AdminController {
 	
 	public void addShop(AdminShopFrame admin_shop_frame) 
 	{
+		if(!admin_shop_frame.getAddress_townCB().getSelectedItem().toString().equals("Seleziona comune")&& !admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString().equals("Seleziona provincia")&&!admin_shop_frame.getAddress_townCB().getSelectedItem().toString().equals("-------------------"))
+		{
 		try {
 			Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(),admin_shop_frame.getNameTF().getText(), admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
 					 new Address(admin_shop_frame.getAddress_nameTF().getText(), admin_shop_frame.getAddress_civic_numberTF().getText(), admin_shop_frame.getAddress_capTF().getText(), 
@@ -152,7 +150,9 @@ public class AdminController {
 			shop.getName(), shop.getAddress().toString(),shop.getWorking_hours(), shop.getClosing_days(), shop.getHome_phone()});
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi.\nHint: Controlla la validita' dell' indirizzo, email, orario lavorativo e giorni di chiusura","Error",JOptionPane.ERROR_MESSAGE);
-		}
+		}}else
+			JOptionPane.showMessageDialog(null, "Seleziona correttamente la provincia o il comune","Errore",JOptionPane.ERROR_MESSAGE);
+			
 		return;
 	}
 	
@@ -164,7 +164,6 @@ public class AdminController {
 			if(cb.isSelected())
 				allergens.add(cb.getText());
 		}
-		
 		try {
 			Meal meal = new Meal(admin_meal_frame.getNameTF().getText(), Float.parseFloat(admin_meal_frame.getPriceTF().getText()), 
 			                     admin_meal_frame.getIngredientsTF().getText(), admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
@@ -172,14 +171,12 @@ public class AdminController {
 			admin_meal_frame.getModel().insertRow(admin_meal_frame.getModel().getRowCount(), new Object[]{meal.getName(), meal.getCategory(), new DecimalFormat("00.00").format(meal.getPrice()),
 														meal.getIngredients(),input_util.arrayListToTokenizedString(allergens, ", ")});
 		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi","Error",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Inserire correttamente i campi","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		 catch (NumberFormatException e)
 		{
-			 JOptionPane.showMessageDialog(null, "Inserci un prezzo valido ","Error",JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Inserci un prezzo valido ","Errore",JOptionPane.ERROR_MESSAGE);
 		}
-		
-		
 	}
 	
 	public void removeShop(AdminShopFrame admin_shop_frame)
@@ -197,7 +194,7 @@ public class AdminController {
 			}
 	}
 		else
-			JOptionPane.showMessageDialog(null, "Selezionare il negozio che desideri cancellare","Errore",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Selezionare il negozio che desideri cancellare","Attenzione",JOptionPane.WARNING_MESSAGE);
 		return;
 	}
 	
@@ -227,6 +224,8 @@ public class AdminController {
 		int row = admin_shop_frame.getTable().getSelectedRow();
 		TableModelUtility table_utility = new TableModelUtility();
 		if(row != -1) {
+			if(!admin_shop_frame.getAddress_townCB().getSelectedItem().toString().equals("Seleziona comune")&& !admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString().equals("Seleziona provincia"))
+			{
 			String email_of_shop_to_update = admin_shop_frame.getTable().getModel().getValueAt(row, 0).toString();
 			try {
 			Shop shop_to_update = shop_dao.getShopByEmail(email_of_shop_to_update);
@@ -244,10 +243,11 @@ public class AdminController {
 				JOptionPane.showMessageDialog(null, "Shop aggiornato con successo");
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Inserire correttamente i campi.\nHint: Controlla la validita' dell' indirizzo, email, orario lavorativo e giorni di chiusura","Error",JOptionPane.ERROR_MESSAGE);
-			}
+			}}else
+				JOptionPane.showMessageDialog(null, "Seleziona correttamente la provincia o il comune","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		else
-			JOptionPane.showMessageDialog(null, "Seleziona lo shop da aggiornare","Warning",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona lo shop da aggiornare","Attenzione",JOptionPane.WARNING_MESSAGE);
 		return;
 	}
 	

@@ -1,26 +1,22 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,11 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import controllers.AdminController;
 import controllers.CustomerController;
 import controllers.LoginController;
-import entities.Shop;
 import gui_support.RoundJTextField;
 
 public class CustomerCartFrame extends JFrame {
@@ -115,24 +108,24 @@ public class CustomerCartFrame extends JFrame {
 	//Initialize variables
 	private void initialize() {
 		
-		backgroundIMG = new ImageIcon("src\\images\\customer\\WALLPAPER.PNG");
-		profile_inactiveIMG = new ImageIcon("src\\images\\customer\\profileButtonInactive2.PNG");
-		profile_activeIMG = new ImageIcon("src\\images\\customer\\profileButtonActive2.PNG");
-		home_inactiveIMG = new ImageIcon("src\\images\\customer\\homeButtonInactive.PNG");
-		home_activeIMG = new ImageIcon("src\\images\\customer\\homeButtonActive.PNG");
-		logout_inactiveIMG = new ImageIcon("src\\images\\customer\\logoutButtonInactive.PNG");
-		logout_activeIMG = new ImageIcon("src\\images\\customer\\logoutButtonActive.PNG");
-		delete_activeIMG = new ImageIcon("src\\images\\customer\\cancellaButtonActive.PNG");
-		delete_inactiveIMG = new ImageIcon("src\\images\\customer\\cancellaButtonInactive.PNG");
-		update_activeIMG = new ImageIcon("src\\images\\customer\\aggiornaButtonActive.PNG");
-		update_inactiveIMG = new ImageIcon("src\\images\\customer\\aggiornaButtonInactive.PNG");
-		deleteall_activeIMG = new ImageIcon("src\\images\\customer\\cancellatuttoButtonActive.PNG");
-		deleteall_inactiveIMG = new ImageIcon("src\\images\\customer\\cancellatuttoButtonInactive.PNG");
-		order_inactiveIMG = new ImageIcon("src\\images\\customer\\procediButtonInactive.PNG");
-		order_activeIMG = new ImageIcon("src\\images\\customer\\procediButtonActive.PNG");
-		back_button_inactiveIMG = new ImageIcon("src\\images\\customer\\indietroButtonInactive.PNG");
-		back_button_activeIMG = new ImageIcon("src\\images\\customer\\indietroButtonActive.PNG");
-		cart_logoIMG = new ImageIcon("src\\images\\customer\\cartLogo.PNG");
+		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
+		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive2.PNG");
+		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive2.PNG");
+		home_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonInactive.PNG");
+		home_activeIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonActive.PNG");
+		logout_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonInactive.PNG");
+		logout_activeIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonActive.PNG");
+		delete_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cancellaButtonActive.PNG");
+		delete_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cancellaButtonInactive.PNG");
+		update_activeIMG = new ImageIcon("src\\images\\CustomerImages\\aggiornaButtonActive.PNG");
+		update_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\aggiornaButtonInactive.PNG");
+		deleteall_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cancellatuttoButtonActive.PNG");
+		deleteall_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cancellatuttoButtonInactive.PNG");
+		order_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\procediButtonInactive.PNG");
+		order_activeIMG = new ImageIcon("src\\images\\CustomerImages\\procediButtonActive.PNG");
+		back_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonInactive.PNG");
+		back_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonActive.PNG");
+		cart_logoIMG = new ImageIcon("src\\images\\CustomerImages\\cartLogo.PNG");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		west_east_size = new Dimension(100,80);

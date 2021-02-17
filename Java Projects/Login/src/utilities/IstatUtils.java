@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class IstatUtils {
 
 	public IstatUtils() {}
@@ -17,8 +19,8 @@ public class IstatUtils {
 	    while ((line = br.readLine()) != null) {
 	        nations.add(line);
 	    }
-	} catch (FileNotFoundException e) {
 	} catch (IOException i) {
+		JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire alle nazioni","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 	return nations;
 	}
@@ -30,9 +32,9 @@ public class IstatUtils {
 		    while ((line = br.readLine()) != null) {
 		        	provinces.add(line);
 		    }
-		} catch (FileNotFoundException e) {
 		} catch (IOException i) {
-		}
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire alle province","Errore",JOptionPane.ERROR_MESSAGE);
+		} 
 		return provinces;
 	}
 	public String getCadastral_codeByTownName(String town_name) {
@@ -45,8 +47,8 @@ public class IstatUtils {
 			    if(line.split(",")[3].equals(town_name))
 			    	return line.split(",")[2];
 		    }
-		} catch (FileNotFoundException e) {
 		} catch (IOException i) {
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire al codice catastale","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
 	}
@@ -59,8 +61,8 @@ public class IstatUtils {
 			    if(line.equals(province))
 			    	return true;
 		    }
-		} catch (FileNotFoundException e) {
-		} catch (IOException i) {
+		}  catch (IOException i) {
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire alle province","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		return false;
 	}
@@ -76,8 +78,8 @@ public class IstatUtils {
 		        if(values[0].equals(province))
 		        	towns.add(values[3]);
 		    }
-		} catch (FileNotFoundException e) {
-		} catch (IOException i) {
+		}catch (IOException i) {
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire ai comuni","Errore",JOptionPane.ERROR_MESSAGE);
 		}
 		return towns;
 	}

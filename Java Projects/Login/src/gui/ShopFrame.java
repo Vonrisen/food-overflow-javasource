@@ -53,14 +53,14 @@ public class ShopFrame extends JFrame{
 
 	private void initialize() {
 		
-		riders_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\riderButtonInactive.png");
-		riders_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\riderButtonActive.png");
-		orders_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\ordersButtonInactive.png");
-		meal_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\mealButtonInactive.png");
-		orders_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\ordersButtonActive.png");
-		meal_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\mealButtonActive.png");
-		disconnect_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\disconnectButtonInactive.png");
-		disconnect_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\disconnectButtonActive.png");
+		riders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\riderButtonInactive.png");
+		riders_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\riderButtonActive.png");
+		orders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonInactive.png");
+		meal_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonInactive.png");
+		orders_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonActive.png");
+		meal_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonActive.png");
+		disconnect_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\disconnectButtonInactive.png");
+		disconnect_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\disconnectButtonActive.png");
 		
 		ridersJB = new JButton();
 		ordersJB = new JButton();

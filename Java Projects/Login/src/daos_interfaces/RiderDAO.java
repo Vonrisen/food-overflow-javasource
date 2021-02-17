@@ -1,14 +1,7 @@
 package daos_interfaces;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import entities.Address;
 import entities.Rider;
 import exceptions.DaoException;
-import utilities.InputUtility;
 
 public interface RiderDAO {
 

@@ -1,6 +1,7 @@
 package daos_implementation;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import daos_interfaces.RiderDAO;
-import db_connection.DBconnection;
 import entities.Address;
 import entities.Rider;
 import exceptions.DaoException;

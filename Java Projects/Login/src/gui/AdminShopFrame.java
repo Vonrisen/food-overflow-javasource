@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -9,18 +10,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
 import entities.Address;
 import gui_support.RoundJTextField;
 import utilities.InputUtility;
-import utilities.IstatUtils;
 
 
 public class AdminShopFrame extends ComplexFrame{
@@ -58,9 +56,9 @@ public class AdminShopFrame extends ComplexFrame{
 	//Initialize variables
 	private void initialize() {
 
-		search_riders_inactiveIMG = new ImageIcon("src\\images\\buttons\\searchRidersButtonInactive.png");
-		search_riders_activeIMG = new ImageIcon("src\\images\\buttons\\searchRidersButtonActive.png");
-		setTable_title(new ImageIcon("src\\images\\others\\shops.png"));
+		search_riders_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonInactive.png");
+		search_riders_activeIMG = new ImageIcon("src\\images\\SqlButtons\\searchRidersButtonActive.png");
+		setTable_title(new ImageIcon("src\\images\\tableTitles\\shops.png"));
 
 		nameTF = new RoundJTextField(new Color(0x771007));
 		emailTF = new RoundJTextField(new Color(0x771007));

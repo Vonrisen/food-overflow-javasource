@@ -68,19 +68,20 @@ public class ComplexFrame extends JFrame{
 		initialize();
 		frameSetup();
 		events();
+		
 	}
 	
 	
 	private void initialize() {
 		
-		update_inactiveIMG = new ImageIcon("src\\images\\buttons\\updateButtonInactive.png");
-		update_activeIMG = new ImageIcon("src\\images\\buttons\\updateButtonActive.png");
-		delete_inactiveIMG = new ImageIcon("src\\images\\buttons\\deleteButtonInactive.png");
-		delete_activeIMG = new ImageIcon("src\\images\\buttons\\deleteButtonActive.png");
-		insert_inactiveIMG = new ImageIcon("src\\images\\buttons\\insertButtonInactive.png");
-		insert_activeIMG = new ImageIcon("src\\images\\buttons\\insertButtonActive.png");
-		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
+		update_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonInactive.png");
+		update_activeIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonActive.png");
+		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
+		delete_activeIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonActive.png");
+		insert_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonInactive.png");
+		insert_activeIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonActive.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		short_dim_of_textfield = new Dimension(150,25);

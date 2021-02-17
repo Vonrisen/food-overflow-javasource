@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -17,19 +16,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
-import controllers.AdminController;
 import controllers.CustomerController;
 import gui_support.RoundJTextField;
 
@@ -79,12 +71,12 @@ public class CustomerFrame extends JFrame {
 	//Initialize variables
 	private void initialize() {
 		
-		logoIMG = new ImageIcon("src\\images\\customer\\Logo.png");
-		backgroundIMG = new ImageIcon("src\\images\\customer\\WALLPAPER.PNG");
-		search_inactiveIMG = new ImageIcon("src\\images\\customer\\searchButtonInactive.PNG");
-		search_activeIMG = new ImageIcon("src\\images\\customer\\searchButtonActive.PNG");
-		profile_inactiveIMG = new ImageIcon("src\\images\\customer\\profileButtonInactive.png");
-		profile_activeIMG = new ImageIcon("src\\images\\customer\\profileButtonActive.png");
+		logoIMG = new ImageIcon("src\\images\\CustomerImages\\Logo.png");
+		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
+		search_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\searchButtonInactive.PNG");
+		search_activeIMG = new ImageIcon("src\\images\\CustomerImages\\searchButtonActive.PNG");
+		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive.png");
+		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive.png");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		west_east_size = new Dimension(100,50);
