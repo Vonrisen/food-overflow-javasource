@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -22,7 +24,7 @@ import gui_support.RoundJTextField;
 
 public class AdminMealFrame extends ComplexFrame{
 	
-	private String[] dish_array_strings = {"Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
+	private String[] dish_array_strings = {"Seleziona categoria", "-------------------","Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
 	private String[] allergens_array_strings = {"Cereali e derivati", "Crostacei", "Uova", "Pesce", "Arachidi", "Soia", "Latte e derivati", "Frutta a guscio", "Sedano", "Senape", "Sesamo", "An. solforosa e solfiti", "Lupini", "Molluschi"};
 	private String[] columns = {"Nome", "Categoria", "Prezzo", "Ingredienti", "Allergeni"};
 	private JComboBox<Object> dishJCB;
@@ -48,7 +50,7 @@ public class AdminMealFrame extends ComplexFrame{
 	
 	private void initialize() {
 		
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\meals.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\meals.png"));
 		
 		dish_panel = new JPanel();
 		allergens_panel = new JPanel();
@@ -70,9 +72,9 @@ public class AdminMealFrame extends ComplexFrame{
 	private void frameSetup() {
 		
 		//Layout setup
-		setTitle("[Admin Panel] Gestione alimenti");
+		setTitle("Food Overflow - Admin Panel: Gestione alimenti");
 		getTable_titleLB().setIcon(getTable_title());
-		
+		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		
 		//Sottopannelli di "attributes_panel"
 		createStandardPanel(dish_panel, null, new Dimension(335,75));
@@ -83,6 +85,9 @@ public class AdminMealFrame extends ComplexFrame{
 		dish_panel.add(getLabel());
 		
 		dishJCB.setPreferredSize(getLong_dim_of_textfield());
+		dishJCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		dishJCB.setFocusable(false);
+		dishJCB.setBackground(Color.white);
 		dish_panel.add(dishJCB);
 		
 		createTextField(nameTF, "Nome", getShort_dim_of_textfield());

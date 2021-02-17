@@ -1,9 +1,12 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
@@ -24,11 +27,15 @@ public class AdminCustomerFrame extends StandardFrame {
 	
 	private void frame() {
 		
-		setTitle("[Admin Panel] Lista clienti");
+		setTitle("Food Overflow - AdminPanel: Visualizza clienti");
 
-		setTable_title(new ImageIcon("src\\images\\tableTitles\\customers.png"));
+		setTable_title(new ImageIcon("src\\images\\others\\customers.png"));
 		getTable_titleLB().setIcon(getTable_title());
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
+		
+		getTable().getColumnModel().getColumn(0).setPreferredWidth(100);
+		getTable().getColumnModel().getColumn(6).setPreferredWidth(5);
+		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		
 		getGo_backJB().addMouseListener(new MouseAdapter() {
 			@Override

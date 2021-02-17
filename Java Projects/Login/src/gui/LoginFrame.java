@@ -79,24 +79,24 @@ public class LoginFrame extends JFrame{
 
 	private void initialize() {
 		
-		logoImage = new ImageIcon("src\\images\\LoginImages\\Logo.png");
-		adminButtonActive = new ImageIcon("src\\images\\LoginImages\\adminButtonActive.png");
-		adminButtonInactive = new ImageIcon("src\\images\\LoginImages\\adminButtonInactive.png");
-		homeButtonActive = new ImageIcon("src\\images\\LoginImages\\homeButtonActive.png");
-		homeButtonInactive = new ImageIcon("src\\images\\LoginImages\\homeButtonInactive.png");
-		shopButtonActive = new ImageIcon("src\\images\\LoginImages\\shopButtonActive.png");
-		shopButtonInactive = new ImageIcon("src\\images\\LoginImages\\shopButtonInactive.png");
-		customerButtonActive = new ImageIcon("src\\images\\LoginImages\\customerButtonActive.png");
-		customerButtonInactive = new ImageIcon("src\\images\\LoginImages\\customerButtonInactive.png");
-		usernameIcon = new ImageIcon("src\\images\\LoginImages/usernameIcon.png");
-		passwordIcon = new ImageIcon("src\\images\\LoginImages\\passwordIcon.png");
-		loginButtonActive = new ImageIcon("src\\images\\LoginImages\\loginButtonActive.png");
-		loginButtonInactive = new ImageIcon("src\\images\\LoginImages\\loginButtonInactive.png");
-		adminLogoImage = new ImageIcon("src\\images\\LoginImages\\adminLogo.png");
-		shopLogoImage = new ImageIcon("src\\images\\LoginImages\\shopLogo.png");
-		customerLogoImage = new ImageIcon("src\\images\\LoginImages\\customerLogo.png");
-		registerButtonActive = new ImageIcon("src\\images\\LoginImages\\registerButtonActive.png");
-		registerButtonInactive = new ImageIcon("src\\images\\LoginImages\\registerButtonInactive.png");
+		logoImage = new ImageIcon("src\\images\\startup\\Logo.png");
+		adminButtonActive = new ImageIcon("src\\images\\startup\\adminButtonActive.png");
+		adminButtonInactive = new ImageIcon("src\\images\\startup\\adminButtonInactive.png");
+		homeButtonActive = new ImageIcon("src\\images\\startup\\homeButtonActive.png");
+		homeButtonInactive = new ImageIcon("src\\images\\startup\\homeButtonInactive.png");
+		shopButtonActive = new ImageIcon("src\\images\\startup\\shopButtonActive.png");
+		shopButtonInactive = new ImageIcon("src\\images\\startup\\shopButtonInactive.png");
+		customerButtonActive = new ImageIcon("src\\images\\startup\\customerButtonActive.png");
+		customerButtonInactive = new ImageIcon("src\\images\\startup\\customerButtonInactive.png");
+		usernameIcon = new ImageIcon("src\\images\\startup/usernameIcon.png");
+		passwordIcon = new ImageIcon("src\\images\\startup\\passwordIcon.png");
+		loginButtonActive = new ImageIcon("src\\images\\startup\\loginButtonActive.png");
+		loginButtonInactive = new ImageIcon("src\\images\\startup\\loginButtonInactive.png");
+		adminLogoImage = new ImageIcon("src\\images\\startup\\adminLogo.png");
+		shopLogoImage = new ImageIcon("src\\images\\startup\\shopLogo.png");
+		customerLogoImage = new ImageIcon("src\\images\\startup\\customerLogo.png");
+		registerButtonActive = new ImageIcon("src\\images\\startup\\registerButtonActive.png");
+		registerButtonInactive = new ImageIcon("src\\images\\startup\\registerButtonInactive.png");
 		
 		topPanel = new JPanel();
 		loginPanel = new JPanel();
@@ -119,6 +119,7 @@ public class LoginFrame extends JFrame{
 		//Layout setup
 		
 		this.setResizable(false);
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setSize(600, 800);
 		this.setTitle("Food Overflow");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

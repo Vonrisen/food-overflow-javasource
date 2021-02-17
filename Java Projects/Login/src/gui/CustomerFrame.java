@@ -71,12 +71,12 @@ public class CustomerFrame extends JFrame {
 	//Initialize variables
 	private void initialize() {
 		
-		logoIMG = new ImageIcon("src\\images\\CustomerImages\\Logo.png");
-		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
-		search_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\searchButtonInactive.PNG");
-		search_activeIMG = new ImageIcon("src\\images\\CustomerImages\\searchButtonActive.PNG");
-		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive.png");
-		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive.png");
+		logoIMG = new ImageIcon("src\\images\\customer\\Logo.png");
+		backgroundIMG = new ImageIcon("src\\images\\customer\\WALLPAPER.PNG");
+		search_inactiveIMG = new ImageIcon("src\\images\\customer\\searchButtonInactive.PNG");
+		search_activeIMG = new ImageIcon("src\\images\\customer\\searchButtonActive.PNG");
+		profile_inactiveIMG = new ImageIcon("src\\images\\customer\\profileButtonInactive.png");
+		profile_activeIMG = new ImageIcon("src\\images\\customer\\profileButtonActive.png");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		west_east_size = new Dimension(100,50);
@@ -110,6 +110,7 @@ public class CustomerFrame extends JFrame {
 		this.setTitle("Food Overflow - Home");
 		this.setSize(1280,720);
 		background.setIcon(resize(backgroundIMG, this.getWidth(), this.getHeight()));
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setMinimumSize(new Dimension(800,650));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		int central_width = screen_dim.width/2-this.getSize().width/2;

@@ -108,24 +108,24 @@ public class CustomerCartFrame extends JFrame {
 	//Initialize variables
 	private void initialize() {
 		
-		backgroundIMG = new ImageIcon("src\\images\\CustomerImages\\WALLPAPER.PNG");
-		profile_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonInactive2.PNG");
-		profile_activeIMG = new ImageIcon("src\\images\\CustomerImages\\profileButtonActive2.PNG");
-		home_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonInactive.PNG");
-		home_activeIMG = new ImageIcon("src\\images\\CustomerImages\\homeButtonActive.PNG");
-		logout_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonInactive.PNG");
-		logout_activeIMG = new ImageIcon("src\\images\\CustomerImages\\logoutButtonActive.PNG");
-		delete_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cancellaButtonActive.PNG");
-		delete_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cancellaButtonInactive.PNG");
-		update_activeIMG = new ImageIcon("src\\images\\CustomerImages\\aggiornaButtonActive.PNG");
-		update_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\aggiornaButtonInactive.PNG");
-		deleteall_activeIMG = new ImageIcon("src\\images\\CustomerImages\\cancellatuttoButtonActive.PNG");
-		deleteall_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\cancellatuttoButtonInactive.PNG");
-		order_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\procediButtonInactive.PNG");
-		order_activeIMG = new ImageIcon("src\\images\\CustomerImages\\procediButtonActive.PNG");
-		back_button_inactiveIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonInactive.PNG");
-		back_button_activeIMG = new ImageIcon("src\\images\\CustomerImages\\indietroButtonActive.PNG");
-		cart_logoIMG = new ImageIcon("src\\images\\CustomerImages\\cartLogo.PNG");
+		backgroundIMG = new ImageIcon("src\\images\\customer\\WALLPAPER.PNG");
+		profile_inactiveIMG = new ImageIcon("src\\images\\customer\\profileButtonInactive2.PNG");
+		profile_activeIMG = new ImageIcon("src\\images\\customer\\profileButtonActive2.PNG");
+		home_inactiveIMG = new ImageIcon("src\\images\\customer\\homeButtonInactive.PNG");
+		home_activeIMG = new ImageIcon("src\\images\\customer\\homeButtonActive.PNG");
+		logout_inactiveIMG = new ImageIcon("src\\images\\customer\\logoutButtonInactive.PNG");
+		logout_activeIMG = new ImageIcon("src\\images\\customer\\logoutButtonActive.PNG");
+		delete_activeIMG = new ImageIcon("src\\images\\customer\\cancellaButtonActive.PNG");
+		delete_inactiveIMG = new ImageIcon("src\\images\\customer\\cancellaButtonInactive.PNG");
+		update_activeIMG = new ImageIcon("src\\images\\customer\\aggiornaButtonActive.PNG");
+		update_inactiveIMG = new ImageIcon("src\\images\\customer\\aggiornaButtonInactive.PNG");
+		deleteall_activeIMG = new ImageIcon("src\\images\\customer\\cancellatuttoButtonActive.PNG");
+		deleteall_inactiveIMG = new ImageIcon("src\\images\\customer\\cancellatuttoButtonInactive.PNG");
+		order_inactiveIMG = new ImageIcon("src\\images\\customer\\procediButtonInactive.PNG");
+		order_activeIMG = new ImageIcon("src\\images\\customer\\procediButtonActive.PNG");
+		back_button_inactiveIMG = new ImageIcon("src\\images\\customer\\indietroButtonInactive.PNG");
+		back_button_activeIMG = new ImageIcon("src\\images\\customer\\indietroButtonActive.PNG");
+		cart_logoIMG = new ImageIcon("src\\images\\customer\\cartLogo.PNG");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		west_east_size = new Dimension(100,80);
@@ -185,6 +185,7 @@ public class CustomerCartFrame extends JFrame {
 		this.setTitle("Food Overflow - Il tuo carrello");
 		this.setSize(1280,720);
 		background.setIcon(resize(backgroundIMG, this.getWidth(), this.getHeight()));
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setMinimumSize(new Dimension(800,650));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
