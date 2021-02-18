@@ -396,7 +396,12 @@ public class CustomerMealListFrame extends JFrame {
 				profileJB.setIcon(profile_inactiveIMG);
 				
 			}
-		});
+			
+         public void mousePressed(MouseEvent e) {
+				
+	   customer_controller.openCustomerProfileFrame();
+				
+			}});
 		
 		homeJB.addMouseListener(new MouseAdapter() {
 			@Override

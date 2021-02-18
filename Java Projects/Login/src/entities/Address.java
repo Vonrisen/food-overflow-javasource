@@ -2,25 +2,25 @@ package entities;
 
 public class Address {
 
-	//ATTRIBUTI
+	// ATTRIBUTI
 	private String address;
 	private String civic_number;
 	private String cap;
 	private String city;
 	private String province;
-	
-	//COSTRUTTORE
+
+	// COSTRUTTORE
 	public Address(String address, String civic_number, String cap, String city, String province) {
-		
+
 		this.address = address;
 		this.civic_number = civic_number;
 		this.cap = cap;
 		this.city = city;
 		this.province = province;
-		
+
 	}
 
-	//GETTER AND SETTER
+	// GETTER AND SETTER
 
 	public String getCivic_number() {
 		return civic_number;
@@ -64,9 +64,7 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return address + ", " + civic_number + ", " + cap + ", " + city
-				+ ", " + province;
+		return address + ", " + civic_number + ", " + cap + ", " + city + ", " + province;
 	}
-	
-	
+
 }

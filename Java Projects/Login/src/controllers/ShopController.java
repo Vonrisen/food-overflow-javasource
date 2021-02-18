@@ -65,7 +65,7 @@ public class ShopController {
 		shop_frame.setVisible(true);
 		return;
 	}
-	
+
 	public void openShopMealFrame(JFrame frame)
 	{
 		frame.dispose();
