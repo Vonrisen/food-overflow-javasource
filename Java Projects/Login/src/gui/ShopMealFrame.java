@@ -35,6 +35,8 @@ public class ShopMealFrame extends JFrame {
 	private ImageIcon table_titleIMG;
 	private ImageIcon add_to_menu_inactiveIMG;
 	private ImageIcon add_to_menu_activeIMG;
+	private ImageIcon remove_from_menu_inactiveIMG;
+	private ImageIcon remove_from_menu_activeIMG;
 	private ImageIcon select_foodIMG;
 	
 	
@@ -57,6 +59,7 @@ public class ShopMealFrame extends JFrame {
 	
 	private JButton go_backJB;
 	private JButton add_to_menuJB;
+	private JButton remove_from_menuJB;
 	
 	private Color background_color = new Color(0xf3ecd7);
 	
@@ -78,12 +81,14 @@ public class ShopMealFrame extends JFrame {
 	
 	private void initialize() {
 		
-		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
-		table_titleIMG = new ImageIcon("src\\images\\tableTitles\\shopMeals.png");
-		add_to_menu_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\aggiungiMenuInactive.png");
-		add_to_menu_activeIMG = new ImageIcon("src\\images\\SqlButtons\\aggiungiMenuActive.png");
-		select_foodIMG = new ImageIcon("src\\images\\AdminFrame\\selezionaAlimento.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
+		table_titleIMG = new ImageIcon("src\\images\\others\\shopMeals.png");
+		add_to_menu_inactiveIMG = new ImageIcon("src\\images\\buttons\\aggiungiMenuInactive.png");
+		add_to_menu_activeIMG = new ImageIcon("src\\images\\buttons\\aggiungiMenuActive.png");
+		remove_from_menu_inactiveIMG = new ImageIcon("src\\images\\buttons\\rimuoviMenuInactive.png");
+		remove_from_menu_activeIMG = new ImageIcon("src\\images\\buttons\\rimuoviMenuActive.png");
+		select_foodIMG = new ImageIcon("src\\images\\others\\selezionaAlimento.png");
 		
 		button_size = new Dimension(150,30);
 		west_east_size = new Dimension(100,50);
@@ -127,6 +132,7 @@ public class ShopMealFrame extends JFrame {
 		
 		go_backJB = new JButton();
 		add_to_menuJB = new JButton();
+		remove_from_menuJB = new JButton();
 		
 	}
 	
@@ -136,7 +142,7 @@ public class ShopMealFrame extends JFrame {
 		//Layout setup
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(640,500));
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
@@ -211,6 +217,13 @@ public class ShopMealFrame extends JFrame {
 		add_to_menuJB.setContentAreaFilled(false);
 		buttons_panel.add(add_to_menuJB);
 		
+		remove_from_menuJB.setIcon(remove_from_menu_inactiveIMG);
+		remove_from_menuJB.setSize(button_size);
+		remove_from_menuJB.setBorder(null);
+		remove_from_menuJB.setFocusable(false);
+		remove_from_menuJB.setContentAreaFilled(false);
+		buttons_panel.add(remove_from_menuJB);
+		
 		buttons_panel.add(Box.createHorizontalStrut(400));
 		
 		go_backJB.setIcon(go_back_inactiveIMG);
@@ -250,6 +263,20 @@ public class ShopMealFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				shop_controller.addMealToMenu(ShopMealFrame.this);
+			}
+		});
+		
+		remove_from_menuJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				remove_from_menuJB.setIcon(remove_from_menu_activeIMG);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				remove_from_menuJB.setIcon(remove_from_menu_inactiveIMG);
+			}
+			public void mousePressed(MouseEvent e) {
+				//Cancello alimento dal menu
 			}
 		});
 		

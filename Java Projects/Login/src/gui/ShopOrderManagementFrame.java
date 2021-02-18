@@ -45,14 +45,14 @@ public class ShopOrderManagementFrame extends JFrame{
 
 	private void initialize() {
 
-		view_orders_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\viewOrdersButtonInactive.png");
-		view_orders_activeIMG = new ImageIcon("src\\images\\AdminFrame\\viewOrdersButtonActive.png");
-		delivering_orders_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\deliveringOrdersButtonInactive.png");
-		pending_orders_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\pendingOrdersButtonInactive.png");
-		delivering_orders_activeIMG = new ImageIcon("src\\images\\AdminFrame\\deliveringOrdersButtonActive.png");
-		pending_orders_activeIMG = new ImageIcon("src\\images\\AdminFrame\\pendingOrdersButtonActive.png");
-		go_back_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\goBackButtonInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\AdminFrame\\goBackButtonActive.png");
+		view_orders_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\completedOrdersButtonInactive.png");
+		view_orders_activeIMG = new ImageIcon("src\\images\\big_buttons\\completedOrdersButtonActive.png");
+		delivering_orders_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\deliveringOrdersButtonInactive.png");
+		pending_orders_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\pendingOrdersButtonInactive.png");
+		delivering_orders_activeIMG = new ImageIcon("src\\images\\big_buttons\\deliveringOrdersButtonActive.png");
+		pending_orders_activeIMG = new ImageIcon("src\\images\\big_buttons\\pendingOrdersButtonActive.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\goBackButtonInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\big_buttons\\goBackButtonActive.png");
 
 		view_ordersJB = new JButton();
 		delivering_ordersJB = new JButton();
@@ -65,6 +65,7 @@ public class ShopOrderManagementFrame extends JFrame{
 
 		//Layout setup
 		this.setTitle("[Shop Panel] Gestione ordini");
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setSize(1280,720);
 		this.setResizable(false);
 		int central_width = screen_dim.width/2-this.getSize().width/2;

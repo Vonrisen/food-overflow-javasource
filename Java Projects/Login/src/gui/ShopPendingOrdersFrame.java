@@ -78,12 +78,12 @@ public class ShopPendingOrdersFrame extends JFrame {
 	
 	private void initialize() {
 		
-		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
-		table_titleIMG = new ImageIcon("src\\images\\tableTitles\\orders.png");
-		add_rider_to_order_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\aggiungiRiderInactive.png");
-		add_rider_to_order_activeIMG = new ImageIcon("src\\images\\SqlButtons\\aggiungiRiderActive.png");
-		select_orderIMG = new ImageIcon("src\\images\\AdminFrame\\selezionaRider.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
+		table_titleIMG = new ImageIcon("src\\images\\others\\pendingOrders.png");
+		add_rider_to_order_inactiveIMG = new ImageIcon("src\\images\\buttons\\aggiungiRiderInactive.png");
+		add_rider_to_order_activeIMG = new ImageIcon("src\\images\\buttons\\aggiungiRiderActive.png");
+		select_orderIMG = new ImageIcon("src\\images\\others\\selezionaRider.png");
 		
 		button_size = new Dimension(150,30);
 		west_east_size = new Dimension(100,50);
@@ -136,6 +136,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 		//Layout setup
 		this.setSize(1280,720);
 		this.setTitle("...");
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setMinimumSize(new Dimension(640,500));
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;

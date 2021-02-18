@@ -62,16 +62,16 @@ public class AdminFrame extends JFrame{
 	
 	private void initialize() {
 		
-		customer_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonInactive.png");
-		shop_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonInactive.png");
-		orders_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonInactive.png");
-		meal_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonInactive.png");
-		disconnect_button_inactiveIMG = new ImageIcon("src\\images\\AdminFrame\\disconnectButtonInactive.png");
-		disconnect_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\disconnectButtonActive.png");
-		customer_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\customerButtonActive.png");
-		shop_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\shopButtonActive.png");
-		orders_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\ordersButtonActive.png");
-		meal_button_activeIMG = new ImageIcon("src\\images\\AdminFrame\\mealButtonActive.png");
+		customer_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\customerButtonInactive.png");
+		shop_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\shopButtonInactive.png");
+		orders_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\searchOrdersButtonInactive.png");
+		meal_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\mealButtonInactive.png");
+		disconnect_button_inactiveIMG = new ImageIcon("src\\images\\big_buttons\\disconnectButtonInactive.png");
+		disconnect_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\disconnectButtonActive.png");
+		customer_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\customerButtonActive.png");
+		shop_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\shopButtonActive.png");
+		orders_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\searchOrdersButtonActive.png");
+		meal_button_activeIMG = new ImageIcon("src\\images\\big_buttons\\mealButtonActive.png");
 		
 		center_panel = new JPanel();
 		south_panel = new JPanel();
@@ -91,9 +91,10 @@ public class AdminFrame extends JFrame{
 	private void frameSetup() {
 
 		//Layout setup
-		this.setTitle("Admin Panel");
+		this.setTitle("Food Overflow - Admin Panel");
 		this.setSize(1280,720);
 		this.setResizable(false);
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor

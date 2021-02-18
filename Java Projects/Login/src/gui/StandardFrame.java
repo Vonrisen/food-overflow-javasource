@@ -59,8 +59,8 @@ public class StandardFrame extends JFrame {
 	
 	private void initialize() {
 		
-		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
 		
 		button_size = new Dimension(150,30);
 		west_east_size = new Dimension(100,50);
@@ -96,7 +96,7 @@ public class StandardFrame extends JFrame {
 		//Layout setup
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(640,500));
-		
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
 		this.setLocation(central_width, central_height); //Setta il frame a centro monitor

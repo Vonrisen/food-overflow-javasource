@@ -158,6 +158,8 @@ public class AdminController {
 	
 	public void addMeal(AdminMealFrame admin_meal_frame) {
 		
+		if((!admin_meal_frame.getDishJCB().getSelectedItem().toString().equals("Seleziona categoria"))&&(!admin_meal_frame.getDishJCB().getSelectedItem().toString().equals("-------------------"))) {
+			
 		InputUtility input_util = new InputUtility();
 		List<String> allergens = new ArrayList<String>();
 		for(JCheckBox cb : admin_meal_frame.getAllergens()) {
@@ -175,8 +177,12 @@ public class AdminController {
 		}
 		 catch (NumberFormatException e)
 		{
-			 JOptionPane.showMessageDialog(null, "Inserci un prezzo valido ","Errore",JOptionPane.ERROR_MESSAGE);
+			 JOptionPane.showMessageDialog(null, "Inserisci un prezzo valido ","Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		
+		}else
+			JOptionPane.showMessageDialog(null, "Seleziona una categoria valida","Attenzione",JOptionPane.WARNING_MESSAGE);
+		
 	}
 	
 	public void removeShop(AdminShopFrame admin_shop_frame)

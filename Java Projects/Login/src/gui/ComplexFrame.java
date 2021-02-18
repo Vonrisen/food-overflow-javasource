@@ -74,14 +74,14 @@ public class ComplexFrame extends JFrame{
 	
 	private void initialize() {
 		
-		update_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonInactive.png");
-		update_activeIMG = new ImageIcon("src\\images\\SqlButtons\\updateButtonActive.png");
-		delete_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonInactive.png");
-		delete_activeIMG = new ImageIcon("src\\images\\SqlButtons\\deleteButtonActive.png");
-		insert_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonInactive.png");
-		insert_activeIMG = new ImageIcon("src\\images\\SqlButtons\\insertButtonActive.png");
-		go_back_inactiveIMG = new ImageIcon("src\\images\\SqlButtons\\goBackInactive.png");
-		go_back_activeIMG = new ImageIcon("src\\images\\SqlButtons\\goBackActive.png");
+		update_inactiveIMG = new ImageIcon("src\\images\\buttons\\updateButtonInactive.png");
+		update_activeIMG = new ImageIcon("src\\images\\buttons\\updateButtonActive.png");
+		delete_inactiveIMG = new ImageIcon("src\\images\\buttons\\deleteButtonInactive.png");
+		delete_activeIMG = new ImageIcon("src\\images\\buttons\\deleteButtonActive.png");
+		insert_inactiveIMG = new ImageIcon("src\\images\\buttons\\insertButtonInactive.png");
+		insert_activeIMG = new ImageIcon("src\\images\\buttons\\insertButtonActive.png");
+		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
+		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
 		
 		long_dim_of_textfield = new Dimension(335,25);
 		short_dim_of_textfield = new Dimension(150,25);
@@ -126,6 +126,7 @@ public class ComplexFrame extends JFrame{
 		//Layout setup
 		setSize(1280,720);
 		setMinimumSize(new Dimension(800,680));
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		int central_width = screen_dim.width/2-getSize().width/2;
 		int central_height = screen_dim.height/2-getSize().height/2;
 		setLocation(central_width, central_height); //Setta il frame a centro monitor
