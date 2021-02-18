@@ -17,14 +17,12 @@ import utilities.InputUtility;
 public class CustomerDAOPostgresImplementation implements CustomerDAO{
 
 
-	private PreparedStatement get_all_customers_PS, insert_customer_PS, delete_customer_PS, update_customer_PS, authenticateCustomerLogin_PS, get_customer_by_email_PS;
+	private PreparedStatement get_all_customers_PS, insert_customer_PS, authenticateCustomerLogin_PS, get_customer_by_email_PS;
 	DButility db_util = new DButility();
 	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
 			get_all_customers_PS = connection.prepareStatement("SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer");
 			insert_customer_PS = connection.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
-			delete_customer_PS = connection.prepareStatement("DELETE FROM Customer WHERE email=?");
-			update_customer_PS = connection.prepareStatement("UPDATE Customer SET email=?, password=? WHERE cellphone=?");
 			authenticateCustomerLogin_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=? AND password=?");
 			get_customer_by_email_PS = connection.prepareStatement("SELECT * FROM Customer WHERE email=?");
 		}catch(SQLException s)
@@ -78,51 +76,11 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		insert_customer_PS.executeUpdate();
 		}catch(SQLException s)
 		{
-			System.out.println(s.getMessage());
 			throw new DaoException();
-		}
-		finally
-		{
-			db_util.closeStatement(insert_customer_PS);
 		}
 		return;
 	}
 	
-	public void deleteCustomer(Customer customer) throws DaoException {
-		
-		try
-		{
-		delete_customer_PS.setString(1, customer.getEmail());
-		delete_customer_PS.executeUpdate();
-		}catch(SQLException s)
-		{
-			throw new DaoException();
-		}
-		finally
-		{
-			db_util.closeStatement(delete_customer_PS);
-		}
-		return;
-	}
-	
-	public void updateCustomerFromAdmin(Customer customer) throws DaoException{
-		
-		try
-		{
-		update_customer_PS.setString(1, customer.getEmail());
-		update_customer_PS.setString(2, customer.getPassword());
-		update_customer_PS.setString(3, customer.getCellphone());
-		update_customer_PS.executeUpdate();
-		}catch(SQLException s)
-		{
-			throw new DaoException();
-		}
-		finally
-		{
-			db_util.closeStatement(update_customer_PS);
-		}
-		return;
-	}
 	
 	public boolean isCustomerLoginValidated(String email, String password) throws DaoException {
 		
@@ -149,9 +107,8 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO{
 		
 		db_util.closeStatement(get_all_customers_PS);
 		db_util.closeStatement(insert_customer_PS);
-		db_util.closeStatement(delete_customer_PS);
-		db_util.closeStatement(update_customer_PS);
 		db_util.closeStatement(authenticateCustomerLogin_PS);
+		db_util.closeStatement(get_customer_by_email_PS);
 		return;
 		
 	}

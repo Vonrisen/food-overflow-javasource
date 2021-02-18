@@ -130,6 +130,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 		db_util.closeStatement(insert_rider_PS);
 		db_util.closeStatement(dismiss_rider_PS);
 		db_util.closeStatement(update_rider_PS);
+		db_util.closeStatement(get_rider_by_CF_PS);
 		return;
 		
 	}

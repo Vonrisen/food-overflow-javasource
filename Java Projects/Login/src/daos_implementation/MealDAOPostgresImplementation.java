@@ -183,6 +183,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		db_util.closeStatement(insert_supply_PS);
 		db_util.closeStatement(delete_from_supply_PS);
 		db_util.closeStatement(add_allergens_CS);
+		db_util.closeStatement(customer_complex_search_PS);
 		return;
 		
 	}

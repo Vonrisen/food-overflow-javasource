@@ -265,6 +265,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		db_util.closeStatement(get_delivering_orders_of_a_shop_PS);
 		db_util.closeStatement(get_pending_orders_of_a_shop_PS);
 		db_util.closeStatement(get_customer_email_PS);
+		db_util.closeStatement(get_order_by_id_PS);
+		db_util.closeStatement(create_order_CS);;
 		return;
 		
 	}

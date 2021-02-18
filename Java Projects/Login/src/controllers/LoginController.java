@@ -146,11 +146,10 @@ public class LoginController{
 
 		String name = frame.getNameTF().getText();
 		String surname = frame.getSurnameTF().getText();
-		IstatUtils istat_util = new IstatUtils();
 		Date birth_date = null;
 		try {
 			birth_date = new SimpleDateFormat("dd/MM/yyyy").parse(frame.getBirth_dateTF().getText());
-		String birth_place = frame.getTownsCB().getSelectedItem().toString();
+		String birth_place;
 		String gender = frame.getGenderCB().getSelectedItem().toString().substring(0,1);
 		String cellphone = frame.getCellphoneTF().getText();
 		Address address = new Address(frame.getAddress_nameTF().getText(), frame.getAddress_civic_numberTF().getText(), frame.getAddress_capTF().getText(),
@@ -158,6 +157,10 @@ public class LoginController{
 		String email = frame.getEmailTF().getText();
 		String password = frame.getPasswordTF().getText();
 		CodiceFiscaleUtility cf_util = new CodiceFiscaleUtility();
+		if(!frame.getStatiCB().getSelectedItem().toString().equals("ITALIA"))
+			birth_place = frame.getStatiCB().getSelectedItem().toString();
+		else
+			birth_place = frame.getTownsCB().getSelectedItem().toString();
 		String cf = cf_util.getCF(name, surname, birth_date, birth_place, gender.charAt(0));
 		Customer customer = new Customer(cf, name, surname, birth_date, birth_place, gender, cellphone, address, email, password);
 		customer_dao.insertCustomer(customer);

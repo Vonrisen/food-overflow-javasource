@@ -297,6 +297,8 @@ public List<Rider> getRidersOfAShopMax2DeliveriesByShopEmail(String shop_email) 
 		db_util.closeStatement(get_meals_of_a_shop_by_shop_email_PS);
 		db_util.closeStatement(get_allergens_of_a_meal_PS);
 		db_util.closeStatement(update_shop_CS);
+		db_util.closeStatement(get_riders_of_a_shop_max_2_deliveries_by_shop_email_PS);
+		db_util.closeStatement(get_shop_by_province_PS);
 		return;
 		
 	}

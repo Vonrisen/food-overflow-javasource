@@ -18,8 +18,8 @@ public class CodiceFiscaleUtility {
 		int n_vocali = 0;
 		int conta = 0;
 		boolean vocale = false;
-		surname = surname.toUpperCase();
-		name = name.toUpperCase();
+		surname = surname.toUpperCase().replaceAll("\\s","");
+		name = name.toUpperCase().replaceAll("\\s","");
 		birth_place_town = birth_place_town.toUpperCase();
 		// FETCH COGNOME
 		char char1=surname.charAt(0);
