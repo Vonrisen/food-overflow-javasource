@@ -64,7 +64,7 @@ public class ShopOrderManagementFrame extends JFrame{
 	private void setupFrame() {
 
 		//Layout setup
-		this.setTitle("[Shop Panel] Gestione ordini");
+		this.setTitle("Food Overflow - Shop Panel: Gestione Ordini");
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setSize(1280,720);
 		this.setResizable(false);

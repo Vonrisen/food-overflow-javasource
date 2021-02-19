@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class ComplexFrame extends JFrame{
@@ -151,13 +152,13 @@ public class ComplexFrame extends JFrame{
 		
 		
 		//Impostazione JTable
-		table.setAutoCreateRowSorter(true);
+		table.setAutoCreateRowSorter(false);
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setPreferredScrollableViewportSize(new Dimension(500,50));
 		table.setFillsViewportHeight(true);
-		
+	
 		
 		//Subpanels di center_panel
 		attributes_panel.setLayout(new FlowLayout(FlowLayout.LEADING, 35,10));

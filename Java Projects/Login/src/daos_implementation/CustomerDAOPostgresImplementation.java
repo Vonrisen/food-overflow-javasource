@@ -24,7 +24,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
 			get_all_customers_PS = connection.prepareStatement(
-					"SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer");
+					"SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer ORDER BY name");
 			insert_customer_PS = connection
 					.prepareStatement("INSERT INTO Customer VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?)");
 			authenticateCustomerLogin_PS = connection

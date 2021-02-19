@@ -23,20 +23,24 @@ public class CustomerCheckoutFrame extends JFrame{
 	private ImageIcon total_priceIMG;
 	private ImageIcon cellphoneIMG;
 	private ImageIcon shopIMG;
+	private ImageIcon noteIMG;
 	private ImageIcon ordina_inactiveIMG;
 	private ImageIcon ordina_activeIMG;
+	
 	private JLabel summaryLB;
 	private JLabel backgroundLB;
 	private JLabel addressLB;
 	private JLabel total_priceLB;
 	private JLabel cellphoneLB;
 	private JLabel shopLB;
+	private JLabel noteLB;
 	private JButton orderJB;
 	
 	private JTextField addressTF;
 	private JTextField total_priceTF;
 	private JTextField shopTF;
 	private JTextField cellphoneTF;
+	private JTextField noteTF;
 	CustomerController customer_controller;
 	CustomerCartFrame customer_cart_frame;
 
@@ -55,6 +59,7 @@ public class CustomerCheckoutFrame extends JFrame{
 		total_priceIMG = new ImageIcon("src\\images\\customer\\totalePrezzo.PNG");
 		cellphoneIMG = new ImageIcon("src\\images\\customer\\telefonoRistorante.PNG");
 		shopIMG = new ImageIcon("src\\images\\customer\\ristorante.PNG");
+		noteIMG = new ImageIcon("src\\images\\customer\\note.PNG");
 		ordina_inactiveIMG = new ImageIcon("src\\images\\customer\\ordinaInactive.PNG");
 		ordina_activeIMG = new ImageIcon("src\\images\\customer\\ordinaActive.PNG");
 		
@@ -64,6 +69,7 @@ public class CustomerCheckoutFrame extends JFrame{
 		total_priceLB = new JLabel();
 		cellphoneLB = new JLabel();
 		shopLB = new JLabel();
+		noteLB = new JLabel();
 		
 		orderJB = new JButton();
 		
@@ -71,6 +77,7 @@ public class CustomerCheckoutFrame extends JFrame{
 		total_priceTF = new RoundJTextField(new Color(0x771007));
 		shopTF = new RoundJTextField(new Color(0x771007));
 		cellphoneTF = new RoundJTextField(new Color(0x771007));
+		noteTF = new RoundJTextField(new Color(0x771007));
 	
 	}
 	
@@ -78,7 +85,7 @@ public class CustomerCheckoutFrame extends JFrame{
 		
 		this.setTitle("Food Overflow - Riepilogo dell'ordine");
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
-		this.setSize(400,500);
+		this.setSize(400,600);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -127,15 +134,24 @@ public class CustomerCheckoutFrame extends JFrame{
 		total_priceTF.setHorizontalAlignment(JTextField.CENTER);
 		this.getContentPane().add(total_priceTF);
 		
+		noteLB.setIcon(noteIMG);
+		noteLB.setBounds(115,367,150,25);
+		this.getContentPane().add(noteLB);
+		
+		noteTF.setEditable(true);
+		noteTF.setBounds(50,396,280,25);
+		noteTF.setHorizontalAlignment(JTextField.LEFT);
+		this.getContentPane().add(noteTF);
+		
 		backgroundLB.setBackground(new Color(0xf3ecd7));
 		backgroundLB.setLayout(null);
 		backgroundLB.setOpaque(true);
-		backgroundLB.setBounds(40,100,300,270);
+		backgroundLB.setBounds(40,100,300,360);
 		backgroundLB.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		this.getContentPane().add(backgroundLB);
 
 		orderJB.setIcon(ordina_inactiveIMG);
-		orderJB.setBounds(90,401,200,30);
+		orderJB.setBounds(90,495,200,30);
 		orderJB.setBorder(null);
 		orderJB.setFocusable(false);
 		orderJB.setContentAreaFilled(false);

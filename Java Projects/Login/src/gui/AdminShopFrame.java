@@ -10,6 +10,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -83,7 +85,9 @@ public class AdminShopFrame extends ComplexFrame{
 
 		//Sottopannelli di "center_panel"
 		getTable_titleLB().setIcon(getTable_title());
-
+		setTitle("Food Overflow - Admin Panel: Gestione ristoranti");
+		
+		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		//Button setup
 		getButtons_panel().add(getInsert_sqlJB());
@@ -112,10 +116,17 @@ public class AdminShopFrame extends ComplexFrame{
 		getAttributes_panel().add(address_capTF);
 
 		address_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		address_provinceCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		address_provinceCB.setFocusable(false);
+		address_provinceCB.setBackground(Color.white);
 		getAttributes_panel().add(address_provinceCB);
 		
 		address_townCB.setPreferredSize(getShort_dim_of_textfield());
+		address_townCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		address_townCB.setFocusable(false);
+		address_townCB.setBackground(Color.white);
 		getAttributes_panel().add(address_townCB);
+		
 		createTextField(working_hoursTF, "Orario di apertura", getShort_dim_of_textfield());
 		getAttributes_panel().add(working_hoursTF);
 

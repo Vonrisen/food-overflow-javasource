@@ -101,17 +101,18 @@ public class CustomerMealListFrame extends JFrame {
 	
 	private JTextField price_minTF;
 	private JTextField price_maxTF;
-	private JTextField meal_nameTF;
 	private JTextField quantityTF;
 	
 	private CustomerController customer_controller;
+	private LoginController login_controller;
 	
-	public CustomerMealListFrame(CustomerController customer_controller) {
+	public CustomerMealListFrame(CustomerController customer_controller, LoginController login_controller) {
 		
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
+		this.login_controller = login_controller;
 		
 	}
 
@@ -137,7 +138,7 @@ public class CustomerMealListFrame extends JFrame {
 		
 		
 		
-		long_dim_of_textfield = new Dimension(335,25);
+		long_dim_of_textfield = new Dimension(317,25);
 		short_dim_of_textfield = new Dimension(150,25);
 		west_east_size = new Dimension(100,80);
 		north_south_size = new Dimension(100,50);
@@ -187,7 +188,6 @@ public class CustomerMealListFrame extends JFrame {
 		
 		price_minTF = new RoundJTextField(new Color(0x771007));
 		price_maxTF = new RoundJTextField(new Color(0x771007));
-		meal_nameTF = new RoundJTextField(new Color(0x771007));
 		quantityTF = new RoundJTextField(new Color(0x771007));
 		
 	}
@@ -232,7 +232,7 @@ public class CustomerMealListFrame extends JFrame {
 		
 		//Impostazione JTable
 		
-	    table.setAutoCreateRowSorter(true);
+	    table.setAutoCreateRowSorter(false);
 	    table.setRowSelectionAllowed(true);
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(model = new DefaultTableModel(columns, 0) {
@@ -313,15 +313,12 @@ public class CustomerMealListFrame extends JFrame {
 		
 
 		
-		categoryCB.setPreferredSize(short_dim_of_textfield);
+		categoryCB.setPreferredSize(long_dim_of_textfield);
 		categoryCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		categoryCB.setFocusable(false);
 		categoryCB.setBackground(Color.white);
 		filters_subpanel.add(categoryCB);
 
-		
-		createTextField(meal_nameTF, "Nome dell'alimento", short_dim_of_textfield);
-		filters_subpanel.add(meal_nameTF);
 		
 		createTextField(price_minTF, "Prezzo minimo", short_dim_of_textfield);
 		filters_subpanel.add(price_minTF);
@@ -437,7 +434,8 @@ public class CustomerMealListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-//				login_controller.openLoginFrame(CustomerMealListFrame.this); DA CANCELLARE
+				customer_controller.releaseDaoResourcesWhenLoggingOut();
+				login_controller.openLoginFrame(CustomerMealListFrame.this);
 				
 			}
 			
@@ -520,21 +518,6 @@ public class CustomerMealListFrame extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				
 				customer_controller.doCustomerComplexSearch(CustomerMealListFrame.this);
-				
-			}
-		});
-		
-		meal_nameTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(meal_nameTF, "Nome dell'alimento");
-				
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(meal_nameTF, "Nome dell'alimento");
 				
 			}
 		});
@@ -681,13 +664,6 @@ public class CustomerMealListFrame extends JFrame {
 		return quantityTF;
 	}
 
-	public JTextField getMeal_nameTF() {
-		return meal_nameTF;
-	}
-
-	public void setMeal_nameTF(JTextField meal_nameTF) {
-		this.meal_nameTF = meal_nameTF;
-	}
 
 	public JCheckBox[] getAllergens() {
 		return allergens;

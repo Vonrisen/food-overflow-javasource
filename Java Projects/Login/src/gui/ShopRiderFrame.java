@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -82,8 +83,9 @@ public class ShopRiderFrame extends ComplexFrame{
 	private void setupFrame() {
 
 		//Layout setup
-		this.setTitle("[Shop Panel] Gestione riders");
-
+		this.setTitle("Food Overflow - Shop Panel: Gestione rider");
+		
+		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		//Textfields setup
 		createTextField(nameTF, "Nome", getShort_dim_of_textfield());
@@ -96,12 +98,15 @@ public class ShopRiderFrame extends ComplexFrame{
 		getAttributes_panel().add(birth_dateTF);
 		
 		birth_nationCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(birth_nationCB);
 		getAttributes_panel().add(birth_nationCB);
 		
 		birth_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(birth_provinceCB);
 		getAttributes_panel().add(birth_provinceCB);
 		
 		birth_townCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(birth_townCB);
 		getAttributes_panel().add(birth_townCB);
 
 		createTextField(address_nameTF, "Nome dell'indirizzo", getLong_dim_of_textfield());
@@ -114,18 +119,22 @@ public class ShopRiderFrame extends ComplexFrame{
 		getAttributes_panel().add(address_capTF);
 		
 		address_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(address_provinceCB);
 		getAttributes_panel().add(address_provinceCB);
 		
 		address_townCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(address_townCB);
 		getAttributes_panel().add(address_townCB);
 
 		createTextField(cellphoneTF, "Cellulare", getShort_dim_of_textfield());
 		getAttributes_panel().add(cellphoneTF);
 
 		genderCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(genderCB);
 		getAttributes_panel().add(genderCB);
 
 		vehicleCB.setPreferredSize(getShort_dim_of_textfield());
+		setupComboBox(vehicleCB);
 		getAttributes_panel().add(vehicleCB);
 
 		createTextField(working_hoursTF, "Orario di lavoro", getShort_dim_of_textfield());
@@ -304,6 +313,14 @@ public class ShopRiderFrame extends ComplexFrame{
 
 	}
 
+	private void setupComboBox(JComboBox cb) {
+		
+		cb.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		cb.setFocusable(false);
+		cb.setBackground(Color.white);
+		
+	}
+	
 	public void birth_provinceCBitemStateChanged(ItemEvent e) {
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 	        String selected_item = (String) e.getItem();

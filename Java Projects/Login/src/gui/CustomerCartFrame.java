@@ -95,13 +95,15 @@ public class CustomerCartFrame extends JFrame {
 	private JLabel background;
 	DefaultTableModel model;
 	private CustomerController customer_controller;
+	private LoginController login_controller;
 
-	public CustomerCartFrame(CustomerController customer_controller) {
+	public CustomerCartFrame(CustomerController customer_controller,LoginController login_controller) {
 
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
+		this.login_controller = login_controller;
 	}
 
 	// Initialize variables
@@ -216,7 +218,7 @@ public class CustomerCartFrame extends JFrame {
 
 		// Impostazione JTable
 
-		table.setAutoCreateRowSorter(true);
+		table.setAutoCreateRowSorter(false);
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(model = new DefaultTableModel(columns, 0) {
@@ -521,8 +523,9 @@ public class CustomerCartFrame extends JFrame {
 
 			public void mousePressed(MouseEvent e) {
 
-				LoginController login_controller = new LoginController();
+				customer_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(CustomerCartFrame.this);
+				
 			}
 		});
 

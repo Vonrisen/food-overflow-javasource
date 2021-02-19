@@ -1,9 +1,13 @@
 package gui;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import javax.swing.table.DefaultTableModel;
 import controllers.ShopController;
+
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -28,8 +32,11 @@ public class ShopViewOrdersFrame extends StandardFrame{
 		setTable_title(new ImageIcon("src\\images\\others\\completedOrders.png"));
 		getTable().setModel(model = new DefaultTableModel(columns, 0));
 
-		this.setTitle("[Shop Panel] Ordini completati");
+		this.setTitle("Food Overflow - Shop Panel: Ordini completati");
+		getTable_titleLB().setPreferredSize(new Dimension(500,50));
 		getTable_titleLB().setIcon(getTable_title());
+		
+		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		getGo_backJB().addMouseListener(new MouseAdapter() {
 			@Override

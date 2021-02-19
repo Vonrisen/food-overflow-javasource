@@ -172,7 +172,9 @@ public class AdminFrame extends JFrame{
 		ordersJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//TODO
+				
+				admin_controller.openAdminOrderFrame(AdminFrame.this);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

@@ -11,10 +11,10 @@ public class DBconnection {
 	private static DBconnection instance = null;
 
 	private final String USERNAME = "postgres";
-	private final String PWD = "password123";
+	private final String PWD = "admin31";
 	private final String IP = "localhost";
 	private final String PORT = "5432";
-	private final String DBNAME = "FOOD-OVERFLOW_DB";
+	private final String DBNAME = "foodoverflow";
 	private Connection connection;
 
 	private DBconnection() {

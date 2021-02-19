@@ -76,7 +76,7 @@ public class ShopFrame extends JFrame{
 		
 		//Layout setup
 		
-		this.setTitle("Shop Panel");
+		this.setTitle("Food Overflow - Shop Panel");
 		this.setSize(1280,720);
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setResizable(false);

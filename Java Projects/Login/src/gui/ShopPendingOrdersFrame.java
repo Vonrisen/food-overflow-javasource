@@ -135,7 +135,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 		
 		//Layout setup
 		this.setSize(1280,720);
-		this.setTitle("...");
+		this.setTitle("Food Overflow - Shop Panel: Ordini in attesa");
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setMinimumSize(new Dimension(640,500));
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -170,7 +170,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 		all_meal_panel.add(buttons_panel, BorderLayout.CENTER);
 		
 		//Impostazione JTable
-		table.setAutoCreateRowSorter(true);
+		table.setAutoCreateRowSorter(false);
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -178,7 +178,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 		table.setFillsViewportHeight(true);
 		table.setModel(model = new DefaultTableModel(columns, 0));
 		
-		table2.setAutoCreateRowSorter(true);
+		table2.setAutoCreateRowSorter(false);
 		table2.setRowSelectionAllowed(true);
 		table2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table2.getTableHeader().setReorderingAllowed(false);
@@ -186,11 +186,11 @@ public class ShopPendingOrdersFrame extends JFrame {
 		table2.setFillsViewportHeight(true);
 		table2.setModel(model2 = new DefaultTableModel(columns2, 0));
 		
-		scroll_pane.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(0x771007)));
-		scroll_pane2.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(0x771007)));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		scroll_pane2.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		
 		//Sottopannelli di "center_panel"
-		table_titleLB.setSize(225,100);
+		table_titleLB.setSize(500,50);
 		table_titleLB.setIcon(table_titleIMG);
 		scroll_pane2.setPreferredSize(new Dimension(100,400));
 		center_panel.add(scroll_pane, BorderLayout.CENTER);

@@ -23,7 +23,6 @@ import entities.Rider;
 import exceptions.CfException;
 import exceptions.DaoException;
 import gui.AdminRiderFrame;
-import gui.ShopAllMealsFrame;
 import gui.ShopDeliveringOrdersFrame;
 import gui.ShopFrame;
 import gui.ShopMealFrame;
@@ -281,15 +280,16 @@ public class ShopController {
 	
 	public void removeMeal(ShopMealFrame shop_meal_frame){
 		
-		int row = shop_meal_frame.getTable().getSelectedRow() ;
+		int row = shop_meal_frame.getTable().getSelectedRow();
+		InputUtility input_util = new InputUtility();
 		if(row != -1) {
-
 			String meal_name_to_remove = shop_meal_frame.getTable().getValueAt(row, 0).toString();
-			int i = 0;
 			try {
 				Meal meal_to_remove = meal_dao.getMealByName(meal_name_to_remove);
 				meal_dao.deleteFromSupply(current_shop_email, meal_to_remove);
 				shop_meal_frame.getModel().removeRow(row);
+				shop_meal_frame.getModel2().addRow(new Object[] {meal_to_remove.getName(), meal_to_remove.getCategory(), meal_to_remove.getPrice(), 
+					meal_to_remove.getIngredients(), input_util.arrayListToTokenizedString(meal_to_remove.getAllergen_list(), ", ")});
 				JOptionPane.showMessageDialog(null, "Pasto rimosso con successo");
 			} catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore","Errore",JOptionPane.ERROR_MESSAGE);
@@ -298,7 +298,6 @@ public class ShopController {
 		else
 			JOptionPane.showMessageDialog(null, "Seleziona il pasto da rimuovere","Warning",JOptionPane.WARNING_MESSAGE);
 		return;
-	
 	}
 	
 	public void removeRider(ShopRiderFrame shop_rider_frame) {

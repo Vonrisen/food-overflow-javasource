@@ -121,7 +121,7 @@ public class StandardFrame extends JFrame {
 		
 		
 		//Impostazione JTable
-		table.setAutoCreateRowSorter(true);
+		table.setAutoCreateRowSorter(false);
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);

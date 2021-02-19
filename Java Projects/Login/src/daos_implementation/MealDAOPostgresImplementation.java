@@ -209,7 +209,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return meal;
 	}
 
-	public List<Meal> doCustomerComplexSearch(String category, String meal_name, float min_price, float max_price,
+	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price,
 			List<String> allergens, String shop_email) throws DaoException {
 		List<String> allergen_list;
 		List<Meal> meal_list = new ArrayList<>();

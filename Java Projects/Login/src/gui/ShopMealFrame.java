@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,6 +12,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -142,6 +144,7 @@ public class ShopMealFrame extends JFrame {
 		//Layout setup
 		this.setSize(1280,720);
 		this.setMinimumSize(new Dimension(640,500));
+		this.setTitle("Food Overflow - Shop Panel: Gestione menu'");
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		int central_width = screen_dim.width/2-this.getSize().width/2;
 		int central_height = screen_dim.height/2-this.getSize().height/2;
@@ -156,6 +159,7 @@ public class ShopMealFrame extends JFrame {
 		this.getContentPane().add(east_panel, BorderLayout.EAST);
 		
 		createStandardPanel(north_panel, null, north_south_size);
+		north_panel.setLayout(new BoxLayout(north_panel, BoxLayout.X_AXIS));
 		this.getContentPane().add(north_panel, BorderLayout.NORTH);
 		
 		createStandardPanel(south_panel, null, north_south_size);
@@ -175,13 +179,14 @@ public class ShopMealFrame extends JFrame {
 		all_meal_panel.add(buttons_panel, BorderLayout.CENTER);
 		
 		//Impostazione JTable
-		table.setAutoCreateRowSorter(true);
+		table.setAutoCreateRowSorter(false);
 		table.setRowSelectionAllowed(true);
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setPreferredScrollableViewportSize(new Dimension(500,50));
 		table.setFillsViewportHeight(true);
 		table.setModel(model = new DefaultTableModel(columns, 0));
+		
 		
 		table2.setAutoCreateRowSorter(true);
 		table2.setRowSelectionAllowed(true);
@@ -191,11 +196,11 @@ public class ShopMealFrame extends JFrame {
 		table2.setFillsViewportHeight(true);
 		table2.setModel(model2 = new DefaultTableModel(columns2, 0));
 		
-		scroll_pane.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(0x771007)));
-		scroll_pane2.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(0x771007)));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		scroll_pane2.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		
 		//Sottopannelli di "center_panel"
-		table_titleLB.setSize(225,100);
+		table_titleLB.setSize(500,50);
 		table_titleLB.setIcon(table_titleIMG);
 		scroll_pane2.setPreferredSize(new Dimension(100,400));
 		center_panel.add(scroll_pane, BorderLayout.CENTER);
@@ -276,7 +281,9 @@ public class ShopMealFrame extends JFrame {
 				remove_from_menuJB.setIcon(remove_from_menu_inactiveIMG);
 			}
 			public void mousePressed(MouseEvent e) {
-				//Cancello alimento dal menu
+				
+				shop_controller.removeMeal(ShopMealFrame.this);
+				
 			}
 		});
 		

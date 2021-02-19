@@ -23,7 +23,7 @@ public interface MealDAO {
 
 	public void closeStatements() throws DaoException;
 
-	public List<Meal> doCustomerComplexSearch(String category, String meal_name, float min_price, float max_price,
+	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price,
 			List<String> allergens, String shop_email) throws DaoException;
 
 }

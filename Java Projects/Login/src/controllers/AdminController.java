@@ -19,8 +19,11 @@ import exceptions.DaoException;
 import gui.AdminCustomerFrame;
 import gui.AdminFrame;
 import gui.AdminMealFrame;
+import gui.AdminOrderFrame;
 import gui.AdminRiderFrame;
 import gui.AdminShopFrame;
+import gui.LoginFrame;
+import gui.RegisterFrame;
 import utilities.DButility;
 import utilities.InputUtility;
 import utilities.IstatUtils;
@@ -104,6 +107,21 @@ public class AdminController {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		admin_customer_frame.setVisible(true);
+		return;
+	}
+	
+	public void openAdminOrderFrame(JFrame frame) {
+
+		frame.dispose();
+		AdminOrderFrame admin_order_frame = new AdminOrderFrame(this);
+		admin_order_frame.setVisible(true);
+		IstatUtils istat_utils = new IstatUtils();
+		List<String> provinces = istat_utils.getProvinces();
+		admin_order_frame.getAddressCB().addItem("Seleziona provincia di consegna");
+		admin_order_frame.getAddressCB().addItem("-------------------");
+		for (String s : provinces) {
+			admin_order_frame.getAddressCB().addItem(s);
+		}
 		return;
 	}
 
@@ -301,5 +319,7 @@ public class AdminController {
 		}
 		return;
 	}
+	
+	
 
 }

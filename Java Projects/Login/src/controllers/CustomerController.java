@@ -96,7 +96,7 @@ public class CustomerController {
 	public void openCustomerMealListFrame(JFrame frame, String shop_email) {
 
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this);
+		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this, login_controller);
 		frame.dispose();
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
@@ -164,7 +164,6 @@ public class CustomerController {
 
 	public void doCustomerComplexSearch(CustomerMealListFrame customer_meal_list_frame) {
 
-		String selected_meal = customer_meal_list_frame.getMeal_nameTF().getText();
 		String selected_category = customer_meal_list_frame.getCategoryCB().getSelectedItem().toString();
 		String min_price_string = customer_meal_list_frame.getPrice_minTF().getText();
 		String max_price_string = customer_meal_list_frame.getPrice_maxTF().getText();
@@ -180,7 +179,7 @@ public class CustomerController {
 					allergen_list.add(allergen_cb.getText());
 			}
 			String shop_email = shop.getEmail();
-			meal_list = meal_dao.doCustomerComplexSearch(selected_category, selected_meal, min_price, max_price,
+			meal_list = meal_dao.doCustomerComplexSearch(selected_category,  min_price, max_price,
 					allergen_list, shop_email);
 			customer_meal_list_frame.getModel().setRowCount(0);
 		} catch (NumberFormatException n) {
@@ -196,7 +195,7 @@ public class CustomerController {
 
 	public void openCustomerCartFrame(JFrame frame) {
 		frame.dispose();
-		CustomerCartFrame customer_cart_frame = new CustomerCartFrame(this);
+		CustomerCartFrame customer_cart_frame = new CustomerCartFrame(this, login_controller);
 		TableModelUtility table_util = new TableModelUtility();
 		table_util.initializeCustomerCartTable(customer_cart_frame.getModel(), cart);
 		customer_cart_frame.setVisible(true);

@@ -73,7 +73,7 @@ public class CustomerShopListFrame extends JFrame {
 	private JLabel background;
 	DefaultTableModel model;
 	private CustomerController customer_controller;
-	LoginController login_controller;
+	private LoginController login_controller;
 	
 	public CustomerShopListFrame(CustomerController customer_controller, LoginController login_controller) {
 		
@@ -167,7 +167,7 @@ public class CustomerShopListFrame extends JFrame {
 		
 		//Impostazione JTable
 		
-	    table.setAutoCreateRowSorter(true);
+	    table.setAutoCreateRowSorter(false);
 	    table.setRowSelectionAllowed(true);
 	    table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		table.setModel(model = new DefaultTableModel(columns, 0) {

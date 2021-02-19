@@ -28,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -75,9 +76,9 @@ public class CustomerProfileFrame extends JFrame {
 	
 	private JTextField old_emailTF;
 	private JTextField old_phoneTF;
-	private JTextField old_passwordTF;
+	private JPasswordField old_passwordTF;
 	private JTextField emailTF;
-	private JTextField passwordTF;
+	private JPasswordField passwordTF;
 	private JTextField phoneTF;
 	CustomerController customer_controller;
 	
@@ -124,7 +125,7 @@ public class CustomerProfileFrame extends JFrame {
 		address_provinceCB = new JComboBox<String>();
 		address_townCB = new JComboBox<String>();
 		old_emailTF = new RoundJTextField(new Color(0x771007));
-		old_passwordTF = new RoundJTextField(new Color(0x771007));
+		old_passwordTF = new RoundJPasswordField(new Color(0x771007));
 		old_phoneTF = new RoundJTextField(new Color(0x771007));
 		emailTF = new RoundJTextField(new Color(0x771007));
 		passwordTF = new RoundJPasswordField(new Color(0x771007));
@@ -139,6 +140,7 @@ public class CustomerProfileFrame extends JFrame {
 		this.setTitle("Food Overflow - Profilo");
 		this.setSize(500,720);
 		background.setIcon(resize(backgroundIMG, this.getWidth(), this.getHeight()));
+		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		int central_width = screen_dim.width/2-this.getSize().width/2;
@@ -194,10 +196,12 @@ public class CustomerProfileFrame extends JFrame {
 		this.getContentPane().add(emailTF);
 		
 		createTextField(old_passwordTF, "Vecchia password");
+		old_passwordTF.setEchoChar((char) 0);
 		old_passwordTF.setBounds(83,375,150,25);
 		this.getContentPane().add(old_passwordTF);
 
 		createTextField(passwordTF, "Nuova password");
+		passwordTF.setEchoChar((char) 0);
 		passwordTF.setBounds(253,375,150,25);
 		this.getContentPane().add(passwordTF);
 		
@@ -363,6 +367,155 @@ public class CustomerProfileFrame extends JFrame {
 				edit_authJB.setVisible(true);
 				edit_addressJB.setVisible(true);
 				
+			}
+		});
+		
+		address_nameTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(address_nameTF, "Nome dell'indirizzo");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(address_nameTF, "Nome dell'indirizzo");
+				
+			}
+		});
+		
+		address_civic_numberTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(address_civic_numberTF, "Numero civico");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(address_civic_numberTF, "Numero civico");
+				
+			}
+		});
+		
+		address_capTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(address_capTF, "CAP");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(address_capTF, "CAP");
+				
+			}
+		});
+		
+		old_emailTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(old_emailTF, "Vecchia e-mail");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(old_emailTF, "Vecchia e-mail");
+				
+			}
+		});
+		
+		emailTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(emailTF, "Nuova e-mail");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(emailTF, "Nuova e-mail");
+				
+			}
+		});
+		
+		old_phoneTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(old_phoneTF, "Vecchio n. cellulare");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(old_phoneTF, "Vecchio n. cellulare");
+				
+			}
+		});
+		
+		phoneTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				textFieldFocusGained(phoneTF, "Nuovo n. cellulare");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				textFieldFocusLost(phoneTF, "Nuovo n. cellulare");
+				
+			}
+		});
+		
+		old_passwordTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				if (old_passwordTF.getText().equals("Vecchia password")) {
+
+					old_passwordTF.setEchoChar('•');
+					old_passwordTF.setText("");
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				if (old_passwordTF.getText().equals("")) {
+
+					old_passwordTF.setText("Vecchia password");
+					old_passwordTF.setEchoChar((char) 0);
+				}
+			}
+		});
+		
+		passwordTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				if (passwordTF.getText().equals("Nuova password")) {
+
+					passwordTF.setEchoChar('•');
+					passwordTF.setText("");
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				if (passwordTF.getText().equals("")) {
+
+					passwordTF.setText("Nuova password");
+					passwordTF.setEchoChar((char) 0);
+				}
 			}
 		});
 		

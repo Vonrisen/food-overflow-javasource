@@ -332,7 +332,6 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			create_order_CS.setString(6, input_util.arrayListToTokenizedString(quantities, ", "));
 			create_order_CS.executeUpdate();
 		} catch (SQLException e) {
-
 			throw new DaoException();
 		}
 		return;

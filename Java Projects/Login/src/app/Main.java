@@ -8,6 +8,7 @@ import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
 import entities.Shop;
 import exceptions.DaoException;
+import gui.AdminOrderFrame;
 
 public class Main {
 	
@@ -15,6 +16,7 @@ public class Main {
 		
 		LoginController login_controller = new LoginController();
 		login_controller.openLoginFrame();	
+		
 		
 }
 }
