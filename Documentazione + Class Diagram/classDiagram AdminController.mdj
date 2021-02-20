@@ -3014,7 +3014,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 3088,
+											"left": 3008,
 											"top": 3280,
 											"height": 13
 										},
@@ -3025,9 +3025,9 @@
 												"$ref": "AAAAAAF3kaCVnW8Z4dU="
 											},
 											"font": "Arial;13;1",
-											"left": 1893,
+											"left": 1853,
 											"top": 2183,
-											"width": 82.01806640625,
+											"width": 166.130859375,
 											"height": 13,
 											"text": "Customer"
 										},
@@ -3039,7 +3039,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 3088,
+											"left": 3008,
 											"top": 3280,
 											"width": 73.67724609375,
 											"height": 13,
@@ -3053,16 +3053,16 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 3088,
+											"left": 3008,
 											"top": 3280,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 1888,
+									"left": 1848,
 									"top": 2176,
-									"width": 92.01806640625,
+									"width": 176.130859375,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF3kaCVnW8aWkM="
@@ -3087,9 +3087,9 @@
 										"$ref": "AAAAAAF3kaCVnG8WOOc="
 									},
 									"font": "Arial;13;0",
-									"left": 1888,
+									"left": 1848,
 									"top": 2201,
-									"width": 92.01806640625,
+									"width": 176.130859375,
 									"height": 10
 								},
 								{
@@ -3102,9 +3102,9 @@
 										"$ref": "AAAAAAF3kaCVnG8WOOc="
 									},
 									"font": "Arial;13;0",
-									"left": 1888,
+									"left": 1848,
 									"top": 2211,
-									"width": 92.01806640625,
+									"width": 176.130859375,
 									"height": 10
 								},
 								{
@@ -3127,18 +3127,18 @@
 												"$ref": "AAAAAAF3tfCfiRVqJCA="
 											},
 											"font": "Arial;13;0",
-											"left": 1893,
+											"left": 1853,
 											"top": 2226,
-											"width": 82.01806640625,
+											"width": 166.130859375,
 											"height": 13,
-											"text": "+Reception1()",
+											"text": "+Vedi ClassDiagram Entita'()",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 1888,
+									"left": 1848,
 									"top": 2221,
-									"width": 92.01806640625,
+									"width": 176.130859375,
 									"height": 23
 								},
 								{
@@ -3152,7 +3152,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1544,
+									"left": 1504,
 									"top": 1640,
 									"width": 10,
 									"height": 10
@@ -3160,9 +3160,9 @@
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 1888,
+							"left": 1848,
 							"top": 2176,
-							"width": 92.01806640625,
+							"width": 176.130859375,
 							"height": 68,
 							"nameCompartment": {
 								"$ref": "AAAAAAF3kaCVnW8Z4dU="
@@ -21819,7 +21819,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF3kaCVnG8WOOc="
 							},
-							"name": "Reception1"
+							"name": "Vedi ClassDiagram Entita'"
 						}
 					]
 				},
