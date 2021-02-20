@@ -70,7 +70,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			insert_rider_PS.setString(1, rider.getCf());
 			insert_rider_PS.setString(2, rider.getName());
 			insert_rider_PS.setString(3, rider.getSurname());
-			insert_rider_PS.setString(4, input_util.addressToTokenizedString(rider.getAddress(), ", "));
+			insert_rider_PS.setString(4, rider.getAddress().toString());
 			insert_rider_PS.setDate(5, new java.sql.Date(rider.getBirth_date().getTime()));
 			insert_rider_PS.setString(6, rider.getBirth_place());
 			insert_rider_PS.setString(7, rider.getGender());
@@ -99,13 +99,13 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 	@Override
 	public void updateRider(Rider rider) throws DaoException {
 
-		InputUtility input_util = new InputUtility();
+
 		try {
 			update_rider_PS.setString(1, rider.getName());
 			update_rider_PS.setString(2, rider.getSurname());
 			update_rider_PS.setDate(3, new java.sql.Date(rider.getBirth_date().getTime()));
 			update_rider_PS.setString(4, rider.getBirth_place());
-			update_rider_PS.setString(5, input_util.addressToTokenizedString(rider.getAddress(), ", "));
+			update_rider_PS.setString(5, rider.getAddress().toString());
 			update_rider_PS.setString(6, rider.getGender());
 			update_rider_PS.setString(7, rider.getCellphone());
 			update_rider_PS.setString(8, rider.getVehicle());

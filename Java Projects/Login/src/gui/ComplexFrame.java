@@ -543,4 +543,6 @@ public class ComplexFrame extends JFrame{
 		this.table_title = table_title;
 	}
 	
+	
+	
 }

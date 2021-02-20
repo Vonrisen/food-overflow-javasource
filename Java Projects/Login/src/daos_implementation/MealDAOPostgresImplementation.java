@@ -233,7 +233,6 @@ public class MealDAOPostgresImplementation implements MealDAO {
 						rs.getString("category"), allergen_list));
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 			throw new DaoException();
 		} finally {
 			db_util.closeResultSet(rs);

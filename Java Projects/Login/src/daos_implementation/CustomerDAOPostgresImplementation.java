@@ -63,12 +63,12 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 	}
 
 	public void insertCustomer(Customer customer) throws DaoException {
-		InputUtility input_util = new InputUtility();
+	
 		try {
 			insert_customer_PS.setString(1, customer.getCf());
 			insert_customer_PS.setString(2, customer.getName());
 			insert_customer_PS.setString(3, customer.getSurname());
-			insert_customer_PS.setString(4, input_util.addressToTokenizedString(customer.getAddress(), ", "));
+			insert_customer_PS.setString(4, customer.getAddress().toString());
 			insert_customer_PS.setDate(5, new java.sql.Date(customer.getBirth_date().getTime()));
 			insert_customer_PS.setString(6, customer.getBirth_place());
 			insert_customer_PS.setString(7, customer.getGender().toUpperCase());

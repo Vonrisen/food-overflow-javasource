@@ -7,12 +7,16 @@ import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import daos_implementation.OrderDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
+import daos_interfaces.OrderDAO;
 import daos_interfaces.ShopDAO;
 import entities.Address;
 import entities.Customer;
 import entities.Meal;
+import entities.Order;
 import entities.Rider;
 import entities.Shop;
 import exceptions.DaoException;
@@ -36,6 +40,7 @@ public class AdminController {
 	CustomerDAO customer_dao;
 	ShopDAO shop_dao;
 	MealDAO meal_dao;
+	OrderDAO order_dao;
 
 	public AdminController(Connection connection, LoginController login_controller, CustomerDAO customer_dao,
 			ShopDAO shop_dao, MealDAO meal_dao) {
@@ -44,6 +49,7 @@ public class AdminController {
 		this.customer_dao = customer_dao;
 		this.shop_dao = shop_dao;
 		this.meal_dao = meal_dao;
+		this.order_dao = new OrderDAOPostgresImplementation(connection);
 	}
 
 	public void openAdminFrame(JFrame frame) {
@@ -204,13 +210,12 @@ public class AdminController {
 						new Object[] { meal.getName(), meal.getCategory(),
 								new DecimalFormat("00.00").format(meal.getPrice()), meal.getIngredients(),
 								input_util.arrayListToTokenizedString(allergens, ", ") });
-			} catch (DaoException e) {
-				JOptionPane.showMessageDialog(null, "Inserire correttamente i campi", "Errore",
-						JOptionPane.ERROR_MESSAGE);
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Inserisci un prezzo valido ", "Errore", JOptionPane.ERROR_MESSAGE);
-			}
-
+			}catch (DaoException e) {
+				JOptionPane.showMessageDialog(null, "Inserire correttamente i campi", "Errore",
+						JOptionPane.ERROR_MESSAGE);
+			} 
 		} else
 			JOptionPane.showMessageDialog(null, "Seleziona una categoria valida", "Attenzione",
 					JOptionPane.WARNING_MESSAGE);
@@ -319,7 +324,27 @@ public class AdminController {
 		}
 		return;
 	}
-	
-	
 
+	public void doAdminComplexSearch(AdminOrderFrame admin_order_frame) {
+		
+		String category = admin_order_frame.getCategoryCB().getSelectedItem().toString();
+		String vehicle = admin_order_frame.getVehicleCB().getSelectedItem().toString();
+		String province = admin_order_frame.getAddressCB().getSelectedItem().toString();
+		List<Order> order_list = new ArrayList<Order>();
+		TableModelUtility table_util = new TableModelUtility();
+		try {
+			float min_price = Float.parseFloat(admin_order_frame.getPrice_minTF().getText());
+			float max_price = Float.parseFloat(admin_order_frame.getPrice_maxTF().getText());
+			order_list = order_dao.doAdminComplexSearch(category, min_price, max_price, vehicle, province);
+			if(!order_list.isEmpty())
+			table_util.initializeOrderTable(admin_order_frame.getModel(),order_list);
+			else
+			JOptionPane.showMessageDialog(null, "La tua ricerca non ha portato a nessun risultato", "Warning", JOptionPane.WARNING_MESSAGE);
+		}catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Inserisci un prezzo valido ", "Errore", JOptionPane.ERROR_MESSAGE);
+		} catch (DaoException e) {
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 }

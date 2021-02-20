@@ -41,8 +41,7 @@ public class CustomerController {
 	private Connection connection;
 	private OrderDAO order_dao;
 
-	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao,
-			MealDAO meal_dao, LoginController login_controller) {
+	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao, LoginController login_controller) {
 
 		this.customer = customer;
 		this.connection = connection;
@@ -251,9 +250,8 @@ public class CustomerController {
 	public void openCustomerCheckoutFrame(CustomerCartFrame customer_cart_frame) {
 
 		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame(this, customer_cart_frame);
-		InputUtility input_util = new InputUtility();
 		customer_checkout_frame.setVisible(true);
-		customer_checkout_frame.setAddressTF(input_util.addressToTokenizedString(customer.getAddress(), ", "));
+		customer_checkout_frame.setAddressTF(customer.getAddress().toString());
 		customer_checkout_frame.setShopTF(shop.getName());
 		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
 		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
@@ -264,7 +262,7 @@ public class CustomerController {
 	public void completeOrder(CustomerCheckoutFrame customer_checkout_frame, CustomerCartFrame customer_cart_frame) {
 
 		try {
-			order_dao.createOrder(customer.getAddress(), "Contrassegno", "da inserire", shop, customer, cart);
+			order_dao.createOrder(customer.getAddress(), "Contrassegno", customer_checkout_frame.getNoteTF().getText(), shop, customer, cart);
 			JOptionPane.showMessageDialog(null, "Ordine completato. Tra poco l' ordine partira' dal ristorante!");
 			customer_cart_frame.dispose();
 			cart.getOrder_composition_list().clear();
@@ -274,7 +272,6 @@ public class CustomerController {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		return;
-
 	}
 
 	public void releaseDaoResourcesWhenLoggingOut() {
@@ -289,9 +286,14 @@ public class CustomerController {
 	}
 
 	public void openCustomerProfileFrame() {
-
+		
 		CustomerProfileFrame customer_profile_frame = new CustomerProfileFrame(this);
+		if(customer.getGender().equals("m".toUpperCase()))
+		customer_profile_frame.getAvatarLB().setIcon(customer_profile_frame.getMale_avatarIMG());
+		else
+			customer_profile_frame.getAvatarLB().setIcon(customer_profile_frame.getFemale_avatarIMG());
 		customer_profile_frame.setVisible(true);
 		return;
+		
 	}
 }

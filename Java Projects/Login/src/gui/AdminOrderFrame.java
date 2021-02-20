@@ -28,7 +28,7 @@ public class AdminOrderFrame extends ComplexFrame {
 	private JTextField price_minTF;
 	private JTextField price_maxTF;
 	private String[] dish_array_strings = {"Seleziona categoria", "-------------------", "Primo piatto", "Carne", "Pesce", "Pizza","Panino", "Fritto", "Dolce", "Bevande analcoliche", "Bevande alcoliche" };
-	private String[] vehicleStrings = {"Seleziona mezzo del rider", "-------------------", "Bicicletta", "Motoveicolo", "Autoveicolo"};
+	private String[] vehicleStrings = {"Seleziona veicolo del rider", "-------------------", "Bicicletta", "Motoveicolo", "Autoveicolo"};
 	private String[] columns = {"ID","Data","Orario di consegna","Indirizzo","Stato","Pagamento","Note","Cliente","Rider"};
 	
 	private JComboBox<String> categoryCB;
@@ -131,7 +131,7 @@ public class AdminOrderFrame extends ComplexFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				//Ricerca complessa
+				admin_controller.doAdminComplexSearch(AdminOrderFrame.this);
 				
 			}
 			
@@ -165,8 +165,24 @@ public class AdminOrderFrame extends ComplexFrame {
 		return addressCB;
 	}
 
-	public void setAddressCB(JComboBox<String> addressCB) {
-		this.addressCB = addressCB;
+	public JTextField getPrice_minTF() {
+		return price_minTF;
+	}
+
+	public JTextField getPrice_maxTF() {
+		return price_maxTF;
+	}
+
+	public JComboBox<String> getCategoryCB() {
+		return categoryCB;
+	}
+
+	public JComboBox<String> getVehicleCB() {
+		return vehicleCB;
+	}
+	
+	public DefaultTableModel getModel() {
+		return model;
 	}
 
 }

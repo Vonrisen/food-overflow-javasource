@@ -154,7 +154,6 @@ public class CustomerProfileFrame extends JFrame {
 		//
 		
 		avatarLB.setBounds(118,20,500,280);
-		avatarLB.setIcon(male_avatarIMG);
 		this.getContentPane().add(avatarLB);
 		
 		
@@ -559,6 +558,22 @@ public class CustomerProfileFrame extends JFrame {
 		text_field.setHorizontalAlignment(JTextField.CENTER);
 		text_field.setText(text);
 		text_field.setVisible(false);
+	}
+
+	public JLabel getAvatarLB() {
+		return avatarLB;
+	}
+
+	public void setAvatarLB(JLabel avatarLB) {
+		this.avatarLB = avatarLB;
+	}
+
+	public ImageIcon getMale_avatarIMG() {
+		return male_avatarIMG;
+	}
+
+	public ImageIcon getFemale_avatarIMG() {
+		return female_avatarIMG;
 	}
 
 	

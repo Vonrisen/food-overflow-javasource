@@ -225,4 +225,9 @@ public class CustomerCheckoutFrame extends JFrame{
 		this.cellphoneTF.setText(cellphone);
 	}
 
+	public JTextField getNoteTF() {
+		return noteTF;
+	}
+
+	
 }

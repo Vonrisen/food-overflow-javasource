@@ -27,7 +27,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	private PreparedStatement update_delivering_order_PS, link_rider_to_order_PS, get_orders_of_a_shop_by_shop_email_PS,
 			get_customer_of_the_order_PS, get_rider_of_the_order_PS, get_shop_of_the_order_PS,
 			get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS,
-			get_order_by_id_PS;
+			get_order_by_id_PS, do_complex_admin_search_PS;
 	private CallableStatement create_order_CS;
 	DButility db_util = new DButility();
 
@@ -51,6 +51,8 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			get_order_by_id_PS = connection.prepareStatement("SELECT * FROM CustomerOrder WHERE id=?");
 			get_customer_email_PS = connection.prepareStatement("SELECT email FROM Customer WHERE id=?");
 			create_order_CS = connection.prepareCall("CALL CreateOrder(?,'Contrassegno',?,?,?,?,?)");
+			do_complex_admin_search_PS = connection.prepareCall("SELECT * FROM effettuaRicercaComplessaAdmin(?,?,?,?,?) AS t(id character(12),order_date timestamp, delivery_time time, address varchar(255), status varchar (20), "
+															  + "payment varchar(12), note varchar(255), rider_cf character(16), shop_email varchar(320), customer_email varchar(320))");
 
 		} catch (SQLException s) {
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
@@ -324,7 +326,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			quantities.add(order_comp.getQuantity().toString());
 		}
 		try {
-			create_order_CS.setString(1, input_util.addressToTokenizedString(customer.getAddress(), ", "));
+			create_order_CS.setString(1, customer.getAddress().toString());
 			create_order_CS.setString(2, note);
 			create_order_CS.setString(3, shop.getEmail());
 			create_order_CS.setString(4, customer.getEmail());
@@ -335,5 +337,32 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			throw new DaoException();
 		}
 		return;
+	}
+	
+	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DaoException
+	{
+
+		ResultSet rs = null;
+		List<Order>order_list = new ArrayList<Order>();
+		InputUtility input_util = new InputUtility();
+		try {
+			do_complex_admin_search_PS.setString(1, category);
+			do_complex_admin_search_PS.setFloat(2, min_price);
+			do_complex_admin_search_PS.setFloat(3, max_price);
+			do_complex_admin_search_PS.setString(4, vehicle);
+			do_complex_admin_search_PS.setString(5, province);
+			rs = do_complex_admin_search_PS.executeQuery();
+			while(rs.next())
+			{
+				Customer customer = getCustomerOfTheOrderByEmail(rs.getString("customer_email"));
+				Shop shop = getShopOfTheOrderByEmail(rs.getString("shop_email"));
+				Rider rider = getRiderOfTheOrderByCF(rs.getString("rider_cf"));
+				order_list.add(new Order(shop, customer, rs.getString("id"), new Date(rs.getDate("order_date").getTime()), rs.getString("payment"), rs.getString("status"),
+							   input_util.tokenizedStringToAddress(rs.getString("address"), "(, )"), rs.getTime("delivery_time"), rs.getString("note"), rider));
+			}
+		} catch (SQLException e) {
+			throw new DaoException();
+		}		
+		return order_list;
 	}
 }

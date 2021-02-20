@@ -26,5 +26,7 @@ public interface OrderDAO {
 	public Order getOrderById(String id) throws DaoException;
 
 	public void createOrder(Address address, String payment, String note, Shop shop, Customer customer, Cart cart) throws DaoException;
+	
+	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DaoException;
 
 }

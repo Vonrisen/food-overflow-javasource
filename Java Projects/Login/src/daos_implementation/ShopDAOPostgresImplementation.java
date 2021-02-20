@@ -228,10 +228,9 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	@Override
 	public void insertShop(Shop shop) throws DaoException {
 
-		InputUtility input_util = new InputUtility();
 		try {
 			insert_shop_PS.setString(1, shop.getName());
-			insert_shop_PS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
+			insert_shop_PS.setString(2, shop.getAddress().toString());
 			insert_shop_PS.setString(3, shop.getWorking_hours());
 			insert_shop_PS.setString(4, shop.getClosing_days());
 			insert_shop_PS.setString(5, shop.getPassword());
@@ -258,10 +257,10 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	public void updateShop(Shop shop, String old_email) throws DaoException {
 
-		InputUtility input_util = new InputUtility();
+		
 		try {
 			update_shop_CS.setString(1, shop.getName());
-			update_shop_CS.setString(2, input_util.addressToTokenizedString(shop.getAddress(), ", "));
+			update_shop_CS.setString(2, shop.getAddress().toString());
 			update_shop_CS.setString(3, shop.getWorking_hours());
 			update_shop_CS.setString(4, shop.getClosing_days());
 			update_shop_CS.setString(5, shop.getPassword());

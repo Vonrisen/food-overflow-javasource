@@ -176,6 +176,26 @@ public class TableModelUtility {
 		}
 	}
 
+	public void initializeOrderTable(DefaultTableModel model,  List<Order> order_list){
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[9];
+		for(Order order : order_list) {
+			row[0] = order.getId();
+			row[1] = date_util.formatDate(order.getDate());
+			if(order.getDeliveried_time()==null)
+				row[2] = "In consegna..";
+			row[2] = order.getDeliveried_time();
+			row[3] = order.getAddress().toString();
+			row[4] = order.getStatus();
+			row[5] = order.getPayment();
+			row[6] = order.getNote();
+			row[7] = order.getCustomer().getEmail();
+			row[8] = order.getRider().getCf();
+			model.addRow(row);
+		}
+		return;
+	}
+
 	public void initializeCustomerCartTable(DefaultTableModel model, Cart cart) {
 		
 		

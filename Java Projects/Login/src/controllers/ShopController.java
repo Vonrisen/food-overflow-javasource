@@ -262,7 +262,7 @@ public class ShopController {
 					cap, address_town, province_town),vehicle, working_hours,(short)0);
 			rider_dao.insertRider(rider,current_shop_email);
 			shop_rider_frame.getModel().insertRow(shop_rider_frame.getModel().getRowCount(), new Object[] {CF, name, surname, 
-					input_util.formatDate(birth_date), birth_place_town, input_util.addressToTokenizedString(rider.getAddress(), ", "), gender, cellphone, 
+					input_util.formatDate(birth_date), birth_place_town, rider.getAddress().toString(), gender, cellphone, 
 					vehicle, working_hours, (short)0});
 			JOptionPane.showMessageDialog(null, "Rider assunto con successo");
 		} }
@@ -305,7 +305,6 @@ public class ShopController {
 		int row = shop_rider_frame.getTable().getSelectedRow();
 		if(row != -1) {
 			String cf_of_the_rider_to_dismiss = shop_rider_frame.getTable().getValueAt(row, 0).toString();
-			int i = 0;
 			try {
 				Rider rider_to_dismiss = rider_dao.getRiderByCf(cf_of_the_rider_to_dismiss);
 				rider_dao.dismissRider(rider_to_dismiss);
@@ -322,10 +321,9 @@ public class ShopController {
 	
 	public void updateRider(ShopRiderFrame shop_rider_frame)
 	{
-	
-		if(shop_rider_frame.getTable().getSelectedRow() != -1) {
-			int selected_row = shop_rider_frame.getTable().getSelectedRow();
-			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(selected_row, 0).toString();
+		int row = shop_rider_frame.getTable().getSelectedRow();
+		if(row != -1) {
+			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(row, 0).toString();
 			CodiceFiscaleUtility codice_fiscale = new CodiceFiscaleUtility();
 			int i = 0;
 			try {
@@ -347,7 +345,7 @@ public class ShopController {
 			rider_to_update.setBirth_date(new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()));
 			rider_to_update.setBirth_place(shop_rider_frame.getBirth_townCB().getSelectedItem().toString());
 			rider_dao.updateRider(rider_to_update);
-			updateRiderTableColumns(shop_rider_frame, selected_row, rider_to_update);
+			updateRiderTableColumns(shop_rider_frame, row, rider_to_update);
 				JOptionPane.showMessageDialog(null, "Rider aggiornato con successo");
 			} }catch (DaoException e) {
 				JOptionPane.showMessageDialog(null, "Riempi correttamente i campi.\\nHint: Controlla la validita dell' indirizzo, data di nascita, orario lavorativo e cellulare","Error",JOptionPane.ERROR_MESSAGE);
@@ -410,9 +408,11 @@ public class ShopController {
 	}
 	
 	public void updateDeliveringOrder(ShopDeliveringOrdersFrame shop_delivering_orders_frame) {
-		int i=0;
+
+		int row = shop_delivering_orders_frame.getTable().getSelectedRow();
+		if(row!=-1)
+		{
 		try {
-			
 			Order in_delivery_order = order_dao.getOrderById(shop_delivering_orders_frame.getOrderTF().getText());
 			order_dao.updateDeliveringOrder(in_delivery_order, shop_delivering_orders_frame.getStatusCB().getSelectedItem().toString());
 			shop_delivering_orders_frame.getModel().removeRow(shop_delivering_orders_frame.getTable().getSelectedRow());
@@ -421,6 +421,8 @@ public class ShopController {
 		} catch (DaoException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Riprovare! ","Errore",JOptionPane.ERROR_MESSAGE);
 		}
+		}else
+			JOptionPane.showMessageDialog(null, "Seleziona un ordine","Errore",JOptionPane.ERROR_MESSAGE);
 	}
 
 	public String getcurrent_shop_email() {
