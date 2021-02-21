@@ -8,25 +8,25 @@ import entities.Customer;
 import entities.Order;
 import entities.Rider;
 import entities.Shop;
-import exceptions.DaoException;
+import exceptions.DAOException;
 
 public interface OrderDAO {
-	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException;
+	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DAOException;
 
-	public List<Order> getInDeliveryOrdersOfAShop(String current_shop_email) throws DaoException;
+	public List<Order> getInDeliveryOrdersOfAShop(String current_shop_email) throws DAOException;
 
-	public List<Order> getPendingOrdersOfAShop(String current_shop_email) throws DaoException;
+	public List<Order> getPendingOrdersOfAShop(String current_shop_email) throws DAOException;
 
-	public void linkRiderToOrder(Order order, Rider rider) throws DaoException;
+	public void linkRiderToOrder(Order order, Rider rider) throws DAOException;
 
-	public void updateDeliveringOrder(Order order, String stato) throws DaoException;
+	public void updateDeliveringOrder(Order order, String stato) throws DAOException;
 
-	public void closeStatements() throws DaoException;
+	public void closeStatements() throws DAOException;
 
-	public Order getOrderById(String id) throws DaoException;
+	public Order getOrderById(String id) throws DAOException;
 
-	public void createOrder(Address address, String payment, String note, Shop shop, Customer customer, Cart cart) throws DaoException;
+	public void createOrder(Address address, String payment, String note, Shop shop, Customer customer, Cart cart) throws DAOException;
 	
-	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DaoException;
+	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DAOException;
 
 }

@@ -1,41 +1,45 @@
 package utilities;
-import java.util.Date;
 
+import java.util.Date;
 import java.util.TimeZone;
-import exceptions.CfException;
+import exceptions.FiscalCodeException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+public class FiscalCodeUtility {
 
-public class CodiceFiscaleUtility {
-
- 
-	private String codice_fiscale="";
-	public CodiceFiscaleUtility() {
+	public FiscalCodeUtility() {
 	}
-	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex) throws CfException {
-		int n_consonanti=0;
+
+	public String getCF(String name, String surname, Date birth_date, String birth_place_town, char sex)
+			throws FiscalCodeException {
+		String codice_fiscale = "";
+		int n_consonanti = 0;
 		int n_vocali = 0;
 		int conta = 0;
 		boolean vocale = false;
-		surname = surname.toUpperCase().replaceAll("\\s","");
-		name = name.toUpperCase().replaceAll("\\s","");
+		surname = surname.toUpperCase().replaceAll("\\s", "");
+		name = name.toUpperCase().replaceAll("\\s", "");
 		birth_place_town = birth_place_town.toUpperCase();
 		// FETCH COGNOME
-		char char1=surname.charAt(0);
-		char char2=surname.charAt(1);
+		char char1 = surname.charAt(0);
+		char char2 = surname.charAt(1);
 		if (surname.length() < 3) {
 			if (surname.length() == 1)
-				throw new CfException("Il cognome deve avere almeno due caratteri");
+				throw new FiscalCodeException("Il cognome deve avere almeno due caratteri");
 			else {
-				if ((char1 != 'A' && char1 != 'E' && char1 != 'I'&& char1 != 'O' && char1 != 'U')&& (char2 == 'A' || char2 == 'E' || char2 == 'I'|| char2 == 'O' || char2 == 'U'))
+				if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U')
+						&& (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
-				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I' && char2 != 'O' && char2 != 'U'))
+				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U')
+						&& (char2 != 'A' && char2 != 'E' && char2 != 'I' && char2 != 'O' && char2 != 'U'))
 					codice_fiscale += String.valueOf(char2) + String.valueOf(char1) + "X";
-				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U') && (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
+				else if ((char1 == 'A' || char1 == 'E' || char1 == 'I' || char1 == 'O' || char1 == 'U')
+						&& (char2 == 'A' || char2 == 'E' || char2 == 'I' || char2 == 'O' || char2 == 'U'))
 					codice_fiscale += String.valueOf(char1) + String.valueOf(char2) + "X";
-				else if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U') && (char2 != 'A' && char2 != 'E' && char2 != 'I'&& char2 != 'O' && char2 != 'U'))
-					throw new CfException("Il cognome inserito non puo' avere al massimo due consonanti");
+				else if ((char1 != 'A' && char1 != 'E' && char1 != 'I' && char1 != 'O' && char1 != 'U')
+						&& (char2 != 'A' && char2 != 'E' && char2 != 'I' && char2 != 'O' && char2 != 'U'))
+					throw new FiscalCodeException("Il cognome inserito non puo' avere al massimo due consonanti");
 			}
 		} else {
 			while (n_consonanti + n_vocali != 3) {
@@ -87,7 +91,7 @@ public class CodiceFiscaleUtility {
 		else if (n_vocali >= 2 && n_consonanti == 0)
 			codice_fiscale += array_vocali.get(0) + array_vocali.get(1) + "X";
 		else
-			throw new CfException("Nome non valido, riprovare");
+			throw new FiscalCodeException("Nome non valido, riprovare");
 		// FETCH DATA NASCITA
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		cal.setTime(birth_date);
@@ -108,13 +112,12 @@ public class CodiceFiscaleUtility {
 			codice_fiscale += String.valueOf(day + 40);
 		}
 		// FETCH CODICE CATASTALE
-		IstatUtils istat_util = new IstatUtils();
+		IstatUtility istat_util = new IstatUtility();
 		String cadastral_code = istat_util.getCadastral_codeByTownName(birth_place_town);
-			if(cadastral_code!=null)			{
-				codice_fiscale += cadastral_code;
-			}
-			else
-				throw new CfException("Non e' stato possibile trovare il tuo comune");
+		if (cadastral_code != null) {
+			codice_fiscale += cadastral_code;
+		} else
+			throw new FiscalCodeException("Non e' stato possibile trovare il tuo comune");
 		// FETCH CARATTERE DI CONTROLLO
 		conta = 1;
 		char curr;

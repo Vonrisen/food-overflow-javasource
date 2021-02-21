@@ -20,8 +20,7 @@ public class DBconnection {
 	private DBconnection() {
 		try {
 			Class.forName("org.postgresql.Driver");
-			this.connection = DriverManager.getConnection("jdbc:postgresql://" + IP + ":" + PORT + "/" + DBNAME,
-					USERNAME, PWD);
+			this.connection = DriverManager.getConnection("jdbc:postgresql://" + IP + ":" + PORT + "/" + DBNAME, USERNAME, PWD);
 		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore", "Errore",
 					JOptionPane.ERROR_MESSAGE);

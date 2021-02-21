@@ -21,8 +21,10 @@ import controllers.AdminController;
 import entities.Address;
 import gui_support.RoundJTextField;
 import utilities.InputUtility;
+import utilities.TableModelUtility;
 
 
+@SuppressWarnings("serial")
 public class AdminShopFrame extends ComplexFrame{
 
 	private ImageIcon search_riders_inactiveIMG;
@@ -169,30 +171,8 @@ public class AdminShopFrame extends ComplexFrame{
 		getTable().addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				if(!getTable().getSelectionModel().isSelectionEmpty()) {
-					InputUtility input_util = new InputUtility();
-					Address address;
-					String closing_days;
-					address = input_util.tokenizedStringToAddress(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString(), "(, )");
-					try
-					{
-						closing_days = getTable().getModel().getValueAt(getTable().getSelectedRow(), 5).toString();
-					}catch(Exception e)
-					{
-						closing_days = "";
-					}
-					emailTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 0).toString());
-					nameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 2).toString());
-					address_nameTF.setText(address.getAddress());
-					address_civic_numberTF.setText(address.getCivic_number());
-					address_capTF.setText(address.getCap());
-					address_provinceCB.setSelectedItem(address.getProvince());
-					address_townCB.setSelectedItem(address.getCity());
-					working_hoursTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 4).toString());
-					closing_daysTF.setText(closing_days);
-					passwordTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
-					home_phoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 6).toString());
-				}
+				TableModelUtility table_utility = new TableModelUtility();
+				table_utility.fillFieldsFromJTable(AdminShopFrame.this);
 			}
 		});
 
@@ -346,56 +326,27 @@ public class AdminShopFrame extends ComplexFrame{
 		
 	}
 
-
 	public JTextField getNameTF() {
 		return nameTF;
 	}
-
-
-	public void setNameTF(JTextField nameTF) {
-		this.nameTF = nameTF;
-	}
-
+	
 
 	public JTextField getAddress_nameTF() {
 		return address_nameTF;
 	}
-
-
-	public void setAddress_nameTF(JTextField address_nameTF) {
-		this.address_nameTF = address_nameTF;
-	}
-
 
 	public JTextField getAddress_civic_numberTF() {
 		return address_civic_numberTF;
 	}
 
 
-	public void setAddress_civic_numberTF(JTextField address_civic_numberTF) {
-		this.address_civic_numberTF = address_civic_numberTF;
-	}
-
 
 	public JTextField getAddress_capTF() {
 		return address_capTF;
 	}
 
-
-	public void setAddress_capTF(JTextField address_capTF) {
-		this.address_capTF = address_capTF;
-	}
-
-
-
-
 	public JTextField getWorking_hoursTF() {
 		return working_hoursTF;
-	}
-
-
-	public void setWorking_hoursTF(JTextField working_hoursTF) {
-		this.working_hoursTF = working_hoursTF;
 	}
 
 
@@ -404,47 +355,25 @@ public class AdminShopFrame extends ComplexFrame{
 	}
 
 
-	public void setPasswordTF(JTextField passwordTF) {
-		this.passwordTF = passwordTF;
-	}
-
-
 	public JTextField getClosing_daysTF() {
 		return closing_daysTF;
 	}
 
-
-	public void setClosing_daysTF(JTextField closing_daysTF) {
-		this.closing_daysTF = closing_daysTF;
-	}
 
 
 	public JTextField getEmailTF() {
 		return emailTF;
 	}
 
-
-	public void setEmailTF(JTextField emailTF) {
-		this.emailTF = emailTF;
-	}
 	
 	public JTextField getHome_phoneTF() {
 		return home_phoneTF;
 	}
 
 
-	public void setHome_phoneTF(JTextField cellphoneTF) {
-		this.home_phoneTF = cellphoneTF;
-	}
-
 
 	public JComboBox<String> getAddress_townCB() {
 		return address_townCB;
-	}
-
-
-	public void setAddress_townCB(JComboBox<String> address_townCB) {
-		this.address_townCB = address_townCB;
 	}
 
 

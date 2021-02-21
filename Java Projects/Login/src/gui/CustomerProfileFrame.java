@@ -13,6 +13,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -41,6 +42,7 @@ import entities.Shop;
 import gui_support.RoundJPasswordField;
 import gui_support.RoundJTextField;
 
+@SuppressWarnings("serial")
 public class CustomerProfileFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -74,13 +76,9 @@ public class CustomerProfileFrame extends JFrame {
 	private JComboBox<String> address_provinceCB;
 	private JComboBox<String> address_townCB;
 	
-	private JTextField old_emailTF;
-	private JTextField old_phoneTF;
 	private JPasswordField old_passwordTF;
-	private JTextField emailTF;
 	private JPasswordField passwordTF;
-	private JTextField phoneTF;
-	CustomerController customer_controller;
+	private CustomerController customer_controller;
 	
 	public CustomerProfileFrame(CustomerController customer_controller) {
 		
@@ -124,12 +122,8 @@ public class CustomerProfileFrame extends JFrame {
 		address_capTF = new RoundJTextField(new Color(0x771007));
 		address_provinceCB = new JComboBox<String>();
 		address_townCB = new JComboBox<String>();
-		old_emailTF = new RoundJTextField(new Color(0x771007));
 		old_passwordTF = new RoundJPasswordField(new Color(0x771007));
-		old_phoneTF = new RoundJTextField(new Color(0x771007));
-		emailTF = new RoundJTextField(new Color(0x771007));
 		passwordTF = new RoundJPasswordField(new Color(0x771007));
-		phoneTF = new RoundJTextField(new Color(0x771007));
 		
 	}
 	
@@ -186,14 +180,6 @@ public class CustomerProfileFrame extends JFrame {
 		
 		//
 		
-		createTextField(old_emailTF, "Vecchia e-mail");
-		old_emailTF.setBounds(83,325,150,25);
-		this.getContentPane().add(old_emailTF);
-
-		createTextField(emailTF, "Nuova e-mail");
-		emailTF.setBounds(253,325,150,25);
-		this.getContentPane().add(emailTF);
-		
 		createTextField(old_passwordTF, "Vecchia password");
 		old_passwordTF.setEchoChar((char) 0);
 		old_passwordTF.setBounds(83,375,150,25);
@@ -204,13 +190,6 @@ public class CustomerProfileFrame extends JFrame {
 		passwordTF.setBounds(253,375,150,25);
 		this.getContentPane().add(passwordTF);
 		
-		createTextField(old_phoneTF, "Vecchio n. cellulare");
-		old_phoneTF.setBounds(83,425,150,25);
-		this.getContentPane().add(old_phoneTF);
-		
-		createTextField(phoneTF, "Nuovo n. cellulare");
-		phoneTF.setBounds(253,425,150,25);
-		this.getContentPane().add(phoneTF);
 		
 		//
 		
@@ -230,9 +209,10 @@ public class CustomerProfileFrame extends JFrame {
 		
 		setupButton(go_backJB,go_back_inactiveIMG);
 		go_backJB.setBounds(168,625,150,30);
-		go_backJB.setVisible(true);
+		go_backJB.setVisible(false);
 		this.getContentPane().add(go_backJB);
 		
+		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
 			
 	}
 	
@@ -257,12 +237,8 @@ public class CustomerProfileFrame extends JFrame {
 				edit_authJB.setVisible(false);
 				edit_addressJB.setVisible(false);
 				
-				old_emailTF.setVisible(true);
-				emailTF.setVisible(true);
 				old_passwordTF.setVisible(true);
 				passwordTF.setVisible(true);
-				old_phoneTF.setVisible(true);
-				phoneTF.setVisible(true);
 				updateJB.setVisible(true);
 				go_backJB.setVisible(true);
 			}
@@ -314,11 +290,11 @@ public class CustomerProfileFrame extends JFrame {
 				
 				if(address_nameTF.isVisible()) {
 					
-					//Modifico le cose relative all'address
+					customer_controller.updateDeliveryAddress(CustomerProfileFrame.this);
 					
 				} else {
 					
-					//Modifico le cose relative all'auth
+					customer_controller.updateCustomerPassword(CustomerProfileFrame.this);
 					
 				}
 				
@@ -348,15 +324,10 @@ public class CustomerProfileFrame extends JFrame {
 					address_provinceCB.setVisible(false);
 					address_townCB.setVisible(false);
 
-					
 				} else {
 					
-					old_emailTF.setVisible(false);
-					emailTF.setVisible(false);
 					old_passwordTF.setVisible(false);
 					passwordTF.setVisible(false);
-					old_phoneTF.setVisible(false);
-					phoneTF.setVisible(false);
 					
 				}
 				
@@ -414,66 +385,6 @@ public class CustomerProfileFrame extends JFrame {
 			}
 		});
 		
-		old_emailTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(old_emailTF, "Vecchia e-mail");
-				
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(old_emailTF, "Vecchia e-mail");
-				
-			}
-		});
-		
-		emailTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(emailTF, "Nuova e-mail");
-				
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(emailTF, "Nuova e-mail");
-				
-			}
-		});
-		
-		old_phoneTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(old_phoneTF, "Vecchio n. cellulare");
-				
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(old_phoneTF, "Vecchio n. cellulare");
-				
-			}
-		});
-		
-		phoneTF.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(phoneTF, "Nuovo n. cellulare");
-				
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(phoneTF, "Nuovo n. cellulare");
-				
-			}
-		});
-		
 		old_passwordTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -517,6 +428,22 @@ public class CustomerProfileFrame extends JFrame {
 				}
 			}
 		});
+		
+	}
+	
+	public void addressProvinceCBitemStateChanged(ItemEvent e) {
+		
+	    if (e.getStateChange() == ItemEvent.SELECTED) {
+	        String selected_item = (String) e.getItem();
+	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia"))
+	        	 customer_controller.updateAddressTownsCB(selected_item, CustomerProfileFrame.this);
+	    	if(selected_item.equals("Seleziona provincia"))
+	    	{
+	    		this.getAddress_townCB().removeAllItems();
+	    		this.getAddress_townCB().addItem("Seleziona comune");
+	    	}
+	       
+	    }
 		
 	}
 	
@@ -574,6 +501,33 @@ public class CustomerProfileFrame extends JFrame {
 
 	public ImageIcon getFemale_avatarIMG() {
 		return female_avatarIMG;
+	}
+
+	public JComboBox<String> getAddress_provinceCB() {
+		return address_provinceCB;
+	}
+
+	public JComboBox<String> getAddress_townCB() {
+		return address_townCB;
+	}
+	public JTextField getAddress_nameTF() {
+		return address_nameTF;
+	}
+
+	public JTextField getAddress_civic_numberTF() {
+		return address_civic_numberTF;
+	}
+
+	public JTextField getAddress_capTF() {
+		return address_capTF;
+	}
+
+	public JPasswordField getOld_passwordTF() {
+		return old_passwordTF;
+	}
+
+	public JPasswordField getPasswordTF() {
+		return passwordTF;
 	}
 
 	

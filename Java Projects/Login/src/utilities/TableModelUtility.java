@@ -2,8 +2,10 @@ package utilities;
 
 import java.util.List;
 
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import entities.Address;
 import entities.Cart;
 import entities.Customer;
 import entities.Meal;
@@ -12,14 +14,14 @@ import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
 import gui.AdminShopFrame;
+import gui.ShopRiderFrame;
 
 public class TableModelUtility {
-	
-	public void initializeShopTable(DefaultTableModel model,  List<Shop> shop_list)
-	{
-		
+
+	public void initializeShopTable(DefaultTableModel model, List<Shop> shop_list) {
+
 		Object[] row = new Object[7];
-		for(Shop shop : shop_list) {
+		for (Shop shop : shop_list) {
 			row[0] = shop.getEmail();
 			row[1] = shop.getPassword();
 			row[2] = shop.getName();
@@ -31,12 +33,11 @@ public class TableModelUtility {
 		}
 		return;
 	}
-	
-	public void initializeCustomerShopTable(DefaultTableModel model,  List<Shop> shop_list)
-	{
-		
+
+	public void initializeCustomerShopTable(DefaultTableModel model, List<Shop> shop_list) {
+
 		Object[] row = new Object[6];
-		for(Shop shop : shop_list) {
+		for (Shop shop : shop_list) {
 			row[0] = shop.getName();
 			row[1] = shop.getAddress();
 			row[2] = shop.getWorking_hours();
@@ -47,13 +48,12 @@ public class TableModelUtility {
 		}
 		return;
 	}
-	
-	public void initializeCustomerTable( DefaultTableModel model,  List<Customer> customer_list)
-	{
+
+	public void initializeCustomerTable(DefaultTableModel model, List<Customer> customer_list) {
 		Object[] row = new Object[10];
 		InputUtility date_util = new InputUtility();
-		for(Customer customer : customer_list) {
-			   
+		for (Customer customer : customer_list) {
+
 			row[0] = customer.getCf();
 			row[1] = customer.getName();
 			row[2] = customer.getSurname();
@@ -68,24 +68,23 @@ public class TableModelUtility {
 		}
 		return;
 	}
-	
+
 	public void initializeMealTable(DefaultTableModel model, List<Meal> meal_list) {
 		Object[] row = new Object[5];
 		InputUtility input_util = new InputUtility();
-		for(Meal meal : meal_list) {
+		for (Meal meal : meal_list) {
 			row[0] = meal.getName();
 			row[1] = meal.getCategory();
 			row[2] = meal.getPrice();
-			row[3] = meal.getIngredients(); 
+			row[3] = meal.getIngredients();
 			row[4] = input_util.arrayListToTokenizedString(meal.getAllergen_list(), ", ");
 			model.addRow(row);
 		}
 	}
-	
-	public void initializeRiderOrderTable(DefaultTableModel model,  List<Rider> rider_list)
-	{
+
+	public void initializeRiderOrderTable(DefaultTableModel model, List<Rider> rider_list) {
 		Object[] row = new Object[5];
-		for(Rider rider : rider_list) {
+		for (Rider rider : rider_list) {
 			row[0] = rider.getCf();
 			row[1] = rider.getCellphone();
 			row[2] = rider.getVehicle();
@@ -94,12 +93,11 @@ public class TableModelUtility {
 			model.addRow(row);
 		}
 	}
-	
-	public void initializeRiderTable(DefaultTableModel model,  List<Rider> rider_list)
-	{
+
+	public void initializeRiderTable(DefaultTableModel model, List<Rider> rider_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[11];
-		for(Rider rider : rider_list) {
+		for (Rider rider : rider_list) {
 			row[0] = rider.getCf();
 			row[1] = rider.getName();
 			row[2] = rider.getSurname();
@@ -114,9 +112,8 @@ public class TableModelUtility {
 			model.addRow(row);
 		}
 	}
-	
-	public void updateShopTableColumns(AdminShopFrame admin_shop_frame, int selected_row, Shop shop)
-	{
+
+	public void updateShopTableColumns(AdminShopFrame admin_shop_frame, int selected_row, Shop shop) {
 		Object[] row = new Object[7];
 		row[0] = shop.getEmail();
 		row[1] = shop.getPassword();
@@ -125,15 +122,34 @@ public class TableModelUtility {
 		row[4] = shop.getWorking_hours();
 		row[5] = shop.getClosing_days();
 		row[6] = shop.getHome_phone();
-		for (int i=0; i<7; i++)
-		admin_shop_frame.getModel().setValueAt(row[i], selected_row, i);
+		for (int i = 0; i < 7; i++)
+			admin_shop_frame.getModel().setValueAt(row[i], selected_row, i);
 		return;
 	}
-	
-	public void initializeCompletedOrderTable(DefaultTableModel model,  List<Order> order_list) {
+
+	public void updateRiderTableColumns(ShopRiderFrame shop_rider_frame, int selected_row, Rider rider) {
+		InputUtility date_util = new InputUtility();
+		Object[] row = new Object[11];
+		row[0] = rider.getCf();
+		row[1] = rider.getName();
+		row[2] = rider.getSurname();
+		row[3] = date_util.formatDate(rider.getBirth_date());
+		row[4] = rider.getBirth_place();
+		row[5] = rider.getAddress().toString();
+		row[6] = rider.getGender();
+		row[7] = rider.getCellphone();
+		row[8] = rider.getVehicle();
+		row[9] = rider.getWorking_hours();
+		row[10] = rider.getDeliveries_number();
+		for (int i = 0; i < 10; i++)
+			shop_rider_frame.getModel().setValueAt(row[i], selected_row, i);
+		return;
+	}
+
+	public void initializeCompletedOrderTable(DefaultTableModel model, List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[9];
-		for(Order order : order_list) {
+		for (Order order : order_list) {
 			row[0] = order.getId();
 			row[1] = date_util.formatDate(order.getDate());
 			row[2] = order.getDeliveried_time();
@@ -146,11 +162,11 @@ public class TableModelUtility {
 			model.addRow(row);
 		}
 	}
-	 
-	public void initializePendingOrderTable(DefaultTableModel model,  List<Order> order_list){
+
+	public void initializePendingOrderTable(DefaultTableModel model, List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[6];
-		for(Order order : order_list) {
+		for (Order order : order_list) {
 			row[0] = order.getId();
 			row[1] = date_util.formatDate(order.getDate());
 			row[2] = order.getAddress().toString();
@@ -161,10 +177,10 @@ public class TableModelUtility {
 		}
 	}
 
-	public void initializeDeliveringOrderTable(DefaultTableModel model,  List<Order> order_list){
+	public void initializeDeliveringOrderTable(DefaultTableModel model, List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[7];
-		for(Order order : order_list) {
+		for (Order order : order_list) {
 			row[0] = order.getId();
 			row[1] = date_util.formatDate(order.getDate());
 			row[2] = order.getAddress().toString();
@@ -176,13 +192,13 @@ public class TableModelUtility {
 		}
 	}
 
-	public void initializeOrderTable(DefaultTableModel model,  List<Order> order_list){
+	public void initializeOrderTable(DefaultTableModel model, List<Order> order_list) {
 		InputUtility date_util = new InputUtility();
 		Object[] row = new Object[9];
-		for(Order order : order_list) {
+		for (Order order : order_list) {
 			row[0] = order.getId();
 			row[1] = date_util.formatDate(order.getDate());
-			if(order.getDeliveried_time()==null)
+			if (order.getDeliveried_time() == null)
 				row[2] = "In consegna..";
 			row[2] = order.getDeliveried_time();
 			row[3] = order.getAddress().toString();
@@ -197,21 +213,50 @@ public class TableModelUtility {
 	}
 
 	public void initializeCustomerCartTable(DefaultTableModel model, Cart cart) {
-		
-		
+
 		InputUtility input_util = new InputUtility();
 		Object[] row = new Object[6];
-		for(OrderComposition order_comp  : cart.getOrder_composition_list())
-		{
+		for (OrderComposition order_comp : cart.getOrder_composition_list()) {
 			row[0] = order_comp.getMeal().getName();
 			row[1] = order_comp.getMeal().getCategory();
-			row[2] = order_comp.getMeal().getPrice();  
+			row[2] = order_comp.getMeal().getPrice();
 			row[3] = order_comp.getMeal().getIngredients();
 			row[4] = input_util.arrayListToTokenizedString(order_comp.getMeal().getAllergen_list(), ", ");
 			row[5] = order_comp.getQuantity();
 			model.addRow(row);
 		}
-		
+
+	}
+
+	public void fillFieldsFromJTable(AdminShopFrame admin_shop_frame) {
+
+		JTable table = admin_shop_frame.getTable();
+		if (!table.getSelectionModel().isSelectionEmpty()) {
+			InputUtility input_util = new InputUtility();
+			Address address;
+			String closing_days;
+			address = input_util.tokenizedStringToAddress(
+					table.getModel().getValueAt(table.getSelectedRow(), 3).toString(), "(, )");
+			try {
+				closing_days = table.getModel().getValueAt(table.getSelectedRow(), 5).toString();
+			} catch (Exception e) {
+				closing_days = "";
+			}
+			admin_shop_frame.getEmailTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+			admin_shop_frame.getNameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+			admin_shop_frame.getAddress_nameTF().setText(address.getAddress());
+			admin_shop_frame.getAddress_civic_numberTF().setText(address.getCivic_number());
+			admin_shop_frame.getAddress_capTF().setText(address.getCap());
+			admin_shop_frame.getAddress_provinceCB().setSelectedItem(address.getProvince());
+			admin_shop_frame.getAddress_townCB().setSelectedItem(address.getCity());
+			admin_shop_frame.getWorking_hoursTF()
+					.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
+			admin_shop_frame.getClosing_daysTF().setText(closing_days);
+			admin_shop_frame.getPasswordTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
+			admin_shop_frame.getHome_phoneTF()
+					.setText(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+		}
+
 	}
 
 }

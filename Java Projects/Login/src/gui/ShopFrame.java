@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import controllers.LoginController;
 import controllers.ShopController;
 
+@SuppressWarnings("serial")
 public class ShopFrame extends JFrame{
 
 	

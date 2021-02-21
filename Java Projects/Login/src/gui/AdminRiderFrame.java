@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
+@SuppressWarnings("serial")
 public class AdminRiderFrame extends StandardFrame {
 	
 	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Veicolo", "Orario di lavoro","Numero di consegne"};
@@ -15,11 +16,11 @@ public class AdminRiderFrame extends StandardFrame {
 	
 	//Costruttore
 	public AdminRiderFrame() {
-		frame();
+		initialize();
 	}
 	
 	
-	private void frame() {
+	private void initialize() {
 		
 		setTitle("Food Overflow - Admin Panel: Visualizza riders");
 
@@ -37,7 +38,6 @@ public class AdminRiderFrame extends StandardFrame {
 			}
 		});
 	
-		
 	}
 
 }

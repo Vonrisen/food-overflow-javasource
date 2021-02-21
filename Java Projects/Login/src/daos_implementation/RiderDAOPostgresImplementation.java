@@ -12,14 +12,14 @@ import javax.swing.JOptionPane;
 import daos_interfaces.RiderDAO;
 import entities.Address;
 import entities.Rider;
-import exceptions.DaoException;
-import utilities.DButility;
+import exceptions.DAOException;
+import utilities.DBUtility;
 import utilities.InputUtility;
 
 public class RiderDAOPostgresImplementation implements RiderDAO {
 
 	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS, get_rider_by_CF_PS;
-	DButility db_util = new DButility();
+	DBUtility db_util = new DBUtility();
 
 	public RiderDAOPostgresImplementation(Connection connection) {
 		try {
@@ -39,7 +39,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 
 	}
 
-	public List<Rider> getAllRiders() throws DaoException {
+	public List<Rider> getAllRiders() throws DAOException {
 		List<Rider> rider_list = new ArrayList<Rider>();
 		List<String> address_fields = new ArrayList<String>();
 		InputUtility string_util = new InputUtility();
@@ -56,16 +56,15 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 						rs.getString("vehicle"), rs.getString("working_hours"), rs.getShort("deliveries_number")));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
 		return rider_list;
 	}
 
-	public void insertRider(Rider rider, String shop_email) throws DaoException {
+	public void insertRider(Rider rider, String shop_email) throws DAOException {
 
-		InputUtility input_util = new InputUtility();
 		try {
 			insert_rider_PS.setString(1, rider.getCf());
 			insert_rider_PS.setString(2, rider.getName());
@@ -81,23 +80,23 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			insert_rider_PS.setString(12, shop_email);
 			insert_rider_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void dismissRider(Rider rider) throws DaoException {
+	public void dismissRider(Rider rider) throws DAOException {
 		try {
 			dismiss_rider_PS.setString(1, rider.getCf());
 			dismiss_rider_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
 	@Override
-	public void updateRider(Rider rider) throws DaoException {
+	public void updateRider(Rider rider) throws DAOException {
 
 
 		try {
@@ -113,12 +112,12 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 			update_rider_PS.setString(10, rider.getCf());
 			update_rider_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void closeStatements() throws DaoException {
+	public void closeStatements() throws DAOException {
 
 		db_util.closeStatement(get_all_riders_PS);
 		db_util.closeStatement(insert_rider_PS);
@@ -130,7 +129,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 	}
 
 	@Override
-	public Rider getRiderByCf(String cf) throws DaoException {
+	public Rider getRiderByCf(String cf) throws DAOException {
 
 		Rider rider = null;
 		List<String> address_fields = new ArrayList<String>();
@@ -149,7 +148,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 						rs.getString("vehicle"), rs.getString("working_hours"), rs.getShort("deliveries_number"));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}

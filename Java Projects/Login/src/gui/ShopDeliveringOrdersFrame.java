@@ -20,6 +20,7 @@ import gui_support.RoundJTextField;
 import utilities.InputUtility;
 
 
+@SuppressWarnings("serial")
 public class ShopDeliveringOrdersFrame extends ComplexFrame{
 
 	private String[] columns = {"ID","Data","Indirizzo","Pagamento","Note","Cliente","Rider"};
@@ -129,16 +130,8 @@ public class ShopDeliveringOrdersFrame extends ComplexFrame{
 		return orderTF;
 	}
 
-	public void setOrderTF(JTextField orderTF) {
-		this.orderTF = orderTF;
-	}
-
 	public JComboBox<String> getStatusCB() {
 		return statusCB;
-	}
-
-	public void setStatusCB(JComboBox<String> statusCB) {
-		this.statusCB = statusCB;
 	}
 
 }

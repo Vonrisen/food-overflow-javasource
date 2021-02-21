@@ -5,31 +5,36 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.CustomerDAOPostgresImplementation;
 import daos_implementation.MealDAOPostgresImplementation;
+import daos_implementation.OrderDAOPostgresImplementation;
 import daos_implementation.ShopDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
+import daos_interfaces.OrderDAO;
 import daos_interfaces.ShopDAO;
 import db_connection.DBconnection;
 import entities.Address;
 import entities.Customer;
-import exceptions.CfException;
-import exceptions.DaoException;
+import exceptions.FiscalCodeException;
+import exceptions.DAOException;
 import gui.LoginFrame;
 import gui.RegisterFrame;
-import utilities.CodiceFiscaleUtility;
-import utilities.DButility;
-import utilities.IstatUtils;
+import utilities.FiscalCodeUtility;
+import utilities.DBUtility;
+import utilities.IstatUtility;
 
-public class LoginController {
+public class LoginController{
 
 	private Connection connection;
 	private ShopDAO shop_dao;
 	private CustomerDAO customer_dao;
 	private MealDAO meal_dao;
+	private OrderDAO order_dao;
 
 	public LoginController() {
 		DBconnection instance = DBconnection.getInstance();
@@ -37,6 +42,7 @@ public class LoginController {
 		shop_dao = new ShopDAOPostgresImplementation(connection);
 		customer_dao = new CustomerDAOPostgresImplementation(connection);
 		meal_dao = new MealDAOPostgresImplementation(connection);
+		order_dao = new OrderDAOPostgresImplementation(connection);
 	}
 
 	// Metodo per aprire login frame dopo essersi disconnessi da altri frame
@@ -68,7 +74,7 @@ public class LoginController {
 			} else {
 				// Chiudo il login frame e passo all' admin frame
 				AdminController admin_controller = new AdminController(connection, this, customer_dao, shop_dao,
-						meal_dao);
+						meal_dao, order_dao);
 				admin_controller.openAdminFrame(login_frame);
 			}
 		}
@@ -82,13 +88,13 @@ public class LoginController {
 					login_frame.setVisible(false);
 					String shop_email = login_frame.getUsernameTF().getText();
 					ShopController shop_controller = new ShopController(shop_email, connection, shop_dao, customer_dao,
-							meal_dao);
+							meal_dao, order_dao);
 					shop_controller.openShopFrame(login_frame);
 				} else {
 					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare", "Errore",
 							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (DaoException e) {
+			} catch (DAOException e) {
 
 				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore");
 			}
@@ -102,13 +108,13 @@ public class LoginController {
 					login_frame.setVisible(false);
 					Customer customer = customer_dao.getCustomerByEmail(login_frame.getUsernameTF().getText());
 					CustomerController customer_controller = new CustomerController(customer, connection, customer_dao,
-							shop_dao, meal_dao, this);
+							shop_dao, meal_dao,order_dao, this);
 					customer_controller.openCustomerFrame(login_frame);
 				} else {
 					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare", "Errore",
 							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (DaoException e) {
+			} catch (DAOException e) {
 
 				JOptionPane.showMessageDialog(null, "Errore critico, contattare l' amministratore");
 			}
@@ -122,16 +128,16 @@ public class LoginController {
 		frame.dispose();
 		RegisterFrame register_frame = new RegisterFrame(this);
 		register_frame.setVisible(true);
-		IstatUtils istat_utils = new IstatUtils();
+		IstatUtility istat_utils = new IstatUtility();
 		List<String> nations = istat_utils.getNations();
 		List<String> provinces = istat_utils.getProvinces();
-		register_frame.getStatiCB().addItem("ITALIA");
+		register_frame.getBirth_nationCB().addItem("ITALIA");
 		register_frame.getAddress_provinceCB().addItem("Seleziona provincia di residenza");
 		register_frame.getAddress_provinceCB().addItem("-------------------");
 		for (String s : nations)
-			register_frame.getStatiCB().addItem(s);
+			register_frame.getBirth_nationCB().addItem(s);
 		for (String s : provinces) {
-			register_frame.getProvincesCB().addItem(s);
+			register_frame.getBirth_provinceCB().addItem(s);
 			register_frame.getAddress_provinceCB().addItem(s);
 		}
 		return;
@@ -149,24 +155,25 @@ public class LoginController {
 			String cellphone = frame.getCellphoneTF().getText();
 			Address address = new Address(frame.getAddress_nameTF().getText(),
 					frame.getAddress_civic_numberTF().getText(), frame.getAddress_capTF().getText(),
-					frame.getAddress_cityCB().getSelectedItem().toString(),
+					frame.getAddress_townCB().getSelectedItem().toString(),
 					frame.getAddress_provinceCB().getSelectedItem().toString());
 			String email = frame.getEmailTF().getText();
+			@SuppressWarnings("deprecation")
 			String password = frame.getPasswordTF().getText();
-			CodiceFiscaleUtility cf_util = new CodiceFiscaleUtility();
-			if (!frame.getStatiCB().getSelectedItem().toString().equals("ITALIA"))
-				birth_place = frame.getStatiCB().getSelectedItem().toString();
+			FiscalCodeUtility cf_util = new FiscalCodeUtility();
+			if (!frame.getBirth_nationCB().getSelectedItem().toString().equals("ITALIA"))
+				birth_place = frame.getBirth_nationCB().getSelectedItem().toString();
 			else
-				birth_place = frame.getTownsCB().getSelectedItem().toString();
+				birth_place = frame.getBirth_townCB().getSelectedItem().toString();
 			String cf = cf_util.getCF(name, surname, birth_date, birth_place, gender.charAt(0));
 			Customer customer = new Customer(cf, name, surname, birth_date, birth_place, gender, cellphone, address,
 					email, password);
 			customer_dao.insertCustomer(customer);
 			JOptionPane.showMessageDialog(null, "Registrazione avvenuta con successo");
-		} catch (DaoException e) {
+		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "Uno o piu campi non sono stati inseriti correttamente", "Errore",
 					JOptionPane.ERROR_MESSAGE);
-		} catch (CfException c) {
+		} catch (FiscalCodeException c) {
 			JOptionPane.showMessageDialog(null, c.getMessage());
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, "Inserire data nel formato dd/mm/yyyy", "Errore",
@@ -176,37 +183,26 @@ public class LoginController {
 	}
 
 	public void updateAddressTownsCB(String selected_province, RegisterFrame frame) {
-		IstatUtils istat_utils = new IstatUtils();
+		IstatUtility istat_utils = new IstatUtility();
 		List<String> towns = istat_utils.getTownsByProvince(selected_province);
-		frame.getAddress_cityCB().removeAllItems();
+		frame.getAddress_townCB().removeAllItems();
 		for (String s : towns)
-			frame.getAddress_cityCB().addItem(s);
+			frame.getAddress_townCB().addItem(s);
 		return;
 	}
 
 	public void updateTownsCB(String selected_province, RegisterFrame frame) {
-		IstatUtils istat_utils = new IstatUtils();
+		IstatUtility istat_utils = new IstatUtility();
 		List<String> towns = istat_utils.getTownsByProvince(selected_province);
-		frame.getTownsCB().removeAllItems();
+		frame.getBirth_townCB().removeAllItems();
 		for (String s : towns)
-			frame.getTownsCB().addItem(s);
+			frame.getBirth_townCB().addItem(s);
 		return;
 	}
 
 	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame) {
-		DButility db_utility = new DButility();
-		try {
-			shop_dao.closeStatements();
-			customer_dao.closeStatements();
-			meal_dao.closeStatements();
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
-					JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
-		} finally {
-			db_utility.closeConnection(connection);
-			frame.dispose();
-		}
+		DBUtility db_utility = new DBUtility();
+		db_utility.closeAllResources(shop_dao, order_dao, meal_dao,null, customer_dao, connection, frame);
 		return;
 	}
 

@@ -1,31 +1,32 @@
 package controllers;
 
 import java.sql.Connection;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import daos_implementation.OrderDAOPostgresImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
 import daos_interfaces.ShopDAO;
+import entities.Address;
 import entities.Cart;
 import entities.Customer;
 import entities.Meal;
 import entities.OrderComposition;
 import entities.Shop;
-import exceptions.DaoException;
+import exceptions.DAOException;
 import gui.CustomerCartFrame;
 import gui.CustomerCheckoutFrame;
 import gui.CustomerFrame;
 import gui.CustomerMealListFrame;
 import gui.CustomerProfileFrame;
 import gui.CustomerShopListFrame;
-import utilities.DButility;
+import utilities.DBUtility;
 import utilities.InputUtility;
-import utilities.IstatUtils;
+import utilities.IstatUtility;
 import utilities.TableModelUtility;
 
 public class CustomerController {
@@ -41,7 +42,7 @@ public class CustomerController {
 	private Connection connection;
 	private OrderDAO order_dao;
 
-	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao, LoginController login_controller) {
+	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao, MealDAO meal_dao,OrderDAO order_dao, LoginController login_controller) {
 
 		this.customer = customer;
 		this.connection = connection;
@@ -50,7 +51,7 @@ public class CustomerController {
 		this.meal_dao = meal_dao;
 		this.login_controller = login_controller;
 		this.cart = new Cart(shop, customer);
-		this.order_dao = new OrderDAOPostgresImplementation(connection);
+		this.order_dao = order_dao;
 
 	}
 
@@ -66,7 +67,7 @@ public class CustomerController {
 
 	public void checkProvinceAndOpenShopListFrame(CustomerFrame customer_frame) {
 
-		IstatUtils istat_utils = new IstatUtils();
+		IstatUtility istat_utils = new IstatUtility();
 		if (istat_utils.isProvinceValid(customer_frame.getProvinceTF().getText())) {
 			openCustomerShopListFrame(customer_frame, customer_frame.getProvinceTF().getText().toUpperCase());
 		} else
@@ -84,7 +85,7 @@ public class CustomerController {
 
 			shop_list = shop_dao.getShopByProvince(shop_province);
 			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
-		} catch (DaoException e) {
+		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator",
 					"Errore", JOptionPane.ERROR_MESSAGE);
 		}
@@ -101,7 +102,7 @@ public class CustomerController {
 		try {
 			meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
 			this.shop = shop_dao.getShopByEmail(shop_email);
-		} catch (DaoException e) {
+		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator",
 					"Errore", JOptionPane.ERROR_MESSAGE);
 		}
@@ -143,22 +144,10 @@ public class CustomerController {
 		return;
 	}
 
+	
 	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame) {
-		DButility db_utility = new DButility();
-		try {
-			shop_dao.closeStatements();
-			customer_dao.closeStatements();
-			meal_dao.closeStatements();
-			order_dao.closeStatements();
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
-					JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
-		} finally {
-			db_utility.closeConnection(connection);
-			frame.dispose();
-		}
-		return;
+		DBUtility db_utility = new DBUtility();
+		db_utility.closeAllResources(shop_dao, order_dao, meal_dao,null , customer_dao, connection, frame);
 	}
 
 	public void doCustomerComplexSearch(CustomerMealListFrame customer_meal_list_frame) {
@@ -183,7 +172,7 @@ public class CustomerController {
 			customer_meal_list_frame.getModel().setRowCount(0);
 		} catch (NumberFormatException n) {
 			JOptionPane.showMessageDialog(null, "Inserire un prezzo valido", "Errore", JOptionPane.ERROR_MESSAGE);
-		} catch (DaoException e) {
+		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -251,11 +240,11 @@ public class CustomerController {
 
 		CustomerCheckoutFrame customer_checkout_frame = new CustomerCheckoutFrame(this, customer_cart_frame);
 		customer_checkout_frame.setVisible(true);
-		customer_checkout_frame.setAddressTF(customer.getAddress().toString());
-		customer_checkout_frame.setShopTF(shop.getName());
-		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
-		customer_checkout_frame.setCellphoneTF(shop.getHome_phone());
-		customer_checkout_frame.setTotal_priceTF(String.valueOf(cart.getTotalPrice()));
+		customer_checkout_frame.getAddressTF().setText(shop.getAddress().toString());
+		customer_checkout_frame.getShopTF().setText(shop.getName());
+		customer_checkout_frame.getCellphoneTF().setText(shop.getHome_phone());;
+		customer_checkout_frame.getCellphoneTF().setText(shop.getHome_phone());
+		customer_checkout_frame.getTotal_priceTF().setText(String.valueOf(cart.getTotalPrice()));
 		return;
 	}
 
@@ -267,20 +256,9 @@ public class CustomerController {
 			customer_cart_frame.dispose();
 			cart.getOrder_composition_list().clear();
 			openCustomerMealListFrame(customer_checkout_frame, shop.getEmail());
-		} catch (DaoException e) {
+		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "Non e' stato possibile completare l' ordine", "Errore",
 					JOptionPane.ERROR_MESSAGE);
-		}
-		return;
-	}
-
-	public void releaseDaoResourcesWhenLoggingOut() {
-		try {
-			order_dao.closeStatements();
-		} catch (DaoException e) {
-			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
-					JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
 		}
 		return;
 	}
@@ -293,7 +271,59 @@ public class CustomerController {
 		else
 			customer_profile_frame.getAvatarLB().setIcon(customer_profile_frame.getFemale_avatarIMG());
 		customer_profile_frame.setVisible(true);
+		
+		IstatUtility istat_utils = new IstatUtility();
+		List<String> provinces = istat_utils.getProvinces();
+		customer_profile_frame.getAddress_provinceCB().addItem("Seleziona provincia");
+		customer_profile_frame.getAddress_provinceCB().addItem("-------------------");
+		for (String s : provinces) {
+			customer_profile_frame.getAddress_provinceCB().addItem(s);
+		}
+		
 		return;
 		
+	}
+	
+	public void updateAddressTownsCB(String selected_province, CustomerProfileFrame frame) {
+		IstatUtility istat_utils = new IstatUtility();
+		List<String> towns = istat_utils.getTownsByProvince(selected_province);
+		frame.getAddress_townCB().removeAllItems();
+		for (String s : towns)
+			frame.getAddress_townCB().addItem(s);
+		return;
+	}
+
+	public void updateDeliveryAddress(CustomerProfileFrame customer_profile_frame) {
+		String address_name = customer_profile_frame.getAddress_nameTF().getText();
+		String civic_number = customer_profile_frame.getAddress_civic_numberTF().getText();
+		String cap = customer_profile_frame.getAddress_capTF().getText();
+		String city = customer_profile_frame.getAddress_townCB().getSelectedItem().toString();
+		String province = customer_profile_frame.getAddress_provinceCB().getSelectedItem().toString();
+		Address address = new Address(address_name, civic_number, cap, city, province);
+		try {
+			customer_dao.updateCustomerAddress(customer, address);
+			customer.setAddress(address);
+		} catch (DAOException e) {
+			JOptionPane.showMessageDialog(null, "Non e' stato possibile aggiornare l' indirizzo, controllare i campi riempiti", "Errore",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void updateCustomerPassword(CustomerProfileFrame customer_profile_frame)
+	{
+		String old_password = customer_profile_frame.getOld_passwordTF().getText();
+		String new_password = customer_profile_frame.getPasswordTF().getText();
+		if(!old_password.equals(customer.getPassword()))
+			JOptionPane.showMessageDialog(null, "La password inserita non coincide con la vecchia password", "Errore",
+					JOptionPane.ERROR_MESSAGE);
+		else
+			try {
+				customer_dao.updateCustomerPassword(customer, new_password);
+				customer.setPassword(new_password);
+				JOptionPane.showMessageDialog(null, "Password modificata");
+			} catch (DAOException e) {
+				JOptionPane.showMessageDialog(null, "Non e' stato possibile aggiornare la password, riprovarae", "Errore",
+						JOptionPane.ERROR_MESSAGE);
+			}
 	}
 }

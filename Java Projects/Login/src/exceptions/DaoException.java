@@ -1,7 +1,9 @@
 package exceptions;
 
-public class DaoException extends Exception{
-	public DaoException()
+@SuppressWarnings("serial")
+public class DAOException extends Exception{
+	
+	public DAOException()
 	{
 		super();
 	}

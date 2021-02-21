@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import controllers.CustomerController;
 import gui_support.RoundJTextField;
 
+@SuppressWarnings("serial")
 public class CustomerFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -319,11 +320,6 @@ public class CustomerFrame extends JFrame {
 		return provinceTF;
 	}
 
-	public void setProvinceTF(JTextField provinceTF) {
-		this.provinceTF = provinceTF;
-	}
-	
-	
 	
 	
 

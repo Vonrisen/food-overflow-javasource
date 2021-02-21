@@ -32,6 +32,7 @@ import gui_support.RoundJTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class RegisterFrame extends JFrame{
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -64,17 +65,18 @@ public class RegisterFrame extends JFrame{
 	private JTextField address_capTF;
 	private JTextField cellphoneTF;
 	
-	private JComboBox address_cityCB;
-	private JComboBox address_provinceCB;
+	private JComboBox<String> address_townCB;
+	private JComboBox<String> address_provinceCB;   
+	
 	
 	private JTextField emailTF;
 	private JPasswordField passwordTF;
 	private JPasswordField passwordTF1;
 	
 	private JComboBox<String> genderCB;
-	private JComboBox<String> statiCB;
-	private JComboBox<String> provincesCB;
-	private JComboBox townsCB;
+	private JComboBox<String> birth_nationCB;
+	private JComboBox<String> birth_provinceCB;
+	private JComboBox<String> birth_townCB;
 	
 	private String[] genderStrings = {"Maschio", "Femmina"};
 	
@@ -114,7 +116,7 @@ public class RegisterFrame extends JFrame{
 		backButton = new JButton();
 		
 		birth_city = new JLabel("Inserisci lo stato di nascita: ");
-		townsCB = new JComboBox();
+		birth_townCB = new JComboBox();
 		
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
@@ -127,12 +129,12 @@ public class RegisterFrame extends JFrame{
 		passwordTF = new RoundJPasswordField(new Color(0x771007));
 		passwordTF1 = new RoundJPasswordField(new Color(0x771007));
 		
-		address_cityCB = new JComboBox();
+		address_townCB = new JComboBox();
 		address_provinceCB = new JComboBox();
 		
 		genderCB = new JComboBox(genderStrings);
-		statiCB = new JComboBox();
-		provincesCB = new JComboBox();
+		birth_nationCB = new JComboBox();
+		birth_provinceCB = new JComboBox();
 		birth_comune_1 = new JLabel("Inserisci il comune di nascita: ");
 		birth_comune_1_1 = new JLabel("Inserisci la data di nascita:");
 		birth_comune = new JLabel("Inserisci la provincia di nascita: ");
@@ -189,8 +191,8 @@ public class RegisterFrame extends JFrame{
 		address_capTF.setBounds(120,133,150,25);
 		loginPanel.add(address_capTF);
 		
-		address_cityCB.setBounds(314,61,150,25);
-		loginPanel.add(address_cityCB);
+		address_townCB.setBounds(314,61,150,25);
+		loginPanel.add(address_townCB);
 		
 		address_provinceCB.setBounds(120,61,150,25);
 		loginPanel.add(address_provinceCB);
@@ -212,17 +214,17 @@ public class RegisterFrame extends JFrame{
 		birth_city.setVisible(false);
 		loginPanel.add(birth_city);
 		
-		statiCB.setBounds(305,25,150,25);
-		statiCB.setVisible(false);
-		loginPanel.add(statiCB);
+		birth_nationCB.setBounds(305,25,150,25);
+		birth_nationCB.setVisible(false);
+		loginPanel.add(birth_nationCB);
 		
-		provincesCB.setBounds(305,61,150,25);
-		provincesCB.setVisible(false);
-		loginPanel.add(provincesCB);
+		birth_provinceCB.setBounds(305,61,150,25);
+		birth_provinceCB.setVisible(false);
+		loginPanel.add(birth_provinceCB);
 		
-		townsCB.setBounds(305, 97, 150, 25);
-		townsCB.setVisible(false);
-		loginPanel.add(townsCB);
+		birth_townCB.setBounds(305, 97, 150, 25);
+		birth_townCB.setVisible(false);
+		loginPanel.add(birth_townCB);
 		
 		createTextField(birth_dateTF, "Data di nascita...");
 		birth_dateTF.setVisible(false);
@@ -428,36 +430,36 @@ public class RegisterFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				if(nameTF.isVisible()&&!statiCB.isVisible()) {
+				if(nameTF.isVisible()&&!birth_nationCB.isVisible()) {
 					
 					nameTF.setVisible(false);
 					surnameTF.setVisible(false);
 					address_nameTF.setVisible(false);
 					address_civic_numberTF.setVisible(false);
 					address_capTF.setVisible(false);
-					address_cityCB.setVisible(false);
+					address_townCB.setVisible(false);
 					address_provinceCB.setVisible(false);
 					genderCB.setVisible(false);
 					
 					birth_comune.setVisible(true);
 					birth_comune_1.setVisible(true);
 					birth_city.setVisible(true);
-					statiCB.setVisible(true);
-					provincesCB.setVisible(true);
-					townsCB.setVisible(true);
+					birth_nationCB.setVisible(true);
+					birth_provinceCB.setVisible(true);
+					birth_townCB.setVisible(true);
 					birth_dateTF.setVisible(true);
 					birth_comune_1_1.setVisible(true);
 					
 					backButton.setVisible(true);
 					
-				}else if(statiCB.isVisible()&&!emailTF.isVisible()) {
+				}else if(birth_nationCB.isVisible()&&!emailTF.isVisible()) {
 					
 					birth_comune.setVisible(false);
 					birth_comune_1.setVisible(false);
 					birth_city.setVisible(false);
-					statiCB.setVisible(false);
-					provincesCB.setVisible(false);
-					townsCB.setVisible(false);
+					birth_nationCB.setVisible(false);
+					birth_provinceCB.setVisible(false);
+					birth_townCB.setVisible(false);
 					birth_dateTF.setVisible(false);
 					birth_comune_1_1.setVisible(false);
 					
@@ -492,35 +494,35 @@ public class RegisterFrame extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				if(!nameTF.isVisible()&&statiCB.isVisible()) {
+				if(!nameTF.isVisible()&&birth_nationCB.isVisible()) {
 					
 					nameTF.setVisible(true);
 					surnameTF.setVisible(true);
 					address_nameTF.setVisible(true);
 					address_civic_numberTF.setVisible(true);
 					address_capTF.setVisible(true);
-					address_cityCB.setVisible(true);
+					address_townCB.setVisible(true);
 					address_provinceCB.setVisible(true);
 					genderCB.setVisible(true);
 					
 					birth_comune.setVisible(false);
 					birth_comune_1.setVisible(false);
 					birth_city.setVisible(false);
-					statiCB.setVisible(false);
-					provincesCB.setVisible(false);
-					townsCB.setVisible(false);
+					birth_nationCB.setVisible(false);
+					birth_provinceCB.setVisible(false);
+					birth_townCB.setVisible(false);
 					birth_dateTF.setVisible(false);
 					birth_comune_1_1.setVisible(false);
 					backButton.setVisible(false);
 					
-				} else if(emailTF.isVisible()&&!statiCB.isVisible()) {
+				} else if(emailTF.isVisible()&&!birth_nationCB.isVisible()) {
 					
 					birth_comune.setVisible(true);
 					birth_comune_1.setVisible(true);
 					birth_city.setVisible(true);
-					statiCB.setVisible(true);
-					provincesCB.setVisible(true);
-					townsCB.setVisible(true);
+					birth_nationCB.setVisible(true);
+					birth_provinceCB.setVisible(true);
+					birth_townCB.setVisible(true);
 					birth_dateTF.setVisible(true);
 					birth_comune_1_1.setVisible(true);
 					
@@ -550,6 +552,7 @@ public class RegisterFrame extends JFrame{
 				registerButton.setIcon(registerButtonInactive);
 				
 			}
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
@@ -588,6 +591,7 @@ public class RegisterFrame extends JFrame{
 		});
 
 		passwordTF.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
@@ -599,6 +603,7 @@ public class RegisterFrame extends JFrame{
 				}
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusLost(FocusEvent e) {
 
@@ -612,6 +617,7 @@ public class RegisterFrame extends JFrame{
 		});
 		
 		passwordTF1.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
@@ -623,6 +629,7 @@ public class RegisterFrame extends JFrame{
 				}
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusLost(FocusEvent e) {
 
@@ -644,8 +651,8 @@ public class RegisterFrame extends JFrame{
 	         }
 	     });
 		
-		provincesCB.addItemListener(this::provincesCBitemStateChanged);
-		statiCB.addItemListener(this::townsCBitemStateChanged);
+		birth_provinceCB.addItemListener(this::provincesCBitemStateChanged);
+		birth_nationCB.addItemListener(this::townsCBitemStateChanged);
 		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
 		
 	}
@@ -661,11 +668,11 @@ public class RegisterFrame extends JFrame{
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 	        String selected_item = (String) e.getItem();
 	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia di residenza"))
-	        	 login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);
+	        	 login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);	;
 	    	if(selected_item.equals("Seleziona provincia di residenza"))
 	    	{
-	    		this.getAddress_cityCB().removeAllItems();
-	    		this.getAddress_cityCB().addItem("Seleziona comune di residenza");
+	    		this.getAddress_townCB().removeAllItems();
+	    		this.getAddress_townCB().addItem("Seleziona comune di residenza");
 	    	}
 	       
 	    }
@@ -674,18 +681,18 @@ public class RegisterFrame extends JFrame{
 
 	public void townsCBitemStateChanged(ItemEvent e) {
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
-	    	if(statiCB.getSelectedItem().equals("ITALIA")) {
+	    	if(birth_nationCB.getSelectedItem().equals("ITALIA")) {
 	    		
 	    		if(!nameTF.isVisible())
 	    		{
-	    		provincesCB.setVisible(true);
-	    		townsCB.setVisible(true);
+	    		birth_provinceCB.setVisible(true);
+	    		birth_townCB.setVisible(true);
 	    		}
 	    		
 	    	} else {
 	    		
-	    		provincesCB.setVisible(false);
-	    		townsCB.setVisible(false);
+	    		birth_provinceCB.setVisible(false);
+	    		birth_townCB.setVisible(false);
 	    		
 	    	}
 	    	
@@ -728,351 +735,73 @@ public class RegisterFrame extends JFrame{
 		
 	}
 
-
-	public Dimension getScreen_dim() {
-		return screen_dim;
-	}
-
-	public void setScreen_dim(Dimension screen_dim) {
-		this.screen_dim = screen_dim;
-	}
-
-	public JPanel getTopPanel() {
-		return topPanel;
-	}
-
-	public void setTopPanel(JPanel topPanel) {
-		this.topPanel = topPanel;
-	}
-
-	public JLabel getLogoLabel() {
-		return logoLabel;
-	}
-
-	public void setLogoLabel(JLabel logoLabel) {
-		this.logoLabel = logoLabel;
-	}
-
-	public JPanel getLoginPanel() {
-		return loginPanel;
-	}
-
-	public void setLoginPanel(JPanel loginPanel) {
-		this.loginPanel = loginPanel;
-	}
-
-	public JButton getHomeButton() {
-		return homeButton;
-	}
-
-	public void setHomeButton(JButton homeButton) {
-		this.homeButton = homeButton;
-	}
-
-	public JButton getForwardButton() {
-		return forwardButton;
-	}
-
-	public void setForwardButton(JButton forwardButton) {
-		this.forwardButton = forwardButton;
-	}
-
-	public JButton getBackButton() {
-		return backButton;
-	}
-
-	public void setBackButton(JButton backButton) {
-		this.backButton = backButton;
-	}
-
-	public JButton getRegisterButton() {
-		return registerButton;
-	}
-
-	public void setRegisterButton(JButton registerButton) {
-		this.registerButton = registerButton;
-	}
-
-	public Dimension getLong_dim_of_textfield() {
-		return long_dim_of_textfield;
-	}
-
-	public void setLong_dim_of_textfield(Dimension long_dim_of_textfield) {
-		this.long_dim_of_textfield = long_dim_of_textfield;
-	}
-
-	public Dimension getShort_dim_of_textfield() {
-		return short_dim_of_textfield;
-	}
-
-	public void setShort_dim_of_textfield(Dimension short_dim_of_textfield) {
-		this.short_dim_of_textfield = short_dim_of_textfield;
-	}
-
-	public ImageIcon getHomeButtonActive() {
-		return homeButtonActive;
-	}
-
-	public void setHomeButtonActive(ImageIcon homeButtonActive) {
-		this.homeButtonActive = homeButtonActive;
-	}
-
-	public ImageIcon getHomeButtonInactive() {
-		return homeButtonInactive;
-	}
-
-	public void setHomeButtonInactive(ImageIcon homeButtonInactive) {
-		this.homeButtonInactive = homeButtonInactive;
-	}
-
-	public ImageIcon getRegister_logoIMG() {
-		return register_logoIMG;
-	}
-
-	public void setRegister_logoIMG(ImageIcon register_logoIMG) {
-		this.register_logoIMG = register_logoIMG;
-	}
-
-	public ImageIcon getForward_button_active() {
-		return forward_button_active;
-	}
-
-	public void setForward_button_active(ImageIcon forward_button_active) {
-		this.forward_button_active = forward_button_active;
-	}
-
-	public ImageIcon getForward_button_inactive() {
-		return forward_button_inactive;
-	}
-
-	public void setForward_button_inactive(ImageIcon forward_button_inactive) {
-		this.forward_button_inactive = forward_button_inactive;
-	}
-
-	public ImageIcon getBack_button_active() {
-		return back_button_active;
-	}
-
-	public void setBack_button_active(ImageIcon back_button_active) {
-		this.back_button_active = back_button_active;
-	}
-
-	public ImageIcon getBack_button_inactive() {
-		return back_button_inactive;
-	}
-
-	public void setBack_button_inactive(ImageIcon back_button_inactive) {
-		this.back_button_inactive = back_button_inactive;
-	}
-
-	public ImageIcon getRegisterButtonActive() {
-		return registerButtonActive;
-	}
-
-	public void setRegisterButtonActive(ImageIcon registerButtonActive) {
-		this.registerButtonActive = registerButtonActive;
-	}
-
-	public ImageIcon getRegisterButtonInactive() {
-		return registerButtonInactive;
-	}
-
-	public void setRegisterButtonInactive(ImageIcon registerButtonInactive) {
-		this.registerButtonInactive = registerButtonInactive;
-	}
-
-	public JTextField getNameTF() {
-		return nameTF;
-	}
-
-	public void setNameTF(JTextField nameTF) {
-		this.nameTF = nameTF;
-	}
-
-	public JTextField getSurnameTF() {
-		return surnameTF;
-	}
-
-	public void setSurnameTF(JTextField surnameTF) {
-		this.surnameTF = surnameTF;
-	}
-
 	public JTextField getBirth_dateTF() {
 		return birth_dateTF;
-	}
-
-	public void setBirth_dateTF(JTextField birth_dateTF) {
-		this.birth_dateTF = birth_dateTF;
 	}
 
 	public JTextField getAddress_nameTF() {
 		return address_nameTF;
 	}
 
-	public void setAddress_nameTF(JTextField address_nameTF) {
-		this.address_nameTF = address_nameTF;
-	}
-
 	public JTextField getAddress_civic_numberTF() {
 		return address_civic_numberTF;
-	}
-
-	public void setAddress_civic_numberTF(JTextField address_civic_numberTF) {
-		this.address_civic_numberTF = address_civic_numberTF;
 	}
 
 	public JTextField getAddress_capTF() {
 		return address_capTF;
 	}
 
-	public void setAddress_capTF(JTextField address_capTF) {
-		this.address_capTF = address_capTF;
-	}
-
 	public JTextField getCellphoneTF() {
 		return cellphoneTF;
 	}
 
-	public void setCellphoneTF(JTextField cellphoneTF) {
-		this.cellphoneTF = cellphoneTF;
+	public JComboBox<String> getAddress_townCB() {
+		return address_townCB;
+	}
+
+	public JComboBox<String> getAddress_provinceCB() {
+		return address_provinceCB;
 	}
 
 	public JTextField getEmailTF() {
 		return emailTF;
 	}
 
-	public void setEmailTF(JTextField emailTF) {
-		this.emailTF = emailTF;
+	public JComboBox<String> getBirth_nationCB() {
+		return birth_nationCB;
+	}
+
+	public JComboBox<String> getBirth_provinceCB() {
+		return birth_provinceCB;
+	}
+
+	public JComboBox<String> getBirth_townCB() {
+		return birth_townCB;
+	}
+
+	public JTextField getSurnameTF() {
+		return surnameTF;
 	}
 
 	public JPasswordField getPasswordTF() {
 		return passwordTF;
 	}
 
-	public void setPasswordTF(JPasswordField passwordTF) {
-		this.passwordTF = passwordTF;
-	}
-
 	public JPasswordField getPasswordTF1() {
 		return passwordTF1;
-	}
-
-	public void setPasswordTF1(JPasswordField passwordTF1) {
-		this.passwordTF1 = passwordTF1;
 	}
 
 	public JComboBox<String> getGenderCB() {
 		return genderCB;
 	}
 
-	public void setGenderCB(JComboBox<String> genderCB) {
-		this.genderCB = genderCB;
+	public JTextField getNameTF() {
+		return nameTF;
 	}
 
-	public JComboBox<String> getProvinceCB() {
-		return statiCB;
-	}
-
-	public void setProvinceCB(JComboBox<String> provinceCB) {
-		this.statiCB = provinceCB;
-	}
-
-	public JComboBox<String> getComuniCB() {
-		return provincesCB;
-	}
-
-	public void setComuniCB(JComboBox<String> comuniCB) {
-		this.provincesCB = comuniCB;
-	}
-
-
-	public String[] getGenderStrings() {
-		return genderStrings;
-	}
-
-	public void setGenderStrings(String[] genderStrings) {
-		this.genderStrings = genderStrings;
-	}
-
-	public JLabel getBirth_city() {
-		return birth_city;
-	}
-
-	public void setBirth_city(JLabel birth_city) {
-		this.birth_city = birth_city;
-	}
-
-	public JLabel getBirth_comune() {
-		return birth_comune;
-	}
-
-	public void setBirth_comune(JLabel birth_comune) {
-		this.birth_comune = birth_comune;
-	}
-
-	public JLabel getBirth_comune_1() {
-		return birth_comune_1;
-	}
-
-	public void setBirth_comune_1(JLabel birth_comune_1) {
-		this.birth_comune_1 = birth_comune_1;
-	}
-
-	public JLabel getBirth_comune_1_1() {
-		return birth_comune_1_1;
-	}
-
-	public void setBirth_comune_1_1(JLabel birth_comune_1_1) {
-		this.birth_comune_1_1 = birth_comune_1_1;
-	}
-
-	public LoginController getLogin_controller() {
-		return login_controller;
-	}
-
-	public void setLogin_controller(LoginController login_controller) {
-		this.login_controller = login_controller;
-	}
-
-	public JComboBox getAddress_cityCB() {
-		return address_cityCB;
-	}
-
-	public void setAddress_cityCB(JComboBox address_cityCB) {
-		this.address_cityCB = address_cityCB;
-	}
-
-	public JComboBox getAddress_provinceCB() {
-		return address_provinceCB;
-	}
-
-	public void setAddress_provinceCB(JComboBox address_provinceCB) {
-		this.address_provinceCB = address_provinceCB;
-	}
-
-	public JComboBox<String> getStatiCB() {
-		return statiCB;
-	}
-
-	public void setStatiCB(JComboBox<String> statiCB) {
-		this.statiCB = statiCB;
-	}
-
-	public JComboBox<String> getProvincesCB() {
-		return provincesCB;
-	}
-
-	public void setProvincesCB(JComboBox<String> provincesCB) {
-		this.provincesCB = provincesCB;
-	}
-
-	public JComboBox getTownsCB() {
-		return townsCB;
-	}
-
-	public void setTownsCB(JComboBox townsCB) {
-		this.townsCB = townsCB;
-	}
+	
+	
+	
 
 	
 }

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import controllers.AdminController;
 import controllers.LoginController;
 
+@SuppressWarnings("serial")
 public class AdminFrame extends JFrame{
 	
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();

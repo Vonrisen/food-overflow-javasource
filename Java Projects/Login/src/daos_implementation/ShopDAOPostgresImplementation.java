@@ -16,8 +16,8 @@ import entities.Address;
 import entities.Meal;
 import entities.Rider;
 import entities.Shop;
-import exceptions.DaoException;
-import utilities.DButility;
+import exceptions.DAOException;
+import utilities.DBUtility;
 import utilities.InputUtility;
 
 public class ShopDAOPostgresImplementation implements ShopDAO {
@@ -26,7 +26,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			get_riders_of_a_shop_by_shop_email_PS, get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS,
 			get_shop_by_email_PS, get_shop_by_province_PS, get_riders_of_a_shop_max_2_deliveries_by_shop_email_PS;
 	CallableStatement update_shop_CS;
-	DButility db_util = new DButility();
+	DBUtility db_util = new DBUtility();
 
 	public ShopDAOPostgresImplementation(Connection connection) {
 		try {
@@ -55,7 +55,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		}
 	}
 
-	public List<Shop> getAllShops() throws DaoException {
+	public List<Shop> getAllShops() throws DAOException {
 
 		InputUtility string_util = new InputUtility();
 		List<Shop> shop_list = new ArrayList<Shop>();
@@ -89,7 +89,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs1.getShort("deliveries_number")));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				try {
 					get_meals_of_a_shop_by_shop_email_PS.setString(1, rs.getString("email"));
@@ -108,7 +108,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs2.getString("ingredients"), rs2.getString("category"), allergens));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				shop_list.add(new Shop(rs.getString("email"), rs.getString("name"), rs.getString("password"),
 						rs.getString("working_hours"),
@@ -118,7 +118,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			}
 		} catch (SQLException s) {
 
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -128,7 +128,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return shop_list;
 	}
 
-	public List<Rider> getRidersOfAShopByShopEmail(String shop_email) throws DaoException {
+	public List<Rider> getRidersOfAShopByShopEmail(String shop_email) throws DAOException {
 
 		List<Rider> rider_list = new ArrayList<Rider>();
 		List<String> address_fields = new ArrayList<String>();
@@ -147,14 +147,14 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 						rs.getString("vehicle"), rs.getString("working_hours"), rs.getShort("deliveries_number")));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
 		return rider_list;
 	}
 
-	public List<Rider> getRidersOfAShopMax2DeliveriesByShopEmail(String shop_email) throws DaoException {
+	public List<Rider> getRidersOfAShopMax2DeliveriesByShopEmail(String shop_email) throws DAOException {
 
 		List<Rider> rider_list = new ArrayList<Rider>();
 		List<String> address_fields = new ArrayList<String>();
@@ -173,14 +173,14 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 						rs.getString("vehicle"), rs.getString("working_hours"), rs.getShort("deliveries_number")));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
 		return rider_list;
 	}
 
-	public List<Meal> getMealsOfAShopByShopEmail(String shop_email) throws DaoException {
+	public List<Meal> getMealsOfAShopByShopEmail(String shop_email) throws DAOException {
 		ArrayList<String> allergens;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
 		ResultSet rs2 = null;
@@ -200,7 +200,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 						rs1.getString("category"), allergens));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs2);
 			db_util.closeResultSet(rs1);
@@ -208,7 +208,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return meal_list;
 	}
 
-	public boolean isShopLoginValidated(String email, String password) throws DaoException {
+	public boolean isShopLoginValidated(String email, String password) throws DAOException {
 
 		Boolean row_founded;
 		ResultSet rs = null;
@@ -218,7 +218,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			rs = authenticate_shop_login_PS.executeQuery();
 			row_founded = rs.next();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
@@ -226,7 +226,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	}
 
 	@Override
-	public void insertShop(Shop shop) throws DaoException {
+	public void insertShop(Shop shop) throws DAOException {
 
 		try {
 			insert_shop_PS.setString(1, shop.getName());
@@ -238,24 +238,24 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			insert_shop_PS.setString(7, shop.getHome_phone());
 			insert_shop_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
 	@Override
-	public void deleteShop(Shop shop) throws DaoException {
+	public void deleteShop(Shop shop) throws DAOException {
 
 		try {
 			delete_shop_PS.setString(1, shop.getEmail());
 			delete_shop_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void updateShop(Shop shop, String old_email) throws DaoException {
+	public void updateShop(Shop shop, String old_email) throws DAOException {
 
 		
 		try {
@@ -269,14 +269,14 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			update_shop_CS.setString(8, old_email);
 			update_shop_CS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void closeStatements() throws DaoException {
+	public void closeStatements() throws DAOException {
 
-		DButility db_util = new DButility();
+		DBUtility db_util = new DBUtility();
 		db_util.closeStatement(authenticate_shop_login_PS);
 		db_util.closeStatement(get_all_shops_PS);
 		db_util.closeStatement(insert_shop_PS);
@@ -292,7 +292,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	}
 
 	@Override
-	public Shop getShopByEmail(String email) throws DaoException {
+	public Shop getShopByEmail(String email) throws DAOException {
 
 		InputUtility string_util = new InputUtility();
 		Shop shop = null;
@@ -327,7 +327,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs1.getShort("deliveries_number")));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				try {
 					get_meals_of_a_shop_by_shop_email_PS.setString(1, rs.getString("email"));
@@ -346,7 +346,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs2.getString("ingredients"), rs2.getString("category"), allergens));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				shop = new Shop(rs.getString("email"), rs.getString("name"), rs.getString("password"),
 						rs.getString("working_hours"),
@@ -356,7 +356,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			}
 		} catch (SQLException s) {
 
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -366,7 +366,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return shop;
 	}
 
-	public List<Shop> getShopByProvince(String province) throws DaoException {
+	public List<Shop> getShopByProvince(String province) throws DAOException {
 
 		InputUtility string_util = new InputUtility();
 		List<Shop> shop_list = new ArrayList<Shop>();
@@ -401,7 +401,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs1.getShort("deliveries_number")));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				try {
 					get_meals_of_a_shop_by_shop_email_PS.setString(1, rs.getString("email"));
@@ -420,7 +420,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 								rs2.getString("ingredients"), rs2.getString("category"), allergens));
 					}
 				} catch (SQLException s) {
-					throw new DaoException();
+					throw new DAOException();
 				}
 				shop_list.add(new Shop(rs.getString("email"), rs.getString("name"), rs.getString("password"),
 						rs.getString("working_hours"),
@@ -430,7 +430,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			}
 		} catch (SQLException s) {
 
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);

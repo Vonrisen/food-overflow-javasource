@@ -11,8 +11,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import daos_interfaces.MealDAO;
 import entities.Meal;
-import exceptions.DaoException;
-import utilities.DButility;
+import exceptions.DAOException;
+import utilities.DBUtility;
 import utilities.InputUtility;
 
 public class MealDAOPostgresImplementation implements MealDAO {
@@ -21,7 +21,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			get_all_meals_except_shop_meals_PS, insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS,
 			customer_complex_search_PS;
 	CallableStatement add_allergens_CS;
-	DButility db_util = new DButility();
+	DBUtility db_util = new DBUtility();
 
 	public MealDAOPostgresImplementation(Connection connection) {
 
@@ -50,7 +50,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 
 	}
 
-	public List<Meal> getAllMeals() throws DaoException {
+	public List<Meal> getAllMeals() throws DAOException {
 
 		ArrayList<String> allergens;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
@@ -68,7 +68,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 						rs1.getString("category"), allergens));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs2);
 			db_util.closeResultSet(rs1);
@@ -76,7 +76,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return meal_list;
 	}
 
-	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DaoException {
+	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DAOException {
 
 		ArrayList<String> allergens;
 		ArrayList<Meal> meal_list = new ArrayList<Meal>();
@@ -96,7 +96,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			}
 		} catch (SQLException s) {
 
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs2);
 			db_util.closeResultSet(rs1);
@@ -104,7 +104,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return meal_list;
 	}
 
-	public void insertMeal(Meal meal) throws DaoException {
+	public void insertMeal(Meal meal) throws DAOException {
 
 		try {
 			insert_meal_PS.setString(1, meal.getCategory());
@@ -115,58 +115,58 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			if (!meal.getAllergen_list().isEmpty())
 				associateAllergensToMeal(meal);
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void associateAllergensToMeal(Meal meal) throws DaoException {
+	public void associateAllergensToMeal(Meal meal) throws DAOException {
 		InputUtility input_utility = new InputUtility();
 		try {
 			add_allergens_CS.setString(1, meal.getName());
 			add_allergens_CS.setString(2, input_utility.arrayListToTokenizedString(meal.getAllergen_list(), ", "));
 			add_allergens_CS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void deleteMeal(Meal meal) throws DaoException {
+	public void deleteMeal(Meal meal) throws DAOException {
 		try {
 			delete_meal_PS.setString(1, meal.getName());
 			delete_meal_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void insertSupply(String shop_email, Meal meal) throws DaoException {
+	public void insertIntoMenu(String shop_email, Meal meal) throws DAOException {
 
 		try {
 			insert_supply_PS.setString(1, shop_email);
 			insert_supply_PS.setString(2, meal.getName());
 			insert_supply_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void deleteFromSupply(String shop_email, Meal meal) throws DaoException {
+	public void deleteFromSupply(String shop_email, Meal meal) throws DAOException {
 
 		try {
 			delete_from_supply_PS.setString(1, shop_email);
 			delete_from_supply_PS.setString(2, meal.getName());
 			delete_from_supply_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void closeStatements() throws DaoException {
+	public void closeStatements() throws DAOException {
 
 		db_util.closeStatement(get_allergens_of_a_meal_PS);
 		db_util.closeStatement(get_all_meals_PS);
@@ -182,7 +182,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	}
 
 	@Override
-	public Meal getMealByName(String name) throws DaoException {
+	public Meal getMealByName(String name) throws DAOException {
 
 		ArrayList<String> allergens;
 		Meal meal = null;
@@ -201,7 +201,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 						rs1.getString("category"), allergens);
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs2);
 			db_util.closeResultSet(rs1);
@@ -210,7 +210,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	}
 
 	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price,
-			List<String> allergens, String shop_email) throws DaoException {
+			List<String> allergens, String shop_email) throws DAOException {
 		List<String> allergen_list;
 		List<Meal> meal_list = new ArrayList<>();
 		ResultSet rs = null;
@@ -233,7 +233,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 						rs.getString("category"), allergen_list));
 			}
 		} catch (SQLException e) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);

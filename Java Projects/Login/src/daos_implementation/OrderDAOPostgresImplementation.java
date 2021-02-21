@@ -18,8 +18,8 @@ import entities.Order;
 import entities.OrderComposition;
 import entities.Rider;
 import entities.Shop;
-import exceptions.DaoException;
-import utilities.DButility;
+import exceptions.DAOException;
+import utilities.DBUtility;
 import utilities.InputUtility;
 
 public class OrderDAOPostgresImplementation implements OrderDAO {
@@ -29,7 +29,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS,
 			get_order_by_id_PS, do_complex_admin_search_PS;
 	private CallableStatement create_order_CS;
-	DButility db_util = new DButility();
+	DBUtility db_util = new DBUtility();
 
 	public OrderDAOPostgresImplementation(Connection connection) {
 
@@ -59,7 +59,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		}
 	}
 
-	public Rider getRiderOfTheOrderByCF(String cf) throws DaoException {
+	public Rider getRiderOfTheOrderByCF(String cf) throws DAOException {
 
 		ResultSet rs = null;
 		List<String> address_fields = new ArrayList<String>();
@@ -78,14 +78,14 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 						rs.getString("vehicle"), rs.getString("working_hours"), rs.getShort("deliveries_number"));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
 		return rider;
 	}
 
-	public Shop getShopOfTheOrderByEmail(String email) throws DaoException {
+	public Shop getShopOfTheOrderByEmail(String email) throws DAOException {
 
 		InputUtility string_util = new InputUtility();
 		List<String> address_fields = new ArrayList<String>();
@@ -103,14 +103,14 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 						rs.getString("closing_days"), null, null, rs.getString("home_phone"));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 		}
 		return shop;
 	}
 
-	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DaoException {
+	public List<Order> getOrdersOfAShopByShopEmail(String shop_email) throws DAOException {
 
 		ResultSet rs1 = null;
 		ResultSet rs = null;
@@ -136,7 +136,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 						rs1.getTime("delivery_time"), rs1.getString("note"), rider));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -144,7 +144,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		return order_list;
 	}
 
-	public List<Order> getInDeliveryOrdersOfAShop(String shop_email) throws DaoException {
+	public List<Order> getInDeliveryOrdersOfAShop(String shop_email) throws DAOException {
 
 		ResultSet rs = null;
 		ResultSet rs1 = null;
@@ -171,7 +171,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 								null, rs1.getString("note"), rider));
 			}
 		} catch (SQLException e) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -179,7 +179,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		return order_list;
 	}
 
-	public Customer getCustomerOfTheOrderByEmail(String email) throws DaoException {
+	public Customer getCustomerOfTheOrderByEmail(String email) throws DAOException {
 
 		InputUtility string_util = new InputUtility();
 		List<String> address_fields = new ArrayList<String>();
@@ -198,13 +198,13 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 						rs.getString("email"), rs.getString("password"));
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 
 		}
 		return customer;
 	}
 
-	public List<Order> getPendingOrdersOfAShop(String shop_email) throws DaoException {
+	public List<Order> getPendingOrdersOfAShop(String shop_email) throws DAOException {
 
 		ResultSet rs = null;
 		ResultSet rs1 = null;
@@ -231,7 +231,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 								null, rs1.getString("note"), rider));
 			}
 		} catch (SQLException e) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -239,29 +239,29 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		return order_list;
 	}
 
-	public void linkRiderToOrder(Order order, Rider rider) throws DaoException {
+	public void linkRiderToOrder(Order order, Rider rider) throws DAOException {
 		try {
 			link_rider_to_order_PS.setString(1, rider.getCf());
 			link_rider_to_order_PS.setString(2, order.getId());
 			link_rider_to_order_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void updateDeliveringOrder(Order order, String stato) throws DaoException {
+	public void updateDeliveringOrder(Order order, String stato) throws DAOException {
 		try {
 			update_delivering_order_PS.setString(1, stato);
 			update_delivering_order_PS.setString(2, order.getId());
 			update_delivering_order_PS.executeUpdate();
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 
-	public void closeStatements() throws DaoException {
+	public void closeStatements() throws DAOException {
 
 		db_util.closeStatement(update_delivering_order_PS);
 		db_util.closeStatement(link_rider_to_order_PS);
@@ -279,7 +279,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	}
 
 	@Override
-	public Order getOrderById(String id) throws DaoException {
+	public Order getOrderById(String id) throws DAOException {
 
 		ResultSet rs1 = null;
 		ResultSet rs = null;
@@ -305,7 +305,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 						rs1.getTime("delivery_time"), rs1.getString("note"), rider);
 			}
 		} catch (SQLException s) {
-			throw new DaoException();
+			throw new DAOException();
 		} finally {
 			db_util.closeResultSet(rs);
 			db_util.closeResultSet(rs1);
@@ -316,7 +316,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 
 	@Override
 	public void createOrder(Address address, String payment, String note, Shop shop, Customer customer, Cart cart)
-			throws DaoException {
+			throws DAOException {
 
 		InputUtility input_util = new InputUtility();
 		List<String> meal_names = new ArrayList<String>();
@@ -334,12 +334,12 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			create_order_CS.setString(6, input_util.arrayListToTokenizedString(quantities, ", "));
 			create_order_CS.executeUpdate();
 		} catch (SQLException e) {
-			throw new DaoException();
+			throw new DAOException();
 		}
 		return;
 	}
 	
-	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DaoException
+	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle, String province) throws DAOException
 	{
 
 		ResultSet rs = null;
@@ -361,7 +361,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 							   input_util.tokenizedStringToAddress(rs.getString("address"), "(, )"), rs.getTime("delivery_time"), rs.getString("note"), rider));
 			}
 		} catch (SQLException e) {
-			throw new DaoException();
+			throw new DAOException();
 		}		
 		return order_list;
 	}

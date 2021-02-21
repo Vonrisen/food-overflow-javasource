@@ -63,10 +63,5 @@ public class Meal {
 		this.allergen_list = allergen_list;
 	}
 
-	@Override
-	public String toString() {
-		return "Meal [name=" + name + ", price=" + price + ", ingredients=" + ingredients + ", category=" + category
-				+ ", allergen_list=" + allergen_list + "]";
-	}
 
 }

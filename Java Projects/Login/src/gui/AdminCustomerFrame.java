@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import controllers.AdminController;
 
 
+@SuppressWarnings("serial")
 public class AdminCustomerFrame extends StandardFrame {
 
 	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Email", "Password"};
@@ -20,12 +21,14 @@ public class AdminCustomerFrame extends StandardFrame {
 	
 	//Costruttore
 	public AdminCustomerFrame(AdminController admin_controller) {
-		frame();
+		
+		initialize();
 		this.admin_controller = admin_controller;
+		
 	}
 	
 	
-	private void frame() {
+	private void initialize() {
 		
 		setTitle("Food Overflow - AdminPanel: Visualizza clienti");
 

@@ -3,27 +3,27 @@ package daos_interfaces;
 import java.util.List;
 
 import entities.Meal;
-import exceptions.DaoException;
+import exceptions.DAOException;
 
 public interface MealDAO {
 
-	public List<Meal> getAllMeals() throws DaoException;
+	public List<Meal> getAllMeals() throws DAOException;
 
-	public void insertMeal(Meal meal) throws DaoException;
+	public void insertMeal(Meal meal) throws DAOException;
 
-	public void deleteMeal(Meal meal) throws DaoException;
+	public void deleteMeal(Meal meal) throws DAOException;
 
-	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DaoException;
+	public List<Meal> getAllMealsExceptShopMeals(String shop_email) throws DAOException;
 
-	public void insertSupply(String shop_email, Meal meal) throws DaoException;
+	public void insertIntoMenu(String shop_email, Meal meal) throws DAOException;
 
-	public void deleteFromSupply(String shop_email, Meal meal) throws DaoException;
+	public void deleteFromSupply(String shop_email, Meal meal) throws DAOException;
 
-	public Meal getMealByName(String name) throws DaoException;
+	public Meal getMealByName(String name) throws DAOException;
 
-	public void closeStatements() throws DaoException;
+	public void closeStatements() throws DAOException;
 
 	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price,
-			List<String> allergens, String shop_email) throws DaoException;
+			List<String> allergens, String shop_email) throws DAOException;
 
 }

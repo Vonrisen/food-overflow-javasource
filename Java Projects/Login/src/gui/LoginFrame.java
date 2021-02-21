@@ -28,6 +28,7 @@ import gui_support.RoundJTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("serial")
 public class LoginFrame extends JFrame{
 
 	private JFrame frame;
@@ -377,6 +378,7 @@ public class LoginFrame extends JFrame{
 		});
 
 		loginButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent validazione_credenziali_admin) {
 				
 				if((usernameTF.getText().equals("Inserisci ID o E-mail"))||(passwordTF.getText().equals("Inserisci password"))) {
@@ -418,6 +420,7 @@ public class LoginFrame extends JFrame{
 		});
 
 		passwordTF.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
@@ -428,6 +431,7 @@ public class LoginFrame extends JFrame{
 				}
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusLost(FocusEvent e) {
 
@@ -464,268 +468,26 @@ public class LoginFrame extends JFrame{
 		
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
-	public Dimension getScreen_dim() {
-		return screen_dim;
-	}
-
-	public void setScreen_dim(Dimension screen_dim) {
-		this.screen_dim = screen_dim;
-	}
-
-	public JPanel getTopPanel() {
-		return topPanel;
-	}
-
-	public void setTopPanel(JPanel topPanel) {
-		this.topPanel = topPanel;
-	}
-
+	
 	public JLabel getLogoLabel() {
 		return logoLabel;
-	}
-
-	public void setLogoLabel(JLabel logoLabel) {
-		this.logoLabel = logoLabel;
-	}
-
-	public JPanel getLoginPanel() {
-		return loginPanel;
-	}
-
-	public void setLoginPanel(JPanel loginPanel) {
-		this.loginPanel = loginPanel;
-	}
-
-	public ImageIcon getLogoImage() {
-		return logoImage;
-	}
-
-	public void setLogoImage(ImageIcon logoImage) {
-		this.logoImage = logoImage;
-	}
-
-	public JButton getAdminButton() {
-		return adminButton;
-	}
-
-	public void setAdminButton(JButton adminButton) {
-		this.adminButton = adminButton;
-	}
-
-	public JButton getShopButton() {
-		return shopButton;
-	}
-
-	public void setShopButton(JButton shopButton) {
-		this.shopButton = shopButton;
-	}
-
-	public JButton getHomeButton() {
-		return homeButton;
-	}
-
-	public void setHomeButton(JButton homeButton) {
-		this.homeButton = homeButton;
-	}
-
-	public JButton getCustomerButton() {
-		return customerButton;
-	}
-
-	public void setCustomerButton(JButton customerButton) {
-		this.customerButton = customerButton;
-	}
-
-	public JButton getLoginButton() {
-		return loginButton;
-	}
-
-	public void setLoginButton(JButton loginButton) {
-		this.loginButton = loginButton;
-	}
-
-	public JButton getRegisterButton() {
-		return registerButton;
-	}
-
-	public void setRegisterButton(JButton registerButton) {
-		this.registerButton = registerButton;
-	}
-
-	public JLabel getUsernameImage() {
-		return usernameImage;
-	}
-
-	public void setUsernameImage(JLabel usernameImage) {
-		this.usernameImage = usernameImage;
-	}
-
-	public JLabel getPasswordImage() {
-		return passwordImage;
-	}
-
-	public void setPasswordImage(JLabel passwordImage) {
-		this.passwordImage = passwordImage;
-	}
-
-	public ImageIcon getUsernameIcon() {
-		return usernameIcon;
-	}
-
-	public void setUsernameIcon(ImageIcon usernameIcon) {
-		this.usernameIcon = usernameIcon;
-	}
-
-	public ImageIcon getPasswordIcon() {
-		return passwordIcon;
-	}
-
-	public void setPasswordIcon(ImageIcon passwordIcon) {
-		this.passwordIcon = passwordIcon;
-	}
-
-	public ImageIcon getHomeButtonActive() {
-		return homeButtonActive;
-	}
-
-	public void setHomeButtonActive(ImageIcon homeButtonActive) {
-		this.homeButtonActive = homeButtonActive;
-	}
-
-	public ImageIcon getAdminButtonActive() {
-		return adminButtonActive;
-	}
-
-	public void setAdminButtonActive(ImageIcon adminButtonActive) {
-		this.adminButtonActive = adminButtonActive;
-	}
-
-	public ImageIcon getShopButtonActive() {
-		return shopButtonActive;
-	}
-
-	public void setShopButtonActive(ImageIcon shopButtonActive) {
-		this.shopButtonActive = shopButtonActive;
-	}
-
-	public ImageIcon getAdminButtonInactive() {
-		return adminButtonInactive;
-	}
-
-	public void setAdminButtonInactive(ImageIcon adminButtonInactive) {
-		this.adminButtonInactive = adminButtonInactive;
-	}
-
-	public ImageIcon getShopButtonInactive() {
-		return shopButtonInactive;
-	}
-
-	public void setShopButtonInactive(ImageIcon shopButtonInactive) {
-		this.shopButtonInactive = shopButtonInactive;
-	}
-
-	public ImageIcon getHomeButtonInactive() {
-		return homeButtonInactive;
-	}
-
-	public void setHomeButtonInactive(ImageIcon homeButtonInactive) {
-		this.homeButtonInactive = homeButtonInactive;
-	}
-
-	public ImageIcon getCustomerButtonInactive() {
-		return customerButtonInactive;
-	}
-
-	public void setCustomerButtonInactive(ImageIcon customerButtonInactive) {
-		this.customerButtonInactive = customerButtonInactive;
-	}
-
-	public ImageIcon getCustomerButtonActive() {
-		return customerButtonActive;
-	}
-
-	public void setCustomerButtonActive(ImageIcon customerButtonActive) {
-		this.customerButtonActive = customerButtonActive;
-	}
-
-	public ImageIcon getLoginButtonActive() {
-		return loginButtonActive;
-	}
-
-	public void setLoginButtonActive(ImageIcon loginButtonActive) {
-		this.loginButtonActive = loginButtonActive;
-	}
-
-	public ImageIcon getLoginButtonInactive() {
-		return loginButtonInactive;
-	}
-
-	public void setLoginButtonInactive(ImageIcon loginButtonInactive) {
-		this.loginButtonInactive = loginButtonInactive;
-	}
-
-	public ImageIcon getRegisterButtonActive() {
-		return registerButtonActive;
-	}
-
-	public void setRegisterButtonActive(ImageIcon registerButtonActive) {
-		this.registerButtonActive = registerButtonActive;
-	}
-
-	public ImageIcon getRegisterButtonInactive() {
-		return registerButtonInactive;
-	}
-
-	public void setRegisterButtonInactive(ImageIcon registerButtonInactive) {
-		this.registerButtonInactive = registerButtonInactive;
 	}
 
 	public ImageIcon getAdminLogoImage() {
 		return adminLogoImage;
 	}
 
-	public void setAdminLogoImage(ImageIcon adminLogoImage) {
-		this.adminLogoImage = adminLogoImage;
-	}
-
 	public ImageIcon getShopLogoImage() {
 		return shopLogoImage;
 	}
 
-	public void setShopLogoImage(ImageIcon shopLogoImage) {
-		this.shopLogoImage = shopLogoImage;
-	}
-
-	public ImageIcon getCustomerLogoImage() {
-		return customerLogoImage;
-	}
-
-	public void setCustomerLogoImage(ImageIcon customerLogoImage) {
-		this.customerLogoImage = customerLogoImage;
-	}
 
 	public JTextField getUsernameTF() {
 		return usernameTF;
 	}
 
-	public void setUsernameTF(RoundJTextField usernameTF) {
-		this.usernameTF = usernameTF;
-	}
-
 	public JPasswordField getPasswordTF() {
 		return passwordTF;
-	}
-
-	public void setPasswordTF(RoundJPasswordField passwordTF) {
-		this.passwordTF = passwordTF;
 	}
 
 }

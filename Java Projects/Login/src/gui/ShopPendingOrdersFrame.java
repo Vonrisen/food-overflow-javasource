@@ -19,10 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import controllers.AdminController;
 import controllers.ShopController;
 
+@SuppressWarnings("serial")
 public class ShopPendingOrdersFrame extends JFrame {
 	
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -49,10 +48,10 @@ public class ShopPendingOrdersFrame extends JFrame {
 	private JPanel all_meal_panel;
 	private JPanel buttons_panel;
 	
-	private JTable table;
+	private JTable pending_orders_table;
 	private JScrollPane scroll_pane;
 	
-	private JTable table2;
+	private JTable riders_table;
 	private JScrollPane scroll_pane2;
 	
 	private JButton go_backJB;
@@ -60,9 +59,9 @@ public class ShopPendingOrdersFrame extends JFrame {
 	
 	private Color background_color = new Color(0xf3ecd7);
 	
-	private DefaultTableModel model;
-	private DefaultTableModel model2;
-	ShopController shop_controller;
+	private DefaultTableModel pending_orders_model;
+	private DefaultTableModel riders_model;
+	private ShopController shop_controller;
 	
 	private String[] columns = {"ID","Data","Indirizzo","Pagamento","Note","Cliente"};
 	private String[] columns2 = {"CF", "Cellulare", "Veicolo", "Orario di lavoro","N. consegne"};
@@ -100,7 +99,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 		table_titleLB = new JLabel();
 		select_orderLB = new JLabel();
 		
-		table = (new JTable() {
+		pending_orders_table = (new JTable() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -111,7 +110,7 @@ public class ShopPendingOrdersFrame extends JFrame {
 			}
 		});
 		
-		table2 = (new JTable() {
+		riders_table = (new JTable() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -122,8 +121,8 @@ public class ShopPendingOrdersFrame extends JFrame {
 			}
 		});
 		
-		scroll_pane = new JScrollPane(table);
-		scroll_pane2 = new JScrollPane(table2);
+		scroll_pane = new JScrollPane(pending_orders_table);
+		scroll_pane2 = new JScrollPane(riders_table);
 		
 		go_backJB = new JButton();
 		add_rider_to_orderJB = new JButton();
@@ -170,21 +169,21 @@ public class ShopPendingOrdersFrame extends JFrame {
 		all_meal_panel.add(buttons_panel, BorderLayout.CENTER);
 		
 		//Impostazione JTable
-		table.setAutoCreateRowSorter(false);
-		table.setRowSelectionAllowed(true);
-		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setPreferredScrollableViewportSize(new Dimension(500,50));
-		table.setFillsViewportHeight(true);
-		table.setModel(model = new DefaultTableModel(columns, 0));
+		pending_orders_table.setAutoCreateRowSorter(false);
+		pending_orders_table.setRowSelectionAllowed(true);
+		pending_orders_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		pending_orders_table.getTableHeader().setReorderingAllowed(false);
+		pending_orders_table.setPreferredScrollableViewportSize(new Dimension(500,50));
+		pending_orders_table.setFillsViewportHeight(true);
+		pending_orders_table.setModel(pending_orders_model = new DefaultTableModel(columns, 0));
 		
-		table2.setAutoCreateRowSorter(false);
-		table2.setRowSelectionAllowed(true);
-		table2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		table2.getTableHeader().setReorderingAllowed(false);
-		table2.setPreferredScrollableViewportSize(new Dimension(500,50));
-		table2.setFillsViewportHeight(true);
-		table2.setModel(model2 = new DefaultTableModel(columns2, 0));
+		riders_table.setAutoCreateRowSorter(false);
+		riders_table.setRowSelectionAllowed(true);
+		riders_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		riders_table.getTableHeader().setReorderingAllowed(false);
+		riders_table.setPreferredScrollableViewportSize(new Dimension(500,50));
+		riders_table.setFillsViewportHeight(true);
+		riders_table.setModel(riders_model = new DefaultTableModel(columns2, 0));
 		
 		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		scroll_pane2.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
@@ -272,157 +271,30 @@ public class ShopPendingOrdersFrame extends JFrame {
 		panel.setPreferredSize(dimension);
 	}
 
-	public JTable getTable() {
-		return table;
-	}
 
-	public void setTable(JTable table) {
-		this.table = table;
-	}
-
-	public DefaultTableModel getModel() {
-		return model;
-	}
-
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
-	public Dimension getScreen_dim() {
-		return screen_dim;
-	}
-
-	public void setScreen_dim(Dimension screen_dim) {
-		this.screen_dim = screen_dim;
-	}
-
-	public ImageIcon getGo_back_inactiveIMG() {
-		return go_back_inactiveIMG;
-	}
-
-	public void setGo_back_inactiveIMG(ImageIcon go_back_inactiveIMG) {
-		this.go_back_inactiveIMG = go_back_inactiveIMG;
-	}
-
-	public ImageIcon getGo_back_activeIMG() {
-		return go_back_activeIMG;
-	}
-
-	public void setGo_back_activeIMG(ImageIcon go_back_activeIMG) {
-		this.go_back_activeIMG = go_back_activeIMG;
-	}
-
-	public Dimension getButton_size() {
-		return button_size;
-	}
-
-	public void setButton_size(Dimension button_size) {
-		this.button_size = button_size;
-	}
-
-	public Dimension getWest_east_size() {
-		return west_east_size;
-	}
-
-	public void setWest_east_size(Dimension west_east_size) {
-		this.west_east_size = west_east_size;
-	}
-
-	public Dimension getNorth_south_size() {
-		return north_south_size;
-	}
-
-	public void setNorth_south_size(Dimension north_south_size) {
-		this.north_south_size = north_south_size;
-	}
-
-	public JPanel getWest_panel() {
-		return west_panel;
-	}
-
-	public void setWest_panel(JPanel west_panel) {
-		this.west_panel = west_panel;
-	}
-
-	public JPanel getEast_panel() {
-		return east_panel;
-	}
-
-	public void setEast_panel(JPanel east_panel) {
-		this.east_panel = east_panel;
-	}
-
-	public JPanel getNorth_panel() {
-		return north_panel;
-	}
-
-	public void setNorth_panel(JPanel north_panel) {
-		this.north_panel = north_panel;
-	}
-
-	public JPanel getSouth_panel() {
-		return south_panel;
-	}
-
-	public void setSouth_panel(JPanel south_panel) {
-		this.south_panel = south_panel;
-	}
-
-	public JPanel getCenter_panel() {
-		return center_panel;
-	}
-
-	public void setCenter_panel(JPanel center_panel) {
-		this.center_panel = center_panel;
-	}
-
-	public JScrollPane getScroll_pane() {
-		return scroll_pane;
-	}
-
-	public void setScroll_pane(JScrollPane scroll_pane) {
-		this.scroll_pane = scroll_pane;
-	}
-
-	public JButton getGo_backJB() {
-		return go_backJB;
-	}
-
-	public void setGo_backJB(JButton go_backJB) {
-		this.go_backJB = go_backJB;
-	}
-
-	public Color getBackground_color() {
-		return background_color;
-	}
-
-	public void setBackground_color(Color background_color) {
-		this.background_color = background_color;
-	}
-
-	public ImageIcon getTable_title() {
-		return table_titleIMG;
-	}
-
-	public void setTable_title(ImageIcon table_title) {
-		this.table_titleIMG = table_title;
-	}
-
-	public JLabel getTable_titleLB() {
-		return table_titleLB;
-	}
-
-	public void setTable_titleLB(JLabel table_titleLB) {
-		this.table_titleLB = table_titleLB;
+	public JTable getRiders_table() {
+		return riders_table;
 	}
 
 
-	public DefaultTableModel getModel2() {
-		return model2;
+	public DefaultTableModel getRiders_model() {
+		return riders_model;
 	}
-	public JTable getTable2() {
-		return table2;
+
+
+	public JTable getPending_orders_table() {
+		return pending_orders_table;
 	}
+
+
+	public DefaultTableModel getPending_orders_model() {
+		return pending_orders_model;
+	}
+	
+	
+	
+	
+
 	
 	
 }

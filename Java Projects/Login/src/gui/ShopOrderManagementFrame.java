@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import controllers.ShopController;
 
 
+@SuppressWarnings("serial")
 public class ShopOrderManagementFrame extends JFrame{
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();

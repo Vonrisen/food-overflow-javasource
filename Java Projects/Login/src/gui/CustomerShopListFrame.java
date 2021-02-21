@@ -37,6 +37,7 @@ import controllers.LoginController;
 import entities.Shop;
 import gui_support.RoundJTextField;
 
+@SuppressWarnings("serial")
 public class CustomerShopListFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -71,7 +72,7 @@ public class CustomerShopListFrame extends JFrame {
 	private JButton logoutJB;
 	
 	private JLabel background;
-	DefaultTableModel model;
+	private DefaultTableModel model;
 	private CustomerController customer_controller;
 	private LoginController login_controller;
 	
@@ -278,7 +279,6 @@ public class CustomerShopListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				customer_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(CustomerShopListFrame.this);
 			}
 		});
@@ -336,9 +336,6 @@ public class CustomerShopListFrame extends JFrame {
 		return model;
 	}
 
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
 	
 	
 

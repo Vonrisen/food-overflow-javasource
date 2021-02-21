@@ -15,6 +15,7 @@ import gui_support.RoundJTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class CustomerCheckoutFrame extends JFrame{
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -189,41 +190,24 @@ public class CustomerCheckoutFrame extends JFrame{
 		return orderJB;
 	}
 
-	public void setOrderJB(JButton orderJB) {
-		this.orderJB = orderJB;
-	}
-
 	public JTextField getAddressTF() {
 		return addressTF;
 	}
 
-	public void setAddressTF(String address) {
-		this.addressTF.setText(address);
-	}
 
 	public JTextField getTotal_priceTF() {
 		return total_priceTF;
 	}
 
-	public void setTotal_priceTF(String total_price) {
-		this.total_priceTF.setText(total_price);
-	}
 
 	public JTextField getShopTF() {
 		return shopTF;
-	}
-
-	public void setShopTF(String shop_name) {
-		this.shopTF.setText(shop_name);
 	}
 
 	public JTextField getCellphoneTF() {
 		return cellphoneTF;
 	}
 
-	public void setCellphoneTF(String cellphone) {
-		this.cellphoneTF.setText(cellphone);
-	}
 
 	public JTextField getNoteTF() {
 		return noteTF;

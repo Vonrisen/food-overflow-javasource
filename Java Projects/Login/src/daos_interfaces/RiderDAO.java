@@ -2,20 +2,20 @@ package daos_interfaces;
 
 import java.util.List;
 import entities.Rider;
-import exceptions.DaoException;
+import exceptions.DAOException;
 
 public interface RiderDAO {
 
-	public List<Rider> getAllRiders() throws DaoException;
+	public List<Rider> getAllRiders() throws DAOException;
 
-	public void insertRider(Rider rider, String shop_email) throws DaoException;
+	public void insertRider(Rider rider, String shop_email) throws DAOException;
 
-	public void dismissRider(Rider rider) throws DaoException;
+	public void dismissRider(Rider rider) throws DAOException;
 
-	public void updateRider(Rider rider) throws DaoException;
+	public void updateRider(Rider rider) throws DAOException;
 
-	public void closeStatements() throws DaoException;
+	public void closeStatements() throws DAOException;
 
-	public Rider getRiderByCf(String cf) throws DaoException;
+	public Rider getRiderByCf(String cf) throws DAOException;
 
 }

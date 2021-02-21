@@ -33,6 +33,7 @@ import controllers.CustomerController;
 import controllers.LoginController;
 import gui_support.RoundJTextField;
 
+@SuppressWarnings("serial")
 public class CustomerMealListFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -434,7 +435,6 @@ public class CustomerMealListFrame extends JFrame {
 			}
 			public void mousePressed(MouseEvent e) {
 				
-				customer_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(CustomerMealListFrame.this);
 				
 			}

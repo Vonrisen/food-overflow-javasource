@@ -30,6 +30,7 @@ import controllers.CustomerController;
 import controllers.LoginController;
 import gui_support.RoundJTextField;
 
+@SuppressWarnings("serial")
 public class CustomerCartFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -93,7 +94,7 @@ public class CustomerCartFrame extends JFrame {
 	private JLabel cart_logoLB;
 
 	private JLabel background;
-	DefaultTableModel model;
+	private DefaultTableModel model;
 	private CustomerController customer_controller;
 	private LoginController login_controller;
 
@@ -523,7 +524,6 @@ public class CustomerCartFrame extends JFrame {
 
 			public void mousePressed(MouseEvent e) {
 
-				customer_controller.releaseDaoResourcesWhenLoggingOut();
 				login_controller.openLoginFrame(CustomerCartFrame.this);
 				
 			}
@@ -549,25 +549,8 @@ public class CustomerCartFrame extends JFrame {
 		return new ImageIcon(bi);
 	}
 
-	private void textFieldFocusGained(JTextField text_field, String string) {
 
-		if (text_field.getText().equals(string)) {
 
-			text_field.setText("");
-			text_field.setHorizontalAlignment(JTextField.LEFT);
-
-		}
-
-	}
-
-	private void textFieldFocusLost(JTextField text_field, String string) {
-
-		if (text_field.getText().equals("")) {
-			text_field.setText(string);
-			text_field.setHorizontalAlignment(JTextField.CENTER);
-		}
-
-	}
 
 	private void createTextField(JTextField text_field, String text, Dimension dimension) {
 
@@ -609,9 +592,4 @@ public class CustomerCartFrame extends JFrame {
 	public JTextField getQuantityTF() {
 		return quantityTF;
 	}
-
-	public void setQuantityTF(JTextField quantityTF) {
-		this.quantityTF = quantityTF;
-	}
-
 }
