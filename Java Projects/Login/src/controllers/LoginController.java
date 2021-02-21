@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_implementation.CustomerDAOPostgresImplementation;
@@ -28,7 +27,7 @@ import utilities.FiscalCodeUtility;
 import utilities.DBUtility;
 import utilities.IstatUtility;
 
-public class LoginController{
+public class LoginController {
 
 	private Connection connection;
 	private ShopDAO shop_dao;
@@ -108,7 +107,7 @@ public class LoginController{
 					login_frame.setVisible(false);
 					Customer customer = customer_dao.getCustomerByEmail(login_frame.getUsernameTF().getText());
 					CustomerController customer_controller = new CustomerController(customer, connection, customer_dao,
-							shop_dao, meal_dao,order_dao, this);
+							shop_dao, meal_dao, order_dao, this);
 					customer_controller.openCustomerFrame(login_frame);
 				} else {
 					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare", "Errore",
@@ -202,7 +201,7 @@ public class LoginController{
 
 	public void releaseAllDaoResourcesAndDisposeFrame(JFrame frame) {
 		DBUtility db_utility = new DBUtility();
-		db_utility.closeAllResources(shop_dao, order_dao, meal_dao,null, customer_dao, connection, frame);
+		db_utility.closeAllResources(shop_dao, order_dao, meal_dao, null, customer_dao, connection, frame);
 		return;
 	}
 

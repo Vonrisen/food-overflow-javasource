@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import daos_interfaces.CustomerDAO;
@@ -34,13 +33,13 @@ public class AdminController {
 
 	private Connection connection;
 	private LoginController login_controller;
-	CustomerDAO customer_dao;
-	ShopDAO shop_dao;
-	MealDAO meal_dao;
-	OrderDAO order_dao;
+	private CustomerDAO customer_dao;
+	private ShopDAO shop_dao;
+	private MealDAO meal_dao;
+	private OrderDAO order_dao;
 
 	public AdminController(Connection connection, LoginController login_controller, CustomerDAO customer_dao,
-			ShopDAO shop_dao, MealDAO meal_dao, OrderDAO order_dao) {
+						   ShopDAO shop_dao, MealDAO meal_dao, OrderDAO order_dao) {
 		this.login_controller = login_controller;
 		this.connection = connection;
 		this.customer_dao = customer_dao;
@@ -69,8 +68,7 @@ public class AdminController {
 			List<Shop> shop_list = shop_dao.getAllShops();
 			table_utility.initializeShopTable(admin_shop_frame.getModel(), shop_list);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 		admin_shop_frame.setVisible(true);
 		return;
@@ -91,8 +89,7 @@ public class AdminController {
 			List<Meal> meal_list = meal_dao.getAllMeals();
 			table_utility.initializeMealTable(admin_meal_frame.getModel(), meal_list);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 		admin_meal_frame.setVisible(true);
 		return;
@@ -106,15 +103,13 @@ public class AdminController {
 			List<Customer> customer_list = customer_dao.getAllCustomers();
 			table_utility.initializeCustomerTable(admin_customer_frame.getModel(), customer_list);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 		admin_customer_frame.setVisible(true);
 		return;
 	}
 
 	public void openAdminOrderFrame(JFrame frame) {
-
 		frame.dispose();
 		AdminOrderFrame admin_order_frame = new AdminOrderFrame(this);
 		admin_order_frame.setVisible(true);
@@ -137,8 +132,7 @@ public class AdminController {
 			try {
 				rider_list = shop_dao.getRidersOfAShopByShopEmail(shop_email);
 			} catch (DAOException e) {
-				JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 			if (!rider_list.isEmpty()) {
 				table_utility.initializeRiderTable(admin_rider_frame.getModel(), rider_list);
@@ -161,8 +155,8 @@ public class AdminController {
 				&& !admin_shop_frame.getAddress_townCB().getSelectedItem().toString().equals("-------------------")) {
 			try {
 				Shop shop = new Shop(admin_shop_frame.getEmailTF().getText(), admin_shop_frame.getNameTF().getText(),
-						admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
-						new Address(admin_shop_frame.getAddress_nameTF().getText(),
+									admin_shop_frame.getPasswordTF().getText(), admin_shop_frame.getWorking_hoursTF().getText(),
+									new Address(admin_shop_frame.getAddress_nameTF().getText(),
 									admin_shop_frame.getAddress_civic_numberTF().getText(),
 									admin_shop_frame.getAddress_capTF().getText(),
 									admin_shop_frame.getAddress_townCB().getSelectedItem().toString(),
@@ -172,8 +166,8 @@ public class AdminController {
 				shop_dao.insertShop(shop);
 				admin_shop_frame.getModel().insertRow(admin_shop_frame.getModel().getRowCount(),
 						new Object[] { shop.getEmail(), shop.getPassword(), shop.getName(),
-								shop.getAddress().toString(), shop.getWorking_hours(), shop.getClosing_days(),
-								shop.getHome_phone() });
+									   shop.getAddress().toString(), shop.getWorking_hours(), shop.getClosing_days(),
+									   shop.getHome_phone() });
 			} catch (DAOException e) {
 				JOptionPane.showMessageDialog(null,
 						"Inserire correttamente i campi.\nHint: Controlla la validita' dell' indirizzo, email, orario lavorativo e giorni di chiusura",
@@ -228,9 +222,7 @@ public class AdminController {
 				admin_shop_frame.getModel().removeRow(row);
 				JOptionPane.showMessageDialog(null, "Negozio cancellato dal sistema");
 			} catch (DAOException e) {
-				JOptionPane.showMessageDialog(null,
-						"Errore critico, riprovare",
-						"Errore", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 		} else
 			JOptionPane.showMessageDialog(null, "Selezionare il negozio che desideri cancellare", "Attenzione",
@@ -248,8 +240,7 @@ public class AdminController {
 				admin_meal_frame.getModel().removeRow(row);
 				JOptionPane.showMessageDialog(null, "Pasto rimosso con successo");
 			} catch (DAOException e) {
-				JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 		} else
 			JOptionPane.showMessageDialog(null, "Select il pasto da rimuovere", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -257,7 +248,6 @@ public class AdminController {
 	}
 
 	public void updateShop(AdminShopFrame admin_shop_frame) {
-
 		int row = admin_shop_frame.getTable().getSelectedRow();
 		TableModelUtility table_utility = new TableModelUtility();
 		if (row != -1) {
@@ -269,10 +259,10 @@ public class AdminController {
 					Shop shop_to_update = shop_dao.getShopByEmail(email_of_shop_to_update);
 					shop_to_update.setName(admin_shop_frame.getNameTF().getText());
 					shop_to_update.setAddress(new Address(admin_shop_frame.getAddress_nameTF().getText(),
-							admin_shop_frame.getAddress_civic_numberTF().getText(),
-							admin_shop_frame.getAddress_capTF().getText(),
-							admin_shop_frame.getAddress_townCB().getSelectedItem().toString(),
-							admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString()));
+														  admin_shop_frame.getAddress_civic_numberTF().getText(),
+														  admin_shop_frame.getAddress_capTF().getText(),
+														  admin_shop_frame.getAddress_townCB().getSelectedItem().toString(),
+														  admin_shop_frame.getAddress_provinceCB().getSelectedItem().toString()));
 					shop_to_update.setClosing_days(admin_shop_frame.getClosing_daysTF().getText());
 					shop_to_update.setWorking_hours(admin_shop_frame.getWorking_hoursTF().getText());
 					shop_to_update.setPassword(admin_shop_frame.getPasswordTF().getText());
@@ -311,7 +301,6 @@ public class AdminController {
 	}
 
 	public void doAdminComplexSearch(AdminOrderFrame admin_order_frame) {
-
 		String category = admin_order_frame.getCategoryCB().getSelectedItem().toString();
 		String vehicle = admin_order_frame.getVehicleCB().getSelectedItem().toString();
 		String province = admin_order_frame.getAddressCB().getSelectedItem().toString();
@@ -329,8 +318,7 @@ public class AdminController {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Inserisci un prezzo valido ", "Errore", JOptionPane.ERROR_MESSAGE);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

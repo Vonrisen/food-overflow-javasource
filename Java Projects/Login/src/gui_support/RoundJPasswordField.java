@@ -9,12 +9,9 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 
+@SuppressWarnings("serial")
 public class RoundJPasswordField extends JPasswordField {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Color color;
 
 	public RoundJPasswordField(Color color) {

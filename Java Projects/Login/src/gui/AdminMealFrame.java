@@ -51,7 +51,7 @@ public class AdminMealFrame extends ComplexFrame {
 
 	private void initialize() {
 
-		setTable_title(new ImageIcon("src\\images\\others\\meals.png"));
+		table_title = new ImageIcon("src\\images\\others\\meals.png");
 
 		dish_panel = new JPanel();
 		allergens_panel = new JPanel();
@@ -65,7 +65,7 @@ public class AdminMealFrame extends ComplexFrame {
 		priceTF = new RoundJTextField(new Color(0x771007));
 		ingredientsTF = new RoundJTextField(new Color(0x771007));
 
-		getTable().setModel(model = new DefaultTableModel(columns, 0));
+		table.setModel(model = new DefaultTableModel(columns, 0));
 
 	}
 
@@ -73,48 +73,48 @@ public class AdminMealFrame extends ComplexFrame {
 
 		// Layout setup
 		setTitle("Food Overflow - Admin Panel: Gestione alimenti");
-		getTable_titleLB().setIcon(getTable_title());
-		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		table_titleLB.setIcon(table_title);
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		// Sottopannelli di "attributes_panel"
 		createStandardPanel(dish_panel, null, new Dimension(335, 75));
-		getAttributes_panel().add(dish_panel);
+		attributes_panel.add(dish_panel);
 
 		// Textfields setup
-		dish_panel.add(getLabel());
+		dish_panel.add(label);
 
-		dishJCB.setPreferredSize(getLong_dim_of_textfield());
+		dishJCB.setPreferredSize(long_dim_of_textfield);
 		dishJCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		dishJCB.setFocusable(false);
 		dishJCB.setBackground(Color.white);
 		dish_panel.add(dishJCB);
 
-		createTextField(nameTF, "Nome", getShort_dim_of_textfield());
-		getAttributes_panel().add(nameTF);
+		createTextField(nameTF, "Nome", short_dim_of_textfield);
+		attributes_panel.add(nameTF);
 
-		createTextField(priceTF, "Prezzo in €", getShort_dim_of_textfield());
-		getAttributes_panel().add(priceTF);
+		createTextField(priceTF, "Prezzo in €", short_dim_of_textfield);
+		attributes_panel.add(priceTF);
 
-		createTextField(ingredientsTF, "Ingredienti", getLong_dim_of_textfield());
-		getAttributes_panel().add(ingredientsTF);
+		createTextField(ingredientsTF, "Ingredienti", long_dim_of_textfield);
+		attributes_panel.add(ingredientsTF);
 
 		// Button setup
-		getButtons_panel().add(getInsert_sqlJB());
-		getButtons_panel().add(getDelete_sqlJB());
-		getButtons_panel().add(getGo_backJB());
+		buttons_panel.add(insert_sqlJB);
+		buttons_panel.add(update_sqlJB);
+		buttons_panel.add(go_backJB);
 
 		// Checkboxes setup
 		allergensLB.setHorizontalAlignment(JLabel.CENTER);
-		allergensLB.setPreferredSize(getLong_dim_of_textfield());
-		getAttributes_panel().add(allergensLB);
+		allergensLB.setPreferredSize(long_dim_of_textfield);
+		attributes_panel.add(allergensLB);
 
 		allergens_panel.setLayout(new BoxLayout(allergens_panel, BoxLayout.Y_AXIS));
 		createStandardPanel(allergens_panel, null, new Dimension(150, 200));
-		getAttributes_panel().add(allergens_panel);
+		attributes_panel.add(allergens_panel);
 
 		allergens_panel2.setLayout(new BoxLayout(allergens_panel2, BoxLayout.Y_AXIS));
 		createStandardPanel(allergens_panel2, null, new Dimension(150, 200));
-		getAttributes_panel().add(allergens_panel2);
+		attributes_panel.add(allergens_panel2);
 
 		allergensLoader();
 
@@ -122,21 +122,21 @@ public class AdminMealFrame extends ComplexFrame {
 
 	private void events() {
 
-		getInsert_sqlJB().addMouseListener(new MouseAdapter() {
+		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				admin_controller.addMeal(AdminMealFrame.this);
 			}
 		});
 
-		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
+		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				admin_controller.removeMeal(AdminMealFrame.this);
 			}
 		});
 
-		getGo_backJB().addMouseListener(new MouseAdapter() {
+		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				admin_controller.openAdminFrame(AdminMealFrame.this);
@@ -212,7 +212,6 @@ public class AdminMealFrame extends ComplexFrame {
 		return nameTF;
 	}
 
-
 	public JTextField getPriceTF() {
 		return priceTF;
 	}
@@ -224,7 +223,6 @@ public class AdminMealFrame extends ComplexFrame {
 	public JComboBox<Object> getDishJCB() {
 		return dishJCB;
 	}
-
 
 	public JCheckBox[] getAllergens() {
 		return allergens;

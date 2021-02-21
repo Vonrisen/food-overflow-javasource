@@ -17,11 +17,11 @@ import utilities.InputUtility;
 
 public class MealDAOPostgresImplementation implements MealDAO {
 
-	PreparedStatement get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS,
+	private PreparedStatement get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS,
 			get_all_meals_except_shop_meals_PS, insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS,
 			customer_complex_search_PS;
-	CallableStatement add_allergens_CS;
-	DBUtility db_util = new DBUtility();
+	private CallableStatement add_allergens_CS;
+	private DBUtility db_util = new DBUtility();
 
 	public MealDAOPostgresImplementation(Connection connection) {
 
@@ -209,8 +209,8 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		return meal;
 	}
 
-	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price,
-			List<String> allergens, String shop_email) throws DAOException {
+	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price, List<String> allergens,
+			String shop_email) throws DAOException {
 		List<String> allergen_list;
 		List<Meal> meal_list = new ArrayList<>();
 		ResultSet rs = null;

@@ -1,44 +1,27 @@
 package gui;
 
-import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
-import controllers.AdminController;
 import controllers.CustomerController;
-import controllers.LoginController;
-import entities.Shop;
 import gui_support.RoundJPasswordField;
 import gui_support.RoundJTextField;
 
@@ -46,7 +29,6 @@ import gui_support.RoundJTextField;
 public class CustomerProfileFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	private Dimension long_dim_of_textfield;
 	private ImageIcon backgroundIMG;
 	private ImageIcon male_avatarIMG;
 	private ImageIcon female_avatarIMG;
@@ -58,41 +40,38 @@ public class CustomerProfileFrame extends JFrame {
 	private ImageIcon update_activeIMG;
 	private ImageIcon go_back_inactiveIMG;
 	private ImageIcon go_back_activeIMG;
-	private Dimension west_east_size;
-	private Dimension short_dim_of_textfield;
-	private Dimension north_south_size;
-	
+
 	private JLabel avatarLB;
 	private JLabel background;
-	
+
 	private JButton edit_authJB;
 	private JButton edit_addressJB;
 	private JButton updateJB;
 	private JButton go_backJB;
-	
+
 	private JTextField address_nameTF;
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
 	private JComboBox<String> address_provinceCB;
 	private JComboBox<String> address_townCB;
-	
+
 	private JPasswordField old_passwordTF;
 	private JPasswordField passwordTF;
 	private CustomerController customer_controller;
-	
+
 	public CustomerProfileFrame(CustomerController customer_controller) {
-		
+
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
 	}
 
-	//Initialize variables
+	// Initialize variables
 	private void initialize() {
-		
+
 		background = new JLabel();
-		
+
 		male_avatarIMG = new ImageIcon("src\\images\\customer\\maleAvatar.PNG");
 		female_avatarIMG = new ImageIcon("src\\images\\customer\\femaleAvatar.PNG");
 		edit_auth_inactiveIMG = new ImageIcon("src\\images\\customer\\changeLoginInactive.PNG");
@@ -104,19 +83,14 @@ public class CustomerProfileFrame extends JFrame {
 		update_activeIMG = new ImageIcon("src\\images\\buttons\\updateButtonActive.png");
 		go_back_inactiveIMG = new ImageIcon("src\\images\\buttons\\goBackInactive.png");
 		go_back_activeIMG = new ImageIcon("src\\images\\buttons\\goBackActive.png");
-		
-		long_dim_of_textfield = new Dimension(335,25);
-		short_dim_of_textfield = new Dimension(150,25);
-		west_east_size = new Dimension(100,80);
-		north_south_size = new Dimension(100,50);
-		
+
 		avatarLB = new JLabel();
-		
+
 		edit_authJB = new JButton();
 		edit_addressJB = new JButton();
 		updateJB = new JButton();
 		go_backJB = new JButton();
-		
+
 		address_nameTF = new RoundJTextField(new Color(0x771007));
 		address_civic_numberTF = new RoundJTextField(new Color(0x771007));
 		address_capTF = new RoundJTextField(new Color(0x771007));
@@ -124,40 +98,38 @@ public class CustomerProfileFrame extends JFrame {
 		address_townCB = new JComboBox<String>();
 		old_passwordTF = new RoundJPasswordField(new Color(0x771007));
 		passwordTF = new RoundJPasswordField(new Color(0x771007));
-		
+
 	}
-	
+
 	private void frameSetup() {
-		
-		//Layout setup
-		
+
+		// Layout setup
+
 		this.setTitle("Food Overflow - Profilo");
-		this.setSize(500,720);
+		this.setSize(500, 720);
 		background.setIcon(resize(backgroundIMG, this.getWidth(), this.getHeight()));
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		int central_width = screen_dim.width/2-this.getSize().width/2;
-		int central_height = screen_dim.height/2-this.getSize().height/2;
-		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		int central_width = screen_dim.width / 2 - this.getSize().width / 2;
+		int central_height = screen_dim.height / 2 - this.getSize().height / 2;
+		this.setLocation(central_width, central_height); // Setta il frame a centro monitor
 		this.getContentPane().setLayout(null);
 		this.setContentPane(background);
 		this.getContentPane().setLayout(null);
-	
-		
+
 		//
-		
-		avatarLB.setBounds(118,20,500,280);
+
+		avatarLB.setBounds(118, 20, 500, 280);
 		this.getContentPane().add(avatarLB);
-		
-		
+
 		//
 		createTextField(address_nameTF, "Nome dell'indirizzo");
-		address_nameTF.setBounds(83,325,150,25);
+		address_nameTF.setBounds(83, 325, 150, 25);
 		this.getContentPane().add(address_nameTF);
 
 		createTextField(address_civic_numberTF, "Numero civico");
-		address_civic_numberTF.setBounds(253,325,150,25);
+		address_civic_numberTF.setBounds(253, 325, 150, 25);
 		this.getContentPane().add(address_civic_numberTF);
 
 		this.getContentPane().add(address_provinceCB);
@@ -165,104 +137,105 @@ public class CustomerProfileFrame extends JFrame {
 		address_provinceCB.setFocusable(false);
 		address_provinceCB.setBackground(Color.white);
 		address_provinceCB.setVisible(false);
-		address_provinceCB.setBounds(83,375,150,25);
-		
+		address_provinceCB.setBounds(83, 375, 150, 25);
+
 		this.getContentPane().add(address_townCB);
 		address_townCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		address_townCB.setFocusable(false);
 		address_townCB.setBackground(Color.white);
 		address_townCB.setVisible(false);
-		address_townCB.setBounds(253,375,150,25);
-		
+		address_townCB.setBounds(253, 375, 150, 25);
+
 		createTextField(address_capTF, "CAP");
-		address_capTF.setBounds(168,425,150,25);
+		address_capTF.setBounds(168, 425, 150, 25);
 		this.getContentPane().add(address_capTF);
-		
+
 		//
-		
+
 		createTextField(old_passwordTF, "Vecchia password");
 		old_passwordTF.setEchoChar((char) 0);
-		old_passwordTF.setBounds(83,375,150,25);
+		old_passwordTF.setBounds(83, 375, 150, 25);
 		this.getContentPane().add(old_passwordTF);
 
 		createTextField(passwordTF, "Nuova password");
 		passwordTF.setEchoChar((char) 0);
-		passwordTF.setBounds(253,375,150,25);
+		passwordTF.setBounds(253, 375, 150, 25);
 		this.getContentPane().add(passwordTF);
-		
-		
+
 		//
-		
-		setupButton(edit_authJB,edit_auth_inactiveIMG);
-		edit_authJB.setBounds(285,400,150,100);
+
+		setupButton(edit_authJB, edit_auth_inactiveIMG);
+		edit_authJB.setBounds(285, 400, 150, 100);
 		this.getContentPane().add(edit_authJB);
 
-		
-		setupButton(edit_addressJB,edit_address_inactiveIMG);
-		edit_addressJB.setBounds(50,400,150,100);
+		setupButton(edit_addressJB, edit_address_inactiveIMG);
+		edit_addressJB.setBounds(50, 400, 150, 100);
 		this.getContentPane().add(edit_addressJB);
-		
-		setupButton(updateJB,update_inactiveIMG);
-		updateJB.setBounds(168,480,150,30);
+
+		setupButton(updateJB, update_inactiveIMG);
+		updateJB.setBounds(168, 480, 150, 30);
 		updateJB.setVisible(false);
 		this.getContentPane().add(updateJB);
-		
-		setupButton(go_backJB,go_back_inactiveIMG);
-		go_backJB.setBounds(168,625,150,30);
+
+		setupButton(go_backJB, go_back_inactiveIMG);
+		go_backJB.setBounds(168, 625, 150, 30);
 		go_backJB.setVisible(false);
 		this.getContentPane().add(go_backJB);
-		
+
 		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
-			
+
 	}
-	
+
 	private void events() {
 
-		
 		edit_authJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				edit_authJB.setIcon(edit_auth_activeIMG);
-				
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				edit_authJB.setIcon(edit_auth_inactiveIMG);
-				
+
 			}
+
 			public void mousePressed(MouseEvent e) {
-				
+
 				edit_authJB.setVisible(false);
 				edit_addressJB.setVisible(false);
-				
+
 				old_passwordTF.setVisible(true);
 				passwordTF.setVisible(true);
 				updateJB.setVisible(true);
 				go_backJB.setVisible(true);
 			}
-			
+
 		});
-		
+
 		edit_addressJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				edit_addressJB.setIcon(edit_address_activeIMG);
-				
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				edit_addressJB.setIcon(edit_address_inactiveIMG);
-				
+
 			}
+
 			public void mousePressed(MouseEvent e) {
-				
+
 				edit_addressJB.setVisible(false);
 				edit_authJB.setVisible(false);
-				
+
 				address_nameTF.setVisible(true);
 				address_civic_numberTF.setVisible(true);
 				address_capTF.setVisible(true);
@@ -272,52 +245,56 @@ public class CustomerProfileFrame extends JFrame {
 				go_backJB.setVisible(true);
 			}
 		});
-		
+
 		updateJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				updateJB.setIcon(update_activeIMG);
-				
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				updateJB.setIcon(update_inactiveIMG);
-				
+
 			}
+
 			public void mousePressed(MouseEvent e) {
-				
-				if(address_nameTF.isVisible()) {
-					
+
+				if (address_nameTF.isVisible()) {
+
 					customer_controller.updateDeliveryAddress(CustomerProfileFrame.this);
-					
+
 				} else {
-					
+
 					customer_controller.updateCustomerPassword(CustomerProfileFrame.this);
-					
+
 				}
-				
+
 			}
 		});
-		
+
 		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+
 				go_backJB.setIcon(go_back_activeIMG);
-				
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+
 				go_backJB.setIcon(go_back_inactiveIMG);
-				
+
 			}
+
 			public void mousePressed(MouseEvent e) {
 
-				if(address_nameTF.isVisible()) {
-					
+				if (address_nameTF.isVisible()) {
+
 					address_nameTF.setVisible(false);
 					address_civic_numberTF.setVisible(false);
 					address_capTF.setVisible(false);
@@ -325,67 +302,71 @@ public class CustomerProfileFrame extends JFrame {
 					address_townCB.setVisible(false);
 
 				} else {
-					
+
 					old_passwordTF.setVisible(false);
 					passwordTF.setVisible(false);
-					
+
 				}
-				
+
 				updateJB.setVisible(false);
 				go_backJB.setVisible(false);
-				
+
 				edit_authJB.setVisible(true);
 				edit_addressJB.setVisible(true);
-				
+
 			}
 		});
-		
+
 		address_nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_nameTF, "Nome dell'indirizzo");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_nameTF, "Nome dell'indirizzo");
-				
+
 			}
 		});
-		
+
 		address_civic_numberTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_civic_numberTF, "Numero civico");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_civic_numberTF, "Numero civico");
-				
+
 			}
 		});
-		
+
 		address_capTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_capTF, "CAP");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_capTF, "CAP");
-				
+
 			}
 		});
-		
+
 		old_passwordTF.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
@@ -396,6 +377,7 @@ public class CustomerProfileFrame extends JFrame {
 				}
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusLost(FocusEvent e) {
 
@@ -406,8 +388,9 @@ public class CustomerProfileFrame extends JFrame {
 				}
 			}
 		});
-		
+
 		passwordTF.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
@@ -418,6 +401,7 @@ public class CustomerProfileFrame extends JFrame {
 				}
 			}
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void focusLost(FocusEvent e) {
 
@@ -428,59 +412,58 @@ public class CustomerProfileFrame extends JFrame {
 				}
 			}
 		});
-		
+
 	}
-	
+
 	public void addressProvinceCBitemStateChanged(ItemEvent e) {
-		
-	    if (e.getStateChange() == ItemEvent.SELECTED) {
-	        String selected_item = (String) e.getItem();
-	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia"))
-	        	 customer_controller.updateAddressTownsCB(selected_item, CustomerProfileFrame.this);
-	    	if(selected_item.equals("Seleziona provincia"))
-	    	{
-	    		this.getAddress_townCB().removeAllItems();
-	    		this.getAddress_townCB().addItem("Seleziona comune");
-	    	}
-	       
-	    }
-		
+
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			String selected_item = (String) e.getItem();
+			if (!selected_item.equals("-------------------") || !selected_item.equals("Seleziona provincia"))
+				customer_controller.updateAddressTownsCB(selected_item, CustomerProfileFrame.this);
+			if (selected_item.equals("Seleziona provincia")) {
+				this.getAddress_townCB().removeAllItems();
+				this.getAddress_townCB().addItem("Seleziona comune");
+			}
+
+		}
+
 	}
-	
+
 	private ImageIcon resize(ImageIcon im, int w, int h) {
-		
-		BufferedImage bi = new BufferedImage(w,h, BufferedImage.TRANSLUCENT);
-		Graphics2D gd=(Graphics2D)bi.createGraphics();
+
+		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+		Graphics2D gd = (Graphics2D) bi.createGraphics();
 		gd.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-		gd.drawImage(im.getImage(), 0, 0, w,h,null);
+		gd.drawImage(im.getImage(), 0, 0, w, h, null);
 		gd.dispose();
-		
+
 		return new ImageIcon(bi);
 	}
-	
+
 	private void setupButton(JButton button, ImageIcon image) {
-		
+
 		button.setIcon(image);
 		button.setBorder(null);
 		button.setFocusable(false);
 		button.setContentAreaFilled(false);
-		
+
 	}
-	
+
 	protected void textFieldFocusGained(JTextField text_field, String string) {
 		if (text_field.getText().equals(string)) {
 			text_field.setText("");
 			text_field.setHorizontalAlignment(JTextField.LEFT);
 		}
 	}
-	
+
 	protected void textFieldFocusLost(JTextField text_field, String string) {
 		if (text_field.getText().equals("")) {
 			text_field.setText(string);
 			text_field.setHorizontalAlignment(JTextField.CENTER);
 		}
 	}
-	
+
 	protected void createTextField(JTextField text_field, String text) {
 		text_field.setHorizontalAlignment(JTextField.CENTER);
 		text_field.setText(text);
@@ -510,6 +493,7 @@ public class CustomerProfileFrame extends JFrame {
 	public JComboBox<String> getAddress_townCB() {
 		return address_townCB;
 	}
+
 	public JTextField getAddress_nameTF() {
 		return address_nameTF;
 	}
@@ -530,8 +514,4 @@ public class CustomerProfileFrame extends JFrame {
 		return passwordTF;
 	}
 
-	
-	
-
 }
-

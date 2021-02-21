@@ -4,17 +4,17 @@ import java.util.List;
 
 public class Meal {
 
-	//ATTRIBUTI
-	
+	// ATTRIBUTI
+
 	private String name;
 	private float price;
 	private String ingredients;
 	private String category;
-	private List<String>allergen_list;
-	
-	//COTRUTTORE
-	public Meal(String name, float price, String ingredients, String category, List<String>allergen_list) {
-		
+	private List<String> allergen_list;
+
+	// COTRUTTORE
+	public Meal(String name, float price, String ingredients, String category, List<String> allergen_list) {
+
 		this.name = name;
 		this.price = price;
 		this.ingredients = ingredients;
@@ -22,7 +22,7 @@ public class Meal {
 		this.allergen_list = allergen_list;
 	}
 
-	//GETTERE AND SETTER
+	// GETTERE AND SETTER
 	public String getName() {
 		return name;
 	}
@@ -46,7 +46,7 @@ public class Meal {
 	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
 	}
-	
+
 	public String getCategory() {
 		return category;
 	}
@@ -59,9 +59,8 @@ public class Meal {
 		return allergen_list;
 	}
 
-	public void setAllergen_list(List<String>allergen_list) {
+	public void setAllergen_list(List<String> allergen_list) {
 		this.allergen_list = allergen_list;
 	}
-
 
 }

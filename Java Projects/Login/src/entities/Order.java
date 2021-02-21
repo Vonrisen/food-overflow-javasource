@@ -3,9 +3,9 @@ package entities;
 import java.sql.Time;
 import java.util.Date;
 
-public class Order extends Cart{
+public class Order extends Cart {
 
-	//ATTRIBUTI
+	// ATTRIBUTI
 	private String id;
 	private Date date;
 	private String payment;
@@ -14,7 +14,6 @@ public class Order extends Cart{
 	private Time deliveried_time;
 	private String note;
 	private Rider rider;
-	
 
 	public Order(Shop shop, Customer customer, String id, Date date, String payment, String status, Address address,
 			Time deliveried_time, String note, Rider rider) {
@@ -29,7 +28,6 @@ public class Order extends Cart{
 		this.rider = rider;
 	}
 
-
 	public String getId() {
 		return id;
 	}
@@ -37,7 +35,7 @@ public class Order extends Cart{
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
@@ -93,5 +91,5 @@ public class Order extends Cart{
 	public void setRider(Rider rider) {
 		this.rider = rider;
 	}
-	
+
 }

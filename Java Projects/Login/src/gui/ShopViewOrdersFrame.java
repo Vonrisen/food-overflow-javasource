@@ -28,16 +28,16 @@ public class ShopViewOrdersFrame extends StandardFrame {
 
 	private void initialize() {
 
-		setTable_title(new ImageIcon("src\\images\\others\\completedOrders.png"));
-		getTable().setModel(model = new DefaultTableModel(columns, 0));
+		table_title = new ImageIcon("src\\images\\others\\completedOrders.png");
+		table.setModel(model = new DefaultTableModel(columns, 0));
 
 		this.setTitle("Food Overflow - Shop Panel: Ordini completati");
-		getTable_titleLB().setPreferredSize(new Dimension(500, 50));
-		getTable_titleLB().setIcon(getTable_title());
+		table_titleLB.setPreferredSize(new Dimension(500, 50));
+		table_titleLB.setIcon(table_title);
 
-		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
-		getGo_backJB().addMouseListener(new MouseAdapter() {
+		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopOrderManagementFrame(ShopViewOrdersFrame.this);

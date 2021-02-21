@@ -259,4 +259,28 @@ public class TableModelUtility {
 
 	}
 
+	public void fillFieldsFromJTable(ShopRiderFrame shop_rider_frame) {
+
+		JTable table = shop_rider_frame.getTable();
+		if (!table.getSelectionModel().isSelectionEmpty()) {
+			InputUtility input_util = new InputUtility();
+			Address address;
+			address = input_util.tokenizedStringToAddress(
+					table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), "(, )");
+			shop_rider_frame.getNameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
+			shop_rider_frame.getSurnameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+			shop_rider_frame.getBirth_dateTF()
+					.setText(table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
+			shop_rider_frame.getAddress_nameTF().setText(address.getAddress());
+			shop_rider_frame.getAddress_civic_numberTF().setText(address.getCivic_number());
+			shop_rider_frame.getAddress_capTF().setText(address.getCap());
+			shop_rider_frame.getAddress_provinceCB().setSelectedItem(address.getProvince());
+			shop_rider_frame.getAddress_townCB().setSelectedItem(address.getCity());
+			shop_rider_frame.getCellphoneTF()
+					.setText(table.getModel().getValueAt(table.getSelectedRow(), 7).toString());
+			shop_rider_frame.getWorking_hoursTF()
+					.setText(table.getModel().getValueAt(table.getSelectedRow(), 9).toString());
+		}
+	}
+
 }

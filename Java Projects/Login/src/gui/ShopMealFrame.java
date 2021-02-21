@@ -3,7 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.AdminController;
 import controllers.ShopController;
 
 @SuppressWarnings("serial")
@@ -68,7 +66,7 @@ public class ShopMealFrame extends JFrame {
 	
 	private DefaultTableModel menu_model;
 	private DefaultTableModel all_meals_model;
-	ShopController shop_controller;
+	private ShopController shop_controller;
 	
 	private String[] columns = {"Nome", "Categoria", "Prezzo in " + "\u20ac", "Ingredienti", "Allergeni"};
 	private String[] columns2 = {"Nome", "Categoria", "Prezzo in " + "\u20ac", "Ingredienti", "Allergeni"};
@@ -324,8 +322,4 @@ public class ShopMealFrame extends JFrame {
 		return all_meals_table;
 	}
 
-	
-	
-	
-	
 }

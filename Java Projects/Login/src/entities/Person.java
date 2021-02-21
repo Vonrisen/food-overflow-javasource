@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Person {
 
-	//ATTRIBUTI
+	// ATTRIBUTI
 	private String cf;
 	private String name;
 	private String surname;
@@ -13,11 +13,11 @@ public class Person {
 	private String gender;
 	private String cellphone;
 	private Address address;
-	
-	//COSTRUTTORE
+
+	// COSTRUTTORE
 	public Person(String cf, String name, String surname, Date birth_date, String birth_place, String gender,
-				  String cellphone, Address address) {
-		
+			String cellphone, Address address) {
+
 		super();
 		this.cf = cf;
 		this.name = name;
@@ -27,10 +27,10 @@ public class Person {
 		this.gender = gender;
 		this.cellphone = cellphone;
 		this.address = address;
-		
+
 	}
-	
-	//GETTER AND SETTER
+
+	// GETTER AND SETTER
 	public String getCf() {
 		return cf;
 	}
@@ -94,6 +94,5 @@ public class Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	
+
 }

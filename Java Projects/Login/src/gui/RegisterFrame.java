@@ -4,58 +4,49 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controllers.CustomerController;
 import controllers.LoginController;
 import gui_support.RoundJPasswordField;
 import gui_support.RoundJTextField;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class RegisterFrame extends JFrame{
+public class RegisterFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	private JPanel topPanel;
-	private JLabel logoLabel;
-	private JPanel loginPanel;
-	private JButton homeButton;
-	private JButton forwardButton;
-	private JButton backButton;
-	private JButton registerButton;
-	
-	private Dimension long_dim_of_textfield;
-	private Dimension short_dim_of_textfield;
-	
-	private ImageIcon homeButtonActive;
-	private ImageIcon homeButtonInactive;
+	private JPanel top_panel;
+	private JLabel logoLB;
+	private JPanel login_panel;
+	private JButton homeJB;
+	private JButton forwardJB;
+	private JButton backJB;
+	private JButton registerJB;
+
+	private ImageIcon home_button_activeIMG;
+	private ImageIcon home_button_inactiveIMG;
 	private ImageIcon register_logoIMG;
-	private ImageIcon forward_button_active;
-	private ImageIcon forward_button_inactive;
-	private ImageIcon back_button_active;
-	private ImageIcon back_button_inactive;
-	private ImageIcon registerButtonActive;
-	private ImageIcon registerButtonInactive;
+	private ImageIcon forward_button_activeIMG;
+	private ImageIcon forward_button_inactiveIMG;
+	private ImageIcon back_button_activeIMG;
+	private ImageIcon back_button_inactiveIMG;
+	private ImageIcon register_button_activeIMG;
+	private ImageIcon register_button_inactiveIMG;
 
 	private JTextField nameTF;
 	private JTextField surnameTF;
@@ -64,31 +55,30 @@ public class RegisterFrame extends JFrame{
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
 	private JTextField cellphoneTF;
-	
+
 	private JComboBox<String> address_townCB;
-	private JComboBox<String> address_provinceCB;   
-	
-	
+	private JComboBox<String> address_provinceCB;
+
 	private JTextField emailTF;
 	private JPasswordField passwordTF;
-	private JPasswordField passwordTF1;
-	
+	private JPasswordField repeat_passwordTF;
+
 	private JComboBox<String> genderCB;
 	private JComboBox<String> birth_nationCB;
 	private JComboBox<String> birth_provinceCB;
 	private JComboBox<String> birth_townCB;
-	
-	private String[] genderStrings = {"Maschio", "Femmina"};
-	
-	private JLabel birth_city;
-	private JLabel birth_comune;
-	private JLabel birth_comune_1;
-	private JLabel birth_comune_1_1;
-	
+
+	private String[] gender_strings = { "Maschio", "Femmina" };
+
+	private JLabel birth_cityLB;
+	private JLabel birth_provinceLB;
+	private JLabel birth_comuneLB;
+	private JLabel birth_dateLB;
+
 	private LoginController login_controller;
 
 	public RegisterFrame(LoginController login_controller) {
-		
+
 		initialize();
 		setupFrame();
 		events();
@@ -96,28 +86,28 @@ public class RegisterFrame extends JFrame{
 	}
 
 	private void initialize() {
-		
+
 		register_logoIMG = new ImageIcon("src\\images\\startup\\registerLogo.png");
-		homeButtonActive = new ImageIcon("src\\images\\startup\\homeButtonActive.png");
-		homeButtonInactive = new ImageIcon("src\\images\\startup\\homeButtonInactive.png");
-		forward_button_inactive = new ImageIcon("src\\images\\startup\\avantiButtonInactive.png");
-		forward_button_active = new ImageIcon("src\\images\\startup\\avantiButtonActive.png");
-		back_button_inactive = new ImageIcon("src\\images\\startup\\indietroButtonInactive.png");
-		back_button_active = new ImageIcon("src\\images\\startup\\indietroButtonActive.png");
-		registerButtonActive = new ImageIcon("src\\images\\startup\\registerButtonActive.png");
-		registerButtonInactive = new ImageIcon("src\\images\\startup\\registerButtonInactive.png");
-		
-		topPanel = new JPanel();
-		loginPanel = new JPanel();
-		logoLabel = new JLabel();
-		homeButton = new JButton();
-		forwardButton = new JButton();
-		registerButton = new JButton();
-		backButton = new JButton();
-		
-		birth_city = new JLabel("Inserisci lo stato di nascita: ");
-		birth_townCB = new JComboBox();
-		
+		home_button_activeIMG = new ImageIcon("src\\images\\startup\\homeButtonActive.png");
+		home_button_inactiveIMG = new ImageIcon("src\\images\\startup\\homeButtonInactive.png");
+		forward_button_inactiveIMG = new ImageIcon("src\\images\\startup\\avantiButtonInactive.png");
+		forward_button_activeIMG = new ImageIcon("src\\images\\startup\\avantiButtonActive.png");
+		back_button_inactiveIMG = new ImageIcon("src\\images\\startup\\indietroButtonInactive.png");
+		back_button_activeIMG = new ImageIcon("src\\images\\startup\\indietroButtonActive.png");
+		register_button_activeIMG = new ImageIcon("src\\images\\startup\\registerButtonActive.png");
+		register_button_inactiveIMG = new ImageIcon("src\\images\\startup\\registerButtonInactive.png");
+
+		top_panel = new JPanel();
+		login_panel = new JPanel();
+		logoLB = new JLabel();
+		homeJB = new JButton();
+		forwardJB = new JButton();
+		registerJB = new JButton();
+		backJB = new JButton();
+
+		birth_cityLB = new JLabel("Inserisci lo stato di nascita: ");
+		birth_townCB = new JComboBox<String>();
+
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
 		birth_dateTF = new RoundJTextField(new Color(0x771007));
@@ -127,311 +117,320 @@ public class RegisterFrame extends JFrame{
 		cellphoneTF = new RoundJTextField(new Color(0x771007));
 		emailTF = new RoundJTextField(new Color(0x771007));
 		passwordTF = new RoundJPasswordField(new Color(0x771007));
-		passwordTF1 = new RoundJPasswordField(new Color(0x771007));
-		
-		address_townCB = new JComboBox();
-		address_provinceCB = new JComboBox();
-		
-		genderCB = new JComboBox(genderStrings);
-		birth_nationCB = new JComboBox();
-		birth_provinceCB = new JComboBox();
-		birth_comune_1 = new JLabel("Inserisci il comune di nascita: ");
-		birth_comune_1_1 = new JLabel("Inserisci la data di nascita:");
-		birth_comune = new JLabel("Inserisci la provincia di nascita: ");
-		
-		long_dim_of_textfield = new Dimension(335,25);
-		short_dim_of_textfield = new Dimension(150,25);
-		
+		repeat_passwordTF = new RoundJPasswordField(new Color(0x771007));
+
+		address_townCB = new JComboBox<String>();
+		address_provinceCB = new JComboBox<String>();
+
+		genderCB = new JComboBox<String>(gender_strings);
+		birth_nationCB = new JComboBox<String>();
+		birth_provinceCB = new JComboBox<String>();
+		birth_comuneLB = new JLabel("Inserisci il comune di nascita: ");
+		birth_dateLB = new JLabel("Inserisci la data di nascita:");
+		birth_provinceLB = new JLabel("Inserisci la provincia di nascita: ");
+
 	}
-	
+
 	public void setupFrame() {
-		
-		//Layout setup
-		
+
+		// Layout setup
+
 		this.setResizable(false);
 		this.setSize(600, 800);
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
 		this.setTitle("Food Overflow - Registrazione");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		int central_width = screen_dim.width/2-this.getSize().width/2;
-		int central_height = screen_dim.height/2-this.getSize().height/2;
-		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		int central_width = screen_dim.width / 2 - this.getSize().width / 2;
+		int central_height = screen_dim.height / 2 - this.getSize().height / 2;
+		this.setLocation(central_width, central_height); // Setta il frame a centro monitor
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().setBackground(new Color(0xf3ecd7));
 
-		topPanel.setBounds(0, 0, 600, 400);
-		topPanel.setBackground(null);
-		topPanel.setLayout(new BorderLayout());
-		this.getContentPane().add(topPanel, BorderLayout.NORTH);
+		top_panel.setBounds(0, 0, 600, 400);
+		top_panel.setBackground(null);
+		top_panel.setLayout(new BorderLayout());
+		this.getContentPane().add(top_panel, BorderLayout.NORTH);
 
-		loginPanel.setLayout(null);
-		loginPanel.setBounds(0, 401, 584, 512);
-		loginPanel.setBackground(null);
-		this.getContentPane().add(loginPanel, BorderLayout.CENTER);
-		
-		//1# Textfield setup
+		login_panel.setLayout(null);
+		login_panel.setBounds(0, 401, 584, 512);
+		login_panel.setBackground(null);
+		this.getContentPane().add(login_panel, BorderLayout.CENTER);
+
+		// 1# Textfield setup
 
 		createTextField(nameTF, "Nome...");
-		nameTF.setBounds(120,25,150,25);
-		loginPanel.add(nameTF);
-		
+		nameTF.setBounds(120, 25, 150, 25);
+		login_panel.add(nameTF);
+
 		createTextField(surnameTF, "Cognome...");
-		surnameTF.setBounds(314,25,150,25);
-		loginPanel.add(surnameTF);
-		
+		surnameTF.setBounds(314, 25, 150, 25);
+		login_panel.add(surnameTF);
+
 		createTextField(address_nameTF, "Indirizzo...");
-		address_nameTF.setBounds(120,97,150,25);
-		loginPanel.add(address_nameTF);
-		
+		address_nameTF.setBounds(120, 97, 150, 25);
+		login_panel.add(address_nameTF);
+
 		createTextField(address_civic_numberTF, "Numero civico...");
-		address_civic_numberTF.setBounds(314,97,150,25);
-		loginPanel.add(address_civic_numberTF);
-		
+		address_civic_numberTF.setBounds(314, 97, 150, 25);
+		login_panel.add(address_civic_numberTF);
+
 		createTextField(address_capTF, "CAP...");
-		address_capTF.setBounds(120,133,150,25);
-		loginPanel.add(address_capTF);
-		
-		address_townCB.setBounds(314,61,150,25);
-		loginPanel.add(address_townCB);
-		
-		address_provinceCB.setBounds(120,61,150,25);
-		loginPanel.add(address_provinceCB);
-		
-		genderCB.setBounds(314,133,150,25);
-		loginPanel.add(genderCB);
-	
-//		//2# Textfield setup
-		
-		birth_comune.setBounds(120, 66, 246, 14);
-		birth_comune.setVisible(false);
-		loginPanel.add(birth_comune);
-		
-		birth_comune_1.setBounds(120, 102, 246, 14);
-		birth_comune_1.setVisible(false);
-		loginPanel.add(birth_comune_1);
-		
-		birth_city.setBounds(122, 30, 267, 14);
-		birth_city.setVisible(false);
-		loginPanel.add(birth_city);
-		
-		birth_nationCB.setBounds(305,25,150,25);
+		address_capTF.setBounds(120, 133, 150, 25);
+		login_panel.add(address_capTF);
+
+		address_townCB.setBounds(314, 61, 150, 25);
+		setupComboBox(address_townCB);
+		login_panel.add(address_townCB);
+
+		address_provinceCB.setBounds(120, 61, 150, 25);
+		setupComboBox(address_provinceCB);
+		login_panel.add(address_provinceCB);
+
+		genderCB.setBounds(314, 133, 150, 25);
+		setupComboBox(genderCB);
+		login_panel.add(genderCB);
+
+		// 2# Textfield setup
+
+		birth_provinceLB.setBounds(120, 66, 246, 14);
+		birth_provinceLB.setVisible(false);
+		login_panel.add(birth_provinceLB);
+
+		birth_comuneLB.setBounds(120, 102, 246, 14);
+		birth_comuneLB.setVisible(false);
+		login_panel.add(birth_comuneLB);
+
+		birth_cityLB.setBounds(122, 30, 267, 14);
+		birth_cityLB.setVisible(false);
+		login_panel.add(birth_cityLB);
+
+		birth_nationCB.setBounds(305, 25, 150, 25);
+		setupComboBox(birth_nationCB);
 		birth_nationCB.setVisible(false);
-		loginPanel.add(birth_nationCB);
-		
-		birth_provinceCB.setBounds(305,61,150,25);
+		login_panel.add(birth_nationCB);
+
+		birth_provinceCB.setBounds(305, 61, 150, 25);
+		setupComboBox(birth_provinceCB);
 		birth_provinceCB.setVisible(false);
-		loginPanel.add(birth_provinceCB);
-		
+		login_panel.add(birth_provinceCB);
+
 		birth_townCB.setBounds(305, 97, 150, 25);
+		setupComboBox(birth_townCB);
 		birth_townCB.setVisible(false);
-		loginPanel.add(birth_townCB);
-		
-		createTextField(birth_dateTF, "Data di nascita...");
+		login_panel.add(birth_townCB);
+
+		createTextField(birth_dateTF, "giorno/mese/anno");
 		birth_dateTF.setVisible(false);
-		birth_dateTF.setBounds(305,133,150,25);
-		loginPanel.add(birth_dateTF);
-		
-		birth_comune_1_1.setBounds(120, 138, 246, 14);
-		birth_comune_1_1.setVisible(false);
-		loginPanel.add(birth_comune_1_1);
-		
-		//3# Textfield setup
-		
+		birth_dateTF.setBounds(305, 133, 150, 25);
+		login_panel.add(birth_dateTF);
+
+		birth_dateLB.setBounds(120, 138, 246, 14);
+		birth_dateLB.setVisible(false);
+		login_panel.add(birth_dateLB);
+
+		// 3# Textfield setup
+
 		createTextField(emailTF, "E-mail...");
 		emailTF.setVisible(false);
-		emailTF.setBounds(135,30,310,25);
-		loginPanel.add(emailTF);
-		
+		emailTF.setBounds(135, 30, 310, 25);
+		login_panel.add(emailTF);
+
 		createTextField(cellphoneTF, "Cellulare...");
 		cellphoneTF.setVisible(false);
-		cellphoneTF.setBounds(135,138,310,25);
-		loginPanel.add(cellphoneTF);
-		
+		cellphoneTF.setBounds(135, 138, 310, 25);
+		login_panel.add(cellphoneTF);
+
 		passwordTF.setText("Inserisci password...");
 		passwordTF.setVisible(false);
 		passwordTF.setHorizontalAlignment(JTextField.CENTER);
 		passwordTF.setEchoChar((char) 0);
 		passwordTF.setBounds(135, 66, 310, 25);
-		loginPanel.add(passwordTF);
-		
-		passwordTF1.setText("Reinserisci la password...");
-		passwordTF1.setVisible(false);
-		passwordTF1.setHorizontalAlignment(JTextField.CENTER);
-		passwordTF1.setEchoChar((char) 0);
-		passwordTF1.setBounds(135, 102, 310, 25);
-		loginPanel.add(passwordTF1);
-		
+		login_panel.add(passwordTF);
 
-		//Buttons & Label setup
-		
-		logoLabel.setIcon(register_logoIMG);
-		logoLabel.setFocusable(true);
-		logoLabel.setHorizontalAlignment(JLabel.CENTER);
-		topPanel.add(logoLabel);
-		
-		setupButton(forwardButton, forward_button_inactive);
-		forwardButton.setBounds(314,180,150,30);
-		loginPanel.add(forwardButton);
-		
-		setupButton(backButton, back_button_inactive);
-		backButton.setVisible(false);
-		backButton.setBounds(120,180,150,30);
-		loginPanel.add(backButton);
-		
-		setupButton(registerButton, registerButtonInactive);
-		registerButton.setVisible(false);
-		registerButton.setBounds(314,180,150,30);
-		loginPanel.add(registerButton);
-		
-		setupButton(homeButton, homeButtonInactive);
-		homeButton.setBounds(267, 280, 50, 50);
-		loginPanel.add(homeButton);
-		
+		repeat_passwordTF.setText("Reinserisci la password...");
+		repeat_passwordTF.setVisible(false);
+		repeat_passwordTF.setHorizontalAlignment(JTextField.CENTER);
+		repeat_passwordTF.setEchoChar((char) 0);
+		repeat_passwordTF.setBounds(135, 102, 310, 25);
+		login_panel.add(repeat_passwordTF);
+
+		// Buttons & Label setup
+
+		logoLB.setIcon(register_logoIMG);
+		logoLB.setFocusable(true);
+		logoLB.setHorizontalAlignment(JLabel.CENTER);
+		top_panel.add(logoLB);
+
+		setupButton(forwardJB, forward_button_inactiveIMG);
+		forwardJB.setBounds(314, 180, 150, 30);
+		login_panel.add(forwardJB);
+
+		setupButton(backJB, back_button_inactiveIMG);
+		backJB.setVisible(false);
+		backJB.setBounds(120, 180, 150, 30);
+		login_panel.add(backJB);
+
+		setupButton(registerJB, register_button_inactiveIMG);
+		registerJB.setVisible(false);
+		registerJB.setBounds(314, 180, 150, 30);
+		login_panel.add(registerJB);
+
+		setupButton(homeJB, home_button_inactiveIMG);
+		homeJB.setBounds(267, 280, 50, 50);
+		login_panel.add(homeJB);
+
 	}
-	
+
 	public void events() {
-		
+
 		nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(nameTF, "Nome...");
-				
+
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(nameTF, "Nome...");
-				
+
 			}
 		});
-		
+
 		surnameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(surnameTF, "Cognome...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(surnameTF, "Cognome...");
-				
+
 			}
 		});
-		
+
 		address_nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_nameTF, "Indirizzo...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_nameTF, "Indirizzo...");
-				
+
 			}
 		});
-		
+
 		address_civic_numberTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_civic_numberTF, "Numero civico...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_civic_numberTF, "Numero civico...");
-				
+
 			}
 		});
-		
+
 		address_capTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(address_capTF, "CAP...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(address_capTF, "CAP...");
-				
+
 			}
 		});
-		
+
 		emailTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(emailTF, "E-mail...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(emailTF, "E-mail...");
-				
+
 			}
 		});
-		
+
 		cellphoneTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				textFieldFocusGained(cellphoneTF, "Cellulare...");
-				
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+
 				textFieldFocusLost(cellphoneTF, "Cellulare...");
-				
+
 			}
 		});
-		
+
 		birth_dateTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
-				textFieldFocusGained(birth_dateTF, "Data di nascita...");
-				
+
+				textFieldFocusGained(birth_dateTF, "giorno/mese/anno");
+
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				
-				textFieldFocusLost(birth_dateTF, "Data di nascita...");
-				
+
+				textFieldFocusLost(birth_dateTF, "giorno/mese/anno");
+
 			}
 		});
-		
-		forwardButton.addMouseListener(new MouseAdapter() {
+
+		forwardJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
-				forwardButton.setIcon(forward_button_active);
-				
-				
+
+				forwardJB.setIcon(forward_button_activeIMG);
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				forwardButton.setIcon(forward_button_inactive);
-				
+				forwardJB.setIcon(forward_button_inactiveIMG);
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-				if(nameTF.isVisible()&&!birth_nationCB.isVisible()) {
-					
+
+				if (nameTF.isVisible() && !birth_nationCB.isVisible()) {
+
 					nameTF.setVisible(false);
 					surnameTF.setVisible(false);
 					address_nameTF.setVisible(false);
@@ -440,62 +439,62 @@ public class RegisterFrame extends JFrame{
 					address_townCB.setVisible(false);
 					address_provinceCB.setVisible(false);
 					genderCB.setVisible(false);
-					
-					birth_comune.setVisible(true);
-					birth_comune_1.setVisible(true);
-					birth_city.setVisible(true);
+
+					birth_provinceLB.setVisible(true);
+					birth_comuneLB.setVisible(true);
+					birth_cityLB.setVisible(true);
 					birth_nationCB.setVisible(true);
 					birth_provinceCB.setVisible(true);
 					birth_townCB.setVisible(true);
 					birth_dateTF.setVisible(true);
-					birth_comune_1_1.setVisible(true);
-					
-					backButton.setVisible(true);
-					
-				}else if(birth_nationCB.isVisible()&&!emailTF.isVisible()) {
-					
-					birth_comune.setVisible(false);
-					birth_comune_1.setVisible(false);
-					birth_city.setVisible(false);
+					birth_dateLB.setVisible(true);
+
+					backJB.setVisible(true);
+
+				} else if (birth_nationCB.isVisible() && !emailTF.isVisible()) {
+
+					birth_provinceLB.setVisible(false);
+					birth_comuneLB.setVisible(false);
+					birth_cityLB.setVisible(false);
 					birth_nationCB.setVisible(false);
 					birth_provinceCB.setVisible(false);
 					birth_townCB.setVisible(false);
 					birth_dateTF.setVisible(false);
-					birth_comune_1_1.setVisible(false);
-					
+					birth_dateLB.setVisible(false);
+
 					emailTF.setVisible(true);
 					passwordTF.setVisible(true);
-					passwordTF1.setVisible(true);
+					repeat_passwordTF.setVisible(true);
 					cellphoneTF.setVisible(true);
-					
-					forwardButton.setVisible(false);
-					registerButton.setVisible(true);
-					
-				
+
+					forwardJB.setVisible(false);
+					registerJB.setVisible(true);
+
 				}
-				
+
 			}
 		});
-		
-		backButton.addMouseListener(new MouseAdapter() {
+
+		backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
-				backButton.setIcon(back_button_active);
-				
+
+				backJB.setIcon(back_button_activeIMG);
+
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
-				backButton.setIcon(back_button_inactive);
-				
+
+				backJB.setIcon(back_button_inactiveIMG);
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
-				if(!nameTF.isVisible()&&birth_nationCB.isVisible()) {
-					
+
+				if (!nameTF.isVisible() && birth_nationCB.isVisible()) {
+
 					nameTF.setVisible(true);
 					surnameTF.setVisible(true);
 					address_nameTF.setVisible(true);
@@ -504,88 +503,90 @@ public class RegisterFrame extends JFrame{
 					address_townCB.setVisible(true);
 					address_provinceCB.setVisible(true);
 					genderCB.setVisible(true);
-					
-					birth_comune.setVisible(false);
-					birth_comune_1.setVisible(false);
-					birth_city.setVisible(false);
+
+					birth_provinceLB.setVisible(false);
+					birth_comuneLB.setVisible(false);
+					birth_cityLB.setVisible(false);
 					birth_nationCB.setVisible(false);
 					birth_provinceCB.setVisible(false);
 					birth_townCB.setVisible(false);
 					birth_dateTF.setVisible(false);
-					birth_comune_1_1.setVisible(false);
-					backButton.setVisible(false);
-					
-				} else if(emailTF.isVisible()&&!birth_nationCB.isVisible()) {
-					
-					birth_comune.setVisible(true);
-					birth_comune_1.setVisible(true);
-					birth_city.setVisible(true);
+					birth_dateLB.setVisible(false);
+					backJB.setVisible(false);
+
+				} else if (emailTF.isVisible() && !birth_nationCB.isVisible()) {
+
+					birth_provinceLB.setVisible(true);
+					birth_comuneLB.setVisible(true);
+					birth_cityLB.setVisible(true);
 					birth_nationCB.setVisible(true);
 					birth_provinceCB.setVisible(true);
 					birth_townCB.setVisible(true);
 					birth_dateTF.setVisible(true);
-					birth_comune_1_1.setVisible(true);
-					
+					birth_dateLB.setVisible(true);
+
 					emailTF.setVisible(false);
 					passwordTF.setVisible(false);
-					passwordTF1.setVisible(false);
+					repeat_passwordTF.setVisible(false);
 					cellphoneTF.setVisible(false);
-					
-					forwardButton.setVisible(true);
-					registerButton.setVisible(false);
-					
+
+					forwardJB.setVisible(true);
+					registerJB.setVisible(false);
+
 				}
-				
-			}
-		});
-		
-		registerButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				registerButton.setIcon(registerButtonActive);
-				
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				registerButton.setIcon(registerButtonInactive);
-				
-			}
-			@SuppressWarnings("deprecation")
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-				if(!passwordTF.getText().equals(passwordTF1.getText())) {
-					
-					System.out.println("Le password inserite non coincidono...");
-					
-				}
-				login_controller.registerCustomer(RegisterFrame.this);
-				
-			}
-		});
-		
-		homeButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent click_su_shopButton) {
-				login_controller.openLoginFrame(RegisterFrame.this);
-				
+
 			}
 		});
 
-		homeButton.addMouseListener(new MouseAdapter() {
+		registerJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+				registerJB.setIcon(register_button_activeIMG);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+				registerJB.setIcon(register_button_inactiveIMG);
+
+			}
+
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				if (!passwordTF.getText().equals(repeat_passwordTF.getText())) {
+
+					System.out.println("Le password inserite non coincidono...");
+
+				}
+				login_controller.registerCustomer(RegisterFrame.this);
+
+			}
+		});
+
+		homeJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent click_su_shopButton) {
+				login_controller.openLoginFrame(RegisterFrame.this);
+
+			}
+		});
+
+		homeJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent cursore_su_homeButton) {
-				
-				homeButton.setIcon(homeButtonActive);
+
+				homeJB.setIcon(home_button_activeIMG);
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent cursore_fuori_homeButton) {
 
-				homeButton.setIcon(homeButtonInactive);
+				homeJB.setIcon(home_button_inactiveIMG);
 
 			}
 		});
@@ -596,7 +597,7 @@ public class RegisterFrame extends JFrame{
 			public void focusGained(FocusEvent e) {
 
 				if (passwordTF.getText().equals("Inserisci password...")) {
-					
+
 					passwordTF.setHorizontalAlignment(JTextField.LEFT);
 					passwordTF.setEchoChar('•');
 					passwordTF.setText("");
@@ -608,24 +609,24 @@ public class RegisterFrame extends JFrame{
 			public void focusLost(FocusEvent e) {
 
 				if (passwordTF.getText().equals("")) {
-					
+
 					passwordTF.setHorizontalAlignment(JTextField.CENTER);
 					passwordTF.setText("Inserisci password...");
 					passwordTF.setEchoChar((char) 0);
 				}
 			}
 		});
-		
-		passwordTF1.addFocusListener(new FocusAdapter() {
+
+		repeat_passwordTF.addFocusListener(new FocusAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				if (passwordTF1.getText().equals("Reinserisci la password...")) {
-					
-					passwordTF1.setHorizontalAlignment(JTextField.LEFT);
-					passwordTF1.setEchoChar('•');
-					passwordTF1.setText("");
+				if (repeat_passwordTF.getText().equals("Reinserisci la password...")) {
+
+					repeat_passwordTF.setHorizontalAlignment(JTextField.LEFT);
+					repeat_passwordTF.setEchoChar('•');
+					repeat_passwordTF.setText("");
 				}
 			}
 
@@ -633,106 +634,113 @@ public class RegisterFrame extends JFrame{
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				if (passwordTF1.getText().equals("")) {
-					
-					passwordTF1.setHorizontalAlignment(JTextField.CENTER);
-					passwordTF1.setText("Reinserisci la password...");
-					passwordTF1.setEchoChar((char) 0);
+				if (repeat_passwordTF.getText().equals("")) {
+
+					repeat_passwordTF.setHorizontalAlignment(JTextField.CENTER);
+					repeat_passwordTF.setText("Reinserisci la password...");
+					repeat_passwordTF.setEchoChar((char) 0);
 				}
 			}
 		});
-		
-		addWindowListener(new WindowAdapter()
-	     {
-	         @Override
-	         public void windowClosing(WindowEvent e)
-	         {
-	             login_controller.releaseAllDaoResourcesAndDisposeFrame(RegisterFrame.this);
-	         }
-	     });
-		
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				login_controller.releaseAllDaoResourcesAndDisposeFrame(RegisterFrame.this);
+			}
+		});
+
 		birth_provinceCB.addItemListener(this::provincesCBitemStateChanged);
 		birth_nationCB.addItemListener(this::townsCBitemStateChanged);
 		address_provinceCB.addItemListener(this::addressProvinceCBitemStateChanged);
-		
+
+	}
+	
+	private void setupComboBox(JComboBox<String> cb) {
+
+		cb.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
+		cb.setFocusable(false);
+		cb.setBackground(Color.white);
+
 	}
 
 	public void provincesCBitemStateChanged(ItemEvent e) {
-	    if (e.getStateChange() == ItemEvent.SELECTED) {
-	        String selected_item = (String) e.getItem();
-	        login_controller.updateTownsCB(selected_item, RegisterFrame.this);
-	    }
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			String selected_item = (String) e.getItem();
+			login_controller.updateTownsCB(selected_item, RegisterFrame.this);
+		}
 	}
+
 	public void addressProvinceCBitemStateChanged(ItemEvent e) {
-		
-	    if (e.getStateChange() == ItemEvent.SELECTED) {
-	        String selected_item = (String) e.getItem();
-	        if(!selected_item.equals("-------------------")||!selected_item.equals("Seleziona provincia di residenza"))
-	        	 login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);	;
-	    	if(selected_item.equals("Seleziona provincia di residenza"))
-	    	{
-	    		this.getAddress_townCB().removeAllItems();
-	    		this.getAddress_townCB().addItem("Seleziona comune di residenza");
-	    	}
-	       
-	    }
-		
+
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			String selected_item = (String) e.getItem();
+			if (!selected_item.equals("-------------------")
+					|| !selected_item.equals("Seleziona provincia di residenza"))
+				login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);
+			;
+			if (selected_item.equals("Seleziona provincia di residenza")) {
+				this.getAddress_townCB().removeAllItems();
+				this.getAddress_townCB().addItem("Seleziona comune di residenza");
+			}
+
+		}
+
 	}
 
 	public void townsCBitemStateChanged(ItemEvent e) {
-	    if (e.getStateChange() == ItemEvent.SELECTED) {
-	    	if(birth_nationCB.getSelectedItem().equals("ITALIA")) {
-	    		
-	    		if(!nameTF.isVisible())
-	    		{
-	    		birth_provinceCB.setVisible(true);
-	    		birth_townCB.setVisible(true);
-	    		}
-	    		
-	    	} else {
-	    		
-	    		birth_provinceCB.setVisible(false);
-	    		birth_townCB.setVisible(false);
-	    		
-	    	}
-	    	
-	    }
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			if (birth_nationCB.getSelectedItem().equals("ITALIA")) {
+
+				if (!nameTF.isVisible()) {
+					birth_provinceCB.setVisible(true);
+					birth_townCB.setVisible(true);
+				}
+
+			} else {
+
+				birth_provinceCB.setVisible(false);
+				birth_townCB.setVisible(false);
+
+			}
+
+		}
 	}
-	
+
 	private void createTextField(JTextField text_field, String text) {
 
 		text_field.setHorizontalAlignment(JTextField.CENTER);
 		text_field.setText(text);
 
 	}
-	
+
 	private void textFieldFocusGained(JTextField text_field, String string) {
-		
+
 		if (text_field.getText().equals(string)) {
-			
+
 			text_field.setText("");
 			text_field.setHorizontalAlignment(JTextField.LEFT);
-			
+
 		}
-		
+
 	}
-	
+
 	private void textFieldFocusLost(JTextField text_field, String string) {
-		
+
 		if (text_field.getText().equals("")) {
 			text_field.setText(string);
 			text_field.setHorizontalAlignment(JTextField.CENTER);
 		}
-		
+
 	}
-	
+
 	private void setupButton(JButton button, ImageIcon image) {
-		
+
 		button.setIcon(image);
 		button.setBorder(null);
 		button.setFocusable(false);
 		button.setContentAreaFilled(false);
-		
+
 	}
 
 	public JTextField getBirth_dateTF() {
@@ -788,7 +796,7 @@ public class RegisterFrame extends JFrame{
 	}
 
 	public JPasswordField getPasswordTF1() {
-		return passwordTF1;
+		return repeat_passwordTF;
 	}
 
 	public JComboBox<String> getGenderCB() {
@@ -799,9 +807,4 @@ public class RegisterFrame extends JFrame{
 		return nameTF;
 	}
 
-	
-	
-	
-
-	
 }

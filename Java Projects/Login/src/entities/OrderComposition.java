@@ -2,21 +2,21 @@ package entities;
 
 public class OrderComposition {
 
-	//ATTRIBUTI
-	
+	// ATTRIBUTI
+
 	private Meal meal;
 	private Short quantity;
-	
-	//COSTRUTTORE
-	
+
+	// COSTRUTTORE
+
 	public OrderComposition(Meal meal, short quantity) {
 
 		this.meal = meal;
 		this.quantity = quantity;
 	}
 
-	//GETTER AND SETTER
-	
+	// GETTER AND SETTER
+
 	public Meal getMeal() {
 		return meal;
 	}
@@ -32,5 +32,5 @@ public class OrderComposition {
 	public void setQuantity(Short quantity) {
 		this.quantity = quantity;
 	}
-	
+
 }

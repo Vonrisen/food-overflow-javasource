@@ -17,7 +17,7 @@ public interface CustomerDAO {
 	public void closeStatements() throws DAOException;
 
 	public Customer getCustomerByEmail(String email) throws DAOException;
-	
+
 	public void updateCustomerAddress(Customer customer, Address address) throws DAOException;
 
 	public void updateCustomerPassword(Customer customer, String new_password) throws DAOException;

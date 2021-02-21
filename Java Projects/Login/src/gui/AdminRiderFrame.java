@@ -10,34 +10,33 @@ import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class AdminRiderFrame extends StandardFrame {
-	
-	private String[] columns = {"CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso", "Cellulare", "Veicolo", "Orario di lavoro","Numero di consegne"};
-	
-	
-	//Costruttore
+
+	private String[] columns = { "CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso",
+			"Cellulare", "Veicolo", "Orario di lavoro", "Numero di consegne" };
+
+	// Costruttore
 	public AdminRiderFrame() {
 		initialize();
 	}
-	
-	
+
 	private void initialize() {
-		
+
 		setTitle("Food Overflow - Admin Panel: Visualizza riders");
 
-		setTable_title(new ImageIcon("src\\images\\others\\riders.png"));
-		getTable_titleLB().setIcon(getTable_title());
-		getTable().setModel(model = new DefaultTableModel(columns, 0));
-		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
-		
-		getGo_backJB().addMouseListener(new MouseAdapter() {
+		table_title = new ImageIcon("src\\images\\others\\riders.png");
+		table_titleLB.setIcon(table_title);
+		table.setModel(model = new DefaultTableModel(columns, 0));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+
+		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+
 				AdminRiderFrame.this.dispose();
-			
+
 			}
 		});
-	
+
 	}
 
 }

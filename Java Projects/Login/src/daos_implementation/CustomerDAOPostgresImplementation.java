@@ -19,7 +19,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 
 	private PreparedStatement get_all_customers_PS, insert_customer_PS, authenticateCustomerLogin_PS,
 			get_customer_by_email_PS, update_customer_address_PS, update_customer_password_PS;
-	DBUtility db_util = new DBUtility();
+	private DBUtility db_util = new DBUtility();
 
 	public CustomerDAOPostgresImplementation(Connection connection) {
 		try {
@@ -65,7 +65,7 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 	}
 
 	public void insertCustomer(Customer customer) throws DAOException {
-	
+
 		try {
 			insert_customer_PS.setString(1, customer.getCf());
 			insert_customer_PS.setString(2, customer.getName());
@@ -136,22 +136,22 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 		}
 		return customer;
 	}
-	
-	public void updateCustomerAddress(Customer customer, Address address) throws DAOException{
-		
+
+	public void updateCustomerAddress(Customer customer, Address address) throws DAOException {
+
 		try {
 			update_customer_address_PS.setString(1, address.toString());
 			update_customer_address_PS.setString(2, customer.getEmail());
 			update_customer_address_PS.executeUpdate();
-		}catch (SQLException s) {
+		} catch (SQLException s) {
 			throw new DAOException();
-		} 
+		}
 		return;
 	}
 
 	@Override
-	public void updateCustomerPassword(Customer customer, String new_password) throws DAOException{
-		
+	public void updateCustomerPassword(Customer customer, String new_password) throws DAOException {
+
 		try {
 			update_customer_password_PS.setString(1, new_password);
 			update_customer_password_PS.setString(2, customer.getEmail());

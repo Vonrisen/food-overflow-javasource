@@ -12,9 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import controllers.ShopController;
 
-
 @SuppressWarnings("serial")
-public class ShopOrderManagementFrame extends JFrame{
+public class ShopOrderManagementFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -35,8 +34,7 @@ public class ShopOrderManagementFrame extends JFrame{
 	private Color background_color = new Color(0xf3ecd7);
 	private ShopController shop_controller;
 
-
-	//Costruttore
+	// Costruttore
 	public ShopOrderManagementFrame(ShopController shop_controller) {
 		initialize();
 		setupFrame();
@@ -64,32 +62,31 @@ public class ShopOrderManagementFrame extends JFrame{
 
 	private void setupFrame() {
 
-		//Layout setup
+		// Layout setup
 		this.setTitle("Food Overflow - Shop Panel: Gestione Ordini");
 		setIconImage(new ImageIcon("src\\images\\startup\\icon.png").getImage());
-		this.setSize(1280,720);
+		this.setSize(1280, 720);
 		this.setResizable(false);
-		int central_width = screen_dim.width/2-this.getSize().width/2;
-		int central_height = screen_dim.height/2-this.getSize().height/2;
-		this.setLocation(central_width, central_height); //Setta il frame a centro monitor
+		int central_width = screen_dim.width / 2 - this.getSize().width / 2;
+		int central_height = screen_dim.height / 2 - this.getSize().height / 2;
+		this.setLocation(central_width, central_height); // Setta il frame a centro monitor
 		this.getContentPane().setLayout(null);
 		this.getContentPane().setBackground(background_color);
 
-
-		//Button setup
+		// Button setup
 		setupButton(view_ordersJB, view_orders_inactiveIMG);
 		setupButton(pending_ordersJB, pending_orders_inactiveIMG);
 		setupButton(delivering_ordersJB, delivering_orders_inactiveIMG);
 
-		view_ordersJB.setBounds(150,100,400,200);
+		view_ordersJB.setBounds(150, 100, 400, 200);
 		this.getContentPane().add(view_ordersJB);
-		pending_ordersJB.setBounds(710,100,400,200);
+		pending_ordersJB.setBounds(710, 100, 400, 200);
 		this.getContentPane().add(pending_ordersJB);
-		delivering_ordersJB.setBounds(150,380,400,200);
+		delivering_ordersJB.setBounds(150, 380, 400, 200);
 		this.getContentPane().add(delivering_ordersJB);
 
 		setupButton(go_backJB, go_back_inactiveIMG);
-		go_backJB.setBounds(845,430,150,100);
+		go_backJB.setBounds(845, 430, 150, 100);
 		this.getContentPane().add(go_backJB);
 
 	}
@@ -101,10 +98,12 @@ public class ShopOrderManagementFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopViewOrdersFrame(ShopOrderManagementFrame.this);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				view_ordersJB.setIcon(view_orders_activeIMG);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				view_ordersJB.setIcon(view_orders_inactiveIMG);
@@ -116,10 +115,12 @@ public class ShopOrderManagementFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopDeliveringOrdersFrame(ShopOrderManagementFrame.this);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				delivering_ordersJB.setIcon(delivering_orders_activeIMG);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				delivering_ordersJB.setIcon(delivering_orders_inactiveIMG);
@@ -131,10 +132,12 @@ public class ShopOrderManagementFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopPendingOrdersFrame(ShopOrderManagementFrame.this);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				pending_ordersJB.setIcon(pending_orders_activeIMG);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				pending_ordersJB.setIcon(pending_orders_inactiveIMG);
@@ -146,22 +149,21 @@ public class ShopOrderManagementFrame extends JFrame{
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopFrame(ShopOrderManagementFrame.this);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				go_backJB.setIcon(go_back_activeIMG);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				go_backJB.setIcon(go_back_inactiveIMG);
 			}
 		});
 
-
-		addWindowListener(new WindowAdapter()
-		{
+		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e)
-			{
+			public void windowClosing(WindowEvent e) {
 				shop_controller.releaseAllDaoResourcesAndDisposeFrame(ShopOrderManagementFrame.this);
 			}
 		});

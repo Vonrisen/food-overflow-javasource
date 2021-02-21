@@ -16,33 +16,32 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 @SuppressWarnings("serial")
 public class StandardFrame extends JFrame {
 
-	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	private Dimension button_size;
-	private Dimension west_east_size;
-	private Dimension north_south_size;
+	protected Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
+	protected Dimension button_size;
+	protected Dimension west_east_size;
+	protected Dimension north_south_size;
 
-	private ImageIcon go_back_inactiveIMG;
-	private ImageIcon go_back_activeIMG;
-	private ImageIcon table_title;
+	protected ImageIcon go_back_inactiveIMG;
+	protected ImageIcon go_back_activeIMG;
+	protected ImageIcon table_title;
 
-	private JLabel table_titleLB;
+	protected JLabel table_titleLB;
 
-	private JPanel west_panel;
-	private JPanel east_panel;
-	private JPanel north_panel;
-	private JPanel south_panel;
-	private JPanel center_panel;
+	protected JPanel west_panel;
+	protected JPanel east_panel;
+	protected JPanel north_panel;
+	protected JPanel south_panel;
+	protected JPanel center_panel;
 
-	private JTable table;
-	private JScrollPane scroll_pane;
+	protected JTable table;
+	protected JScrollPane scroll_pane;
 
-	private JButton go_backJB;
+	protected JButton go_backJB;
 
-	private Color background_color = new Color(0xf3ecd7);
+	protected Color background_color = new Color(0xf3ecd7);
 
 	protected DefaultTableModel model;
 
@@ -162,144 +161,8 @@ public class StandardFrame extends JFrame {
 		return table;
 	}
 
-	public void setTable(JTable table) {
-		this.table = table;
-	}
-
 	public DefaultTableModel getModel() {
 		return model;
-	}
-
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
-	public Dimension getScreen_dim() {
-		return screen_dim;
-	}
-
-	public void setScreen_dim(Dimension screen_dim) {
-		this.screen_dim = screen_dim;
-	}
-
-	public ImageIcon getGo_back_inactiveIMG() {
-		return go_back_inactiveIMG;
-	}
-
-	public void setGo_back_inactiveIMG(ImageIcon go_back_inactiveIMG) {
-		this.go_back_inactiveIMG = go_back_inactiveIMG;
-	}
-
-	public ImageIcon getGo_back_activeIMG() {
-		return go_back_activeIMG;
-	}
-
-	public void setGo_back_activeIMG(ImageIcon go_back_activeIMG) {
-		this.go_back_activeIMG = go_back_activeIMG;
-	}
-
-	public Dimension getButton_size() {
-		return button_size;
-	}
-
-	public void setButton_size(Dimension button_size) {
-		this.button_size = button_size;
-	}
-
-	public Dimension getWest_east_size() {
-		return west_east_size;
-	}
-
-	public void setWest_east_size(Dimension west_east_size) {
-		this.west_east_size = west_east_size;
-	}
-
-	public Dimension getNorth_south_size() {
-		return north_south_size;
-	}
-
-	public void setNorth_south_size(Dimension north_south_size) {
-		this.north_south_size = north_south_size;
-	}
-
-	public JPanel getWest_panel() {
-		return west_panel;
-	}
-
-	public void setWest_panel(JPanel west_panel) {
-		this.west_panel = west_panel;
-	}
-
-	public JPanel getEast_panel() {
-		return east_panel;
-	}
-
-	public void setEast_panel(JPanel east_panel) {
-		this.east_panel = east_panel;
-	}
-
-	public JPanel getNorth_panel() {
-		return north_panel;
-	}
-
-	public void setNorth_panel(JPanel north_panel) {
-		this.north_panel = north_panel;
-	}
-
-	public JPanel getSouth_panel() {
-		return south_panel;
-	}
-
-	public void setSouth_panel(JPanel south_panel) {
-		this.south_panel = south_panel;
-	}
-
-	public JPanel getCenter_panel() {
-		return center_panel;
-	}
-
-	public void setCenter_panel(JPanel center_panel) {
-		this.center_panel = center_panel;
-	}
-
-	public JScrollPane getScroll_pane() {
-		return scroll_pane;
-	}
-
-	public void setScroll_pane(JScrollPane scroll_pane) {
-		this.scroll_pane = scroll_pane;
-	}
-
-	public JButton getGo_backJB() {
-		return go_backJB;
-	}
-
-	public void setGo_backJB(JButton go_backJB) {
-		this.go_backJB = go_backJB;
-	}
-
-	public Color getBackground_color() {
-		return background_color;
-	}
-
-	public void setBackground_color(Color background_color) {
-		this.background_color = background_color;
-	}
-
-	public ImageIcon getTable_title() {
-		return table_title;
-	}
-
-	public void setTable_title(ImageIcon table_title) {
-		this.table_title = table_title;
-	}
-
-	public JLabel getTable_titleLB() {
-		return table_titleLB;
-	}
-
-	public void setTable_titleLB(JLabel table_titleLB) {
-		this.table_titleLB = table_titleLB;
 	}
 
 }

@@ -8,12 +8,9 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class RoundJTextField extends JTextField {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Color color;
 
 	public RoundJTextField(Color color) {

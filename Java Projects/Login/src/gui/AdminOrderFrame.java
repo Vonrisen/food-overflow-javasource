@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -11,9 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -55,7 +52,7 @@ public class AdminOrderFrame extends ComplexFrame {
 
 		search_inactiveIMG = new ImageIcon("src\\images\\buttons\\complexSearchInactive.png");
 		search_activeIMG = new ImageIcon("src\\images\\buttons\\complexSearchActive.png");
-		setTable_title(new ImageIcon("src\\images\\others\\orders.png"));
+		table_title = new ImageIcon("src\\images\\others\\orders.png");
 
 		price_minTF = new RoundJTextField(new Color(0x771007));
 		price_maxTF = new RoundJTextField(new Color(0x771007));
@@ -65,55 +62,55 @@ public class AdminOrderFrame extends ComplexFrame {
 		addressCB = new JComboBox<String>();
 		searchJB = new JButton();
 
-		getTable().setModel(model = new DefaultTableModel(columns, 0));
+		table.setModel(model = new DefaultTableModel(columns, 0));
 	}
 
 	// Frame Setup
 	private void frameSetup() {
 
 		// Sottopannelli di "center_panel"
-		getTable_titleLB().setPreferredSize(new Dimension(500, 50));
-		getTable_titleLB().setIcon(getTable_title());
+		table_titleLB.setPreferredSize(new Dimension(500, 50));
+		table_titleLB.setIcon(table_title);
 		setTitle("Food Overflow - Admin Panel: Ricerca complessa ordini");
 
-		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		// Textfields setup
 
-		categoryCB.setPreferredSize(getShort_dim_of_textfield());
+		categoryCB.setPreferredSize(short_dim_of_textfield);
 		categoryCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		categoryCB.setFocusable(false);
 		categoryCB.setBackground(Color.white);
-		getAttributes_panel().add(categoryCB);
+		attributes_panel.add(categoryCB);
 
-		vehicleCB.setPreferredSize(getShort_dim_of_textfield());
+		vehicleCB.setPreferredSize(short_dim_of_textfield);
 		vehicleCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		vehicleCB.setFocusable(false);
 		vehicleCB.setBackground(Color.white);
-		getAttributes_panel().add(vehicleCB);
+		attributes_panel.add(vehicleCB);
 
-		createTextField(price_minTF, "Prezzo minimo", getShort_dim_of_textfield());
-		getAttributes_panel().add(price_minTF);
+		createTextField(price_minTF, "Prezzo minimo", short_dim_of_textfield);
+		attributes_panel.add(price_minTF);
 
-		createTextField(price_maxTF, "Prezzo massimo", getShort_dim_of_textfield());
-		getAttributes_panel().add(price_maxTF);
+		createTextField(price_maxTF, "Prezzo massimo", short_dim_of_textfield);
+		attributes_panel.add(price_maxTF);
 
-		addressCB.setPreferredSize(getLong_dim_of_textfield());
+		addressCB.setPreferredSize(long_dim_of_textfield);
 		addressCB.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0x771007)));
 		addressCB.setFocusable(false);
 		addressCB.setBackground(Color.white);
-		getAttributes_panel().add(addressCB);
+		attributes_panel.add(addressCB);
 
-		setupButton(searchJB, search_inactiveIMG, getButton_size());
-		getButtons_panel().add(searchJB);
+		setupButton(searchJB, search_inactiveIMG, button_size);
+		buttons_panel.add(searchJB);
 
-		getButtons_panel().add(getGo_backJB());
+		buttons_panel.add(go_backJB);
 
 	}
 
 	private void events() {
 
-		getGo_backJB().addMouseListener(new MouseAdapter() {
+		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				admin_controller.openAdminFrame(AdminOrderFrame.this);

@@ -34,7 +34,6 @@ import gui_support.RoundJTextField;
 public class CustomerCartFrame extends JFrame {
 
 	private Dimension screen_dim = Toolkit.getDefaultToolkit().getScreenSize();
-	private Dimension long_dim_of_textfield;
 	private ImageIcon backgroundIMG;
 	private ImageIcon profile_inactiveIMG;
 	private ImageIcon profile_activeIMG;
@@ -98,7 +97,7 @@ public class CustomerCartFrame extends JFrame {
 	private CustomerController customer_controller;
 	private LoginController login_controller;
 
-	public CustomerCartFrame(CustomerController customer_controller,LoginController login_controller) {
+	public CustomerCartFrame(CustomerController customer_controller, LoginController login_controller) {
 
 		initialize();
 		frameSetup();
@@ -129,7 +128,6 @@ public class CustomerCartFrame extends JFrame {
 		back_button_activeIMG = new ImageIcon("src\\images\\customer\\indietroButtonActive.PNG");
 		cart_logoIMG = new ImageIcon("src\\images\\customer\\cartLogo.PNG");
 
-		long_dim_of_textfield = new Dimension(335, 25);
 		west_east_size = new Dimension(100, 80);
 		north_south_size = new Dimension(100, 50);
 
@@ -525,7 +523,7 @@ public class CustomerCartFrame extends JFrame {
 			public void mousePressed(MouseEvent e) {
 
 				login_controller.openLoginFrame(CustomerCartFrame.this);
-				
+
 			}
 		});
 
@@ -548,9 +546,6 @@ public class CustomerCartFrame extends JFrame {
 
 		return new ImageIcon(bi);
 	}
-
-
-
 
 	private void createTextField(JTextField text_field, String text, Dimension dimension) {
 

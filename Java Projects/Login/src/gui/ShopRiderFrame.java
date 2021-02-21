@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -15,14 +14,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 import controllers.ShopController;
-import entities.Address;
 import gui_support.RoundJTextField;
-import utilities.InputUtility;
+import utilities.TableModelUtility;
 
 @SuppressWarnings("serial")
 public class ShopRiderFrame extends ComplexFrame {
-
 
 	private String[] columns = { "CF", "Nome", "Cognome", "Data di nascita", "Luogo di nascita", "Indirizzo", "Sesso",
 			"Cellulare", "Veicolo", "Orario di lavoro" };
@@ -35,8 +33,6 @@ public class ShopRiderFrame extends ComplexFrame {
 	private JTextField address_nameTF;
 	private JTextField address_civic_numberTF;
 	private JTextField address_capTF;
-	private JTextField address_cityTF;
-	private JTextField address_provinceTF;
 	private JTextField working_hoursTF;
 	private JTextField cellphoneTF;
 
@@ -59,7 +55,7 @@ public class ShopRiderFrame extends ComplexFrame {
 
 	private void initialize() {
 
-		setTable_title(new ImageIcon("src\\images\\others\\riders.png"));
+		table_title = new ImageIcon("src\\images\\others\\riders.png");
 		nameTF = new RoundJTextField(new Color(0x771007));
 		surnameTF = new RoundJTextField(new Color(0x771007));
 		birth_dateTF = new RoundJTextField(new Color(0x771007));
@@ -70,7 +66,7 @@ public class ShopRiderFrame extends ComplexFrame {
 		cellphoneTF = new RoundJTextField(new Color(0x771007));
 		vehicleCB = new JComboBox<String>(vehicleStrings);
 		genderCB = new JComboBox<String>(genderStrings);
-		getTable().setModel(new DefaultTableModel(columns, 0));
+		table.setModel(model = new DefaultTableModel(columns, 0));
 
 		address_provinceCB = new JComboBox<String>();
 		address_townCB = new JComboBox<String>();
@@ -85,120 +81,105 @@ public class ShopRiderFrame extends ComplexFrame {
 		// Layout setup
 		this.setTitle("Food Overflow - Shop Panel: Gestione rider");
 
-		getScroll_pane().setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
+		scroll_pane.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 
 		// Textfields setup
-		createTextField(nameTF, "Nome", getShort_dim_of_textfield());
-		getAttributes_panel().add(nameTF);
+		createTextField(nameTF, "Nome", short_dim_of_textfield);
+		attributes_panel.add(nameTF);
 
-		createTextField(surnameTF, "Cognome", getShort_dim_of_textfield());
-		getAttributes_panel().add(surnameTF);
+		createTextField(surnameTF, "Cognome", short_dim_of_textfield);
+		attributes_panel.add(surnameTF);
 
-		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", getShort_dim_of_textfield());
-		getAttributes_panel().add(birth_dateTF);
+		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", short_dim_of_textfield);
+		attributes_panel.add(birth_dateTF);
 
-		birth_nationCB.setPreferredSize(getShort_dim_of_textfield());
+		birth_nationCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(birth_nationCB);
-		getAttributes_panel().add(birth_nationCB);
+		attributes_panel.add(birth_nationCB);
 
-		birth_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		birth_provinceCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(birth_provinceCB);
-		getAttributes_panel().add(birth_provinceCB);
+		attributes_panel.add(birth_provinceCB);
 
-		birth_townCB.setPreferredSize(getShort_dim_of_textfield());
+		birth_townCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(birth_townCB);
-		getAttributes_panel().add(birth_townCB);
+		attributes_panel.add(birth_townCB);
 
-		createTextField(address_nameTF, "Nome dell'indirizzo", getLong_dim_of_textfield());
-		getAttributes_panel().add(address_nameTF);
+		createTextField(address_nameTF, "Nome dell'indirizzo", long_dim_of_textfield);
+		attributes_panel.add(address_nameTF);
 
-		createTextField(address_civic_numberTF, "Numero civico", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_civic_numberTF);
+		createTextField(address_civic_numberTF, "Numero civico", short_dim_of_textfield);
+		attributes_panel.add(address_civic_numberTF);
 
-		createTextField(address_capTF, "CAP", getShort_dim_of_textfield());
-		getAttributes_panel().add(address_capTF);
+		createTextField(address_capTF, "CAP", short_dim_of_textfield);
+		attributes_panel.add(address_capTF);
 
-		address_provinceCB.setPreferredSize(getShort_dim_of_textfield());
+		address_provinceCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(address_provinceCB);
-		getAttributes_panel().add(address_provinceCB);
+		attributes_panel.add(address_provinceCB);
 
-		address_townCB.setPreferredSize(getShort_dim_of_textfield());
+		address_townCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(address_townCB);
-		getAttributes_panel().add(address_townCB);
+		attributes_panel.add(address_townCB);
 
-		createTextField(cellphoneTF, "Cellulare", getShort_dim_of_textfield());
-		getAttributes_panel().add(cellphoneTF);
+		createTextField(cellphoneTF, "Cellulare", short_dim_of_textfield);
+		attributes_panel.add(cellphoneTF);
 
-		genderCB.setPreferredSize(getShort_dim_of_textfield());
+		genderCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(genderCB);
-		getAttributes_panel().add(genderCB);
+		attributes_panel.add(genderCB);
 
-		vehicleCB.setPreferredSize(getShort_dim_of_textfield());
+		vehicleCB.setPreferredSize(short_dim_of_textfield);
 		setupComboBox(vehicleCB);
-		getAttributes_panel().add(vehicleCB);
+		attributes_panel.add(vehicleCB);
 
-		createTextField(working_hoursTF, "Orario di lavoro", getShort_dim_of_textfield());
-		getAttributes_panel().add(working_hoursTF);
+		createTextField(working_hoursTF, "Orario di lavoro", short_dim_of_textfield);
+		attributes_panel.add(working_hoursTF);
 
 		// Buttons & Label setup
-		getTable_titleLB().setIcon(getTable_title());
-		getButtons_panel().add(getInsert_sqlJB());
-		getButtons_panel().add(getUpdate_sqlJB());
-		getButtons_panel().add(getDelete_sqlJB());
-		getButtons_panel().add(getGo_backJB());
+		table_titleLB.setIcon(table_title);
+		buttons_panel.add(insert_sqlJB);
+		buttons_panel.add(update_sqlJB);
+		buttons_panel.add(delete_sqlJB);
+		buttons_panel.add(go_backJB);
 
 	}
 
 	private void events() {
 
-		getInsert_sqlJB().addMouseListener(new MouseAdapter() {
+		insert_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.addRider(ShopRiderFrame.this);
 			}
 		});
 
-		getUpdate_sqlJB().addMouseListener(new MouseAdapter() {
+		update_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.updateRider(ShopRiderFrame.this);
 			}
 		});
 
-		getDelete_sqlJB().addMouseListener(new MouseAdapter() {
+		delete_sqlJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.removeRider(ShopRiderFrame.this);
 			}
 		});
 
-		getGo_backJB().addMouseListener(new MouseAdapter() {
+		go_backJB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				shop_controller.openShopFrame(ShopRiderFrame.this);
 			}
 		});
 
-		getTable().addMouseListener(new java.awt.event.MouseAdapter() {
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				InputUtility input_util = new InputUtility();
-				Address address;
-				if (!getTable().getSelectionModel().isSelectionEmpty()) {
-					address = input_util.tokenizedStringToAddress(
-							getTable().getModel().getValueAt(getTable().getSelectedRow(), 5).toString(), "(, )");
-					nameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 1).toString());
-					surnameTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 2).toString());
-					birth_dateTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 3).toString());
-					address_nameTF.setText(address.getAddress());
-					address_civic_numberTF.setText(address.getCivic_number());
-					address_capTF.setText(address.getCap());
-					address_provinceCB.setSelectedItem(address.getProvince());
-					address_townCB.setSelectedItem(address.getCity());
-					cellphoneTF.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 7).toString());
-					working_hoursTF
-							.setText(getTable().getModel().getValueAt(getTable().getSelectedRow(), 9).toString());
-				}
+				TableModelUtility table_utility = new TableModelUtility();
+				table_utility.fillFieldsFromJTable(ShopRiderFrame.this);
 			}
 
 		});
@@ -388,14 +369,6 @@ public class ShopRiderFrame extends ComplexFrame {
 
 	public JTextField getAddress_capTF() {
 		return address_capTF;
-	}
-
-	public JTextField getAddress_cityTF() {
-		return address_cityTF;
-	}
-
-	public JTextField getAddress_provinceTF() {
-		return address_provinceTF;
 	}
 
 	public JTextField getWorking_hoursTF() {

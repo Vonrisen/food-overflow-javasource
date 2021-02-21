@@ -18,8 +18,8 @@ import utilities.InputUtility;
 
 public class RiderDAOPostgresImplementation implements RiderDAO {
 
-	PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS, get_rider_by_CF_PS;
-	DBUtility db_util = new DBUtility();
+	private PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS, get_rider_by_CF_PS;
+	private DBUtility db_util = new DBUtility();
 
 	public RiderDAOPostgresImplementation(Connection connection) {
 		try {
@@ -97,7 +97,6 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 
 	@Override
 	public void updateRider(Rider rider) throws DAOException {
-
 
 		try {
 			update_rider_PS.setString(1, rider.getName());

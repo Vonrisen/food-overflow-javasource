@@ -22,11 +22,11 @@ import utilities.InputUtility;
 
 public class ShopDAOPostgresImplementation implements ShopDAO {
 
-	PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS,
+	private PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS,
 			get_riders_of_a_shop_by_shop_email_PS, get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS,
 			get_shop_by_email_PS, get_shop_by_province_PS, get_riders_of_a_shop_max_2_deliveries_by_shop_email_PS;
-	CallableStatement update_shop_CS;
-	DBUtility db_util = new DBUtility();
+	private CallableStatement update_shop_CS;
+	private DBUtility db_util = new DBUtility();
 
 	public ShopDAOPostgresImplementation(Connection connection) {
 		try {
@@ -257,7 +257,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 
 	public void updateShop(Shop shop, String old_email) throws DAOException {
 
-		
 		try {
 			update_shop_CS.setString(1, shop.getName());
 			update_shop_CS.setString(2, shop.getAddress().toString());
