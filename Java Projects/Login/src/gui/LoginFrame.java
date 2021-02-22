@@ -115,7 +115,7 @@ public class LoginFrame extends JFrame {
 
 	}
 
-	public void setupFrame() {
+	private void setupFrame() {
 
 		// Layout setup
 
@@ -198,7 +198,7 @@ public class LoginFrame extends JFrame {
 
 	}
 
-	public void events() {
+	private void events() {
 
 		customerJB.addMouseListener(new MouseAdapter() {
 			@Override
@@ -381,16 +381,15 @@ public class LoginFrame extends JFrame {
 		loginJB.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent validazione_credenziali_admin) {
-
+				
 				if ((usernameTF.getText().equals("Inserisci ID o E-mail"))
 						|| (passwordTF.getText().equals("Inserisci password"))) {
-
 					JOptionPane.showMessageDialog(null, "Uno o più campi di testo sono vuoti", "Errore",
 							JOptionPane.INFORMATION_MESSAGE);
 
 				} else
 					login_controller.accessAuthentication(LoginFrame.this);
-
+				
 			}
 		});
 

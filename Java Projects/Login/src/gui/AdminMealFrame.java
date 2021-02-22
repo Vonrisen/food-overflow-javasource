@@ -100,7 +100,7 @@ public class AdminMealFrame extends ComplexFrame {
 
 		// Button setup
 		buttons_panel.add(insert_sqlJB);
-		buttons_panel.add(update_sqlJB);
+		buttons_panel.add(delete_sqlJB);
 		buttons_panel.add(go_backJB);
 
 		// Checkboxes setup

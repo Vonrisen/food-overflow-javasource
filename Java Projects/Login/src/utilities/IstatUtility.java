@@ -92,5 +92,39 @@ public class IstatUtility {
 		}
 		return towns;
 	}
+	
+	public String getProvinceOfATown(String town) {
+		
+		try (BufferedReader br = new BufferedReader(new FileReader("CittaProvinceCodiciCatastaliIstat.txt"))) {
+			String line;
+			town = town.toUpperCase();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[3].equals(town))
+					return values[0];
+			}
+		} catch (IOException i) {
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire ai comuni", "Errore",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return "";
+	}
+	
+	public boolean isBirthPlaceANation(String birth_place) {
+		
+		try (BufferedReader br = new BufferedReader(new FileReader("CittaProvinceCodiciCatastaliIstat.txt"))) {
+			String line;
+			birth_place = birth_place.toUpperCase();
+			while ((line = br.readLine()) != null) {
+				String[] values = line.split(",");
+				if (values[0].equals("n") && values[3].equals(birth_place))
+					return true;
+			}
+		} catch (IOException i) {
+			JOptionPane.showMessageDialog(null, "Errore mentre cercavo di risalire ai comuni", "Errore",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return false;
+	}
 
 }

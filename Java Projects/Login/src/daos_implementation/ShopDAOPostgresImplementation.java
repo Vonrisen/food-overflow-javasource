@@ -238,6 +238,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			insert_shop_PS.setString(7, shop.getHome_phone());
 			insert_shop_PS.executeUpdate();
 		} catch (SQLException s) {
+			System.out.println(s.getMessage());
 			throw new DAOException();
 		}
 		return;

@@ -42,7 +42,7 @@ public class CustomerController {
 	private OrderDAO order_dao;
 
 	public CustomerController(Customer customer, Connection connection, CustomerDAO customer_dao, ShopDAO shop_dao,
-							  MealDAO meal_dao, OrderDAO order_dao, LoginController login_controller) {
+			MealDAO meal_dao, OrderDAO order_dao, LoginController login_controller) {
 
 		this.customer = customer;
 		this.connection = connection;
@@ -75,35 +75,45 @@ public class CustomerController {
 	}
 
 	public void openCustomerShopListFrame(JFrame frame, String shop_province) {
-		frame.dispose();
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this, login_controller);
 		List<Shop> shop_list = new ArrayList<Shop>();
 		try {
 			shop_list = shop_dao.getShopByProvince(shop_province);
-			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator",
-					"Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
+					JOptionPane.ERROR_MESSAGE);
 		}
-		customer_shop_list_frame.setVisible(true);
+		if (!shop_list.isEmpty()) {
+			CustomerShopListFrame customer_shop_list_frame = new CustomerShopListFrame(this, login_controller);
+			table_util.initializeCustomerShopTable(customer_shop_list_frame.getModel(), shop_list);
+			customer_shop_list_frame.setVisible(true);
+			frame.dispose();
+		} else
+			JOptionPane.showMessageDialog(null, "Non ci sono negozi per " + shop_province, "Errore",
+					JOptionPane.ERROR_MESSAGE);
 		return;
 	}
 
 	public void openCustomerMealListFrame(JFrame frame, String shop_email) {
+
 		TableModelUtility table_util = new TableModelUtility();
-		CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this, login_controller);
-		frame.dispose();
 		List<Meal> meal_list = new ArrayList<Meal>();
 		try {
-			meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
 			this.shop = shop_dao.getShopByEmail(shop_email);
+			meal_list = shop_dao.getMealsOfAShopByShopEmail(shop_email);
 		} catch (DAOException e) {
-			JOptionPane.showMessageDialog(null, "An error has occurred, please try again or contact the administrator",
-					"Errore", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Errore. Contattare l' amministratore", "Errore",
+					JOptionPane.ERROR_MESSAGE);
 		}
-		table_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
-		customer_meal_list_frame.setVisible(true);
+		if (!meal_list.isEmpty()) {
+			CustomerMealListFrame customer_meal_list_frame = new CustomerMealListFrame(this, login_controller);
+			table_util.initializeMealTable(customer_meal_list_frame.getModel(), meal_list);
+			customer_meal_list_frame.setVisible(true);
+			frame.dispose();
+		}
+		else
+			JOptionPane.showMessageDialog(null,shop.getName()+" non effettua consegne al momento" , "Errore",
+					JOptionPane.ERROR_MESSAGE);
 		return;
 
 	}
@@ -120,10 +130,12 @@ public class CustomerController {
 			} catch (NullPointerException n) {
 			}
 			Meal meal = new Meal(frame.getTable().getValueAt(row, 0).toString(),
-								Float.parseFloat(frame.getTable().getValueAt(row, 2).toString()),
-								frame.getTable().getValueAt(row, 3).toString(), frame.getTable().getValueAt(row, 1).toString(),
-								allergen_list);
+					Float.parseFloat(frame.getTable().getValueAt(row, 2).toString()),
+					frame.getTable().getValueAt(row, 3).toString(), frame.getTable().getValueAt(row, 1).toString(),
+					allergen_list);
 			short quantity = Short.parseShort(frame.getQuantityTF().getText());
+			if(quantity>0)
+			{
 			OrderComposition new_meal = new OrderComposition(meal, quantity);
 			for (OrderComposition o : cart.getOrder_composition_list()) {
 				if (o.getMeal().getName().equals(meal.getName())) {
@@ -133,6 +145,9 @@ public class CustomerController {
 			}
 			if (!meal_already_inserted)
 				cart.addMealIntoCart(new_meal);
+		}	else
+				JOptionPane.showMessageDialog(null, "La quantita' non puo' essere negativa", "Errore",
+						JOptionPane.ERROR_MESSAGE);
 		} else
 			JOptionPane.showMessageDialog(null, "Selezionare uno pasto da mettere nel carrello", "Errore",
 					JOptionPane.ERROR_MESSAGE);
@@ -275,6 +290,12 @@ public class CustomerController {
 			customer_profile_frame.getAddress_provinceCB().addItem(s);
 		}
 
+		customer_profile_frame.getAddress_nameTF().setText(customer.getAddress().getAddress());
+		customer_profile_frame.getAddress_civic_numberTF().setText(customer.getAddress().getCivic_number());
+		customer_profile_frame.getAddress_capTF().setText(customer.getAddress().getCap());
+		customer_profile_frame.getAddress_provinceCB().setSelectedItem(customer.getAddress().getProvince());
+		customer_profile_frame.getAddress_townCB().setSelectedItem(customer.getAddress().getCity());
+		
 		return;
 
 	}
@@ -298,6 +319,7 @@ public class CustomerController {
 		try {
 			customer_dao.updateCustomerAddress(customer, address);
 			customer.setAddress(address);
+			JOptionPane.showMessageDialog(null, "Indirizzo di consegna aggiornato con successo");
 		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null,
 					"Non e' stato possibile aggiornare l' indirizzo, controllare i campi riempiti", "Errore",
@@ -316,7 +338,7 @@ public class CustomerController {
 			try {
 				customer_dao.updateCustomerPassword(customer, new_password);
 				customer.setPassword(new_password);
-				JOptionPane.showMessageDialog(null, "Password modificata");
+				JOptionPane.showMessageDialog(null, "Password modificata con successo");
 			} catch (DAOException e) {
 				JOptionPane.showMessageDialog(null, "Non e' stato possibile aggiornare la password, riprovarae",
 						"Errore", JOptionPane.ERROR_MESSAGE);

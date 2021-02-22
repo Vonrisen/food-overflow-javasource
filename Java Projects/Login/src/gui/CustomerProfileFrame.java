@@ -204,14 +204,14 @@ public class CustomerProfileFrame extends JFrame {
 			}
 
 			public void mousePressed(MouseEvent e) {
-
+				
 				edit_authJB.setVisible(false);
 				edit_addressJB.setVisible(false);
-
 				old_passwordTF.setVisible(true);
 				passwordTF.setVisible(true);
 				updateJB.setVisible(true);
 				go_backJB.setVisible(true);
+				
 			}
 
 		});
@@ -235,7 +235,6 @@ public class CustomerProfileFrame extends JFrame {
 
 				edit_addressJB.setVisible(false);
 				edit_authJB.setVisible(false);
-
 				address_nameTF.setVisible(true);
 				address_civic_numberTF.setVisible(true);
 				address_capTF.setVisible(true);
@@ -310,7 +309,6 @@ public class CustomerProfileFrame extends JFrame {
 
 				updateJB.setVisible(false);
 				go_backJB.setVisible(false);
-
 				edit_authJB.setVisible(true);
 				edit_addressJB.setVisible(true);
 

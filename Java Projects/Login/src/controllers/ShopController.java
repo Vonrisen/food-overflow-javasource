@@ -1,8 +1,6 @@
 package controllers;
 
 import java.sql.Connection;
-
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -218,7 +216,7 @@ public class ShopController {
 				meal_dao.insertIntoMenu(current_shop_email, meal);
 				shop_meal_frame.getMenu_model().insertRow(shop_meal_frame.getMenu_model().getRowCount(),
 						new Object[] { meal.getName(), meal.getCategory(),
-								new DecimalFormat("00.00").format(meal.getPrice()), meal.getIngredients(),
+								meal.getPrice(), meal.getIngredients(),
 								meal.getAllergen_list().toString().substring(1,
 										meal.getAllergen_list().toString().length() - 1) });
 				shop_meal_frame.getAll_meals_model().removeRow(row_selected);
@@ -326,18 +324,24 @@ public class ShopController {
 	}
 
 	public void updateRider(ShopRiderFrame shop_rider_frame) {
+		
 		int row = shop_rider_frame.getTable().getSelectedRow();
+		String birth_town;
+		if(!shop_rider_frame.getBirth_townCB().isVisible())
+			birth_town = shop_rider_frame.getBirth_nationCB().getSelectedItem().toString();
+		else
+			birth_town = shop_rider_frame.getBirth_townCB().getSelectedItem().toString();
+			System.out.println(birth_town);
 		if (row != -1) {
 			String cf_of_rider_to_update = shop_rider_frame.getTable().getModel().getValueAt(row, 0).toString();
 			FiscalCodeUtility codice_fiscale = new FiscalCodeUtility();
 			TableModelUtility table_model = new TableModelUtility();
 			try {
-
 				Rider rider_to_update = rider_dao.getRiderByCf(cf_of_rider_to_update);
 				String CF = codice_fiscale.getCF(shop_rider_frame.getNameTF().getText(),
 						shop_rider_frame.getSurnameTF().getText(),
 						new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()),
-						shop_rider_frame.getBirth_townCB().getSelectedItem().toString(),
+						birth_town,
 						shop_rider_frame.getGenderCB().getSelectedItem().toString().charAt(0));
 				if (!CF.equals("Errore!")) {
 					rider_to_update.setCf(CF);
@@ -347,16 +351,15 @@ public class ShopController {
 							shop_rider_frame.getAddress_civic_numberTF().getText(),
 							shop_rider_frame.getAddress_capTF().getText(),
 							shop_rider_frame.getAddress_townCB().getSelectedItem().toString(),
-							shop_rider_frame.getAddress_provinceCB().toString()));
+							shop_rider_frame.getAddress_provinceCB().getSelectedItem().toString()));
 					rider_to_update.setCellphone(shop_rider_frame.getCellphoneTF().getText());
-					rider_to_update
-							.setGender(shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0, 1));
+					rider_to_update.setGender(shop_rider_frame.getGenderCB().getSelectedItem().toString().substring(0, 1));
 					rider_to_update.setVehicle(shop_rider_frame.getVehicleCB().getSelectedItem().toString());
 					rider_to_update.setWorking_hours(shop_rider_frame.getWorking_hoursTF().getText());
 					rider_to_update.setBirth_date(
 							new SimpleDateFormat("dd/MM/yyyy").parse(shop_rider_frame.getBirth_dateTF().getText()));
-					rider_to_update.setBirth_place(shop_rider_frame.getBirth_townCB().getSelectedItem().toString());
-					rider_dao.updateRider(rider_to_update);
+					rider_to_update.setBirth_place(birth_town);
+					rider_dao.updateRider(rider_to_update, cf_of_rider_to_update);
 					table_model.updateRiderTableColumns(shop_rider_frame, row, rider_to_update);
 					JOptionPane.showMessageDialog(null, "Rider aggiornato con successo");
 				}
@@ -412,7 +415,7 @@ public class ShopController {
 		int row = shop_delivering_orders_frame.getTable().getSelectedRow();
 		if (row != -1) {
 			try {
-				Order in_delivery_order = order_dao.getOrderById(shop_delivering_orders_frame.getOrderTF().getText());
+				Order in_delivery_order = order_dao.getOrderById(shop_delivering_orders_frame.getTable().getValueAt(row, 0).toString());
 				order_dao.updateDeliveringOrder(in_delivery_order,
 						shop_delivering_orders_frame.getStatusCB().getSelectedItem().toString());
 				shop_delivering_orders_frame.getModel()

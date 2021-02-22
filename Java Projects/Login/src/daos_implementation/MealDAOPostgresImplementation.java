@@ -181,7 +181,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 
 	}
 
-	@Override
+	
 	public Meal getMealByName(String name) throws DAOException {
 
 		ArrayList<String> allergens;

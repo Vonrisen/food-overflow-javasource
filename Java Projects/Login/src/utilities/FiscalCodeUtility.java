@@ -239,6 +239,7 @@ public class FiscalCodeUtility {
 		char tabella_resti[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
 				'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 		codice_fiscale += String.valueOf(tabella_resti[somma % 26]);
+		System.out.println(codice_fiscale);
 		return codice_fiscale;
 	}
 }

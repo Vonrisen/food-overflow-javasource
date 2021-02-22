@@ -12,7 +12,7 @@ public interface RiderDAO {
 
 	public void dismissRider(Rider rider) throws DAOException;
 
-	public void updateRider(Rider rider) throws DAOException;
+	public void updateRider(Rider rider, String cf_of_rider_to_update) throws DAOException;
 
 	public void closeStatements() throws DAOException;
 

@@ -30,7 +30,7 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 					.prepareStatement("INSERT INTO Rider (SELECT ?,?,?,?,?,?,?,?,?,?,?,id FROM Shop WHERE email=?)");
 			dismiss_rider_PS = connection.prepareStatement("DELETE FROM Rider WHERE cf=?");
 			update_rider_PS = connection.prepareStatement(
-					"UPDATE Rider SET name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
+					"UPDATE Rider SET cf=?, name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
 			get_rider_by_CF_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf =?");
 		} catch (SQLException s) {
 			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator", "Error",
@@ -96,21 +96,24 @@ public class RiderDAOPostgresImplementation implements RiderDAO {
 	}
 
 	@Override
-	public void updateRider(Rider rider) throws DAOException {
+	public void updateRider(Rider rider, String cf) throws DAOException {
 
 		try {
-			update_rider_PS.setString(1, rider.getName());
-			update_rider_PS.setString(2, rider.getSurname());
-			update_rider_PS.setDate(3, new java.sql.Date(rider.getBirth_date().getTime()));
-			update_rider_PS.setString(4, rider.getBirth_place());
-			update_rider_PS.setString(5, rider.getAddress().toString());
-			update_rider_PS.setString(6, rider.getGender());
-			update_rider_PS.setString(7, rider.getCellphone());
-			update_rider_PS.setString(8, rider.getVehicle());
-			update_rider_PS.setString(9, rider.getWorking_hours());
-			update_rider_PS.setString(10, rider.getCf());
+			update_rider_PS.setString(1, rider.getCf());
+			update_rider_PS.setString(2, rider.getName());
+			update_rider_PS.setString(3, rider.getSurname());
+			update_rider_PS.setDate(4, new java.sql.Date(rider.getBirth_date().getTime()));
+			System.out.println(rider.getBirth_place());
+			update_rider_PS.setString(5, rider.getBirth_place());
+			update_rider_PS.setString(6, rider.getAddress().toString());
+			update_rider_PS.setString(7, rider.getGender());
+			update_rider_PS.setString(8, rider.getCellphone());
+			update_rider_PS.setString(9, rider.getVehicle());
+			update_rider_PS.setString(10, rider.getWorking_hours());
+			update_rider_PS.setString(11, cf);
 			update_rider_PS.executeUpdate();
 		} catch (SQLException s) {
+			System.out.println(s.getMessage());
 			throw new DAOException();
 		}
 		return;

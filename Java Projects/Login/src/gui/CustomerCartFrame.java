@@ -543,8 +543,8 @@ public class CustomerCartFrame extends JFrame {
 		gd.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
 		gd.drawImage(im.getImage(), 0, 0, w, h, null);
 		gd.dispose();
-
 		return new ImageIcon(bi);
+		
 	}
 
 	private void createTextField(JTextField text_field, String text, Dimension dimension) {

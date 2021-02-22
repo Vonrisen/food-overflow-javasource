@@ -72,7 +72,7 @@ public class RegisterFrame extends JFrame {
 
 	private JLabel birth_cityLB;
 	private JLabel birth_provinceLB;
-	private JLabel birth_comuneLB;
+	private JLabel birth_townLB;
 	private JLabel birth_dateLB;
 
 	private LoginController login_controller;
@@ -125,7 +125,7 @@ public class RegisterFrame extends JFrame {
 		genderCB = new JComboBox<String>(gender_strings);
 		birth_nationCB = new JComboBox<String>();
 		birth_provinceCB = new JComboBox<String>();
-		birth_comuneLB = new JLabel("Inserisci il comune di nascita: ");
+		birth_townLB = new JLabel("Inserisci il comune di nascita: ");
 		birth_dateLB = new JLabel("Inserisci la data di nascita:");
 		birth_provinceLB = new JLabel("Inserisci la provincia di nascita: ");
 
@@ -158,23 +158,23 @@ public class RegisterFrame extends JFrame {
 
 		// 1# Textfield setup
 
-		createTextField(nameTF, "Nome...");
+		createTextField(nameTF, "Nome");
 		nameTF.setBounds(120, 25, 150, 25);
 		login_panel.add(nameTF);
 
-		createTextField(surnameTF, "Cognome...");
+		createTextField(surnameTF, "Cognome");
 		surnameTF.setBounds(314, 25, 150, 25);
 		login_panel.add(surnameTF);
 
-		createTextField(address_nameTF, "Indirizzo...");
+		createTextField(address_nameTF, "Indirizzo di consegna");
 		address_nameTF.setBounds(120, 97, 150, 25);
 		login_panel.add(address_nameTF);
 
-		createTextField(address_civic_numberTF, "Numero civico...");
+		createTextField(address_civic_numberTF, "Numero civico");
 		address_civic_numberTF.setBounds(314, 97, 150, 25);
 		login_panel.add(address_civic_numberTF);
 
-		createTextField(address_capTF, "CAP...");
+		createTextField(address_capTF, "CAP");
 		address_capTF.setBounds(120, 133, 150, 25);
 		login_panel.add(address_capTF);
 
@@ -196,9 +196,9 @@ public class RegisterFrame extends JFrame {
 		birth_provinceLB.setVisible(false);
 		login_panel.add(birth_provinceLB);
 
-		birth_comuneLB.setBounds(120, 102, 246, 14);
-		birth_comuneLB.setVisible(false);
-		login_panel.add(birth_comuneLB);
+		birth_townLB.setBounds(120, 102, 246, 14);
+		birth_townLB.setVisible(false);
+		login_panel.add(birth_townLB);
 
 		birth_cityLB.setBounds(122, 30, 267, 14);
 		birth_cityLB.setVisible(false);
@@ -219,7 +219,7 @@ public class RegisterFrame extends JFrame {
 		birth_townCB.setVisible(false);
 		login_panel.add(birth_townCB);
 
-		createTextField(birth_dateTF, "giorno/mese/anno");
+		createTextField(birth_dateTF, "dd/MM/yyyy");
 		birth_dateTF.setVisible(false);
 		birth_dateTF.setBounds(305, 133, 150, 25);
 		login_panel.add(birth_dateTF);
@@ -230,24 +230,24 @@ public class RegisterFrame extends JFrame {
 
 		// 3# Textfield setup
 
-		createTextField(emailTF, "E-mail...");
+		createTextField(emailTF, "E-mail");
 		emailTF.setVisible(false);
 		emailTF.setBounds(135, 30, 310, 25);
 		login_panel.add(emailTF);
 
-		createTextField(cellphoneTF, "Cellulare...");
+		createTextField(cellphoneTF, "Cellulare");
 		cellphoneTF.setVisible(false);
 		cellphoneTF.setBounds(135, 138, 310, 25);
 		login_panel.add(cellphoneTF);
 
-		passwordTF.setText("Inserisci password...");
+		passwordTF.setText("Inserisci password");
 		passwordTF.setVisible(false);
 		passwordTF.setHorizontalAlignment(JTextField.CENTER);
 		passwordTF.setEchoChar((char) 0);
 		passwordTF.setBounds(135, 66, 310, 25);
 		login_panel.add(passwordTF);
 
-		repeat_passwordTF.setText("Reinserisci la password...");
+		repeat_passwordTF.setText("Reinserisci la password");
 		repeat_passwordTF.setVisible(false);
 		repeat_passwordTF.setHorizontalAlignment(JTextField.CENTER);
 		repeat_passwordTF.setEchoChar((char) 0);
@@ -281,20 +281,20 @@ public class RegisterFrame extends JFrame {
 
 	}
 
-	public void events() {
+	private void events() {
 
 		nameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(nameTF, "Nome...");
+				textFieldFocusGained(nameTF, "Nome");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(nameTF, "Nome...");
+				textFieldFocusLost(nameTF, "Nome");
 
 			}
 		});
@@ -303,14 +303,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(surnameTF, "Cognome...");
+				textFieldFocusGained(surnameTF, "Cognome");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(surnameTF, "Cognome...");
+				textFieldFocusLost(surnameTF, "Cognome");
 
 			}
 		});
@@ -319,14 +319,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_nameTF, "Indirizzo...");
+				textFieldFocusGained(address_nameTF, "Indirizzo di consegna");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_nameTF, "Indirizzo...");
+				textFieldFocusLost(address_nameTF, "Indirizzo di consegna");
 
 			}
 		});
@@ -335,14 +335,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_civic_numberTF, "Numero civico...");
+				textFieldFocusGained(address_civic_numberTF, "Numero civico");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_civic_numberTF, "Numero civico...");
+				textFieldFocusLost(address_civic_numberTF, "Numero civico");
 
 			}
 		});
@@ -351,14 +351,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(address_capTF, "CAP...");
+				textFieldFocusGained(address_capTF, "CAP");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(address_capTF, "CAP...");
+				textFieldFocusLost(address_capTF, "CAP");
 
 			}
 		});
@@ -367,14 +367,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(emailTF, "E-mail...");
+				textFieldFocusGained(emailTF, "E-mail");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(emailTF, "E-mail...");
+				textFieldFocusLost(emailTF, "E-mail");
 
 			}
 		});
@@ -383,14 +383,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(cellphoneTF, "Cellulare...");
+				textFieldFocusGained(cellphoneTF, "Cellulare");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(cellphoneTF, "Cellulare...");
+				textFieldFocusLost(cellphoneTF, "Cellulare");
 
 			}
 		});
@@ -399,14 +399,14 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				textFieldFocusGained(birth_dateTF, "giorno/mese/anno");
+				textFieldFocusGained(birth_dateTF, "dd/MM/yyyy");
 
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
 
-				textFieldFocusLost(birth_dateTF, "giorno/mese/anno");
+				textFieldFocusLost(birth_dateTF, "dd/MM/yyyy");
 
 			}
 		});
@@ -441,7 +441,7 @@ public class RegisterFrame extends JFrame {
 					genderCB.setVisible(false);
 
 					birth_provinceLB.setVisible(true);
-					birth_comuneLB.setVisible(true);
+					birth_townLB.setVisible(true);
 					birth_cityLB.setVisible(true);
 					birth_nationCB.setVisible(true);
 					birth_provinceCB.setVisible(true);
@@ -454,7 +454,7 @@ public class RegisterFrame extends JFrame {
 				} else if (birth_nationCB.isVisible() && !emailTF.isVisible()) {
 
 					birth_provinceLB.setVisible(false);
-					birth_comuneLB.setVisible(false);
+					birth_townLB.setVisible(false);
 					birth_cityLB.setVisible(false);
 					birth_nationCB.setVisible(false);
 					birth_provinceCB.setVisible(false);
@@ -495,6 +495,7 @@ public class RegisterFrame extends JFrame {
 
 				if (!nameTF.isVisible() && birth_nationCB.isVisible()) {
 
+					
 					nameTF.setVisible(true);
 					surnameTF.setVisible(true);
 					address_nameTF.setVisible(true);
@@ -505,7 +506,7 @@ public class RegisterFrame extends JFrame {
 					genderCB.setVisible(true);
 
 					birth_provinceLB.setVisible(false);
-					birth_comuneLB.setVisible(false);
+					birth_townLB.setVisible(false);
 					birth_cityLB.setVisible(false);
 					birth_nationCB.setVisible(false);
 					birth_provinceCB.setVisible(false);
@@ -517,7 +518,7 @@ public class RegisterFrame extends JFrame {
 				} else if (emailTF.isVisible() && !birth_nationCB.isVisible()) {
 
 					birth_provinceLB.setVisible(true);
-					birth_comuneLB.setVisible(true);
+					birth_townLB.setVisible(true);
 					birth_cityLB.setVisible(true);
 					birth_nationCB.setVisible(true);
 					birth_provinceCB.setVisible(true);
@@ -596,7 +597,7 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				if (passwordTF.getText().equals("Inserisci password...")) {
+				if (passwordTF.getText().equals("Inserisci password")) {
 
 					passwordTF.setHorizontalAlignment(JTextField.LEFT);
 					passwordTF.setEchoChar('•');
@@ -611,7 +612,7 @@ public class RegisterFrame extends JFrame {
 				if (passwordTF.getText().equals("")) {
 
 					passwordTF.setHorizontalAlignment(JTextField.CENTER);
-					passwordTF.setText("Inserisci password...");
+					passwordTF.setText("Inserisci password");
 					passwordTF.setEchoChar((char) 0);
 				}
 			}
@@ -622,7 +623,7 @@ public class RegisterFrame extends JFrame {
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				if (repeat_passwordTF.getText().equals("Reinserisci la password...")) {
+				if (repeat_passwordTF.getText().equals("Reinserisci la password")) {
 
 					repeat_passwordTF.setHorizontalAlignment(JTextField.LEFT);
 					repeat_passwordTF.setEchoChar('•');
@@ -637,7 +638,7 @@ public class RegisterFrame extends JFrame {
 				if (repeat_passwordTF.getText().equals("")) {
 
 					repeat_passwordTF.setHorizontalAlignment(JTextField.CENTER);
-					repeat_passwordTF.setText("Reinserisci la password...");
+					repeat_passwordTF.setText("Reinserisci la password");
 					repeat_passwordTF.setEchoChar((char) 0);
 				}
 			}
@@ -676,12 +677,12 @@ public class RegisterFrame extends JFrame {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			String selected_item = (String) e.getItem();
 			if (!selected_item.equals("-------------------")
-					|| !selected_item.equals("Seleziona provincia di residenza"))
+					|| !selected_item.equals("Provincia"))
 				login_controller.updateAddressTownsCB(selected_item, RegisterFrame.this);
 			;
-			if (selected_item.equals("Seleziona provincia di residenza")) {
+			if (selected_item.equals("Provincia")) {
 				this.getAddress_townCB().removeAllItems();
-				this.getAddress_townCB().addItem("Seleziona comune di residenza");
+				this.getAddress_townCB().addItem("Comune");
 			}
 
 		}
@@ -707,10 +708,10 @@ public class RegisterFrame extends JFrame {
 		}
 	}
 
-	private void createTextField(JTextField text_field, String text) {
+	private void createTextField(JTextField text_field, String string) {
 
 		text_field.setHorizontalAlignment(JTextField.CENTER);
-		text_field.setText(text);
+		text_field.setText(string);
 
 	}
 

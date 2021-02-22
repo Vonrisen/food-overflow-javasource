@@ -46,11 +46,13 @@ public class CustomerCheckoutFrame extends JFrame {
 	private CustomerCartFrame customer_cart_frame;
 
 	public CustomerCheckoutFrame(CustomerController customer_controller, CustomerCartFrame customer_cart_frame) {
+		
 		initialize();
 		frameSetup();
 		events();
 		this.customer_controller = customer_controller;
 		this.customer_cart_frame = customer_cart_frame;
+		
 	}
 
 	private void initialize() {

@@ -62,9 +62,9 @@ public class Address {
 		this.province = province;
 	}
 
-	@Override
 	public String toString() {
 		return address + ", " + civic_number + ", " + cap + ", " + city + ", " + province;
 	}
+	
 
 }

@@ -53,7 +53,7 @@ public class TableModelUtility {
 		Object[] row = new Object[10];
 		InputUtility date_util = new InputUtility();
 		for (Customer customer : customer_list) {
-
+			
 			row[0] = customer.getCf();
 			row[1] = customer.getName();
 			row[2] = customer.getSurname();
@@ -65,6 +65,7 @@ public class TableModelUtility {
 			row[8] = customer.getEmail();
 			row[9] = customer.getPassword();
 			model.addRow(row);
+			
 		}
 		return;
 	}
@@ -231,30 +232,29 @@ public class TableModelUtility {
 	public void fillFieldsFromJTable(AdminShopFrame admin_shop_frame) {
 
 		JTable table = admin_shop_frame.getTable();
+		int row = table.getSelectedRow();
 		if (!table.getSelectionModel().isSelectionEmpty()) {
 			InputUtility input_util = new InputUtility();
-			Address address;
-			String closing_days;
-			address = input_util.tokenizedStringToAddress(
-					table.getModel().getValueAt(table.getSelectedRow(), 3).toString(), "(, )");
+			Address address = input_util.tokenizedStringToAddress(table.getModel().getValueAt(row, 3).toString(), "(, )");
+			String closing_days;	
 			try {
-				closing_days = table.getModel().getValueAt(table.getSelectedRow(), 5).toString();
+				closing_days = table.getModel().getValueAt(row, 5).toString();
 			} catch (Exception e) {
 				closing_days = "";
 			}
-			admin_shop_frame.getEmailTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-			admin_shop_frame.getNameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+			admin_shop_frame.getEmailTF().setText(table.getModel().getValueAt(row, 0).toString());
+			admin_shop_frame.getNameTF().setText(table.getModel().getValueAt(row, 2).toString());
 			admin_shop_frame.getAddress_nameTF().setText(address.getAddress());
 			admin_shop_frame.getAddress_civic_numberTF().setText(address.getCivic_number());
 			admin_shop_frame.getAddress_capTF().setText(address.getCap());
-			admin_shop_frame.getAddress_provinceCB().setSelectedItem(address.getProvince());
-			admin_shop_frame.getAddress_townCB().setSelectedItem(address.getCity());
+			admin_shop_frame.getAddress_provinceCB().setSelectedItem(address.getProvince().toUpperCase());
+			admin_shop_frame.getAddress_townCB().setSelectedItem(address.getCity().toUpperCase());
 			admin_shop_frame.getWorking_hoursTF()
-					.setText(table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
+					.setText(table.getModel().getValueAt(row, 4).toString());
 			admin_shop_frame.getClosing_daysTF().setText(closing_days);
-			admin_shop_frame.getPasswordTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
+			admin_shop_frame.getPasswordTF().setText(table.getModel().getValueAt(row, 1).toString());
 			admin_shop_frame.getHome_phoneTF()
-					.setText(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					.setText(table.getModel().getValueAt(row, 6).toString());
 		}
 
 	}
@@ -262,25 +262,32 @@ public class TableModelUtility {
 	public void fillFieldsFromJTable(ShopRiderFrame shop_rider_frame) {
 
 		JTable table = shop_rider_frame.getTable();
+		int row = table.getSelectedRow();
 		if (!table.getSelectionModel().isSelectionEmpty()) {
+			String birth_town = table.getModel().getValueAt(row, 4).toString().toUpperCase();
+			IstatUtility istat_util = new IstatUtility();
+			if(!istat_util.isBirthPlaceANation(birth_town))
+			{
+				shop_rider_frame.getBirth_nationCB().setSelectedItem("ITALIA");
+			shop_rider_frame.getBirth_provinceCB().setSelectedItem(istat_util.getProvinceOfATown(birth_town));
+			shop_rider_frame.getBirth_townCB().setSelectedItem(birth_town);
 			InputUtility input_util = new InputUtility();
-			Address address;
-			address = input_util.tokenizedStringToAddress(
-					table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), "(, )");
-			shop_rider_frame.getNameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
-			shop_rider_frame.getSurnameTF().setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
+			Address address = input_util.tokenizedStringToAddress(table.getModel().getValueAt(row, 5).toString(), "(, )");
+			shop_rider_frame.getNameTF().setText(table.getModel().getValueAt(row, 1).toString());
+			shop_rider_frame.getSurnameTF().setText(table.getModel().getValueAt(row, 2).toString());
 			shop_rider_frame.getBirth_dateTF()
-					.setText(table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
+					.setText(table.getModel().getValueAt(row, 3).toString());
 			shop_rider_frame.getAddress_nameTF().setText(address.getAddress());
 			shop_rider_frame.getAddress_civic_numberTF().setText(address.getCivic_number());
 			shop_rider_frame.getAddress_capTF().setText(address.getCap());
-			shop_rider_frame.getAddress_provinceCB().setSelectedItem(address.getProvince());
-			shop_rider_frame.getAddress_townCB().setSelectedItem(address.getCity());
+			shop_rider_frame.getAddress_provinceCB().setSelectedItem(address.getProvince().toUpperCase());
+			shop_rider_frame.getAddress_townCB().setSelectedItem(address.getCity().toUpperCase());
 			shop_rider_frame.getCellphoneTF()
-					.setText(table.getModel().getValueAt(table.getSelectedRow(), 7).toString());
+					.setText(table.getModel().getValueAt(row, 7).toString());
 			shop_rider_frame.getWorking_hoursTF()
-					.setText(table.getModel().getValueAt(table.getSelectedRow(), 9).toString());
+					.setText(table.getModel().getValueAt(row, 9).toString());
+			}else
+				shop_rider_frame.getBirth_nationCB().setSelectedItem(birth_town);
 		}
 	}
-
 }

@@ -90,7 +90,7 @@ public class ShopRiderFrame extends ComplexFrame {
 		createTextField(surnameTF, "Cognome", short_dim_of_textfield);
 		attributes_panel.add(surnameTF);
 
-		createTextField(birth_dateTF, "Data di n. (dd/mm/yy)", short_dim_of_textfield);
+		createTextField(birth_dateTF, "Data di n. (dd/MM/yyyy)", short_dim_of_textfield);
 		attributes_panel.add(birth_dateTF);
 
 		birth_nationCB.setPreferredSize(short_dim_of_textfield);
@@ -213,12 +213,12 @@ public class ShopRiderFrame extends ComplexFrame {
 		birth_dateTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(birth_dateTF, "Data di n. (dd/mm/yy)");
+				textFieldFocusGained(birth_dateTF, "Data di n. (dd/MM/yyyy)");
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(birth_dateTF, "Data di n. (dd/mm/yy)");
+				textFieldFocusLost(birth_dateTF, "Data di n. (dd/MM/yyyy)");
 			}
 		});
 

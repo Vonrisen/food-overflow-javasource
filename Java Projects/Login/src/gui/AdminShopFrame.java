@@ -122,7 +122,7 @@ public class AdminShopFrame extends ComplexFrame {
 		address_townCB.setBackground(Color.white);
 		attributes_panel.add(address_townCB);
 
-		createTextField(working_hoursTF, "Orario di apertura", short_dim_of_textfield);
+		createTextField(working_hoursTF, "Orario", short_dim_of_textfield);
 		attributes_panel.add(working_hoursTF);
 
 		createTextField(passwordTF, "Password", short_dim_of_textfield);
@@ -218,12 +218,12 @@ public class AdminShopFrame extends ComplexFrame {
 		home_phoneTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				textFieldFocusGained(emailTF, "Telefono fisso");
+				textFieldFocusGained(home_phoneTF, "Telefono fisso");
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				textFieldFocusLost(emailTF, "Telefono fisso");
+				textFieldFocusLost(home_phoneTF, "Telefono fisso");
 			}
 		});
 

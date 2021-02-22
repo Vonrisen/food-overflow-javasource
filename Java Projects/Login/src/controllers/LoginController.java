@@ -169,6 +169,9 @@ public class LoginController {
 					email, password);
 			customer_dao.insertCustomer(customer);
 			JOptionPane.showMessageDialog(null, "Registrazione avvenuta con successo");
+			frame.dispose();
+			LoginFrame login_frame = new LoginFrame(this);
+			login_frame.setVisible(true);
 		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "Uno o piu campi non sono stati inseriti correttamente", "Errore",
 					JOptionPane.ERROR_MESSAGE);
