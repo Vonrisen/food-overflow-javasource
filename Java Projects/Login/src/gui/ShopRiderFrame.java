@@ -303,7 +303,7 @@ public class ShopRiderFrame extends ComplexFrame {
 
 	}
 
-	public void birth_provinceCBitemStateChanged(ItemEvent e) {
+	private void birth_provinceCBitemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			String selected_item = (String) e.getItem();
 			if (!selected_item.equals("-------------------") || !selected_item.equals("Seleziona provincia di nascita"))
@@ -316,7 +316,7 @@ public class ShopRiderFrame extends ComplexFrame {
 		}
 	}
 
-	public void address_provinceCBitemStateChanged(ItemEvent e) {
+	private void address_provinceCBitemStateChanged(ItemEvent e) {
 
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			String selected_item = (String) e.getItem();
@@ -331,7 +331,7 @@ public class ShopRiderFrame extends ComplexFrame {
 
 	}
 
-	public void birth_nationCBitemStateChanged(ItemEvent e) {
+	private void birth_nationCBitemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 
 			if (birth_nationCB.getSelectedItem().equals("ITALIA")) {

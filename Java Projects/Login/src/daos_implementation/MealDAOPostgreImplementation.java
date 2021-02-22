@@ -2,6 +2,7 @@ package daos_implementation;
 
 import java.sql.CallableStatement;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import exceptions.DAOException;
 import utilities.DBUtility;
 import utilities.InputUtility;
 
-public class MealDAOPostgresImplementation implements MealDAO {
+public class MealDAOPostgreImplementation implements MealDAO {
 
 	private PreparedStatement get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS,
 			get_all_meals_except_shop_meals_PS, insert_into_menu_PS, delete_from_menu_PS, get_meal_by_name_PS,
@@ -23,7 +24,7 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	private CallableStatement add_allergens_CS;
 	private DBUtility db_util = new DBUtility();
 
-	public MealDAOPostgresImplementation(Connection connection) {
+	public MealDAOPostgreImplementation(Connection connection) {
 
 		try {
 

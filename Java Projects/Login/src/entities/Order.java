@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Order extends Cart {
 
-	// ATTRIBUTI
+
 	private String id;
 	private Date date;
 	private String payment;

@@ -665,14 +665,14 @@ public class RegisterFrame extends JFrame {
 
 	}
 
-	public void provincesCBitemStateChanged(ItemEvent e) {
+	private void provincesCBitemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			String selected_item = (String) e.getItem();
 			login_controller.updateTownsCB(selected_item, RegisterFrame.this);
 		}
 	}
 
-	public void addressProvinceCBitemStateChanged(ItemEvent e) {
+	private void addressProvinceCBitemStateChanged(ItemEvent e) {
 
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			String selected_item = (String) e.getItem();
@@ -689,7 +689,7 @@ public class RegisterFrame extends JFrame {
 
 	}
 
-	public void townsCBitemStateChanged(ItemEvent e) {
+	private void townsCBitemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			if (birth_nationCB.getSelectedItem().equals("ITALIA")) {
 

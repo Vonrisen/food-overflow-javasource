@@ -91,9 +91,10 @@ public class CustomerCartFrame extends JFrame {
 	private JTextField quantityTF;
 	private JLabel quantityLB;
 	private JLabel cart_logoLB;
-
 	private JLabel background;
+	
 	private DefaultTableModel model;
+	
 	private CustomerController customer_controller;
 	private LoginController login_controller;
 

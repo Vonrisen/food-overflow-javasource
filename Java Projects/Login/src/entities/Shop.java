@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Shop {
 
-	// ATTRIBUTI
 	private String email;
 	private String name;
 	private String password;

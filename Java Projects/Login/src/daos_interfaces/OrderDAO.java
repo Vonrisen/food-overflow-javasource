@@ -32,5 +32,11 @@ public interface OrderDAO {
 			String province) throws DAOException;
 	
 	public List<Order> getAllOrders() throws DAOException;
+	
+	public Rider getRiderOfTheOrderByCF(String cf) throws DAOException;
+	
+	public Shop getShopOfTheOrderByEmail(String email) throws DAOException;
+	
+	public Customer getCustomerOfTheOrderByEmail(String email) throws DAOException;
 
 }

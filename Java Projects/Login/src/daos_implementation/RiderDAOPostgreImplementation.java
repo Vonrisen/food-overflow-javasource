@@ -1,7 +1,6 @@
 package daos_implementation;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,12 +15,12 @@ import exceptions.DAOException;
 import utilities.DBUtility;
 import utilities.InputUtility;
 
-public class RiderDAOPostgresImplementation implements RiderDAO {
+public class RiderDAOPostgreImplementation implements RiderDAO {
 
 	private PreparedStatement get_all_riders_PS, insert_rider_PS, dismiss_rider_PS, update_rider_PS, get_rider_by_CF_PS;
 	private DBUtility db_util = new DBUtility();
 
-	public RiderDAOPostgresImplementation(Connection connection) {
+	public RiderDAOPostgreImplementation(Connection connection) {
 		try {
 
 			get_all_riders_PS = connection.prepareStatement(

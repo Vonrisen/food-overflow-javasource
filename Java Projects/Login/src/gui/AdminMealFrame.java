@@ -42,11 +42,11 @@ public class AdminMealFrame extends ComplexFrame {
 	private JTextField ingredientsTF;
 
 	// Costruttore
-	public AdminMealFrame(AdminController controller) {
+	public AdminMealFrame(AdminController admin_controller) {
 		initialize();
 		frameSetup();
 		events();
-		this.admin_controller = controller;
+		this.admin_controller = admin_controller;
 	}
 
 	private void initialize() {

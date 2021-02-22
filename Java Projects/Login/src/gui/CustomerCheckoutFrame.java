@@ -25,8 +25,8 @@ public class CustomerCheckoutFrame extends JFrame {
 	private ImageIcon cellphoneIMG;
 	private ImageIcon shopIMG;
 	private ImageIcon noteIMG;
-	private ImageIcon ordina_inactiveIMG;
-	private ImageIcon ordina_activeIMG;
+	private ImageIcon order_inactive;
+	private ImageIcon order_active;
 
 	private JLabel summaryLB;
 	private JLabel backgroundLB;
@@ -63,8 +63,8 @@ public class CustomerCheckoutFrame extends JFrame {
 		cellphoneIMG = new ImageIcon("src\\images\\customer\\telefonoRistorante.PNG");
 		shopIMG = new ImageIcon("src\\images\\customer\\ristorante.PNG");
 		noteIMG = new ImageIcon("src\\images\\customer\\note.PNG");
-		ordina_inactiveIMG = new ImageIcon("src\\images\\customer\\ordinaInactive.PNG");
-		ordina_activeIMG = new ImageIcon("src\\images\\customer\\ordinaActive.PNG");
+		order_inactive = new ImageIcon("src\\images\\customer\\ordinaInactive.PNG");
+		order_active = new ImageIcon("src\\images\\customer\\ordinaActive.PNG");
 
 		summaryLB = new JLabel();
 		backgroundLB = new JLabel();
@@ -153,7 +153,7 @@ public class CustomerCheckoutFrame extends JFrame {
 		backgroundLB.setBorder(BorderFactory.createLineBorder(new Color(0x771007), 5));
 		this.getContentPane().add(backgroundLB);
 
-		orderJB.setIcon(ordina_inactiveIMG);
+		orderJB.setIcon(order_inactive);
 		orderJB.setBounds(90, 495, 200, 30);
 		orderJB.setBorder(null);
 		orderJB.setFocusable(false);
@@ -168,14 +168,14 @@ public class CustomerCheckoutFrame extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 
-				orderJB.setIcon(ordina_activeIMG);
+				orderJB.setIcon(order_active);
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 
-				orderJB.setIcon(ordina_inactiveIMG);
+				orderJB.setIcon(order_inactive);
 
 			}
 

@@ -1,9 +1,7 @@
 package daos_implementation;
 
 import java.sql.CallableStatement;
-
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +18,7 @@ import exceptions.DAOException;
 import utilities.DBUtility;
 import utilities.InputUtility;
 
-public class ShopDAOPostgresImplementation implements ShopDAO {
+public class ShopDAOPostgreImplementation implements ShopDAO {
 
 	private PreparedStatement authenticate_shop_login_PS, get_all_shops_PS, insert_shop_PS, delete_shop_PS,
 			get_riders_of_a_shop_by_shop_email_PS, get_meals_of_a_shop_by_shop_email_PS, get_allergens_of_a_meal_PS,
@@ -28,7 +26,7 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 	private CallableStatement update_shop_CS;
 	private DBUtility db_util = new DBUtility();
 
-	public ShopDAOPostgresImplementation(Connection connection) {
+	public ShopDAOPostgreImplementation(Connection connection) {
 		try {
 
 			authenticate_shop_login_PS = connection.prepareStatement("SELECT * FROM Shop WHERE email=? AND password=?");

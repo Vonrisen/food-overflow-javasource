@@ -15,13 +15,13 @@ import exceptions.DAOException;
 import utilities.DBUtility;
 import utilities.InputUtility;
 
-public class CustomerDAOPostgresImplementation implements CustomerDAO {
+public class CustomerDAOPostgreImplementation implements CustomerDAO {
 
 	private PreparedStatement get_all_customers_PS, insert_customer_PS, authenticateCustomerLogin_PS,
 			get_customer_by_email_PS, update_customer_address_PS, update_customer_password_PS;
 	private DBUtility db_util = new DBUtility();
 
-	public CustomerDAOPostgresImplementation(Connection connection) {
+	public CustomerDAOPostgreImplementation(Connection connection) {
 		try {
 			get_all_customers_PS = connection.prepareStatement(
 					"SELECT cf, name, surname, address, birth_date, birth_place, gender, cellphone, email, password FROM Customer ORDER BY name");

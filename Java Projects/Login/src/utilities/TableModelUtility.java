@@ -1,10 +1,8 @@
 package utilities;
 
 import java.util.List;
-
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import entities.Address;
 import entities.Cart;
 import entities.Customer;

@@ -1,0 +1,89 @@
+[
+  {
+    "name": "TableModelUtility",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Inizializzare tabelle di diversi JFrame",
+      "Riempire le JTextfields in fase di modifica dati di un Rider o di uno Shop"
+    ],
+    "collaborators": [
+      "AdminShopFrame",
+      "ShopRiderFrame",
+      "Shop",
+      "Rider",
+      "OrderComposition",
+      "Order",
+      "Meal",
+      "Customer",
+      "Cart",
+      "Address",
+      ""
+    ]
+  },
+  {
+    "name": "IstatUtility",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Recuperare nazioni",
+      "Recuperare province",
+      "Recuperare codice catastale di un comune",
+      "Verificare l' esistenza di una provincia",
+      "Recuperare comuni di una provincia",
+      "Recuperare provincia di un comune",
+      "Verificare se un luogo è una nazione"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "InputUtility",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere la formattazione della data nel formato dd/MM/yyyy",
+      "Convertire stringa tokenizzata in List",
+      "Convertire indirizzo tokenizzato in oggetto Address",
+      "Convertire ArrayList in stringa tokenizzata",
+      ""
+    ],
+    "collaborators": [
+      "Address"
+    ]
+  },
+  {
+    "name": "FiscalCode",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Generare codice fiscale"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "DBUtility",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Chiudere statements, result sets e connection",
+      "Rilasciare risorse del datasource occupate dai controller"
+    ],
+    "collaborators": [
+      "CustomerDAO",
+      "MealDAO",
+      "OrderDAO",
+      "RiderDAO",
+      "ShopDAO",
+      "DAOException"
+    ]
+  }
+]

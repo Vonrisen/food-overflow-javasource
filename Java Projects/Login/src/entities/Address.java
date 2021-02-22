@@ -2,14 +2,12 @@ package entities;
 
 public class Address {
 
-	// ATTRIBUTI
 	private String address;
 	private String civic_number;
 	private String cap;
 	private String city;
 	private String province;
-
-	// COSTRUTTORE
+	
 	public Address(String address, String civic_number, String cap, String city, String province) {
 
 		this.address = address;
@@ -19,8 +17,6 @@ public class Address {
 		this.province = province;
 
 	}
-
-	// GETTER AND SETTER
 
 	public String getCivic_number() {
 		return civic_number;

@@ -8,10 +8,10 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import daos_implementation.CustomerDAOPostgresImplementation;
-import daos_implementation.MealDAOPostgresImplementation;
-import daos_implementation.OrderDAOPostgresImplementation;
-import daos_implementation.ShopDAOPostgresImplementation;
+import daos_implementation.CustomerDAOPostgreImplementation;
+import daos_implementation.MealDAOPostgreImplementation;
+import daos_implementation.OrderDAOPostgreImplementation;
+import daos_implementation.ShopDAOPostgreImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
@@ -38,10 +38,10 @@ public class LoginController {
 	public LoginController() {
 		DBconnection instance = DBconnection.getInstance();
 		this.connection = instance.getConnection();
-		shop_dao = new ShopDAOPostgresImplementation(connection);
-		customer_dao = new CustomerDAOPostgresImplementation(connection);
-		meal_dao = new MealDAOPostgresImplementation(connection);
-		order_dao = new OrderDAOPostgresImplementation(connection);
+		shop_dao = new ShopDAOPostgreImplementation(connection);
+		customer_dao = new CustomerDAOPostgreImplementation(connection);
+		meal_dao = new MealDAOPostgreImplementation(connection);
+		order_dao = new OrderDAOPostgreImplementation(connection);
 	}
 
 	// Metodo per aprire login frame dopo essersi disconnessi da altri frame
@@ -87,7 +87,7 @@ public class LoginController {
 					login_frame.setVisible(false);
 					String shop_email = login_frame.getUsernameTF().getText();
 					ShopController shop_controller = new ShopController(shop_email, connection, shop_dao, customer_dao,
-							meal_dao, order_dao);
+							meal_dao, order_dao, this);
 					shop_controller.openShopFrame(login_frame);
 				} else {
 					JOptionPane.showMessageDialog(null, "Credenziali errate, riprovare", "Errore",

@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Person {
 
-	// ATTRIBUTI
 	private String cf;
 	private String name;
 	private String surname;
@@ -14,7 +13,6 @@ public class Person {
 	private String cellphone;
 	private Address address;
 
-	// COSTRUTTORE
 	public Person(String cf, String name, String surname, Date birth_date, String birth_place, String gender,
 			String cellphone, Address address) {
 
@@ -30,7 +28,6 @@ public class Person {
 
 	}
 
-	// GETTER AND SETTER
 	public String getCf() {
 		return cf;
 	}

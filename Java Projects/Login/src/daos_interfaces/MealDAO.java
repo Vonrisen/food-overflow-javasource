@@ -25,5 +25,7 @@ public interface MealDAO {
 
 	public List<Meal> doCustomerComplexSearch(String category, float min_price, float max_price, List<String> allergens,
 			String shop_email) throws DAOException;
+	
+	public void associateAllergensToMeal(Meal meal) throws DAOException;
 
 }

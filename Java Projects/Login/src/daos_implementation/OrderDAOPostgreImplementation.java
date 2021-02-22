@@ -1,7 +1,6 @@
 package daos_implementation;
 
 import java.sql.CallableStatement;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +21,7 @@ import exceptions.DAOException;
 import utilities.DBUtility;
 import utilities.InputUtility;
 
-public class OrderDAOPostgresImplementation implements OrderDAO {
+public class OrderDAOPostgreImplementation implements OrderDAO {
 
 	private PreparedStatement update_delivering_order_PS, link_rider_to_order_PS, get_orders_of_a_shop_by_shop_email_PS,
 			get_customer_of_the_order_PS, get_rider_of_the_order_PS, get_shop_of_the_order_PS,
@@ -30,8 +29,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			get_order_by_id_PS, do_complex_admin_search_PS, get_all_orders_PS;
 	private CallableStatement create_order_CS;
 	private DBUtility db_util = new DBUtility();
-
-	public OrderDAOPostgresImplementation(Connection connection) {
+	public OrderDAOPostgreImplementation(Connection connection) {
 
 		try {
 
@@ -60,7 +58,6 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
 		}
 	}
-
 	public Rider getRiderOfTheOrderByCF(String cf) throws DAOException {
 
 		ResultSet rs = null;

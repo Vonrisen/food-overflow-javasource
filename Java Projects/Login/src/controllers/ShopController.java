@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import daos_implementation.RiderDAOPostgresImplementation;
+import daos_implementation.RiderDAOPostgreImplementation;
 import daos_interfaces.CustomerDAO;
 import daos_interfaces.MealDAO;
 import daos_interfaces.OrderDAO;
@@ -44,9 +44,10 @@ public class ShopController {
 	private MealDAO meal_dao;
 	private RiderDAO rider_dao;
 	private CustomerDAO customer_dao;
-
+	private LoginController login_controller;
+	
 	public ShopController(String email, Connection connection, ShopDAO shop_dao, CustomerDAO customer_dao,
-			MealDAO meal_dao, OrderDAO order_dao) {
+			MealDAO meal_dao, OrderDAO order_dao, LoginController login_controller) {
 
 		this.connection = connection;
 		this.current_shop_email = email;
@@ -54,13 +55,13 @@ public class ShopController {
 		this.customer_dao = customer_dao;
 		this.meal_dao = meal_dao;
 		this.order_dao = order_dao;
-		this.rider_dao = new RiderDAOPostgresImplementation(connection);
-
+		this.rider_dao = new RiderDAOPostgreImplementation(connection);
+		this.login_controller = login_controller;
 	}
 
 	public void openShopFrame(JFrame frame) {
 		frame.dispose();
-		ShopFrame shop_frame = new ShopFrame(this);
+		ShopFrame shop_frame = new ShopFrame(this, login_controller);
 		shop_frame.setVisible(true);
 		return;
 	}

@@ -55,10 +55,6 @@ public class CustomerController {
 
 	}
 
-	public CustomerController() {
-
-	}
-
 	public void openCustomerFrame(JFrame frame) {
 		frame.dispose();
 		CustomerFrame customer_frame = new CustomerFrame(this);
@@ -304,12 +300,12 @@ public class CustomerController {
 
 	}
 
-	public void updateAddressTownsCB(String selected_province, CustomerProfileFrame frame) {
+	public void updateAddressTownsCB(String selected_province, CustomerProfileFrame customer_profile_frame) {
 		IstatUtility istat_utils = new IstatUtility();
 		List<String> towns = istat_utils.getTownsByProvince(selected_province);
-		frame.getAddress_townCB().removeAllItems();
+		customer_profile_frame.getAddress_townCB().removeAllItems();
 		for (String s : towns)
-			frame.getAddress_townCB().addItem(s);
+			customer_profile_frame.getAddress_townCB().addItem(s);
 		return;
 	}
 

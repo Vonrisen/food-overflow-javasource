@@ -36,14 +36,15 @@ public class ShopFrame extends JFrame {
 
 	private Color background_color = new Color(0xf3ecd7);
 	private ShopController shop_controller;
-	private LoginController login_controller = new LoginController();
+	private LoginController login_controller;
 
-	public ShopFrame(ShopController shop_controller) {
+	public ShopFrame(ShopController shop_controller, LoginController login_controller) {
 
 		initialize();
 		setupFrame();
 		events();
 		this.shop_controller = shop_controller;
+		this.login_controller = login_controller;
 
 	}
 
