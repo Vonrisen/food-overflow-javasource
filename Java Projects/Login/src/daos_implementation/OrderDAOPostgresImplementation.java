@@ -27,7 +27,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 	private PreparedStatement update_delivering_order_PS, link_rider_to_order_PS, get_orders_of_a_shop_by_shop_email_PS,
 			get_customer_of_the_order_PS, get_rider_of_the_order_PS, get_shop_of_the_order_PS,
 			get_delivering_orders_of_a_shop_PS, get_pending_orders_of_a_shop_PS, get_customer_email_PS,
-			get_order_by_id_PS, do_complex_admin_search_PS;
+			get_order_by_id_PS, do_complex_admin_search_PS, get_all_orders_PS;
 	private CallableStatement create_order_CS;
 	private DBUtility db_util = new DBUtility();
 
@@ -54,6 +54,7 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			do_complex_admin_search_PS = connection.prepareCall(
 					"SELECT * FROM effettuaRicercaComplessaAdmin(?,?,?,?,?) AS t(id character(12),order_date timestamp, delivery_time time, address varchar(255), status varchar (20), "
 							+ "payment varchar(12), note varchar(255), rider_cf character(16), shop_email varchar(320), customer_email varchar(320))");
+			get_all_orders_PS = connection.prepareStatement("SELECT * FROM CustomerOrder");
 
 		} catch (SQLException s) {
 			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
@@ -262,24 +263,6 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		return;
 	}
 
-	public void closeStatements() throws DAOException {
-
-		db_util.closeStatement(update_delivering_order_PS);
-		db_util.closeStatement(link_rider_to_order_PS);
-		db_util.closeStatement(get_orders_of_a_shop_by_shop_email_PS);
-		db_util.closeStatement(get_customer_of_the_order_PS);
-		db_util.closeStatement(get_rider_of_the_order_PS);
-		db_util.closeStatement(get_shop_of_the_order_PS);
-		db_util.closeStatement(get_delivering_orders_of_a_shop_PS);
-		db_util.closeStatement(get_pending_orders_of_a_shop_PS);
-		db_util.closeStatement(get_customer_email_PS);
-		db_util.closeStatement(get_order_by_id_PS);
-		db_util.closeStatement(create_order_CS);
-		return;
-
-	}
-
-	@Override
 	public Order getOrderById(String id) throws DAOException {
 
 		ResultSet rs1 = null;
@@ -340,6 +323,50 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 		return;
 	}
 
+	public List<Order> getAllOrders() throws DAOException {
+
+		ResultSet rs1 = null;
+		ResultSet rs = null;
+		InputUtility string_util = new InputUtility();
+		String customer_email = null;
+		List<Order> order_list = new ArrayList<Order>();
+		try {
+
+			rs1 = get_all_orders_PS.executeQuery();
+			while (rs1.next()) {
+				Customer customer;
+				if (rs1.getString("customer_id") == null)
+					customer = null;
+				else {
+					get_customer_email_PS.setString(1, rs1.getString("customer_id"));
+					rs = get_customer_email_PS.executeQuery();
+					while (rs.next())
+						customer_email = rs.getString("email");
+					customer = getCustomerOfTheOrderByEmail(customer_email);
+				}
+				Rider rider;
+				if (rs1.getString("rider_cf") == null)
+					rider = null;
+				else
+					rider = getRiderOfTheOrderByCF(rs1.getString("rider_cf"));
+				Shop shop = getShopOfTheOrderByEmail(rs1.getString("shop_id"));
+				List<String> address_fields = string_util.tokenizedStringToList(rs1.getString("address"), "(, )");
+				order_list.add(new Order(shop, customer, rs1.getString("id"), new Date(rs1.getDate("date").getTime()),
+						rs1.getString("payment"), rs1.getString("status"),
+						new Address(address_fields.get(0), address_fields.get(1), address_fields.get(2),
+								address_fields.get(3), address_fields.get(4)),
+						rs1.getTime("delivery_time"), rs1.getString("note"), rider));
+			}
+		} catch (SQLException s) {
+			throw new DAOException();
+		} finally {
+			db_util.closeResultSet(rs);
+			db_util.closeResultSet(rs1);
+		}
+		return order_list;
+
+	}
+
 	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle,
 			String province) throws DAOException {
 
@@ -366,5 +393,22 @@ public class OrderDAOPostgresImplementation implements OrderDAO {
 			throw new DAOException();
 		}
 		return order_list;
+	}
+	
+	public void closeStatements() throws DAOException {
+
+		db_util.closeStatement(update_delivering_order_PS);
+		db_util.closeStatement(link_rider_to_order_PS);
+		db_util.closeStatement(get_orders_of_a_shop_by_shop_email_PS);
+		db_util.closeStatement(get_customer_of_the_order_PS);
+		db_util.closeStatement(get_rider_of_the_order_PS);
+		db_util.closeStatement(get_shop_of_the_order_PS);
+		db_util.closeStatement(get_delivering_orders_of_a_shop_PS);
+		db_util.closeStatement(get_pending_orders_of_a_shop_PS);
+		db_util.closeStatement(get_customer_email_PS);
+		db_util.closeStatement(get_order_by_id_PS);
+		db_util.closeStatement(create_order_CS);
+		return;
+
 	}
 }

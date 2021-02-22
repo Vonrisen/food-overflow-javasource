@@ -1,0 +1,28 @@
+[
+  {
+    "name": "RoundJTextField",
+    "superclasses": "JTextField",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere l' ovalizzazione delle JTextField",
+      "Permettere la colorazione dei bordi delle JTextField"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "RoundJPasswordField",
+    "superclasses": "JPasswordField",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere l' ovalizzazione delle JPasswordfield",
+      "Permettere la colorazione dei bordi delle JPasswordfield"
+    ],
+    "collaborators": [
+      ""
+    ]
+  }
+]

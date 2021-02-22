@@ -1,0 +1,14 @@
+[
+  {
+    "name": "DBconnection",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Fornire un' unica istanza di connessione"
+    ],
+    "collaborators": [
+      ""
+    ]
+  }
+]

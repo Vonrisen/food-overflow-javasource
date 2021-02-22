@@ -210,19 +210,23 @@ public class CustomerController {
 			try {
 
 				short new_quantity = Short.parseShort(customerCartFrame.getQuantityTF().getText());
+				if(new_quantity>0)
+				{
 				for (OrderComposition o : cart.getOrder_composition_list()) {
 					if (o.getMeal().getName().equals(meal_name)) {
 						o.setQuantity(new_quantity);
 						customerCartFrame.getModel().setValueAt(new_quantity, row, 5);
 					}
 				}
+				}else
+					JOptionPane.showMessageDialog(null, "Inserire una quantita' positiva", "Errore", JOptionPane.ERROR_MESSAGE);
 			} catch (NumberFormatException n) {
 				JOptionPane.showMessageDialog(null, "Inserire un prezzo valido", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 		} else
 			JOptionPane.showMessageDialog(null, "Seleziona qualcosa", "Error", JOptionPane.ERROR_MESSAGE);
 		return;
-
+		
 	}
 
 	public void removeMealFromCart(CustomerCartFrame customer_customer_frame) {

@@ -17,7 +17,7 @@ public interface MealDAO {
 
 	public void insertIntoMenu(String shop_email, Meal meal) throws DAOException;
 
-	public void deleteFromSupply(String shop_email, Meal meal) throws DAOException;
+	public void deleteFromMenu(String shop_email, Meal meal) throws DAOException;
 
 	public Meal getMealByName(String name) throws DAOException;
 

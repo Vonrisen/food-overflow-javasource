@@ -274,24 +274,6 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 		return;
 	}
 
-	public void closeStatements() throws DAOException {
-
-		DBUtility db_util = new DBUtility();
-		db_util.closeStatement(authenticate_shop_login_PS);
-		db_util.closeStatement(get_all_shops_PS);
-		db_util.closeStatement(insert_shop_PS);
-		db_util.closeStatement(delete_shop_PS);
-		db_util.closeStatement(get_riders_of_a_shop_by_shop_email_PS);
-		db_util.closeStatement(get_meals_of_a_shop_by_shop_email_PS);
-		db_util.closeStatement(get_allergens_of_a_meal_PS);
-		db_util.closeStatement(update_shop_CS);
-		db_util.closeStatement(get_riders_of_a_shop_max_2_deliveries_by_shop_email_PS);
-		db_util.closeStatement(get_shop_by_province_PS);
-		return;
-
-	}
-
-	@Override
 	public Shop getShopByEmail(String email) throws DAOException {
 
 		InputUtility string_util = new InputUtility();
@@ -438,6 +420,23 @@ public class ShopDAOPostgresImplementation implements ShopDAO {
 			db_util.closeResultSet(rs3);
 		}
 		return shop_list;
+	}
+
+	public void closeStatements() throws DAOException {
+
+		DBUtility db_util = new DBUtility();
+		db_util.closeStatement(authenticate_shop_login_PS);
+		db_util.closeStatement(get_all_shops_PS);
+		db_util.closeStatement(insert_shop_PS);
+		db_util.closeStatement(delete_shop_PS);
+		db_util.closeStatement(get_riders_of_a_shop_by_shop_email_PS);
+		db_util.closeStatement(get_meals_of_a_shop_by_shop_email_PS);
+		db_util.closeStatement(get_allergens_of_a_meal_PS);
+		db_util.closeStatement(update_shop_CS);
+		db_util.closeStatement(get_riders_of_a_shop_max_2_deliveries_by_shop_email_PS);
+		db_util.closeStatement(get_shop_by_province_PS);
+		return;
+
 	}
 
 }

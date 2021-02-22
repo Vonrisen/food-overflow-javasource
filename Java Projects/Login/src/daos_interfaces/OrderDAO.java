@@ -30,5 +30,7 @@ public interface OrderDAO {
 
 	public List<Order> doAdminComplexSearch(String category, float min_price, float max_price, String vehicle,
 			String province) throws DAOException;
+	
+	public List<Order> getAllOrders() throws DAOException;
 
 }

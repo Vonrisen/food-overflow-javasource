@@ -1,0 +1,503 @@
+[Fork me on GitHub
+CRC Card Maker
+Tip: The header/buttons are hidden when printing!
+
+New cardRemove allShare linkExport
+Export JSON
+[
+  {
+    "name": "StandardFrame",
+    "superclasses": "JFrame",
+    "subclasses": "AdminCustomerFrame, AdminRiderFrame, ShopViewOrdersFrame",
+    "type": 1,
+    "responsibilities": [
+      "Creare JFrame con determinate componenti"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "ComplexFrame",
+    "superclasses": "JFrame",
+    "subclasses": "AdminMealFrame, AdminOrderFrame, AdminShopFrame, ShopDeliveringOrdersFrame, ShopRiderFrame",
+    "type": 1,
+    "responsibilities": [
+      "Creare JFrame con determinate componenti (Possiede più componenti rispetto allo StandardFrame)"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "AdminFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere di accedere ai Jframe dell' Admin Panel"
+    ],
+    "collaborators": [
+      "AdminController",
+      "LoginController"
+    ]
+  },
+  {
+    "name": "AdminCustomerFrame",
+    "superclasses": "StandardFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di clienti della catena di ristorazione",
+      ""
+    ],
+    "collaborators": [
+      "AdminController"
+    ]
+  },
+  {
+    "name": "AdminMealFrame",
+    "superclasses": "ComplexFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di alimenti della catena di ristorazione",
+      "Permettere l'inserimento di un Meal nella lista di alimenti della catena di ristorazione",
+      "Permettere la rimozione di un Meal dalla lista di alimenti della catena di ristorazione"
+    ],
+    "collaborators": [
+      "AdminController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "AdminOrderFrame",
+    "superclasses": "ComplexFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare ordini della catena di ristorazione",
+      "Permettere la ricerca complessa degli ordini della catena di ristorazione"
+    ],
+    "collaborators": [
+      "AdminController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "AdminRiderFrame",
+    "superclasses": "StandardFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di riders di uno specifico Shop"
+    ],
+    "collaborators": [
+      ""
+    ]
+  },
+  {
+    "name": "AdminShopFrame",
+    "superclasses": "ComplexFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di ristoranti della catena di ristorazione",
+      "Permettere la creazione di uno Shop della catena di ristorazione",
+      "Permettere l'aggiornamento di uno Shop della catena di ristorazione",
+      "Permettere la rimozione di uno Shop della catena di ristorazione",
+      "Permettere l'apertura di AdminRiderFrame",
+      ""
+    ],
+    "collaborators": [
+      "AdminController",
+      "RoundJTextField",
+      "TableModelUtility"
+    ]
+  },
+  {
+    "name": "ShopFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere di accedere ai JFrame dello Shop Panel"
+    ],
+    "collaborators": [
+      "ShopController",
+      "LoginController"
+    ]
+  },
+  {
+    "name": "ShopMealFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di alimenti del menù di uno Shop",
+      "Visualizzare lista di alimenti della catena di ristorazione",
+      "Permettere l'aggiunta di un Meal al menù di uno Shop",
+      "Permettere la rimozione di un Meal dal menù di uno Shop"
+    ],
+    "collaborators": [
+      "ShopController"
+    ]
+  },
+  {
+    "name": "ShopRiderFrame",
+    "superclasses": "ComplexFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di riders di uno Shop",
+      "Permettere l'assunzione di un rider in uno Shop",
+      "Permettere il licenziamento di un rider da uno Shop",
+      "Permettere l'aggiornamento delle informazioni personali di un rider da uno Shop"
+    ],
+    "collaborators": [
+      "ShopController",
+      "RoundJTextField",
+      "TableModelUtility",
+      ""
+    ]
+  },
+  {
+    "name": "ShopOrderManagementFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere di accedere ai JFrame per la gestione degli ordini"
+    ],
+    "collaborators": [
+      "ShopController"
+    ]
+  },
+  {
+    "name": "ShopViewOrdersFrame",
+    "superclasses": "StandardFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di ordini completati"
+    ],
+    "collaborators": [
+      "ShopController"
+    ]
+  },
+  {
+    "name": "ShopPendingOrdersFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di ordini in attesa",
+      "Visualizzare lista di riders con meno di 3 ordini in consegna",
+      "Permettere l'associazione di un ordine ad un rider"
+    ],
+    "collaborators": [
+      "ShopController"
+    ]
+  },
+  {
+    "name": "ShopDeliveringOrdersFrame",
+    "superclasses": "ComplexFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Visualizzare lista di ordini in consegna",
+      "Permettere la chiusura di un ordine in consegna"
+    ],
+    "collaborators": [
+      "ShopController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "CustomerFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere al customer di accedere al CustomerProfileFrame",
+      "Permettere al customer di cercare i ristoranti di una data provincia"
+    ],
+    "collaborators": [
+      "CustomerController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "CustomerShopListFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere la visualizzazione dei negozi di una provincia",
+      "Permettere al customer di aprire il CustomerProfileFrame"
+    ],
+    "collaborators": [
+      "CustomerController",
+      "LoginController"
+    ]
+  },
+  {
+    "name": "CustomerMealListFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere l' aggiunta al carrello di meals con rispettive quantita'",
+      "Permettere al customer di aprire il CustomerProfileFrame",
+      "Permettere al customer di accedere al carrello",
+      ""
+    ],
+    "collaborators": [
+      "CustomerController",
+      "LoginController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "CustomerCartFrame",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere al customer di svuotare il cart",
+      "Permettere al customer di rimuovere un meal dal cart",
+      "Permettere al customer di modificare la quantita' di un meal dal cart",
+      "Permettere al customer di procedere all' ordine"
+    ],
+    "collaborators": [
+      "CustomerController",
+      "LoginController",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "CustomerCheckoutFrame",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere al customer di aggiungere istruzioni per la consegna",
+      "Permetter al customer di concludere un ordine"
+    ],
+    "collaborators": [
+      "CustomerController",
+      "CustomerCartFrame"
+    ]
+  },
+  {
+    "name": "CustomerProfileFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere al customer di cambiare password",
+      "Permetter al customer di cambiare indirizzo di consegna"
+    ],
+    "collaborators": [
+      "CustomerController",
+      "RoundJTextField",
+      "RoundJPasswordField"
+    ]
+  },
+  {
+    "name": "RegisterFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere ad un utente di registrarsi come customer"
+    ],
+    "collaborators": [
+      "LoginController",
+      "RoundJPasswordField",
+      "RoundJTextField"
+    ]
+  },
+  {
+    "name": "LoginFrame",
+    "superclasses": "JFrame",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Permettere all' admin di accedere al suo applicativo",
+      "Permettere ad uno shop di accedere al suo applicativo",
+      "Permettere ad un utente di aprire il RegisterFrame",
+      "Permettere ad un customer di accedere al suo applicativo"
+    ],
+    "collaborators": [
+      "LoginController",
+      "RoundJPasswordField",
+      "RoundJTextField"
+    ]
+  }
+]
+CopyClose
+Print
+Show/hide controls
+JFrame
+StandardFrame
+AdminCustomerFrame, AdminRiderFrame, ShopViewOrdersFrame
+Creare JFrame con determinate componenti
+Edit card #1✕↓
+JFrame
+ComplexFrame
+AdminMealFrame, AdminOrderFrame, AdminShopFrame, ShopDeliveringOrdersFrame, ShopRiderFrame
+Creare JFrame con determinate componenti (Possiede più componenti rispetto allo StandardFrame)
+Edit card #2✕↑↓
+JFrame
+AdminFrame
+Permettere di accedere ai Jframe dell' Admin Panel
+AdminController
+LoginController
+Edit card #3✕↑↓
+StandardFrame
+AdminCustomerFrame
+Visualizzare lista di clienti della catena di ristorazione
+AdminController
+Edit card #4✕↑↓
+ComplexFrame
+AdminMealFrame
+Visualizzare lista di alimenti della catena di ristorazione
+Permettere l'inserimento di un Meal nella lista di alimenti della catena di ristorazione
+Permettere la rimozione di un Meal dalla lista di alimenti della catena di ristorazione
+AdminController
+RoundJTextField
+Edit card #5✕↑↓
+ComplexFrame
+AdminOrderFrame
+Visualizzare ordini della catena di ristorazione
+Permettere la ricerca complessa degli ordini della catena di ristorazione
+AdminController
+RoundJTextField
+Edit card #6✕↑↓
+StandardFrame
+AdminRiderFrame
+Visualizzare lista di riders di uno specifico Shop
+Edit card #7✕↑↓
+ComplexFrame
+AdminShopFrame
+Visualizzare lista di ristoranti della catena di ristorazione
+Permettere la creazione di uno Shop della catena di ristorazione
+Permettere l'aggiornamento di uno Shop della catena di ristorazione
+Permettere la rimozione di uno Shop della catena di ristorazione
+Permettere l'apertura di AdminRiderFrame
+AdminController
+RoundJTextField
+TableModelUtility
+Edit card #8✕↑↓
+JFrame
+ShopFrame
+Permettere di accedere ai JFrame dello Shop Panel
+ShopController
+LoginController
+Edit card #9✕↑↓
+JFrame
+ShopMealFrame
+Visualizzare lista di alimenti del menù di uno Shop
+Visualizzare lista di alimenti della catena di ristorazione
+Permettere l'aggiunta di un Meal al menù di uno Shop
+Permettere la rimozione di un Meal dal menù di uno Shop
+ShopController
+Edit card #10✕↑↓
+ComplexFrame
+ShopRiderFrame
+Visualizzare lista di riders di uno Shop
+Permettere l'assunzione di un rider in uno Shop
+Permettere il licenziamento di un rider da uno Shop
+Permettere l'aggiornamento delle informazioni personali di un rider da uno Shop
+ShopController
+RoundJTextField
+TableModelUtility
+Edit card #11✕↑↓
+JFrame
+ShopOrderManagementFrame
+Permettere di accedere ai JFrame per la gestione degli ordini
+ShopController
+Edit card #12✕↑↓
+StandardFrame
+ShopViewOrdersFrame
+Visualizzare lista di ordini completati
+ShopController
+Edit card #13✕↑↓
+JFrame
+ShopPendingOrdersFrame
+Visualizzare lista di ordini in attesa
+Visualizzare lista di riders con meno di 3 ordini in consegna
+Permettere l'associazione di un ordine ad un rider
+ShopController
+Edit card #14✕↑↓
+ComplexFrame
+ShopDeliveringOrdersFrame
+Visualizzare lista di ordini in consegna
+Permettere la chiusura di un ordine in consegna
+ShopController
+RoundJTextField
+Edit card #15✕↑↓
+JFrame
+CustomerFrame
+Permettere al customer di accedere al CustomerProfileFrame
+Permettere al customer di cercare i ristoranti di una data provincia
+CustomerController
+RoundJTextField
+Edit card #16✕↑↓
+JFrame
+CustomerShopListFrame
+Permettere la visualizzazione dei negozi di una provincia
+Permettere al customer di aprire il CustomerProfileFrame
+CustomerController
+LoginController
+Edit card #17✕↑↓
+JFrame
+CustomerMealListFrame
+Permettere l' aggiunta al carrello di meals con rispettive quantita'
+Permettere al customer di aprire il CustomerProfileFrame
+Permettere al customer di accedere al carrello
+CustomerController
+LoginController
+RoundJTextField
+Edit card #18✕↑↓
+CustomerCartFrame
+Permettere al customer di svuotare il cart
+Permettere al customer di rimuovere un meal dal cart
+Permettere al customer di modificare la quantita' di un meal dal cart
+Permettere al customer di procedere all' ordine
+CustomerController
+LoginController
+RoundJTextField
+Edit card #19✕↑↓
+CustomerCheckoutFrame
+Permettere al customer di aggiungere istruzioni per la consegna
+Permetter al customer di concludere un ordine
+CustomerController
+CustomerCartFrame
+Edit card #20✕↑↓
+JFrame
+CustomerProfileFrame
+Permettere al customer di cambiare password
+Permetter al customer di cambiare indirizzo di consegna
+CustomerController
+RoundJTextField
+RoundJPasswordField
+Edit card #21✕↑↓
+JFrame
+RegisterFrame
+Permettere ad un utente di registrarsi come customer
+LoginController
+RoundJPasswordField
+RoundJTextField
+Edit card #22✕↑↓
+JFrame
+LoginFrame
+Permettere all' admin di accedere al suo applicativo
+Permettere ad uno shop di accedere al suo applicativo
+Permettere ad un utente di aprire il RegisterFrame
+Permettere ad un customer di accedere al suo applicativo
+LoginController
+RoundJPasswordField
+RoundJTextField
+Edit card #23✕↑

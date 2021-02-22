@@ -22,6 +22,8 @@ public class AdminOrderFrame extends ComplexFrame {
 
 	private ImageIcon search_inactiveIMG;
 	private ImageIcon search_activeIMG;
+	private ImageIcon search_all_orders_inactiveIMG;
+	private ImageIcon search_all_orders_activeIMG;
 
 	private JTextField price_minTF;
 	private JTextField price_maxTF;
@@ -37,6 +39,7 @@ public class AdminOrderFrame extends ComplexFrame {
 	private JComboBox<String> addressCB;
 
 	private JButton searchJB;
+	private JButton search_all_ordersJB;
 
 	private AdminController admin_controller;
 
@@ -52,6 +55,8 @@ public class AdminOrderFrame extends ComplexFrame {
 
 		search_inactiveIMG = new ImageIcon("src\\images\\buttons\\complexSearchInactive.png");
 		search_activeIMG = new ImageIcon("src\\images\\buttons\\complexSearchActive.png");
+		search_all_orders_inactiveIMG = new ImageIcon("src\\images\\buttons\\searchAllOrdersInactive.png");
+		search_all_orders_activeIMG = new ImageIcon("src\\images\\buttons\\searchAllOrdersActive.png");
 		table_title = new ImageIcon("src\\images\\others\\orders.png");
 
 		price_minTF = new RoundJTextField(new Color(0x771007));
@@ -61,6 +66,7 @@ public class AdminOrderFrame extends ComplexFrame {
 		vehicleCB = new JComboBox<String>(vehicleStrings);
 		addressCB = new JComboBox<String>();
 		searchJB = new JButton();
+		search_all_ordersJB = new JButton();
 
 		table.setModel(model = new DefaultTableModel(columns, 0));
 	}
@@ -100,6 +106,9 @@ public class AdminOrderFrame extends ComplexFrame {
 		addressCB.setFocusable(false);
 		addressCB.setBackground(Color.white);
 		attributes_panel.add(addressCB);
+		
+		setupButton(search_all_ordersJB, search_all_orders_inactiveIMG, new Dimension(335, 30));
+		attributes_panel.add(search_all_ordersJB);
 
 		setupButton(searchJB, search_inactiveIMG, button_size);
 		buttons_panel.add(searchJB);
@@ -133,6 +142,25 @@ public class AdminOrderFrame extends ComplexFrame {
 
 				admin_controller.doAdminComplexSearch(AdminOrderFrame.this);
 
+			}
+
+		});
+		
+		search_all_ordersJB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				search_all_ordersJB.setIcon(search_all_orders_activeIMG);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				search_all_ordersJB.setIcon(search_all_orders_inactiveIMG);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				admin_controller.visualizeAllOrders(AdminOrderFrame.this);
+				
 			}
 
 		});

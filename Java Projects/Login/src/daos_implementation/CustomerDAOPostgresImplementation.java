@@ -101,16 +101,6 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 		return row_founded;
 	}
 
-	public void closeStatements() throws DAOException {
-
-		db_util.closeStatement(get_all_customers_PS);
-		db_util.closeStatement(insert_customer_PS);
-		db_util.closeStatement(authenticateCustomerLogin_PS);
-		db_util.closeStatement(get_customer_by_email_PS);
-		return;
-
-	}
-
 	public Customer getCustomerByEmail(String email) throws DAOException {
 
 		ResultSet rs = null;
@@ -149,7 +139,6 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 		return;
 	}
 
-	@Override
 	public void updateCustomerPassword(Customer customer, String new_password) throws DAOException {
 
 		try {
@@ -160,5 +149,15 @@ public class CustomerDAOPostgresImplementation implements CustomerDAO {
 			System.out.println(e.getMessage());
 			throw new DAOException();
 		}
+	}
+	
+	public void closeStatements() throws DAOException {
+
+		db_util.closeStatement(get_all_customers_PS);
+		db_util.closeStatement(insert_customer_PS);
+		db_util.closeStatement(authenticateCustomerLogin_PS);
+		db_util.closeStatement(get_customer_by_email_PS);
+		return;
+
 	}
 }

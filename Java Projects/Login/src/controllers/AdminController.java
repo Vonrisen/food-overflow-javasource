@@ -114,6 +114,13 @@ public class AdminController {
 		AdminOrderFrame admin_order_frame = new AdminOrderFrame(this);
 		admin_order_frame.setVisible(true);
 		IstatUtility istat_utils = new IstatUtility();
+		TableModelUtility table_util = new TableModelUtility();
+		try {
+			List<Order> order_list = order_dao.getAllOrders();
+			table_util.initializeOrderTable(admin_order_frame.getModel(), order_list);
+		} catch (DAOException e) {
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
 		List<String> provinces = istat_utils.getProvinces();
 		admin_order_frame.getAddressCB().addItem("Seleziona provincia di consegna");
 		admin_order_frame.getAddressCB().addItem("-------------------");
@@ -191,9 +198,10 @@ public class AdminController {
 				if (cb.isSelected())
 					allergens.add(cb.getText());
 			}
+		
 			try {
 				Meal meal = new Meal(admin_meal_frame.getNameTF().getText(),
-						Float.parseFloat(admin_meal_frame.getPriceTF().getText()),
+						Math.abs(Float.parseFloat(admin_meal_frame.getPriceTF().getText())),
 						admin_meal_frame.getIngredientsTF().getText(),
 						admin_meal_frame.getDishJCB().getSelectedItem().toString(), allergens);
 				meal_dao.insertMeal(meal);
@@ -305,6 +313,7 @@ public class AdminController {
 		String vehicle = admin_order_frame.getVehicleCB().getSelectedItem().toString();
 		String province = admin_order_frame.getAddressCB().getSelectedItem().toString();
 		List<Order> order_list = new ArrayList<Order>();
+		admin_order_frame.getModel().setRowCount(0);
 		TableModelUtility table_util = new TableModelUtility();
 		try {
 			float min_price = Float.parseFloat(admin_order_frame.getPrice_minTF().getText());
@@ -320,5 +329,18 @@ public class AdminController {
 		} catch (DAOException e) {
 			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	public void visualizeAllOrders(AdminOrderFrame admin_order_frame) {
+		
+		admin_order_frame.getModel().setRowCount(0);
+		List<Order> order_list = new ArrayList<Order>();
+		TableModelUtility table_util = new TableModelUtility();
+		try {
+			order_list = order_dao.getAllOrders();
+			table_util.initializeOrderTable(admin_order_frame.getModel(), order_list);
+		} catch (DAOException e) {
+			JOptionPane.showMessageDialog(null, "Errore critico, riprovare", "Errore", JOptionPane.ERROR_MESSAGE);
+		}
+		return;
 	}
 }

@@ -18,7 +18,7 @@ import utilities.InputUtility;
 public class MealDAOPostgresImplementation implements MealDAO {
 
 	private PreparedStatement get_allergens_of_a_meal_PS, get_all_meals_PS, insert_meal_PS, delete_meal_PS,
-			get_all_meals_except_shop_meals_PS, insert_supply_PS, delete_from_supply_PS, get_meal_by_name_PS,
+			get_all_meals_except_shop_meals_PS, insert_into_menu_PS, delete_from_menu_PS, get_meal_by_name_PS,
 			customer_complex_search_PS;
 	private CallableStatement add_allergens_CS;
 	private DBUtility db_util = new DBUtility();
@@ -36,9 +36,9 @@ public class MealDAOPostgresImplementation implements MealDAO {
 			insert_meal_PS = connection.prepareStatement("INSERT INTO MEAL VALUES (DEFAULT,?,?,?,?)");
 			add_allergens_CS = connection.prepareCall("CALL addAllergens(?,?)");
 			delete_meal_PS = connection.prepareStatement("DELETE FROM Meal WHERE name=?");
-			insert_supply_PS = connection.prepareStatement(
+			insert_into_menu_PS = connection.prepareStatement(
 					"INSERT INTO Supply SELECT (SELECT id FROM Shop WHERE email=?), id FROM MEAL WHERE name=?");
-			delete_from_supply_PS = connection.prepareStatement(
+			delete_from_menu_PS = connection.prepareStatement(
 					"DELETE FROM Supply WHERE shop_id=(SELECT id FROM Shop WHERE email=?) AND meal_id IN (SELECT id FROM Meal WHERE name=?)");
 			customer_complex_search_PS = connection.prepareStatement(
 					"SELECT * FROM  effettuaRicercaComplessaCustomer(?,?,?,?,?) AS t(name varchar, category varchar, price real, ingredients varchar, id character(4))");
@@ -145,21 +145,21 @@ public class MealDAOPostgresImplementation implements MealDAO {
 	public void insertIntoMenu(String shop_email, Meal meal) throws DAOException {
 
 		try {
-			insert_supply_PS.setString(1, shop_email);
-			insert_supply_PS.setString(2, meal.getName());
-			insert_supply_PS.executeUpdate();
+			insert_into_menu_PS.setString(1, shop_email);
+			insert_into_menu_PS.setString(2, meal.getName());
+			insert_into_menu_PS.executeUpdate();
 		} catch (SQLException s) {
 			throw new DAOException();
 		}
 		return;
 	}
 
-	public void deleteFromSupply(String shop_email, Meal meal) throws DAOException {
+	public void deleteFromMenu(String shop_email, Meal meal) throws DAOException {
 
 		try {
-			delete_from_supply_PS.setString(1, shop_email);
-			delete_from_supply_PS.setString(2, meal.getName());
-			delete_from_supply_PS.executeUpdate();
+			delete_from_menu_PS.setString(1, shop_email);
+			delete_from_menu_PS.setString(2, meal.getName());
+			delete_from_menu_PS.executeUpdate();
 		} catch (SQLException s) {
 			throw new DAOException();
 		}
@@ -173,15 +173,14 @@ public class MealDAOPostgresImplementation implements MealDAO {
 		db_util.closeStatement(insert_meal_PS);
 		db_util.closeStatement(delete_meal_PS);
 		db_util.closeStatement(get_all_meals_except_shop_meals_PS);
-		db_util.closeStatement(insert_supply_PS);
-		db_util.closeStatement(delete_from_supply_PS);
+		db_util.closeStatement(insert_into_menu_PS);
+		db_util.closeStatement(delete_from_menu_PS);
 		db_util.closeStatement(add_allergens_CS);
 		db_util.closeStatement(customer_complex_search_PS);
 		return;
 
 	}
 
-	
 	public Meal getMealByName(String name) throws DAOException {
 
 		ArrayList<String> allergens;

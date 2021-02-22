@@ -287,7 +287,7 @@ public class ShopController {
 			String meal_name_to_remove = shop_meal_frame.getMenu_table().getValueAt(row, 0).toString();
 			try {
 				Meal meal_to_remove = meal_dao.getMealByName(meal_name_to_remove);
-				meal_dao.deleteFromSupply(current_shop_email, meal_to_remove);
+				meal_dao.deleteFromMenu(current_shop_email, meal_to_remove);
 				shop_meal_frame.getMenu_model().removeRow(row);
 				shop_meal_frame.getAll_meals_model()
 						.addRow(new Object[] { meal_to_remove.getName(), meal_to_remove.getCategory(),

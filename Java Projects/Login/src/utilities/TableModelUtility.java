@@ -206,8 +206,18 @@ public class TableModelUtility {
 			row[4] = order.getStatus();
 			row[5] = order.getPayment();
 			row[6] = order.getNote();
+			try {
 			row[7] = order.getCustomer().getEmail();
-			row[8] = order.getRider().getCf();
+			}catch(NullPointerException n)
+			{
+				row[7] = "";
+			}
+			try {
+				row[8] = order.getRider().getCf();
+			}catch(NullPointerException n)
+			{
+				row[8] = "";
+			}
 			model.addRow(row);
 		}
 		return;
