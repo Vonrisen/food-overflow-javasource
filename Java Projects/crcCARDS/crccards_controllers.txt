@@ -49,6 +49,7 @@
       "Rimuovere un Meal dal Cart",
       "Svuotare il Cart",
       "Istanziare e salvare un Order",
+      "Aggiornare password, codice fiscale e indirizzo di consegna",
       "Rilasciare risorse occupate dal datasource",
       ""
     ],

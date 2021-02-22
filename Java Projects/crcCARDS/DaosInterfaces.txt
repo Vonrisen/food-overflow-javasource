@@ -36,6 +36,7 @@
       "Inserire un Customer",
       "Verificare l' esistenza di un customer tramite email e password",
       "Recuperare un Customer tramite e-mail",
+      "Aggiornare indirizzo di consegna, password e codice fiscale di un customer",
       "Rilasciare le risorse occupate"
     ],
     "collaborators": [
