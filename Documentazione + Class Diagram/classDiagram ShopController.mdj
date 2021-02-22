@@ -6346,13 +6346,30 @@
 											"height": 13,
 											"text": "-update_customer_password_PS: PreparedStatement",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF3y0p6yUkwcv0=",
+											"_parent": {
+												"$ref": "AAAAAAF3kblAYS28bN4="
+											},
+											"model": {
+												"$ref": "AAAAAAF3y0p6rUktIdw="
+											},
+											"font": "Arial;13;0",
+											"left": 2173,
+											"top": 3120,
+											"width": 396.82373046875,
+											"height": 13,
+											"text": "-update_customer_CF_PS: PreparedStatement",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2168,
 									"top": 3025,
 									"width": 406.82373046875,
-									"height": 98
+									"height": 113
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -6375,7 +6392,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 2173,
-											"top": 3128,
+											"top": 3143,
 											"width": 396.82373046875,
 											"height": 13,
 											"text": "+CustomerDAOPostgresImplementation(connection: Connection)",
@@ -6384,7 +6401,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 2168,
-									"top": 3123,
+									"top": 3138,
 									"width": 406.82373046875,
 									"height": 23
 								},
@@ -6426,7 +6443,7 @@
 							"left": 2168,
 							"top": 3000,
 							"width": 406.82373046875,
-							"height": 146,
+							"height": 161,
 							"nameCompartment": {
 								"$ref": "AAAAAAF3kblAYS23N1w="
 							},
@@ -10106,13 +10123,30 @@
 											"height": 13,
 											"text": "+updateCustomerPassword(customer: Customer, new_password: String)",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF3y0omIEP61Sw=",
+											"_parent": {
+												"$ref": "AAAAAAF3ut2xE4faOgg="
+											},
+											"model": {
+												"$ref": "AAAAAAF3y0ol7kP3pHo="
+											},
+											"font": "Arial;13;0",
+											"left": 2173,
+											"top": 2694,
+											"width": 420.875,
+											"height": 13,
+											"text": "+updateCustomerCF(customer: Customer, old_cf: String)",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2168,
 									"top": 2584,
 									"width": 430.875,
-									"height": 113
+									"height": 128
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -10152,7 +10186,7 @@
 							"left": 2168,
 							"top": 2536,
 							"width": 430.875,
-							"height": 161,
+							"height": 176,
 							"nameCompartment": {
 								"$ref": "AAAAAAF3ut2xE4fUhDs="
 							},
@@ -10825,7 +10859,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2369,
-									"top": 2841,
+									"top": 2848,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -10845,7 +10879,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 1606,
-									"top": 3567,
+									"top": 3574,
 									"width": 39.0380859375,
 									"height": 13,
 									"alpha": -3.949897791193993,
@@ -10868,7 +10902,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2399,
-									"top": 2842,
+									"top": 2849,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -10886,7 +10920,7 @@
 								"$ref": "AAAAAAF3kblAYS22AnU="
 							},
 							"lineStyle": 2,
-							"points": "2384:3000;2384:2696",
+							"points": "2384:3000;2384:2711",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF3uunI3Egpxbs="
@@ -16262,7 +16296,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2439,
-									"top": 3164,
+									"top": 3179,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -16283,7 +16317,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2452,
-									"top": 3167,
+									"top": 3182,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -16304,7 +16338,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 2411,
-									"top": 3160,
+									"top": 3175,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -16413,7 +16447,7 @@
 								"$ref": "AAAAAAF3kblAYS22AnU="
 							},
 							"lineStyle": 2,
-							"points": "2424:3145;2424:3248;3688:3248;3688:1699",
+							"points": "2424:3160;2424:3248;3688:3248;3688:1699",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF3uvH6XCF79nE="
@@ -17835,7 +17869,7 @@
 								"$ref": "AAAAAAF3kblAYS22AnU="
 							},
 							"lineStyle": 2,
-							"points": "2336:3145;2336:3336;112:3336;112:1707",
+							"points": "2336:3160;2336:3336;112:3336;112:1707",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF3uwTh7M6bNTM="
@@ -27419,6 +27453,16 @@
 							"name": "update_customer_password_PS",
 							"visibility": "private",
 							"type": "PreparedStatement"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF3y0p6rUktIdw=",
+							"_parent": {
+								"$ref": "AAAAAAF3kblAYS20B/E="
+							},
+							"name": "update_customer_CF_PS",
+							"visibility": "private",
+							"type": "PreparedStatement"
 						}
 					],
 					"operations": [
@@ -34732,6 +34776,36 @@
 										"$ref": "AAAAAAF3yqcOUtN4yqI="
 									},
 									"name": "new_password",
+									"type": "String"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF3y0ol7kP3pHo=",
+							"_parent": {
+								"$ref": "AAAAAAF3ut2xEofRjUw="
+							},
+							"name": "updateCustomerCF",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF3y0pXmEW3USk=",
+									"_parent": {
+										"$ref": "AAAAAAF3y0ol7kP3pHo="
+									},
+									"name": "customer",
+									"type": {
+										"$ref": "AAAAAAF3kaCVnG8WOOc="
+									}
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF3y0pXmUW4lbY=",
+									"_parent": {
+										"$ref": "AAAAAAF3y0ol7kP3pHo="
+									},
+									"name": "old_cf",
 									"type": "String"
 								}
 							]
