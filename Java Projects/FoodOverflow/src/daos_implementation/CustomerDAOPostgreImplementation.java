@@ -34,8 +34,7 @@ public class CustomerDAOPostgreImplementation implements CustomerDAO {
 			update_customer_password_PS = connection.prepareStatement("UPDATE Customer SET password =? WHERE email=?");
 			update_customer_CF_PS = connection.prepareStatement("UPDATE Customer SET cf=? WHERE cf=?");
 		} catch (SQLException s) {
-			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
 		}
 
 	}

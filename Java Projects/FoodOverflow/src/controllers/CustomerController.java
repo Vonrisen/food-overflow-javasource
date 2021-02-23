@@ -218,7 +218,7 @@ public class CustomerController {
 				JOptionPane.showMessageDialog(null, "Inserire un prezzo valido", "Errore", JOptionPane.ERROR_MESSAGE);
 			}
 		} else
-			JOptionPane.showMessageDialog(null, "Seleziona qualcosa", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona qualcosa", "Errore", JOptionPane.ERROR_MESSAGE);
 		return;
 
 	}
@@ -230,7 +230,7 @@ public class CustomerController {
 			cart.getOrder_composition_list().remove(row);
 			customer_customer_frame.getModel().removeRow(row);
 		} else
-			JOptionPane.showMessageDialog(null, "Seleziona qualcosa", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Seleziona qualcosa", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void removeEverythingFromCart(CustomerCartFrame customer_customer_frame) {
@@ -239,7 +239,7 @@ public class CustomerController {
 			cart.getOrder_composition_list().clear();
 			customer_customer_frame.getModel().setRowCount(0);
 		} else
-			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Il carrello e' gia' vuoto", "Errore", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void openCustomerCheckoutFrame(CustomerCartFrame customer_cart_frame) {

@@ -55,7 +55,7 @@ public class OrderDAOPostgreImplementation implements OrderDAO {
 			get_all_orders_PS = connection.prepareStatement("SELECT * FROM CustomerOrder");
 
 		} catch (SQLException s) {
-			JOptionPane.showMessageDialog(null, "Errore durante il prepare degli statements");
+			System.exit(-1);
 		}
 	}
 	public Rider getRiderOfTheOrderByCF(String cf) throws DAOException {

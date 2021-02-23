@@ -45,8 +45,7 @@ public class MealDAOPostgreImplementation implements MealDAO {
 					"SELECT * FROM  effettuaRicercaComplessaCustomer(?,?,?,?,?) AS t(name varchar, category varchar, price real, ingredients varchar, id character(4))");
 
 		} catch (SQLException s) {
-			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
 		}
 
 	}

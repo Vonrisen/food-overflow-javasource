@@ -48,8 +48,7 @@ public class ShopDAOPostgreImplementation implements ShopDAO {
 					"SELECT * FROM Rider WHERE shop_id = (SELECT id FROM Shop WHERE email=?) AND deliveries_number<3");
 
 		} catch (SQLException s) {
-			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
 		}
 	}
 

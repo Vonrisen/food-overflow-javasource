@@ -32,8 +32,7 @@ public class RiderDAOPostgreImplementation implements RiderDAO {
 					"UPDATE Rider SET cf=?, name=?, surname=?, birth_date=?, birth_place=?, address=?, gender=?, cellphone=?, vehicle=?, working_hours=? WHERE cf=?");
 			get_rider_by_CF_PS = connection.prepareStatement("SELECT * FROM Rider WHERE cf =?");
 		} catch (SQLException s) {
-			JOptionPane.showMessageDialog(null, "Generic error, please contact your administrator", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
 		}
 
 	}
